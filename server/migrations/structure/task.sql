@@ -1,0 +1,12 @@
+DROP TYPE IF EXISTS task_type;
+CREATE TYPE  task_type AS ENUM ('image');
+CREATE TABLE IF NOT EXISTS task (
+  id SERIAL NOT NULL PRIMARY KEY,
+  activity BOOL NOT NULL DEFAULT TRUE,
+  content_type task_type NOT NULL DEFAULT 'image',
+  content_id INT NOT NULL REFERENCES image (id) ON DELETE CASCADE,
+  option1_id INT NOT NULL REFERENCES option (id) ON DELETE CASCADE,
+  option2_id INT NOT NULL REFERENCES option (id) ON DELETE CASCADE,
+  option3_id INT NOT NULL REFERENCES option (id) ON DELETE CASCADE,
+  time_stamp TIMESTAMP NOT NULL DEFAULT NOW()
+);
