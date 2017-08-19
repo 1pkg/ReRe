@@ -11,6 +11,6 @@ const compose = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || Redux.compose;
 const reducer = Redux.combineReducers({
   task: ReducerTask,
   hints: ReducerHint,
-  state: ReducerMain
+  time: ReducerMain,
 });
 export default Redux.createStore(reducer, compose(Redux.applyMiddleware(ReduxThunk)));

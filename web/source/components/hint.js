@@ -2,12 +2,12 @@
 
 import React from 'react';
 
-import infinite from '../../static/infinite.png';
-import redo from '../../static/redo.png';
-import twoothree from '../../static/2of3.png';
-import skip from '../../static/skip.png';
-import ga from '../../static/ga.png';
-import help from '../../static/help.png';
+import infinite from './../../static/infinite.png';
+import redo from './../../static/redo.png';
+import twoothree from './../../static/2of3.png';
+import skip from './../../static/skip.png';
+import ga from './../../static/ga.png';
+import help from './../../static/help.png';
 const icons = {
   infinite,
   redo,
@@ -31,8 +31,8 @@ export default class ToolBar extends React.Component {
 
     return (
       <img style={{
-        marginLeft: '12px', height: '100%',  objectFit: 'contain'}
-      } onClick={this.props.use} src={icons[this.props.name]} data-id={this.props.id}/>
+        marginLeft: '12px', height: '100%', objectFit: 'contain',
+      }} onClick={this.props.use} src={icons[this.props.name]} data-id={this.props.id}/>
     );
   }
 }

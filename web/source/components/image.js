@@ -10,14 +10,13 @@ export default class Image extends React.Component {
   }
 
   render() {
-    let image : Model.Image = this.props.image;
     return (
       <div style={{
-        width: '100%', height: '80vh', overflow: 'hidden'
+        width: '100%', height: '80vh', overflow: 'hidden',
       }}>
         <img style={{
-          width: '100%', objectFit: 'cover'
-        }} src={image.sourceLink} />
+          width: '100%', objectFit: 'cover',
+        }} src={this.props.image.sourceLink} />
       </div>
     );
   }

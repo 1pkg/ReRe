@@ -13,6 +13,7 @@ export default class Option extends React.Component {
     return (
       <p style={{
         width: '33%', textAlign: 'center', verticalAlign: 'center',
+        fontSize: '3vh', fontWeight: 'bold',
       }} onClick={this.props.chose} data-id={this.props.id}>{
         this.props.children
       }</p>

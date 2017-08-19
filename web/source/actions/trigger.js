@@ -4,13 +4,16 @@ import * as Model from './../model';
 import * as Actions from './types';
 import initialize from './initialize';
 import optionChose from './optionChose';
+import tick from './tick';
 
 class Trigger {
-  actions: Map<string, (dispatch: (Model.Action) => void, params: Array<any>) => void> = new Map()
+  actions: Map<string, (dispatch: (Model.Action) => void, params: Array<any>) => void>;
 
   constructor() {
+    this.actions = new Map();
     this.actions.set(Actions.ACTION_INITIALIZE, initialize);
     this.actions.set(Actions.ACTION_OPTION_CHOSE, optionChose);
+    this.actions.set(Actions.ACTION_TICK, tick);
   }
 
   call(dispatch: (Model.Action) => void, name: string, ...params: Array<any>) {

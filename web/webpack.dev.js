@@ -1,6 +1,6 @@
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-const FlowBabelWebpackPlugin = require('flow-babel-webpack-plugin');
 const Path = require('path');
+const FlowPlugin = require('flow-babel-webpack-plugin');
+const HtmlPlugin = require('html-webpack-plugin');
 
 module.exports = {
 	entry: './source/application.js',
@@ -15,11 +15,14 @@ module.exports = {
 		host: 'localhost',
 		port: 8080,
 		inline: true,
+		contentBase: './build',
 	},
 
 	plugins: [
-		new HtmlWebpackPlugin({template: 'static/index.html'}),
-    new FlowBabelWebpackPlugin(),
+		new FlowPlugin(),
+		new HtmlPlugin({
+			template: 'static/index.html',
+		}),
 	],
 
 	module: {

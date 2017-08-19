@@ -15,11 +15,25 @@ class Main extends React.Component {
   props: {
     task : Model.Task,
     hints: Array<Model.Hint>,
+    time: number,
     dispatch: (Model.Action) => void,
   }
 
-  componentWillMount() {
+  constructor(props: {
+    task : Model.Task,
+    hints: Array<Model.Hint>,
+    time: number,
+    dispatch: (Model.Action) => void,
+  }) {
+    super(props);
+
     Trigger.call(this.props.dispatch, Actions.ACTION_INITIALIZE);
+  }
+
+  componentDidMount() {
+    setInterval(() => {
+      Trigger.call(this.props.dispatch, Actions.ACTION_TICK);
+    }, 1000);
   }
 
   render() {
@@ -30,7 +44,7 @@ class Main extends React.Component {
     return (
         <div>
             <Image image={this.props.task.image} />
-            <ToolBar hints={this.props.hints} dispatch={this.props.dispatch}/>
+            <ToolBar hints={this.props.hints} time={this.props.time} dispatch={this.props.dispatch}/>
             <Grid options={this.props.task.options} dispatch={this.props.dispatch}/>
         </div>
     );
