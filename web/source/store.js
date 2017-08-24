@@ -3,14 +3,10 @@
 import * as Redux from 'redux';
 import ReduxThunk from 'redux-thunk';
 
-import ReducerTask from './reducers/task'
-import ReducerHint from './reducers/hint'
-import ReducerMain from './reducers/main'
+import * as Model from './model';
+import * as Actions from './actions/types';
 
-const compose = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || Redux.compose;
-const reducer = Redux.combineReducers({
-  task: ReducerTask,
-  hints: ReducerHint,
-  time: ReducerMain,
-});
-export default Redux.createStore(reducer, compose(Redux.applyMiddleware(ReduxThunk)));
+const compose: any = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || Redux.compose;
+export default Redux.createStore((state: ?Model.State = null, action: Actions.Action): ?Model.State => {
+  return action.state ? action.state : state;
+}, compose(Redux.applyMiddleware(ReduxThunk)));

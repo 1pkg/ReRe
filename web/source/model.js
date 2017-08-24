@@ -16,7 +16,7 @@ export type Image = {
 };
 
 export type Task = {
-  options: [Option, Option, Option],
+  options: Array<Option>,
   image: Image,
 };
 
@@ -25,7 +25,18 @@ export type Hint = {
     name: string,
 };
 
-export type Action = {
-  type: string,
-  payload: any,
+export const ACT_STATUS_PROCESS: string = 'act-status-process';
+export const ACT_STATUS_FAILED: string  = 'act-status-failed';
+export const ACT_STATUS_SUCCEED: string = 'act-status-succeed';
+
+export type Act = {
+  status: string,
+  time: number,
+  count: number,
+};
+
+export type State = {
+  task: Task,
+  hints: Array<Hint>,
+  act: Act,
 };

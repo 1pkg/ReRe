@@ -11,5 +11,5 @@ ReactDOM.render(
   <Redux.Provider store={Store}>
     <Main />
   </Redux.Provider>,
-  document.getElementById('root')
+  document.getElementById('main')
 );

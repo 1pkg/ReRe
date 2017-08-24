@@ -7,53 +7,43 @@ import * as Model from './../model'
 import Trigger from './../actions/trigger'
 import * as Actions from './../actions/types';
 
-import Grid from './grid';
-import Image from './image';
-import ToolBar from './toolbar';
+import Splash from './splash/main';
+import Process from './process/main';
+import Failed from './failed/main';
 
 class Main extends React.Component {
   props: {
-    task : Model.Task,
-    hints: Array<Model.Hint>,
-    time: number,
-    dispatch: (Model.Action) => void,
-  }
-
-  constructor(props: {
-    task : Model.Task,
-    hints: Array<Model.Hint>,
-    time: number,
-    dispatch: (Model.Action) => void,
-  }) {
-    super(props);
-
-    Trigger.call(this.props.dispatch, Actions.ACTION_INITIALIZE);
-  }
-
-  componentDidMount() {
-    setInterval(() => {
-      Trigger.call(this.props.dispatch, Actions.ACTION_TICK);
-    }, 1000);
+    state : Model.State,
   }
 
   render() {
-    if (!this.props.task) {
-      return null;
+    if (!this.props.state) {
+      return (
+        <Splash />
+      );
     }
 
-    return (
-        <div>
-            <Image image={this.props.task.image} />
-            <ToolBar hints={this.props.hints} time={this.props.time} dispatch={this.props.dispatch}/>
-            <Grid options={this.props.task.options} dispatch={this.props.dispatch}/>
-        </div>
-    );
+    switch(this.props.state.act.status) {
+        case Model.ACT_STATUS_PROCESS:
+          return (
+            <Process
+              task={this.props.state.task}
+              hints={this.props.state.hints}
+              time={this.props.state.act.time}
+              count={this.props.state.act.count}
+            />
+          );
+
+        case Model.ACT_STATUS_FAILED:
+          return (
+            <Failed />
+          );
+    }
   }
 }
 
 export default Redux.connect(
-  (state: Model.Task) => state,
-  (dispatch: (Model.Action) => void) => {
-    return {dispatch};
+  (state: Model.State) => {
+    return {state};
   },
 )(Main);

@@ -2,7 +2,7 @@
 
 import React from 'react';
 
-import * as Model from './../model'
+import * as Model from './../../model'
 
 export default class Image extends React.Component {
   props: {
@@ -12,10 +12,11 @@ export default class Image extends React.Component {
   render() {
     return (
       <div style={{
-        width: '100%', height: '80vh', overflow: 'hidden',
+        width: '100%',
+        flex: 1, alignSelf: 'center', overflow: 'hidden',
       }}>
         <img style={{
-          width: '100%', objectFit: 'cover',
+          width: '100%', height: '100%', objectFit: 'cover',
         }} src={this.props.image.sourceLink} />
       </div>
     );

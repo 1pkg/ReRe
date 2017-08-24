@@ -2,7 +2,7 @@
 
 import React from 'react';
 
-import timer from './../../static/timer.png';
+import Time from 'react-icons/lib/io/pinpoint';
 
 export default class Timer extends React.Component {
   props: {
@@ -10,18 +10,19 @@ export default class Timer extends React.Component {
   }
 
   render() {
+    if (!Number.isFinite(this.props.time)) {
+      return <div></div>;
+    }
+
     return (
       <div style={{
-        position: 'relative', height: '100%',
+        position: 'relative',
       }}>
-        <img style={{
-          height: '100%', objectFit: 'contain',
-        }} src={timer}/>
+        <Time />
         <div style={{
           width: '100%', height: '100%', position: 'absolute', textAlign: 'center',
-          top: '50%', left: '50%',
-          transform: 'translateX(-50%) translateY(-10%)',
-          fontSize: '2vh',
+          transform: 'translateY(-1.5em)',
+          fontSize: '0.5em',
         }}>{
             this.props.time
         }</div>
