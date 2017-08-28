@@ -20,8 +20,9 @@ export default class Timer extends React.Component {
       }}>
         <Time />
         <div style={{
-          width: '100%', height: '100%', position: 'absolute', textAlign: 'center',
-          transform: 'translateY(-1.5em)',
+          position: 'absolute',
+          width: '100%', height: '100%',
+          textAlign: 'center', transform: 'translateX(-0.125em) translateY(-1.5em)',
           fontSize: '0.5em',
         }}>{
             this.props.time

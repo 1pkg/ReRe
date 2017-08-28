@@ -2,11 +2,6 @@
 
 import * as Model from './../model';
 
-export type Action = {
-  type: string,
-  state: Model.State,
-};
-
 export const ACTION_TICK: string             =   'action-tick';
 export const ACTION_INITIALIZE: string       =   'action-initialize';
 export const ACTION_FETCH_TASK: string       =   'action-fetch-task';

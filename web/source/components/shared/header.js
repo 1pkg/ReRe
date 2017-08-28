@@ -10,11 +10,11 @@ export default class Header extends React.Component {
   render() {
     return (
       <div style={{
+        alignSelf: 'flex-end',
         display: 'flex', alignItems: 'center', justifyContent: 'flex-end',
+        fontWeight: 'bold', fontSize: '2em',
       }}>
-        <div style={{
-          fontWeight: 'bold', fontSize: '1.5em',
-        }}>WIT&nbsp;&nbsp;&nbsp;{this.props.count}</div>
+        <div>WIT&nbsp;{this.props.count}</div>
       </div>
     );
   }

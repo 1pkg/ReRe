@@ -2,15 +2,19 @@
 
 import React from 'react';
 
-import * as Model from './../../model'
-import Trigger from './../../actions/trigger'
+import * as Model from './../../model';
+import Trigger from './../../actions/trigger';
 import * as Actions from './../../actions/types';
 
 export default class Main extends React.Component {
-  restart(event: Event) {
+  props: {
+    trigger: Trigger,
+  }
+
+  restart(event: SyntheticEvent) {
     event.preventDefault();
 
-    Trigger.call(Actions.ACTION_INITIALIZE);
+    this.props.trigger.call(Actions.ACTION_INITIALIZE);
   }
 
   render() {

@@ -7,33 +7,37 @@ import Facebook from 'react-icons/lib/io/social-facebook-outline';
 import ArrowRight from 'react-icons/lib/io/arrow-right-b';
 
 import * as Effects from './../../effects';
-import Trigger from './../../actions/trigger'
+import Trigger from './../../actions/trigger';
 import * as Actions from './../../actions/types';
 
 import Header from './../shared/header';
 
 export default class Main extends React.Component {
-  start(event: Event) {
+  props: {
+    trigger: Trigger,
+  }
+
+  start(event: SyntheticEvent) {
     event.preventDefault();
 
-    Trigger.call(Actions.ACTION_INITIALIZE);
+    this.props.trigger.call(Actions.ACTION_INITIALIZE);
   }
 
   render() {
     return (
       <div style={{
-        display: 'flex', flexDirection: 'column',
+        display: 'flex', flexDirection: 'column', alignItems: 'stretch', justifyContent: 'center',
         height: '100vh',
       }}>
         <Header count={0}/>
         <div style={{
+          alignSelf: 'center', flexGrow: 1,
+          display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
           fontWeight: 'bold', fontSize: '4em',
-          flex: 1, alignSelf: 'center',
         }}
         >
-          <span style={{
+          <div style={{
             display: 'flex', alignItems: 'center', justifyContent: 'center',
-            height: '100%',
           }}
             onMouseOver={Effects.hover}
             onMouseOut={Effects.unhover}
@@ -42,11 +46,11 @@ export default class Main extends React.Component {
             <span>START</span>
             &nbsp;
             <ArrowRight/>
-          </span>
+          </div>
         </div>
         <div style={{
-          fontWeight: 'bold', fontSize: '2em',
           alignSelf: 'flex-end',
+          fontWeight: 'bold', fontSize: '2em',
         }}
         >
           <span onMouseOver={Effects.hover} onMouseOut={Effects.unhover}>

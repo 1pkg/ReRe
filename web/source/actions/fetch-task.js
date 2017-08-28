@@ -100,15 +100,19 @@ const TASKS: Array<Model.Task> = [
 
 let index: number = 0;
 let interval: number = 0;
-export default (dispatch: (Model.State) => void, state: Model.State) => {
+export default (trigger: Trigger, state: Model.State) => {
   if (index + 1 > TASKS.length) {
     index = 0;
   }
-  state.task = TASKS[index++];
-  dispatch(state);
 
   clearInterval(interval);
-  interval = setInterval(() => {
-    Trigger.call(Actions.ACTION_TICK, interval);
-  }, 1000);
+  setTimeout(() => {
+    state = trigger.getState();
+    state.task = TASKS[index++];
+    trigger.dispatch(Actions.ACTION_FETCH_TASK, state);
+
+    interval = setInterval(() => {
+      trigger.call(Actions.ACTION_TICK, interval);
+    }, 1000);
+  }, 300);
 }

@@ -1,16 +1,17 @@
 import * as Model from './../model';
+import * as Constants from './../constants';
 import Trigger from './trigger';
 import * as Actions from './types';
 
-export default (dispatch: (Model.State) => void, state: Model.State, optionId: number) => {
+export default (trigger: Trigger, state: Model.State, optionId: number) => {
   if (state.task.image.optionId == optionId) {
     state.act.count += 1;
     state.act.time = 30;
-    dispatch(state);
+    trigger.dispatch(state);
 
-    Trigger.call(Actions.ACTION_FETCH_TASK);
+    trigger.call(Actions.ACTION_FETCH_TASK);
   } else {
-    state.act.status = Model.ACT_STATUS_FAILED;
-    dispatch(state);
+    state.act.status = Constants.ACT_STATUS_FAILED;
+    trigger.dispatch(Actions.ACTION_OPTION_CHOSE, state);
   }
 }

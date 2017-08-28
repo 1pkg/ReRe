@@ -31,7 +31,7 @@ module.exports = {
 		new MinifyPlugin(),
 		new UglifyPlugin(),
 		new HtmlPlugin({
-			template: 'static/index.html',
+			template: 'templates/main.html',
 			inlineSource: '.(js|css)$',
 		}),
 		new HtmlInlineSourcePlugin(),

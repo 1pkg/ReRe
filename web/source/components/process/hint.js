@@ -31,7 +31,7 @@ export default class Hint extends React.Component {
   props: {
     id: number,
     name: string,
-    use: (event: Event) => void,
+    use: (event: SyntheticEvent) => void,
   }
 
   render() {
@@ -41,7 +41,12 @@ export default class Hint extends React.Component {
 
     let HintIcon: any = ICONS[this.props.name];
     return (
-      <span onMouseOver={Effects.hover} onMouseOut={Effects.unhover} onClick={this.props.use} data-id={this.props.id}>
+      <span
+        onMouseOver={Effects.hover}
+        onMouseOut={Effects.unhover}
+        onClick={this.props.use}
+        data-id={this.props.id}
+      >
         <HintIcon />
       </span>
     );

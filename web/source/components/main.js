@@ -3,8 +3,9 @@
 import React from 'react';
 import * as Redux from 'react-redux';
 
-import * as Model from './../model'
-import Trigger from './../actions/trigger'
+import * as Model from './../model';
+import * as Constants from './../constants';
+import Trigger from './../actions/trigger';
 import * as Actions from './../actions/types';
 
 import Splash from './splash/main';
@@ -13,20 +14,22 @@ import Failed from './failed/main';
 
 class Main extends React.Component {
   props: {
-    state : Model.State,
+    trigger: Trigger,
+    state: Model.State,
   }
 
   render() {
-    if (!this.props.state) {
+    if (!this.props.state || !this.props.state.task) {
       return (
-        <Splash />
+        <Splash trigger={this.props.trigger}/>
       );
     }
 
     switch(this.props.state.act.status) {
-        case Model.ACT_STATUS_PROCESS:
+        case Constants.ACT_STATUS_PROCESS:
           return (
             <Process
+              trigger={this.props.trigger}
               task={this.props.state.task}
               hints={this.props.state.hints}
               time={this.props.state.act.time}
@@ -34,9 +37,9 @@ class Main extends React.Component {
             />
           );
 
-        case Model.ACT_STATUS_FAILED:
+        case Constants.ACT_STATUS_FAILED:
           return (
-            <Failed />
+            <Failed trigger={this.props.trigger}/>
           );
     }
   }

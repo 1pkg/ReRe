@@ -1,4 +1,5 @@
 import * as Model from './../model';
+import * as Constants from './../constants';
 import Trigger from './trigger';
 import * as Actions from './types';
 
@@ -31,17 +32,17 @@ const HINTS: Array<Model.Hint> = [
 
 const ACT: Model.Act = {
   time: 30,
-  status: Model.ACT_STATUS_PROCESS,
+  status: Constants.ACT_STATUS_PROCESS,
   count: 0,
 };
 
-export default (dispatch: (Model.State) => void, state: Model.State) => {
+export default (trigger: Trigger, state: Model.State) => {
   state = {
     task: null,
     hints: HINTS,
     act: ACT,
   };
-  dispatch(state);
+  trigger.dispatch(Actions.ACTION_INITIALIZE, state);
 
-  Trigger.call(Actions.ACTION_FETCH_TASK);
+  trigger.call(Actions.ACTION_FETCH_TASK);
 }

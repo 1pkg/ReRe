@@ -21,7 +21,7 @@ module.exports = {
 	plugins: [
 		new FlowPlugin(),
 		new HtmlPlugin({
-			template: 'static/index.html',
+			template: 'templates/main.html',
 		}),
 	],
 

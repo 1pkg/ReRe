@@ -8,13 +8,13 @@ export default class Option extends React.Component {
   props: {
     children: string,
     id: number,
-    chose: (event: Event) => void,
+    chose: (event: SyntheticEvent) => void,
   }
 
   render() {
     return (
       <div style={{
-        padding: '0.25em 0em 0.25em 0em',
+        padding: '0.2em 0em 0.2em 0em',
       }}
         onMouseOver={Effects.hover}
         onMouseOut={Effects.unhover}
