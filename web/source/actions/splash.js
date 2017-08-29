@@ -31,18 +31,16 @@ const HINTS: Array<Model.Hint> = [
 ];
 
 const ACT: Model.Act = {
-  time: 30,
-  status: Constants.ACT_STATUS_PROCESS,
-  count: 0,
+  timestamp: NaN,
+  status: Constants.ACT_STATUS_SPLASH,
+  score: 0,
 };
 
-export default (trigger: Trigger, state: Model.State) => {
-  state = {
+export default (trigger: Trigger) => {
+  let state:Model.State  = {
     task: null,
     hints: HINTS,
     act: ACT,
   };
-  trigger.dispatch(Actions.ACTION_INITIALIZE, state);
-
-  trigger.call(Actions.ACTION_FETCH_TASK);
+  trigger.push(Actions.ACTION_SPLASH, state);
 }

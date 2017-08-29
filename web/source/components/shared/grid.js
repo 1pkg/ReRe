@@ -5,12 +5,15 @@ import * as Model from './../../model';
 import Trigger from './../../actions/trigger';
 import * as Actions from './../../actions/types';
 
-import Option from './option';
+import Option from './../process/option';
+import OptionCorrect from './../result/option-correct';
+import OptionFail from './../result/option-fail';
 
 export default class Grid extends React.Component {
   props: {
     trigger: Trigger,
     options: Array<Model.Option>,
+    image: ?Model.Image,
   }
 
   chose(event: SyntheticEvent) {
@@ -33,9 +36,21 @@ export default class Grid extends React.Component {
           borderWidth: '0.1em 0em 0.1em 0em', borderStyle: 'solid',
         }}>{
           this.props.options.map((option : Model.Option) => {
-            return <Option key={option.id} chose={this.chose.bind(this)} id={option.id}>{
-              option.name
-            }</Option>;
+            if (!this.props.image) {
+              return <Option key={option.id} chose={this.chose.bind(this)} id={option.id}>{
+                option.name
+              }</Option>;
+            } else {
+              if (option.id == this.props.image.optionId) {
+                return <OptionCorrect key={option.id}>{
+                  option.name
+                }</OptionCorrect>;
+              } else {
+                return <OptionFail key={option.id}>{
+                  option.name
+                }</OptionFail>;
+              }
+            }
           })
         }</div>
       </div>

@@ -29,6 +29,7 @@ let store: Redux.Store = Redux.createStore((state: ?Model.State = null, action: 
   }
 }, compose(Redux.applyMiddleware(ReduxThunk)));
 trigger = new Trigger(store);
+trigger.call(Actions.ACTION_SPLASH);
 
 ReactDOM.render(
   <ReactRedux.Provider store={store}>

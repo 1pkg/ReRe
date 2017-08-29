@@ -18,7 +18,7 @@ export default class Image extends React.Component {
         <img style={{
           flexGrow: 1,
           maxWidth: '100vw', maxHeight: '77vh', objectFit: 'cover',
-        }} src={this.props.image.sourceLink} />
+        }} src={this.props.image.sourceLink}/>
       </div>
     );
   }

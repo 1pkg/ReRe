@@ -13,7 +13,8 @@ export default class Toolbar extends React.Component {
   props: {
     trigger: Trigger,
     hints: Array<Model.Hint>,
-    time: number,
+    timestamp: number,
+    disabled: boolean,
   }
 
   use(event: SyntheticEvent) {
@@ -30,10 +31,10 @@ export default class Toolbar extends React.Component {
         display: 'flex', alignItems: 'center', justifyContent: 'space-between',
         fontSize: '2em',
       }}>
-        <Timer time={this.props.time}/>
+        <Timer timestamp={this.props.timestamp}/>
         <div>{
           this.props.hints.map((hint : Model.Hint) => {
-            return <Hint key={hint.id} use={this.use.bind(this)} id={hint.id} name={hint.name}/>;
+            return <Hint key={hint.id} id={hint.id} name={hint.name} use={this.use.bind(this)} disabled={this.props.disabled}/>;
           })
         }</div>
       </div>

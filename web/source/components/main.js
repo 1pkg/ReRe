@@ -10,7 +10,7 @@ import * as Actions from './../actions/types';
 
 import Splash from './splash/main';
 import Process from './process/main';
-import Failed from './failed/main';
+import Result from './result/main';
 
 class Main extends React.Component {
   props: {
@@ -19,27 +19,35 @@ class Main extends React.Component {
   }
 
   render() {
-    if (!this.props.state || !this.props.state.task) {
-      return (
-        <Splash trigger={this.props.trigger}/>
-      );
+    if (!this.props.state) {
+      return null;
     }
 
     switch(this.props.state.act.status) {
+        case Constants.ACT_STATUS_SPLASH:
+          return (
+            <Splash trigger={this.props.trigger}/>
+          );
+
         case Constants.ACT_STATUS_PROCESS:
           return (
             <Process
               trigger={this.props.trigger}
               task={this.props.state.task}
               hints={this.props.state.hints}
-              time={this.props.state.act.time}
-              count={this.props.state.act.count}
+              timestamp={this.props.state.act.timestamp}
+              score={this.props.state.act.score}
             />
           );
 
-        case Constants.ACT_STATUS_FAILED:
+        case Constants.ACT_STATUS_RESULT:
           return (
-            <Failed trigger={this.props.trigger}/>
+            <Result
+              trigger={this.props.trigger}
+              task={this.props.state.task}
+              hints={this.props.state.hints}
+              score={this.props.state.act.score}
+            />
           );
     }
   }

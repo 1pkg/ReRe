@@ -27,8 +27,8 @@ export type Hint = {
 
 export type Act = {
   status: string,
-  time: number,
-  count: number,
+  timestamp: number,
+  score: number,
 };
 
 export type State = {

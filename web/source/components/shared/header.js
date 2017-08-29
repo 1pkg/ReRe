@@ -4,7 +4,7 @@ import React from 'react';
 
 export default class Header extends React.Component {
   props: {
-    count: number,
+    score: number,
   }
 
   render() {
@@ -14,7 +14,7 @@ export default class Header extends React.Component {
         display: 'flex', alignItems: 'center', justifyContent: 'flex-end',
         fontWeight: 'bold', fontSize: '2em',
       }}>
-        <div>WIT&nbsp;{this.props.count}</div>
+        <div>WIT&nbsp;{this.props.score}</div>
       </div>
     );
   }

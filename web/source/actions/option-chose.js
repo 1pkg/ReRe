@@ -3,15 +3,14 @@ import * as Constants from './../constants';
 import Trigger from './trigger';
 import * as Actions from './types';
 
-export default (trigger: Trigger, state: Model.State, optionId: number) => {
+export default (trigger: Trigger, optionId: number) => {
+  let state: Model.State = trigger.state();
   if (state.task.image.optionId == optionId) {
-    state.act.count += 1;
-    state.act.time = 30;
-    trigger.dispatch(state);
-
+    state.act.score += 1;
     trigger.call(Actions.ACTION_FETCH_TASK);
   } else {
-    state.act.status = Constants.ACT_STATUS_FAILED;
-    trigger.dispatch(Actions.ACTION_OPTION_CHOSE, state);
+    state.act.status = Constants.ACT_STATUS_RESULT;
+    state.act.timestamp = NaN;
   }
+  trigger.push(Actions.ACTION_OPTION_CHOSE, state);
 }

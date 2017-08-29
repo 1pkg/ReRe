@@ -1,4 +1,5 @@
 import * as Model from './../model';
+import * as Constants from './../constants';
 import Trigger from './trigger';
 import * as Actions from './types';
 
@@ -98,21 +99,24 @@ const TASKS: Array<Model.Task> = [
   },
 ];
 
-let index: number = 0;
+let index: number = Math.round(Math.random() * 100) % 3;
 let interval: number = 0;
-export default (trigger: Trigger, state: Model.State) => {
+export default (trigger: Trigger) => {
   if (index + 1 > TASKS.length) {
     index = 0;
   }
 
   clearInterval(interval);
   setTimeout(() => {
-    state = trigger.getState();
+    let state: Model.State = trigger.state();
+    let timestamp: number = Math.floor(new Date().getTime() / 1000);
     state.task = TASKS[index++];
-    trigger.dispatch(Actions.ACTION_FETCH_TASK, state);
+    state.act.timestamp = timestamp;
+    state.act.status = Constants.ACT_STATUS_PROCESS;
+    trigger.push(Actions.ACTION_FETCH_TASK, state);
 
     interval = setInterval(() => {
       trigger.call(Actions.ACTION_TICK, interval);
     }, 1000);
-  }, 300);
+  }, 500);
 }
