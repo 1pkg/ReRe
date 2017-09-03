@@ -92,7 +92,7 @@ const TASKS: Array<Model.Task> = [
     ],
     image: {
       id: 2,
-      sourceLink: 'https://i.pinimg.com/736x/75/a0/c6/75a0c6c035f9c7e90348f18ac1059009--racoon-animal-faces.jpg',
+      sourceLink: 'http://2.bp.blogspot.com/_Jw7QCayJTEA/TTaNKk8jYMI/AAAAAAAAC1w/xyddcGM6nCc/s1600/raccoon.jpg',
       sourceAlt: 'Racoon',
       optionId: 5,
     }

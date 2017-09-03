@@ -16,13 +16,13 @@ export default class Timer extends React.Component {
     if (isNaN(this.props.timestamp)) {
       return (
         <div style={{
-          position: 'relative',
+          position: 'relative', color: Constants.COLOR_CORRECT,
         }}>
           <Pinpoint/>
           <div style={{
             position: 'absolute',
             width: '100%', height: '100%',
-            textAlign: 'center', transform: 'translateX(-0.125em) translateY(-1.5em)',
+            textAlign: 'center', transform: 'translateX(-0.125em) translateY(-1.6em)',
             fontSize: '0.5em',
           }}>{
             <Infinite/>
@@ -32,9 +32,11 @@ export default class Timer extends React.Component {
     }
 
     let timestamp: number = Math.floor(new Date().getTime() / 1000);
+    let difftimestamp: number = Constants.ACT_PROCESS_DURATION - (timestamp - this.props.timestamp);
     return (
       <div style={{
         position: 'relative',
+        color: (difftimestamp <= Constants.ACT_PROCESS_DURATION_WARNING ? Constants.COLOR_FAIL : Constants.COLOR_MAIN),
       }}>
         <Pinpoint/>
         <div style={{
@@ -43,7 +45,7 @@ export default class Timer extends React.Component {
           textAlign: 'center', transform: 'translateX(-0.125em) translateY(-1.5em)',
           fontSize: '0.5em',
         }}>{
-            Constants.ACT_PROCESS_DURATION - (timestamp - this.props.timestamp)
+            difftimestamp
         }</div>
       </div>
     );

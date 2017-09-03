@@ -11,7 +11,7 @@ import help from 'react-icons/lib/io/help';
 
 import * as Effects from './../../effects';
 
-const ICONS: {
+const Icons: {
   redo: React.Component<any>,
   infinite: React.Component<any>,
   reduce: React.Component<any>,
@@ -36,11 +36,11 @@ export default class Hint extends React.Component {
   }
 
   render() {
-    if (!(this.props.name in ICONS)) {
+    if (!(this.props.name in Icons)) {
       return null;
     }
 
-    let HintIcon: any = ICONS[this.props.name];
+    let HintIcon: any = Icons[this.props.name];
 
     if (this.props.disabled) {
       return (

@@ -2,6 +2,7 @@
 
 import React from 'react';
 
+import * as Constants from './../../constants';
 import * as Effects from './../../effects';
 
 export default class Option extends React.Component {
@@ -14,7 +15,7 @@ export default class Option extends React.Component {
   render() {
     return (
       <div style={{
-        padding: '0.2em 0em 0.2em 0em',
+        padding: '0.2em 0em 0.2em 0em', color: Constants.COLOR_MAIN,
       }}
         onMouseOver={Effects.hover}
         onMouseOut={Effects.unhover}

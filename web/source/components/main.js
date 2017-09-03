@@ -18,38 +18,48 @@ class Main extends React.Component {
     state: Model.State,
   }
 
+  getScene(status: string) {
+    switch(status) {
+      case Constants.ACT_STATUS_SPLASH:
+        return (
+          <Splash trigger={this.props.trigger}/>
+        );
+
+      case Constants.ACT_STATUS_PROCESS:
+        return (
+          <Process
+            trigger={this.props.trigger}
+            task={this.props.state.task}
+            hints={this.props.state.hints}
+            timestamp={this.props.state.act.timestamp}
+            score={this.props.state.act.score}
+          />
+        );
+
+      case Constants.ACT_STATUS_RESULT:
+        return (
+          <Result
+            trigger={this.props.trigger}
+            task={this.props.state.task}
+            hints={this.props.state.hints}
+            score={this.props.state.act.score}
+          />
+        );
+    }
+  }
+
   render() {
     if (!this.props.state) {
       return null;
     }
 
-    switch(this.props.state.act.status) {
-        case Constants.ACT_STATUS_SPLASH:
-          return (
-            <Splash trigger={this.props.trigger}/>
-          );
-
-        case Constants.ACT_STATUS_PROCESS:
-          return (
-            <Process
-              trigger={this.props.trigger}
-              task={this.props.state.task}
-              hints={this.props.state.hints}
-              timestamp={this.props.state.act.timestamp}
-              score={this.props.state.act.score}
-            />
-          );
-
-        case Constants.ACT_STATUS_RESULT:
-          return (
-            <Result
-              trigger={this.props.trigger}
-              task={this.props.state.task}
-              hints={this.props.state.hints}
-              score={this.props.state.act.score}
-            />
-          );
-    }
+    return (
+      <div style={{
+        color: Constants.COLOR_MAIN, width: '100vw', height: '100vh',
+      }}>{
+        this.getScene(this.props.state.act.status)
+      }</div>
+    );
   }
 }
 

@@ -22,11 +22,12 @@ export default class Next extends React.Component {
   render() {
     return (
       <div style={{
-        alignSelf: 'flex-end', flexGrow: 1,
+        alignSelf: 'flex-end',
         display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
       }}
       >
         <div style={{
+          flexGrow: 1,
           display: 'flex', alignItems: 'center', justifyContent: 'center',
         }}
           onMouseOver={Effects.hover}

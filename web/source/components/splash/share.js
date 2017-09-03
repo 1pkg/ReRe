@@ -12,7 +12,7 @@ export default class Share extends React.Component {
     return (
       <div style={{
         alignSelf: 'flex-end',
-        fontWeight: 'bold', fontSize: '2em',
+        fontWeight: 'bold', fontSize: '3em',
       }}
       >
         <span onMouseOver={Effects.hover} onMouseOut={Effects.unhover}>

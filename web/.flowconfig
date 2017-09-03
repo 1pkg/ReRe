@@ -1,5 +1,6 @@
 [ignore]
 .*/build/.*
+.*/gl-react-image/.*
 
 [include]
 .*/source/.*

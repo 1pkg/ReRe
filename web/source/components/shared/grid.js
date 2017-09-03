@@ -1,7 +1,10 @@
 // @flow
+
 import React from 'react';
+import deepEqual from 'deep-equal';
 
 import * as Model from './../../model';
+import * as Constants from './../../constants';
 import Trigger from './../../actions/trigger';
 import * as Actions from './../../actions/types';
 
@@ -14,6 +17,14 @@ export default class Grid extends React.Component {
     trigger: Trigger,
     options: Array<Model.Option>,
     image: ?Model.Image,
+  }
+
+  shouldComponentUpdate(props: {
+    trigger: Trigger,
+    options: Array<Model.Option>,
+    image: ?Model.Image,
+  }) {
+    return !deepEqual(props, this.props);
   }
 
   chose(event: SyntheticEvent) {
@@ -33,7 +44,7 @@ export default class Grid extends React.Component {
           flexGrow: 0.5,
           display: 'flex', alignItems: 'center', justifyContent: 'space-between',
           fontSize: '1.5em',
-          borderWidth: '0.1em 0em 0.1em 0em', borderStyle: 'solid',
+          borderWidth: '0.1em 0em 0.1em 0em', borderStyle: 'solid', color: Constants.COLOR_SECOND,
         }}>{
           this.props.options.map((option : Model.Option) => {
             if (!this.props.image) {

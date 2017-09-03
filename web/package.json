@@ -3,6 +3,10 @@
   "version": "0.0.1",
   "dependencies": {
     "clone": "^2.1.1",
+    "deep-equal": "^1.0.1",
+    "gl-react": "^3.13.0",
+    "gl-react-dom": "^3.13.0",
+    "gl-react-image": "^3.1.0",
     "react": "^15.6.1",
     "react-dom": "^15.6.1",
     "react-icons": "^2.2.5",

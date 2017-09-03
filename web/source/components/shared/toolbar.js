@@ -1,6 +1,7 @@
 // @flow
 
 import React from 'react';
+import deepEqual from 'deep-equal';
 
 import * as Model from './../../model';
 import Trigger from './../../actions/trigger';
@@ -15,6 +16,17 @@ export default class Toolbar extends React.Component {
     hints: Array<Model.Hint>,
     timestamp: number,
     disabled: boolean,
+  }
+
+  shouldComponentUpdate(props: {
+    trigger: Trigger,
+    hints: Array<Model.Hint>,
+    timestamp: number,
+    disabled: boolean,
+  }) {
+    let timestamp: number = Math.floor(new Date().getTime() / 1000);
+    return !deepEqual(props, this.props)
+      || timestamp != this.props.timestamp;
   }
 
   use(event: SyntheticEvent) {
