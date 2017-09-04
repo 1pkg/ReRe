@@ -1,16 +1,16 @@
 // @flow
 
 import * as Redux from 'redux';
-import clone from 'clone';
+import Clone from 'clone';
 
 import * as Model from './../model';
 import * as Actions from './types';
 
-import tick from './tick';
-import splash from './splash';
-import fetchTask from './fetch-task';
-import optionChose from './option-chose';
-import hintUse from './hint-use';
+import Tick from './tick';
+import Splash from './splash';
+import FetchTask from './fetch-task';
+import OptionChose from './option-chose';
+import HintUse from './hint-use';
 
 export default class Trigger {
   actions: Map<string, (trigger: Trigger, params: Array<any>) => void>;
@@ -20,15 +20,15 @@ export default class Trigger {
     this.store = store;
 
     this.actions = new Map();
-    this.actions.set(Actions.ACTION_TICK, tick);
-    this.actions.set(Actions.ACTION_SPLASH, splash);
-    this.actions.set(Actions.ACTION_FETCH_TASK, fetchTask);
-    this.actions.set(Actions.ACTION_OPTION_CHOSE, optionChose);
-    this.actions.set(Actions.ACTION_HINT_USE, hintUse);
+    this.actions.set(Actions.ACTION_TICK, Tick);
+    this.actions.set(Actions.ACTION_SPLASH, Splash);
+    this.actions.set(Actions.ACTION_FETCH_TASK, FetchTask);
+    this.actions.set(Actions.ACTION_OPTION_CHOSE, OptionChose);
+    this.actions.set(Actions.ACTION_HINT_USE, HintUse);
   }
 
   state(): Model.State {
-    return clone(this.store.getState());
+    return Clone(this.store.getState());
   }
 
   call(name: string, ...params: Array<any>) {

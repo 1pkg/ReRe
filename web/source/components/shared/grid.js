@@ -1,7 +1,7 @@
 // @flow
 
 import React from 'react';
-import deepEqual from 'deep-equal';
+import DeepEqual from 'deep-equal';
 
 import * as Model from './../../model';
 import * as Constants from './../../constants';
@@ -24,7 +24,7 @@ export default class Grid extends React.Component {
     options: Array<Model.Option>,
     image: ?Model.Image,
   }) {
-    return !deepEqual(props, this.props);
+    return !DeepEqual(props, this.props);
   }
 
   chose(event: SyntheticEvent) {

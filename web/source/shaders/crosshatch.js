@@ -5,7 +5,7 @@ import * as GlReact from 'gl-react';
 
 import Shaders from './shaders';
 
-export default class Sepia extends React.Component {
+export default class Crosshatch extends React.Component {
   props: {
     size: [number, number],
     children: GlReact.Node,
@@ -14,7 +14,7 @@ export default class Sepia extends React.Component {
   render() {
     return (
       <GlReact.Node
-        shader={Shaders.sepia}
+        shader={Shaders.crosshatch}
         uniforms={{
           texture: this.props.children,
         }}

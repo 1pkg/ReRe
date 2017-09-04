@@ -33,6 +33,7 @@ const TASKS: Array<Model.Task> = [
       sourceLink: 'http://i2.cdn.cnn.com/cnnnext/dam/assets/161107120239-01-trump-parry-super-169.jpg',
       sourceAlt: 'D. Trump',
       optionId: 2,
+      effects: [],
     }
   },
   {
@@ -64,6 +65,7 @@ const TASKS: Array<Model.Task> = [
       sourceLink: 'http://s1.storage.akamai.coub.com/get/b34/p/coub/simple/cw_timeline_pic/25afdb36b40/490f1029e9198495a1b88/big_1442331374_image.jpg',
       sourceAlt: 'S. Simonov',
       optionId: 1,
+      effects: [],
     }
   },
   {
@@ -95,6 +97,7 @@ const TASKS: Array<Model.Task> = [
       sourceLink: 'http://2.bp.blogspot.com/_Jw7QCayJTEA/TTaNKk8jYMI/AAAAAAAAC1w/xyddcGM6nCc/s1600/raccoon.jpg',
       sourceAlt: 'Racoon',
       optionId: 5,
+      effects: [],
     }
   },
 ];
@@ -111,6 +114,10 @@ export default (trigger: Trigger) => {
     let state: Model.State = trigger.state();
     let timestamp: number = Math.floor(new Date().getTime() / 1000);
     state.task = TASKS[index++];
+    state.task.image.effects = [
+      Constants.EFFECT_LIST[Math.floor(Math.random() * Constants.EFFECT_LIST.length)],
+      Constants.EFFECT_LIST[Math.floor(Math.random() * Constants.EFFECT_LIST.length)],
+    ];
     state.act.timestamp = timestamp;
     state.act.status = Constants.ACT_STATUS_PROCESS;
     trigger.push(Actions.ACTION_FETCH_TASK, state);

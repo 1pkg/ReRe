@@ -1,7 +1,7 @@
 // @flow
 
 import React from 'react';
-import deepEqual from 'deep-equal';
+import DeepEqual from 'deep-equal';
 
 import * as Model from './../../model';
 import Trigger from './../../actions/trigger';
@@ -25,7 +25,7 @@ export default class Toolbar extends React.Component {
     disabled: boolean,
   }) {
     let timestamp: number = Math.floor(new Date().getTime() / 1000);
-    return !deepEqual(props, this.props)
+    return !DeepEqual(props, this.props)
       || timestamp != this.props.timestamp;
   }
 

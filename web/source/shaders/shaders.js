@@ -130,5 +130,77 @@ export default GlReact.Shaders.create({
         gl_FragColor = bloomEffect(coords);
       }
     `
+  },
+  crosshatch: {
+    frag: `
+      precision highp float;
+      varying vec2 uv;
+      uniform sampler2D texture;
+
+      float luma(vec3 color) {
+        return dot(color, vec3(0.299, 0.587, 0.114));
+      }
+
+      vec3 crosshatch(vec3 tColor, float t1, float t2, float t3, float t4) {
+        float lum = luma(tColor);
+        vec3 color = vec3(1.0);
+        if (lum < t1) {
+            if (mod(gl_FragCoord.x + gl_FragCoord.y, 10.0) == 0.0) {
+                color = vec3(0.0);
+            }
+        }
+        if (lum < t2) {
+            if (mod(gl_FragCoord.x - gl_FragCoord.y, 10.0) == 0.0) {
+                color = vec3(0.0);
+            }
+        }
+        if (lum < t3) {
+            if (mod(gl_FragCoord.x + gl_FragCoord.y - 5.0, 10.0) == 0.0) {
+                color = vec3(0.0);
+            }
+        }
+        if (lum < t4) {
+            if (mod(gl_FragCoord.x - gl_FragCoord.y - 5.0, 10.0) == 0.0) {
+                color = vec3(0.0);
+            }
+        }
+        return color;
+      }
+
+      void main() {
+        vec4 color = texture2D(texture, uv);
+        gl_FragColor.rgb = crosshatch(color.rgb, 1.0, 0.75, 0.5, 0.3);
+        gl_FragColor.a = color.a;
+      }
+    `
+  },
+  wave: {
+    frag: `
+      precision highp float;
+      varying vec2 uv;
+      uniform sampler2D texture;
+      uniform vec2 size;
+      uniform int orientation;
+
+      vec2 waveHorizontal(vec2 coord) {
+        float pi = 3.14159;
+        float w = size.x / 200.0 * pi;
+        float y = sin(w * coord.x) * 0.33;
+        return vec2(coord.x, coord.y + y);
+      }
+
+      vec2 waveVertical(vec2 coord) {
+        float pi = 3.14159;
+        float w = size.y / 200.0 * pi;
+        float x = cos(w * coord.y) * 0.33;
+        return vec2(coord.x + x, coord.y);
+      }
+
+      void main() {
+        vec2 coord = orientation == 1 ? waveHorizontal(uv) : waveVertical(uv);
+        vec4 color = texture2D(texture, coord);
+        gl_FragColor = color;
+      }
+    `
   }
 });

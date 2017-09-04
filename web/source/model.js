@@ -13,6 +13,7 @@ export type Image = {
     sourceLink: string,
     sourceAlt: string,
     optionId: number,
+    effects: Array<string>,
 };
 
 export type Task = {
