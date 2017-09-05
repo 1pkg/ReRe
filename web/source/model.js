@@ -12,13 +12,14 @@ export type Image = {
     id: number,
     sourceLink: string,
     sourceAlt: string,
-    optionId: number,
     effects: Array<string>,
 };
 
 export type Task = {
+  id: number,
   options: Array<Option>,
   image: Image,
+  correctOption: number,
 };
 
 export type Hint = {

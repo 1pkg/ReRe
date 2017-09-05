@@ -25,10 +25,14 @@ export const HINT_LIST: Array<string>               =    [
 
 export const EFFECT_NAME_BLEACHED: string           =    'bleached';
 export const EFFECT_NAME_BLOOM: string              =    'bloom';
-export const EFFECT_NAME_CROSSHATCH: string         =    'crosshatch';
 export const EFFECT_NAME_BLUR_HORIZONTAL: string    =    'blur-horizontal';
 export const EFFECT_NAME_BLUR_VERTICAL: string      =    'blur-vertical';
+export const EFFECT_NAME_BUMP_INNER: string         =    'bump-inner';
+export const EFFECT_NAME_BUMP_OUTTER: string        =    'bump-outter';
+export const EFFECT_NAME_CROSSHATCH: string         =    'crosshatch';
+export const EFFECT_NAME_FUNNEL: string             =    'funnel';
 export const EFFECT_NAME_PIXELATION: string         =    'pixelation';
+export const EFFECT_NAME_RIPPLE: string             =    'ripple';
 export const EFFECT_NAME_SEPIA: string              =    'sepia';
 export const EFFECT_NAME_WAVE_HORIZONTAL: string    =    'wave-horizontal';
 export const EFFECT_NAME_WAVE_VERTICAL: string      =    'wave-vertical';
@@ -36,10 +40,14 @@ export const EFFECT_NAME_WAVE_VERTICAL: string      =    'wave-vertical';
 export const EFFECT_LIST: Array<string>               =    [
   EFFECT_NAME_BLEACHED,
   EFFECT_NAME_BLOOM,
-  EFFECT_NAME_CROSSHATCH,
   EFFECT_NAME_BLUR_HORIZONTAL,
   EFFECT_NAME_BLUR_VERTICAL,
+  EFFECT_NAME_BUMP_INNER,
+  EFFECT_NAME_BUMP_OUTTER,
+  EFFECT_NAME_CROSSHATCH,
+  EFFECT_NAME_FUNNEL,
   EFFECT_NAME_PIXELATION,
+  EFFECT_NAME_RIPPLE,
   EFFECT_NAME_SEPIA,
   EFFECT_NAME_WAVE_HORIZONTAL,
   EFFECT_NAME_WAVE_VERTICAL,

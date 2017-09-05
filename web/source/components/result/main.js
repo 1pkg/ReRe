@@ -29,7 +29,7 @@ export default class Main extends React.Component {
         <Header score={this.props.score}/>
         <Image image={this.props.task.image} effected={false}/>
         <ToolBar trigger={this.props.trigger} hints={this.props.hints} timestamp={NaN} disabled={true}/>
-        <Grid trigger={this.props.trigger} options={this.props.task.options} image={this.props.task.image}/>
+        <Grid trigger={this.props.trigger} options={this.props.task.options} correctOption={this.props.task.correctOption}/>
         <Next trigger={this.props.trigger}/>
       </div>
     );

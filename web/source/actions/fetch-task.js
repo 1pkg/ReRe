@@ -5,6 +5,7 @@ import * as Actions from './types';
 
 const TASKS: Array<Model.Task> = [
   {
+    id: 0,
     options: [
       {
         id: 0,
@@ -32,11 +33,12 @@ const TASKS: Array<Model.Task> = [
       id: 0,
       sourceLink: 'http://i2.cdn.cnn.com/cnnnext/dam/assets/161107120239-01-trump-parry-super-169.jpg',
       sourceAlt: 'D. Trump',
-      optionId: 2,
       effects: [],
-    }
+    },
+    correctOption: 2,
   },
   {
+    id: 1,
     options: [
       {
         id: 1,
@@ -64,11 +66,12 @@ const TASKS: Array<Model.Task> = [
       id: 1,
       sourceLink: 'http://s1.storage.akamai.coub.com/get/b34/p/coub/simple/cw_timeline_pic/25afdb36b40/490f1029e9198495a1b88/big_1442331374_image.jpg',
       sourceAlt: 'S. Simonov',
-      optionId: 1,
       effects: [],
-    }
+    },
+    correctOption: 0,
   },
   {
+    id: 2,
     options: [
       {
         id: 0,
@@ -96,9 +99,9 @@ const TASKS: Array<Model.Task> = [
       id: 2,
       sourceLink: 'http://2.bp.blogspot.com/_Jw7QCayJTEA/TTaNKk8jYMI/AAAAAAAAC1w/xyddcGM6nCc/s1600/raccoon.jpg',
       sourceAlt: 'Racoon',
-      optionId: 5,
       effects: [],
-    }
+    },
+    correctOption: 1,
   },
 ];
 

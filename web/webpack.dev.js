@@ -1,4 +1,5 @@
 const Path = require('path');
+const Webpack = require('webpack');
 const FlowPlugin = require('flow-babel-webpack-plugin');
 const HtmlPlugin = require('html-webpack-plugin');
 
@@ -18,25 +19,30 @@ module.exports = {
 		contentBase: './build',
 	},
 
+	module: {
+		rules: [
+		 {
+			 test: /\.jsx?$/,
+			 exclude: /(node_modules)/,
+			 use: {
+				 loader: 'babel-loader',
+				 options: {
+					 presets: ['env', 'flow', 'react',],
+					 plugins: ['transform-class-properties',]
+				 },
+			 },
+		 },
+	 ],
+	},
+
 	plugins: [
+		new Webpack.EnvironmentPlugin({
+			NODE_ENV: 'production',
+			DEBUG: false,
+		}),
 		new FlowPlugin(),
 		new HtmlPlugin({
 			template: 'templates/main.html',
 		}),
 	],
-
-	module: {
-		loaders: [
-			{
-				test: /\.jsx?$/,
-				exclude: /node_modules/,
-				loader: 'babel-loader',
-				query: { presets: ['es2015', 'react',] },
-			},
-			{
-				test: /\.(jpe?g|gif|png|svg|woff|ttf|wav|mp3)$/,
-				loader: 'file-loader',
-			},
-   ],
-	},
 };

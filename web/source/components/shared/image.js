@@ -12,8 +12,12 @@ import Bleached from './../../shaders/bleached';
 import Bloom from './../../shaders/bloom';
 import BlurHorizontal from './../../shaders/blur-horizontal';
 import BlurVertical from './../../shaders/blur-vertical';
+import BumpInner from './../../shaders/bump-inner';
+import BumpOutter from './../../shaders/bump-outter';
 import Crosshatch from './../../shaders/crosshatch';
+import Funnel from './../../shaders/funnel';
 import Pixelation from './../../shaders/pixelation';
+import Ripple from './../../shaders/ripple';
 import Sepia from './../../shaders/sepia';
 import WaveHorizontal from './../../shaders/wave-horizontal';
 import WaveVertical from './../../shaders/wave-vertical';
@@ -23,8 +27,12 @@ const Effects = {
   [Constants.EFFECT_NAME_BLOOM]: Bloom,
   [Constants.EFFECT_NAME_BLUR_HORIZONTAL]: BlurHorizontal,
   [Constants.EFFECT_NAME_BLUR_VERTICAL]: BlurVertical,
+  [Constants.EFFECT_NAME_BUMP_INNER]: BumpInner,
+  [Constants.EFFECT_NAME_BUMP_OUTTER]: BumpOutter,
   [Constants.EFFECT_NAME_CROSSHATCH]: Crosshatch,
+  [Constants.EFFECT_NAME_FUNNEL]: Funnel,
   [Constants.EFFECT_NAME_PIXELATION]: Pixelation,
+  [Constants.EFFECT_NAME_RIPPLE]: Ripple,
   [Constants.EFFECT_NAME_SEPIA]: Sepia,
   [Constants.EFFECT_NAME_WAVE_HORIZONTAL]: WaveHorizontal,
   [Constants.EFFECT_NAME_WAVE_VERTICAL]: WaveVertical,
@@ -74,7 +82,7 @@ export default class Image extends React.Component {
       width: number,
       height: number,
     }) => {
-      let element: HTMLElement|null = document.getElementById('image-holder');
+      let element: HTMLElement|null = document.querySelectorAll('[data-alias="image-holder"]')[0];
       if (element) {
         return {
           width: element.getBoundingClientRect().width,
@@ -106,7 +114,7 @@ export default class Image extends React.Component {
       if (!(effect in Effects)) {
         return;
       }
-      
+
       let Effect = Effects[effect];
       if (!View) {
         View = (
@@ -128,7 +136,7 @@ export default class Image extends React.Component {
         flexGrow: 1,
         display: 'flex', alignItems: 'center', justifyContent: 'center',
         overflow: 'hidden', maxWidth: '100vw',
-      }} id="image-holder">
+      }} data-alias="image-holder">
         <GlReactDom.Surface width={this.state.width} height={this.state.height} onLoad={this.fit.bind(this)}>{
           View
         }</GlReactDom.Surface>

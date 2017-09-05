@@ -3,9 +3,9 @@ import * as Constants from './../constants';
 import Trigger from './trigger';
 import * as Actions from './types';
 
-export default (trigger: Trigger, optionId: number) => {
+export default (trigger: Trigger, option: number) => {
   let state: Model.State = trigger.state();
-  if (state.task.image.optionId == optionId) {
+  if (state.task.correctOption == option) {
     state.act.score += 1;
     trigger.call(Actions.ACTION_FETCH_TASK);
   } else {

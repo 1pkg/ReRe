@@ -19,7 +19,12 @@ type Action = {
 };
 
 let trigger: Trigger;
-let compose: Redux.compose = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || Redux.compose;
+let compose: Redux.compose;
+if (process.env.NODE_ENV !== 'production' && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__) {
+    compose = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__;
+} else {
+    compose = Redux.compose;
+}
 let store: Redux.Store = Redux.createStore((state: ?Model.State = null, action: Action): ?Model.State => {
   if (action.data) {
     trigger.call(action.type, ...Object.values(action.data));
