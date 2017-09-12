@@ -1,29 +1,24 @@
 // @flow
 
 export type Option = {
-    id: number,
     name: string,
     category: string,
-    links: Array<string>,
-    hintMessages: Array<string>,
+    references: Array<string>,
 };
 
-export type Image = {
-    id: number,
-    sourceLink: string,
-    sourceAlt: string,
+export type Subject = {
+    sourcelink: string,
+    sourcealt: string,
     effects: Array<string>,
 };
 
 export type Task = {
-  id: number,
   options: Array<Option>,
-  image: Image,
+  subject: Subject,
   correctOption: number,
 };
 
 export type Hint = {
-    id: number,
     name: string,
 };
 

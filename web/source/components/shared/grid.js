@@ -48,16 +48,16 @@ export default class Grid extends React.Component {
         }}>{
           this.props.options.map((option: Model.Option, index: number) => {
             if (this.props.correctOption == -1) {
-              return <Option key={option.id} chose={this.chose.bind(this)} index={index}>{
+              return <Option key={index} chose={this.chose.bind(this)} index={index}>{
                 option.name
               }</Option>;
             } else {
               if (index == this.props.correctOption) {
-                return <OptionCorrect key={option.id}>{
+                return <OptionCorrect key={index}>{
                   option.name
                 }</OptionCorrect>;
               } else {
-                return <OptionFail key={option.id}>{
+                return <OptionFail key={index}>{
                   option.name
                 }</OptionFail>;
               }

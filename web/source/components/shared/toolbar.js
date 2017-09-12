@@ -32,7 +32,7 @@ export default class Toolbar extends React.Component {
   use(event: SyntheticEvent) {
     let target: EventTarget = event.currentTarget;
     if (target instanceof HTMLElement) {
-      let chosen: string = target.dataset.id;
+      let chosen: string = target.dataset.index;
       this.props.trigger.call(Actions.ACTION_HINT_USE, Number.parseInt(chosen));
     }
   }
@@ -45,8 +45,10 @@ export default class Toolbar extends React.Component {
       }}>
         <Timer timestamp={this.props.timestamp}/>
         <div>{
-          this.props.hints.map((hint : Model.Hint) => {
-            return <Hint key={hint.id} id={hint.id} name={hint.name} use={this.use.bind(this)} disabled={this.props.disabled}/>;
+          this.props.hints.map((hint : Model.Hint, index: number) => {
+            if (hint) {
+              return <Hint key={index} index={index} name={hint.name} use={this.use.bind(this)} disabled={this.props.disabled}/>;
+            }
           })
         }</div>
       </div>

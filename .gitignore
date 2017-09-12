@@ -1,3 +1,4 @@
 /web/node_modules/
 /web/build/
 /server/env/
+/server/__pycache__/

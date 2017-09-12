@@ -27,7 +27,7 @@ export default class Main extends React.Component {
         height: '100vh',
       }}>
         <Header score={this.props.score}/>
-        <Image image={this.props.task.image} effected={true}/>
+        <Image subject={this.props.task.subject} effected={true}/>
         <ToolBar trigger={this.props.trigger} hints={this.props.hints} timestamp={this.props.timestamp} disabled={false}/>
         <Grid trigger={this.props.trigger} options={this.props.task.options} correctOption={-1}/>
       </div>

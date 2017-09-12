@@ -3,17 +3,17 @@ import * as Constants from './../constants';
 import Trigger from './trigger';
 import * as Actions from './types';
 
-export default (trigger: Trigger, hintId: number) => {
-  if (!(hintId in Constants.HINT_LIST)) {
+export default (trigger: Trigger, hintIndex: number) => {
+  let state: Model.State = trigger.state();
+  if (!(hintIndex in Constants.HINT_LIST) && state.hints[hintIndex]) {
     return;
   }
 
-  let state: Model.State = trigger.state();
-  state.hints = state.hints.filter((hint: Model.Hint) => hint.id != hintId);
-  let hint: string = Constants.HINT_LIST[hintId];
+  delete state.hints[hintIndex];
+  let hint: string = Constants.HINT_LIST[hintIndex];
   switch (hint) {
     case Constants.HINT_NAME_REDO:
-      state.task.image.effects = [
+      state.task.subject.effects = [
         Constants.EFFECT_LIST[Math.floor(Math.random() * Constants.EFFECT_LIST.length)],
         Constants.EFFECT_LIST[Math.floor(Math.random() * Constants.EFFECT_LIST.length)],
       ];
@@ -24,7 +24,7 @@ export default (trigger: Trigger, hintId: number) => {
       break;
 
       case Constants.HINT_NAME_REDUCE:
-        state.task.image.effects = [state.task.image.effects[0],];
+        state.task.subject.effects = [state.task.subject.effects[0],];
         break;
 
     case Constants.HINT_NAME_SKIP:

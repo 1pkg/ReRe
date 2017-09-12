@@ -24,7 +24,7 @@ const Icons = {
 
 export default class Hint extends React.Component {
   props: {
-    id: number,
+    index: number,
     name: string,
     disabled: boolean,
     use: (event: SyntheticEvent) => void,
@@ -49,7 +49,7 @@ export default class Hint extends React.Component {
         onMouseOver={Effects.hover}
         onMouseOut={Effects.unhover}
         onClick={this.props.use}
-        data-id={this.props.id}
+        data-index={this.props.index}
       >
         <HintIcon/>
       </span>

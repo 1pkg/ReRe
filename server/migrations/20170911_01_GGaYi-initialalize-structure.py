@@ -14,7 +14,7 @@ group([
             id SERIAL NOT NULL PRIMARY KEY,
             name VARCHAR(256) NOT NULL UNIQUE,
             description TEXT DEFAULT NULL,
-            parent_category_id INT NOT NULL REFERENCES category (id) ON DELETE CASCADE,
+            parent_category_id INT DEFAULT NULL REFERENCES category (id) ON DELETE CASCADE,
             time_stamp TIMESTAMP NOT NULL DEFAULT NOW(),
             CHECK (parent_category_id != id)
           );
@@ -210,6 +210,7 @@ group([
             id SERIAL NOT NULL PRIMARY KEY,
             order_number SMALLINT NOT NULL,
             is_correct BOOL NOT NULL,
+            liked_status BOOL NOT NULL DEFAULT FALSE,
             session_id INTEGER NOT NULL REFERENCES session (id) ON DELETE CASCADE,
             chosed_option_id INTEGER NOT NULL REFERENCES option (id) ON DELETE CASCADE,
             time_stamp TIMESTAMP NOT NULL DEFAULT NOW()
@@ -223,10 +224,10 @@ group([
     step(
         """
           CREATE TABLE IF NOT EXISTS social_share (
-            answer_id INTEGER NOT NULL PRIMARY KEY REFERENCES answer (id) ON DELETE CASCADE,
-            liked_status BOOL NOT NULL DEFAULT FALSE,
+            id SERIAL NOT NULL PRIMARY KEY,
             facebook_link VARCHAR(256) DEFAULT NULL,
-            twitter_link VARCHAR(256) DEFAULT NULL
+            twitter_link VARCHAR(256) DEFAULT NULL,
+            answer_id INTEGER NOT NULL REFERENCES answer (id) ON DELETE CASCADE
           );
         """,
         """
