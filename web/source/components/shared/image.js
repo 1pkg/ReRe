@@ -12,8 +12,6 @@ import Bleached from './../../shaders/bleached';
 import Bloom from './../../shaders/bloom';
 import BlurHorizontal from './../../shaders/blur-horizontal';
 import BlurVertical from './../../shaders/blur-vertical';
-import BumpInner from './../../shaders/bump-inner';
-import BumpOutter from './../../shaders/bump-outter';
 import Crosshatch from './../../shaders/crosshatch';
 import Funnel from './../../shaders/funnel';
 import Pixelation from './../../shaders/pixelation';
@@ -27,8 +25,6 @@ const Effects = {
   [Constants.EFFECT_NAME_BLOOM]: Bloom,
   [Constants.EFFECT_NAME_BLUR_HORIZONTAL]: BlurHorizontal,
   [Constants.EFFECT_NAME_BLUR_VERTICAL]: BlurVertical,
-  [Constants.EFFECT_NAME_BUMP_INNER]: BumpInner,
-  [Constants.EFFECT_NAME_BUMP_OUTTER]: BumpOutter,
   [Constants.EFFECT_NAME_CROSSHATCH]: Crosshatch,
   [Constants.EFFECT_NAME_FUNNEL]: Funnel,
   [Constants.EFFECT_NAME_PIXELATION]: Pixelation,

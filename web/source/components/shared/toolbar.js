@@ -13,14 +13,14 @@ import Timer from './timer';
 export default class Toolbar extends React.Component {
   props: {
     trigger: Trigger,
-    hints: Array<Model.Hint>,
+    hints: Array<string>,
     timestamp: number,
     disabled: boolean,
   }
 
   shouldComponentUpdate(props: {
     trigger: Trigger,
-    hints: Array<Model.Hint>,
+    hints: Array<string>,
     timestamp: number,
     disabled: boolean,
   }) {
@@ -45,9 +45,9 @@ export default class Toolbar extends React.Component {
       }}>
         <Timer timestamp={this.props.timestamp}/>
         <div>{
-          this.props.hints.map((hint : Model.Hint, index: number) => {
+          this.props.hints.map((hint: string, index: number) => {
             if (hint) {
-              return <Hint key={index} index={index} name={hint.name} use={this.use.bind(this)} disabled={this.props.disabled}/>;
+              return <Hint key={index} index={index} name={hint} use={this.use.bind(this)} disabled={this.props.disabled}/>;
             }
           })
         }</div>

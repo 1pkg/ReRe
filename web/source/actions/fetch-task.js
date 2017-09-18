@@ -8,7 +8,7 @@ import * as Actions from './types';
 let interval: number = 0;
 export default (trigger: Trigger) => {
   clearInterval(interval);
-  Axios.get('http://localhost:5000/')
+  Axios.get('http://localhost:5000/fetch-task')
   .then((response: any) => {
     let state: Model.State = trigger.state();
     let timestamp: number = Math.floor(new Date().getTime() / 1000);

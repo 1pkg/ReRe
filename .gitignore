@@ -1,4 +1,6 @@
 /web/node_modules/
 /web/build/
+/web/npm-debug.log
+
 /server/env/
-/server/__pycache__/
+/server/**/__pycache__/

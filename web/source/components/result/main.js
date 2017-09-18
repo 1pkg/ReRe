@@ -16,7 +16,7 @@ export default class Main extends React.Component {
   props: {
     trigger: Trigger,
     task : Model.Task,
-    hints: Array<Model.Hint>,
+    hints: Array<string>,
     score: number,
   }
 

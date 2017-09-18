@@ -78,33 +78,6 @@ export default GlReact.Shaders.create({
       }
     `
   },
-  bump: {
-    frag: `
-      precision highp float;
-      varying vec2 uv;
-      uniform sampler2D texture;
-      uniform vec2 size;
-      uniform int orientation;
-
-      void main()
-      {
-        vec2 position = -1.0 + 2.0 * gl_FragCoord.xy / size.xy;
-        float r = dot(position, position);
-        if (r < 0.5) {
-          float koef = 1.3 - r * 0.6;
-          vec2 coord;
-          if (orientation == 1) {
-            coord = gl_FragCoord.xy / size.xy / koef;
-          } else {
-            coord = gl_FragCoord.xy / size.xy * koef;
-          }
-          gl_FragColor = vec4(texture2D(texture, coord).xyz, 1.0);
-        } else {
-          gl_FragColor = texture2D(texture, uv);
-        }
-      }
-    `
-  },
   crosshatch: {
     frag: `
       precision highp float;

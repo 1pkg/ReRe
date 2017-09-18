@@ -37,8 +37,8 @@
     "webpack-obfuscator": "^0.11.0"
   },
   "scripts": {
-    "start": "webpack-dev-server --config webpack.dev.js --hot",
-    "build-dev": "webpack --config webpack.dev.js --progress --profile --colors",
+    "start": "webpack-dev-server --config webpack.development.js --hot",
+    "build-development": "webpack --config webpack.development.js --progress --profile --colors",
     "build-production": "webpack -p --config webpack.production.js --progress --profile --colors"
   }
 }

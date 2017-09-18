@@ -18,10 +18,6 @@ export type Task = {
   correctOption: number,
 };
 
-export type Hint = {
-    name: string,
-};
-
 export type Act = {
   status: string,
   timestamp: number,
@@ -30,6 +26,6 @@ export type Act = {
 
 export type State = {
   task: Task,
-  hints: Array<Hint>,
+  hints: Array<string>,
   act: Act,
 };
