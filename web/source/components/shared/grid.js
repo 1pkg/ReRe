@@ -16,13 +16,13 @@ export default class Grid extends React.Component {
   props: {
     trigger: Trigger,
     options: Array<Model.Option>,
-    correctOption: ?number,
+    correctoption: ?number,
   }
 
   shouldComponentUpdate(props: {
     trigger: Trigger,
     options: Array<Model.Option>,
-    correctOption: ?number,
+    correctoption: ?number,
   }) {
     return !DeepEqual(props, this.props);
   }
@@ -47,12 +47,12 @@ export default class Grid extends React.Component {
           borderWidth: '0.1em 0em 0.1em 0em', borderStyle: 'solid', color: Constants.COLOR_SECOND,
         }}>{
           this.props.options.map((option: Model.Option, index: number) => {
-            if (this.props.correctOption == -1) {
+            if (this.props.correctoption == -1) {
               return <Option key={index} chose={this.chose.bind(this)} index={index}>{
                 option.name
               }</Option>;
             } else {
-              if (index == this.props.correctOption) {
+              if (index == this.props.correctoption) {
                 return <OptionCorrect key={index}>{
                   option.name
                 }</OptionCorrect>;

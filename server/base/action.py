@@ -1,9 +1,9 @@
 class Action:
-    def __call__(self, *args, **kwargs):
-        return self.__sanitalize(self._process(args, kwargs))
+    def __call__(self, params):
+        return self.__sanitalize(self._process(params))
 
-    def _process(self, *args, **kwargs):
-        pass
+    def _process(self, params):
+        return NotImplemented
 
     def __sanitalize(self, data):
         if isinstance(data, dict):

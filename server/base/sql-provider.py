@@ -1,6 +1,6 @@
 import psycopg2.extras
 
-from provider import *
+from .provider import *
 
 class SqlProvider(Provider):
     def __init__(self, connection):

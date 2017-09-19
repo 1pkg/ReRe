@@ -3,13 +3,14 @@ import random
 import base
 
 class FetchTask(base.Action):
-    def __init__(self, task, option, reference, subject):
+    def __init__(self, act, task, option, reference, subject):
+        self.__act = act
         self.__task = task
         self.__option = option
         self.__reference = reference
         self.__subject = subject
 
-    def _process(self, *args, **kwargs):
+    def _process(self, params):
         return self.__fetchRandomTask()
 
     def __fetchRandomTask(self):
@@ -22,6 +23,6 @@ class FetchTask(base.Action):
         index = random.randint(0, len(options) - 1)
         subject = self.__subject.fetchByOptionId(options[index]['id'])
         task['subject'] = subject[0]
-        task['correctOption'] = index
-        self.__task.push(subject[0]['id'], [option['id'] for option in options])
+        id = self.__task.push(subject[0]['id'], [option['id'] for option in options])
+        self.__act.fetch(id, index)
         return task
