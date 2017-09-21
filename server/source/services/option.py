@@ -1,6 +1,6 @@
 import base
 
-class Option(base.SqlProvider):
+class Option(base.DbService):
     def __init__(self, connection):
         super().__init__(connection)
 
@@ -8,7 +8,7 @@ class Option(base.SqlProvider):
         return self._fetch("""
             SELECT option.id, option.name, category.name as category FROM option
             INNER JOIN category ON option.category_id = category.id
-            ORDER BY RANDOM() LIMIT  %(limit)s
+            ORDER BY RANDOM() LIMIT %(limit)s
         """, {'limit': limit,})
 
     def fetchById(self, id):
@@ -17,4 +17,4 @@ class Option(base.SqlProvider):
             INNER JOIN category ON option.category_id = category.id
             WHERE option.id = %(id)s
             LIMIT 1
-        """, {'id': id,})
+        """, {'id': id,})[0]

@@ -2,7 +2,7 @@ import psycopg2
 import redis
 
 import base
-import providers
+import services
 import actions
 
 class Injector:
@@ -24,24 +24,34 @@ class Injector:
                 port=configs['REDIS_CONNECTTION']['port'],
                 db=configs['REDIS_CONNECTTION']['db']
             )
-            self.__providers['request'] = base.RequestProvider()
-            self.__providers['act'] = providers.Act(redisConnection, self.__providers['request'])
-            self.__providers['task'] = providers.Task(dbConnection)
-            self.__providers['option'] = providers.Option(dbConnection)
-            self.__providers['reference'] = providers.Reference(dbConnection)
-            self.__providers['subject'] = providers.Subject(dbConnection)
+            self.__providers['act'] = services.Act(redisConnection)
+            self.__providers['task'] = services.Task(dbConnection)
+            self.__providers['option'] = services.Option(dbConnection)
+            self.__providers['reference'] = services.Reference(dbConnection)
+            self.__providers['subject'] = services.Subject(dbConnection)
+            self.__providers['assist'] = services.Assist(dbConnection)
         else:
             pass
 
     def register(self, pool):
-        pool['fetch-task'] = actions.FetchTask(
+        pool['start'] = actions.Start(
+            self.__providers['act'],
+        )
+
+        pool['initialalize'] = actions.Initialize(
+            self.__providers['act'],
+            self.__providers['assist'],
+        )
+
+        pool['fetch'] = actions.Fetch(
             self.__providers['act'],
             self.__providers['task'],
             self.__providers['option'],
             self.__providers['reference'],
-            self.__providers['subject']
+            self.__providers['subject'],
         )
 
-        pool['option-chose'] = actions.OptionChose(
-            self.__providers['act']
+        pool['chose'] = actions.Chose(
+            self.__providers['act'],
+            self.__providers['task'],
         )

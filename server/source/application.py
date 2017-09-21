@@ -9,15 +9,25 @@ pool = {}
 injector = Injector(application.config)
 injector.register(pool)
 
-@application.route("/fetch-task", methods=["GET"])
-def f1():
+@application.route("/start", methods=["GET"])
+def start():
     global pool
-    return flask.jsonify(pool['fetch-task'](flask.request.args))
+    return flask.jsonify(pool['start'](flask.request))
 
-@application.route("/option-chose", methods=["GET"])
-def f2():
+@application.route("/initialalize", methods=["GET"])
+def initialalize():
     global pool
-    return flask.jsonify(pool['option-chose'](flask.request.args))
+    return flask.jsonify(pool['initialalize'](flask.request))
+
+@application.route("/fetch", methods=["GET"])
+def fetch():
+    global pool
+    return flask.jsonify(pool['fetch'](flask.request))
+
+@application.route("/chose", methods=["GET"])
+def chose():
+    global pool
+    return flask.jsonify(pool['chose'](flask.request))
 
 @application.after_request
 def cors(response):

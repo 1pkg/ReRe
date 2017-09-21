@@ -1,8 +1,8 @@
 import psycopg2.extras
 
-from .provider import *
+from .service import *
 
-class SqlProvider(Provider):
+class DbService(Service):
     def __init__(self, connection):
         self.__connection = connection
         self.__cursor = None
@@ -14,20 +14,16 @@ class SqlProvider(Provider):
         self.__close()
         return data
 
-    def _push(self, query, params, close = True):
+    def _execute(self, query, params, result = False, close = True):
         self.__open(psycopg2.extras.NamedTupleCursor)
+        self.__open()
         self.__cursor.execute(query, params)
-        data = self.__cursor.fetchone()
+        data = None
+        if (result):
+            data = self.__cursor.fetchone()[0]
         if (close):
             self.__close()
-        return data[0]
-
-    def _execute(self, query, params, close = True):
-        with self.__connection:
-            self.__open()
-            self.__cursor.execute(query, params)
-            if (close):
-                self.__close()
+        return data
 
     def _commit(self):
         self.__close()

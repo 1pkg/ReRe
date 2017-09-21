@@ -1,8 +1,8 @@
 import flask
 
-from .provider import *
+from .service import *
 
-class RedisProvider(Provider):
+class RedisService(Service):
     def __init__(self, connection):
         self.__connection = connection
 

@@ -1,8 +1,10 @@
 class Action:
-    def __call__(self, params):
-        return self.__sanitalize(self._process(params))
+    def __call__(self, request):
+        return self.__sanitalize(
+            self._process(request)
+        )
 
-    def _process(self, params):
+    def _process(self, request):
         return NotImplemented
 
     def __sanitalize(self, data):
