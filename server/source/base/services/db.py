@@ -1,8 +1,8 @@
 import psycopg2.extras
 
-from .service import *
+from ..service import *
 
-class DbService(Service):
+class Db(Service):
     def __init__(self, connection):
         self.__connection = connection
         self.__cursor = None
@@ -28,7 +28,10 @@ class DbService(Service):
     def _commit(self):
         self.__close()
 
-    def __open(self, factory = psycopg2.extras.RealDictCursor):
+    def __open(self, factory = None):
+        if (factory == None):
+            factory = psycopg2.extras.RealDictCursor
+
         if (self.__cursor == None):
             self.__cursor = self.__connection.cursor(cursor_factory = factory)
 

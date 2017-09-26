@@ -1,18 +1,14 @@
 import base
-import helpers
 
-class Initialize(base.Action):
-    def __init__(self, act, assist):
-        self.__act = act
-        self.__assist = assist
+class Initialize(base.actions.Identification):
+    def __init__(self, application, entry, assist):
+        self._assist = assist
+        super().__init__(application, entry)
 
     def _process(self, request):
-        identifier = helpers.Request.getParam(request, 'identifier')
-        if (identifier == None):
-            raise Exception()
-
-        assists = self.__assist.fetchByRandom(3)
-        self.__act.initialalize(identifier, assists)
+        identifier = self._application.request.getParam(request, 'identifier')
+        assists = self._assist.fetchByRandom(3)
+        self._entry.initialalize(identifier, assists)
 
         return {
             'identifier': identifier,

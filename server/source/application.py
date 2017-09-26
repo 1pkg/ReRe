@@ -1,37 +1,94 @@
+import functools
+import psycopg2
+import redis
 import flask
 
-from injector import *
+import base
+import components
+import services
+import actions
 
-application = flask.Flask(__name__)
-application.config.from_object('conf.Development')
+class Application:
+    def __init__(self, instance):
+        self.__components = {
+            'request': components.Request(),
+            'crypto': components.Crypto(),
+        }
 
-pool = {}
-injector = Injector(application.config)
-injector.register(pool)
+        self.__inject(instance.config);
+        self.__actions = {
+            'start': actions.Start(
+                self,
+                self.__services['entry'],
+            ),
+            'initialize': actions.Initialize(
+                self,
+                self.__services['entry'],
+                self.__services['assist'],
+            ),
+            'fetch': actions.Fetch(
+                self,
+                self.__services['entry'],
+                self.__services['subject'],
+                self.__services['option'],
+                self.__services['reference'],
+                self.__services['task'],
+            ),
+            'chose': actions.Chose(
+                self,
+                self.__services['entry'],
+                self.__services['task'],
+            ),
+        }
 
-@application.route("/start", methods=["GET"])
-def start():
-    global pool
-    return flask.jsonify(pool['start'](flask.request))
+        instance.before_request(functools.partial(Application.before, self))
+        instance.after_request(functools.partial(Application.after, self))
+        for alias, action in self.__actions.items():
+            bndaction = functools.partial(Application.action, self, action)
+            bndaction.__name__ = alias
+            instance.add_url_rule(rule=f"/{alias}", view_func=bndaction, methods=["GET"])
+        self.__instance = instance
 
-@application.route("/initialalize", methods=["GET"])
-def initialalize():
-    global pool
-    return flask.jsonify(pool['initialalize'](flask.request))
+    def __inject(self, configs):
+        dbConnection = psycopg2.connect(
+            'host={} dbname={} user={} password={}'.format(
+                configs['DB_CONNECTTION']['host'],
+                configs['DB_CONNECTTION']['dbname'],
+                configs['DB_CONNECTTION']['user'],
+                configs['DB_CONNECTTION']['password'],
+            )
+        )
+        redisConnection = redis.StrictRedis(
+            host=configs['REDIS_CONNECTTION']['host'],
+            port=configs['REDIS_CONNECTTION']['port'],
+            db=configs['REDIS_CONNECTTION']['db']
+        )
+        self.__services = {
+            'entry': services.Entry(redisConnection),
+            'subject': services.Subject(dbConnection),
+            'option': services.Option(dbConnection),
+            'reference': services.Reference(dbConnection),
+            'assist': services.Assist(dbConnection),
+            'task': services.Task(dbConnection),
+        }
 
-@application.route("/fetch", methods=["GET"])
-def fetch():
-    global pool
-    return flask.jsonify(pool['fetch'](flask.request))
+    def __getattr__(self, component):
+        if (component in self.__components):
+            return self.__components[component]
+        return None
 
-@application.route("/chose", methods=["GET"])
-def chose():
-    global pool
-    return flask.jsonify(pool['chose'](flask.request))
+    def before(self):
+        pass
 
-@application.after_request
-def cors(response):
-  response.headers.add('Access-Control-Allow-Origin', '*')
-  response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
-  response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS')
-  return response
+    def action(self, action):
+        return flask.jsonify(action(flask.request))
+
+    def after(self, response):
+        response.headers.add('Access-Control-Allow-Origin', '*')
+        response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
+        response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS')
+        return response
+
+instance = flask.Flask(__name__)
+instance.config.from_object('conf.Development')
+Application(instance)

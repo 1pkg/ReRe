@@ -1,6 +1,6 @@
 import base
 
-class Reference(base.DbService):
+class Reference(base.services.Db):
     def __init__(self, connection):
         super().__init__(connection)
 

@@ -1,22 +1,24 @@
 import base
-import helpers
 
-class Chose(base.Action):
-    def __init__(self, act, task):
-        self.__act = act
-        self.__task = task
+class Chose(base.actions.Identification):
+    def __init__(self, application, entry, task):
+        self._task = task
+        super().__init__(application, entry)
+
+    def _validate(self, request):
+        if (self._application.request.getParam(request, 'option') == None):
+            raise base.errors.Request('option reqired')
+
+        return super()._validate(request)
 
     def _process(self, request):
-        identifier = helpers.Request.getParam(request, 'identifier')
-        if (identifier == None):
-            raise Exception()
-
-        option = helpers.Request.getParam(request, 'option')
-        entry = self.__act.get(identifier)
-        task = self.__task.fetchByIdWithSubjectOption(entry['task'])
+        identifier = self._application.request.getParam(request, 'identifier')
+        entry = self._entry.get(identifier)
+        task = self._task.fetchByIdWithSubjectOption(entry['task'])
+        option = self._application.request.getParam(request, 'option')
         result = option == task['option']
-        self.__act.chose(identifier, result)
-        
+        self._entry.chose(identifier, result)
+
         return {
             'option': task['option'],
             'result': result,

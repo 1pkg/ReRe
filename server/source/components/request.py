@@ -1,43 +1,40 @@
 import socket
 
-class Request:
-    @staticmethod
-    def getParam(request, key, default = None):
+import base
+
+class Request(base.Component):
+    def getParam(self, request, key, default = None):
         if (key in request.args):
             return request.values[key]
         return default
 
-    @staticmethod
-    def getClientHost(request):
+    def getClientHost(self, request):
         return request.headers['HOST']
 
-    @staticmethod
-    def getClientUserAgent(request):
+    def getClientUserAgent(self, request):
         return request.headers['USER-AGENT']
 
-    @staticmethod
-    def getClientIp(request):
+    def getClientIp(self, request):
         if (request.headers.get('HTTP_X_FORWARDED_FOR')):
             for varip in request.headers.get('HTTP_X_FORWARDED_FOR').split(','):
-                if (Request.__checkUserIp(varip)):
+                if (self.__checkUserIp(varip)):
                     return varip
-        elif (Request.__checkUserIp(request.headers.get('HTTP_CLIENT_IP'))):
+        elif (self.__checkUserIp(request.headers.get('HTTP_CLIENT_IP'))):
             return request.headers.get('HTTP_CLIENT_IP');
-        elif (Request.__checkUserIp(request.headers.get('HTTP_X_FORWARDED'))):
+        elif (self.__checkUserIp(request.headers.get('HTTP_X_FORWARDED'))):
             return request.headers.get('HTTP_X_FORWARDED');
-        elif (Request.__checkUserIp(request.headers.get('HTTP_X_CLUSTER_CLIENT_IP'))):
+        elif (self.__checkUserIp(request.headers.get('HTTP_X_CLUSTER_CLIENT_IP'))):
             return request.headers.get('HTTP_X_CLUSTER_CLIENT_IP');
-        elif (Request.__checkUserIp(request.headers.get('HTTP_FORWARDED_FOR'))):
+        elif (self.__checkUserIp(request.headers.get('HTTP_FORWARDED_FOR'))):
             return request.headers.get('HTTP_FORWARDED_FOR');
-        elif (Request.__checkUserIp(request.headers.get('HTTP_FORWARDED'))):
+        elif (self.__checkUserIp(request.headers.get('HTTP_FORWARDED'))):
             return request.headers.get('HTTP_FORWARDED');
-        elif (Request.__checkUserIp(request.headers.get('REMOTE_ADDR'))):
+        elif (self.__checkUserIp(request.headers.get('REMOTE_ADDR'))):
             return request.headers.get('REMOTE_ADDR');
         else:
             return '0.0.0.0';
 
-    @staticmethod
-    def __checkUserIp(ip):
+    def __checkUserIp(self, ip):
         if (ip == None):
             return False
         try:

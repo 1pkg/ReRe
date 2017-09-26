@@ -1,7 +1,10 @@
-import importlib
+from .error import *
+from base import errors
 
 from .service import *
-from .action import *
+from base import services
 
-globals().update(importlib.import_module('.db-service', 'base').__dict__)
-globals().update(importlib.import_module('.redis-service', 'base').__dict__)
+from .action import *
+from base import actions
+
+from .component import *

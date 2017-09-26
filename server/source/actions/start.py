@@ -1,21 +1,20 @@
 import base
-import helpers
 
 class Start(base.Action):
-    def __init__(self, act):
-        self.__act = act
+    def __init__(self, application, entry):
+        self._entry = entry
+        super().__init__(application)
 
     def _process(self, request):
-        identifier = helpers.Request.getParam(request, 'identifier')
+        identifier = self._application.request.getParam(request, 'identifier')
         if (identifier == None):
-            identifier = helpers.Hash.getClientIdentifier(
+            identifier = self._application.crypto.getClientIdentifier(
                 'salt',
-                helpers.Request.getClientHost(request),
-                helpers.Request.getClientUserAgent(request),
-                helpers.Request.getClientIp(request)
+                self._application.request.getClientHost(request),
+                self._application.request.getClientUserAgent(request),
+                self._application.request.getClientIp(request)
             )
-            
-        self.__act.start(identifier)
+            self._entry.start(identifier)
 
         return {
             'identifier': identifier,

@@ -2,7 +2,7 @@ from datetime import *
 
 import base
 
-class Act(base.RedisService):
+class Entry(base.services.Redis):
     def __init__(self, connection):
         super().__init__(connection)
 
@@ -39,7 +39,7 @@ class Act(base.RedisService):
         entry['timestamp'] = datetime.today().timestamp()
         if (result):
             entry['status'] = 'chose-success'
+            entry['score'] += 1
         else:
             entry['status'] = 'chose-failed'
-        entry['score'] += int(result)
         self._set(hash, entry)

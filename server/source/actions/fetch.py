@@ -1,34 +1,25 @@
 import random
 
 import base
-import helpers
 
-class Fetch(base.Action):
-    def __init__(self, act, task, option, reference, subject):
-        self.__act = act
-        self.__task = task
-        self.__option = option
-        self.__reference = reference
-        self.__subject = subject
+class Fetch(base.actions.Identification):
+    def __init__(self, application, entry, subject, option, reference, task):
+        self._subject = subject
+        self._option = option
+        self._reference = reference
+        self._task = task
+        super().__init__(application, entry)
 
     def _process(self, request):
-        identifier = helpers.Request.getParam(request, 'identifier')
-        if (identifier == None):
-            raise Exception()
-
-        return self.__createhRandomTask(request)
-
-    def __createhRandomTask(self, request):
         task = {}
-        options = self.__option.fetchByRandom(3)
+        options = self._option.fetchByRandom(3)
         for option in options:
-            option['references'] = self.__reference.fetchByRandomOptionId(option['id'], 3)
+            option['references'] = self._reference.fetchByRandomOptionId(option['id'], 3)
         index = random.randint(0, len(options) - 1)
-        subject = self.__subject.fetchByRandomOptionId(options[index]['id'])
-
-        identifier = helpers.Request.getParam(request, 'identifier')
-        id = self.__task.push(subject['id'], [option['id'] for option in options])
-        self.__act.fetch(identifier, id)
+        subject = self._subject.fetchByRandomOptionId(options[index]['id'])
+        identifier = self._application.request.getParam(request, 'identifier')
+        id = self._task.push(subject['id'], [option['id'] for option in options])
+        self._entry.fetch(identifier, id)
 
         return {
             'options': options,

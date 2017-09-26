@@ -1,6 +1,6 @@
 import base
 
-class Option(base.DbService):
+class Option(base.services.Db):
     def __init__(self, connection):
         super().__init__(connection)
 

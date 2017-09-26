@@ -1,6 +1,6 @@
 import base
 
-class Assist(base.DbService):
+class Assist(base.services.Db):
     def __init__(self, connection):
         super().__init__(connection)
 

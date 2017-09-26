@@ -1,13 +1,14 @@
 import flask
 
-from .service import *
+from ..service import *
 
-class RedisService(Service):
+class Redis(Service):
     def __init__(self, connection):
         self.__connection = connection
 
     def _set(self, key, value):
         self.__connection.set(key, flask.json.dumps(value))
+        self.__connection.expire(key, 600)
 
     def _get(self, key):
         value = self.__connection.get(key)
