@@ -6,7 +6,7 @@ class Subject(base.services.Db):
 
     def fetchByRandomOptionId(self, optionId):
         return self._fetch("""
-            SELECT subject.id, image.source_link as sourceLink, image.source_alt as sourceAlt FROM subject
+            SELECT subject.id, image.source_link as sourcelink, image.source_alt as sourcealt FROM subject
             INNER JOIN image ON image.id = subject.object_id AND subject.type = %(type)s
             WHERE option_id = %(option_id)s
             ORDER BY RANDOM() LIMIT 1

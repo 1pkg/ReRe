@@ -7,10 +7,11 @@ import * as Model from './../model';
 import * as Actions from './types';
 
 import Tick from './tick';
-import Splash from './splash';
-import FetchTask from './fetch-task';
-import OptionChose from './option-chose';
-import HintUse from './hint-use';
+import Identify from './identify';
+import Initialize from './initialize';
+import Fetch from './fetch';
+import Chose from './chose';
+import Use from './use';
 
 export default class Trigger {
   actions: Map<string, (trigger: Trigger, params: Array<any>) => void>;
@@ -21,10 +22,11 @@ export default class Trigger {
 
     this.actions = new Map();
     this.actions.set(Actions.ACTION_TICK, Tick);
-    this.actions.set(Actions.ACTION_SPLASH, Splash);
-    this.actions.set(Actions.ACTION_FETCH_TASK, FetchTask);
-    this.actions.set(Actions.ACTION_OPTION_CHOSE, OptionChose);
-    this.actions.set(Actions.ACTION_HINT_USE, HintUse);
+    this.actions.set(Actions.ACTION_IDENTIFY, Identify);
+    this.actions.set(Actions.ACTION_INITIALIZE, Initialize);
+    this.actions.set(Actions.ACTION_FETCH, Fetch);
+    this.actions.set(Actions.ACTION_CHOSE, Chose);
+    this.actions.set(Actions.ACTION_USE, Use);
   }
 
   state(): Model.State {

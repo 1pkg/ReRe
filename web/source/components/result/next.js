@@ -16,7 +16,7 @@ export default class Next extends React.Component {
   restart(event: SyntheticEvent) {
     event.preventDefault();
 
-    this.props.trigger.call(Actions.ACTION_SPLASH);
+    this.props.trigger.call(Actions.ACTION_INITIALIZE);
   }
 
   render() {

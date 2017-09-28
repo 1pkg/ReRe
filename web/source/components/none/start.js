@@ -16,7 +16,7 @@ export default class Start extends React.Component {
   start(event: SyntheticEvent) {
     event.preventDefault();
 
-    this.props.trigger.call(Actions.ACTION_FETCH_TASK);
+    this.props.trigger.call(Actions.ACTION_INITIALIZE);
   }
 
   render() {

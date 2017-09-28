@@ -20,6 +20,5 @@ class Chose(base.actions.Identification):
         self._entry.chose(identifier, result)
 
         return {
-            'option': task['option'],
-            'result': result,
+            'correctoption': task['option'],
         }

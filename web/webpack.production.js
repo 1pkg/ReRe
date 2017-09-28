@@ -77,30 +77,30 @@ module.exports = {
 			},
 		}),
 		new HtmlInlineSourcePlugin(),
-		// new FaviconsPlugin({
-		// 	logo: Path.join(__dirname, '..', 'makets', 'logo.png'),
-		// 	prefix: 'icns/',
-		// 	persistentCache: false,
-		// 	background: '#FFFFFF',
-		// 	title: 'WiT?',
-		// }),
-		// new WebappManifestPlugin.default({
-		// 	name: 'What is This???',
-		//   shortName: 'WiT?',
-		//   description: 'What is This???',
-		//   dir: '',
-		//   lang: 'en-US',
-		//   display: 'standalone',
-		//   orientation: 'any',
-		//   startUrl: '/',
-		//   backgroundColor: '#FFFFFF',
-		//   themeColor: '#A9A9A9',
-		// 	icons: WebappManifestPlugin.FAVICON_PLUGIN,
-		// }),
+		new FaviconsPlugin({
+			logo: Path.join(__dirname, '..', 'makets', 'logo.png'),
+			prefix: 'icns/',
+			persistentCache: false,
+			background: '#FFFFFF',
+			title: 'WiT?',
+		}),
+		new WebappManifestPlugin.default({
+			name: 'What is This???',
+		  shortName: 'WiT?',
+		  description: 'What is This???',
+		  dir: '',
+		  lang: 'en-US',
+		  display: 'standalone',
+		  orientation: 'any',
+		  startUrl: '/',
+		  backgroundColor: '#FFFFFF',
+		  themeColor: '#A9A9A9',
+			icons: WebappManifestPlugin.FAVICON_PLUGIN,
+		}),
 		new OnBuildPlugin(function() {
 			FS.unlink(Path.join(__dirname, 'build', 'bundle.js'));
-			// FS.unlink(Path.join(__dirname, 'build', 'icns', 'manifest.json'));
-			// FS.unlink(Path.join(__dirname, 'build', 'icns', 'manifest.webapp'));
+			FS.unlink(Path.join(__dirname, 'build', 'icns', 'manifest.json'));
+			FS.unlink(Path.join(__dirname, 'build', 'icns', 'manifest.webapp'));
     }),
 	],
 };

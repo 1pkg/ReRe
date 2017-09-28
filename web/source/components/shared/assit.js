@@ -14,17 +14,16 @@ import Help from 'react-icons/lib/io/help';
 import * as Effects from './../../effects';
 
 const Icons = {
-  [Constants.HINT_NAME_REDO]: Redo,
-  [Constants.HINT_NAME_INFINITE]: Infinite,
-  [Constants.HINT_NAME_REDUCE]: Reduce,
-  [Constants.HINT_NAME_STATS]: Stats,
-  [Constants.HINT_NAME_SKIP]: Skip,
-  [Constants.HINT_NAME_HELP]: Help,
+  [Constants.ASSIT_NAME_REDO]: Redo,
+  [Constants.ASSIT_NAME_INFINITE]: Infinite,
+  [Constants.ASSIT_NAME_REDUCE]: Reduce,
+  [Constants.ASSIT_NAME_STATS]: Stats,
+  [Constants.ASSIT_NAME_SKIP]: Skip,
+  [Constants.ASSIT_NAME_HELP]: Help,
 };
 
-export default class Hint extends React.Component {
+export default class Assit extends React.Component {
   props: {
-    index: number,
     name: string,
     disabled: boolean,
     use: (event: SyntheticEvent) => void,
@@ -49,7 +48,7 @@ export default class Hint extends React.Component {
         onMouseOver={Effects.hover}
         onMouseOut={Effects.unhover}
         onClick={this.props.use}
-        data-index={this.props.index}
+        data-name={this.props.name}
       >
         <HintIcon/>
       </span>

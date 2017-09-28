@@ -17,7 +17,7 @@ class Application:
 
         self.__inject(instance.config);
         self.__actions = {
-            'start': actions.Start(
+            'identify': actions.Identify(
                 self,
                 self.__services['entry'],
             ),
@@ -79,6 +79,7 @@ class Application:
 
     def before(self):
         pass
+        # return flask.request
 
     def action(self, action):
         return flask.jsonify(action(flask.request))

@@ -34,7 +34,7 @@ let store: Redux.Store = Redux.createStore((state: ?Model.State = null, action: 
   }
 }, compose(Redux.applyMiddleware(ReduxThunk)));
 trigger = new Trigger(store);
-trigger.call(Actions.ACTION_SPLASH);
+trigger.call(Actions.ACTION_IDENTIFY);
 
 ReactDOM.render(
   <ReactRedux.Provider store={store}>

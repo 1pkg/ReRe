@@ -17,6 +17,7 @@ class Fetch(base.actions.Identification):
             option['references'] = self._reference.fetchByRandomOptionId(option['id'], 3)
         index = random.randint(0, len(options) - 1)
         subject = self._subject.fetchByRandomOptionId(options[index]['id'])
+        # subject['sourcealt'] = ''
         identifier = self._application.request.getParam(request, 'identifier')
         id = self._task.push(subject['id'], [option['id'] for option in options])
         self._entry.fetch(identifier, id)

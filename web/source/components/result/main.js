@@ -16,7 +16,7 @@ export default class Main extends React.Component {
   props: {
     trigger: Trigger,
     task : Model.Task,
-    hints: Array<string>,
+    assits: Array<string>,
     score: number,
   }
 
@@ -28,7 +28,7 @@ export default class Main extends React.Component {
       }}>
         <Header score={this.props.score}/>
         <Image subject={this.props.task.subject} effected={false}/>
-        <ToolBar trigger={this.props.trigger} hints={this.props.hints} timestamp={NaN} disabled={true}/>
+        <ToolBar trigger={this.props.trigger} assits={this.props.assits} timestamp={NaN} disabled={true}/>
         <Grid trigger={this.props.trigger} options={this.props.task.options} correctoption={this.props.task.correctoption}/>
         <Next trigger={this.props.trigger}/>
       </div>

@@ -6,11 +6,11 @@ class Initialize(base.actions.Identification):
         super().__init__(application, entry)
 
     def _process(self, request):
-        identifier = self._application.request.getParam(request, 'identifier')
         assists = self._assist.fetchByRandom(3)
+        assists = [assist['name'] for assist in assists]
+        identifier = self._application.request.getParam(request, 'identifier')
         self._entry.initialalize(identifier, assists)
 
         return {
-            'identifier': identifier,
             'assists': assists,
         }

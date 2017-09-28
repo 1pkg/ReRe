@@ -8,7 +8,7 @@ import * as Constants from './../constants';
 import Trigger from './../actions/trigger';
 import * as Actions from './../actions/types';
 
-import Splash from './splash/main';
+import None from './none/main';
 import Process from './process/main';
 import Result from './result/main';
 
@@ -20,9 +20,9 @@ class Main extends React.Component {
 
   getScene(status: string) {
     switch(status) {
-      case Constants.ACT_STATUS_SPLASH:
+      case Constants.ACT_STATUS_NONE:
         return (
-          <Splash trigger={this.props.trigger}/>
+          <None trigger={this.props.trigger}/>
         );
 
       case Constants.ACT_STATUS_PROCESS:
@@ -30,9 +30,9 @@ class Main extends React.Component {
           <Process
             trigger={this.props.trigger}
             task={this.props.state.task}
-            hints={this.props.state.hints}
-            timestamp={this.props.state.act.timestamp}
-            score={this.props.state.act.score}
+            assits={this.props.state.assists}
+            timestamp={this.props.state.entry.timestamp}
+            score={this.props.state.entry.score}
           />
         );
 
@@ -41,8 +41,8 @@ class Main extends React.Component {
           <Result
             trigger={this.props.trigger}
             task={this.props.state.task}
-            hints={this.props.state.hints}
-            score={this.props.state.act.score}
+            assits={this.props.state.assists}
+            score={this.props.state.entry.score}
           />
         );
     }
@@ -57,7 +57,7 @@ class Main extends React.Component {
       <div style={{
         color: Constants.COLOR_MAIN, width: '100vw', height: '100vh',
       }}>{
-        this.getScene(this.props.state.act.status)
+        this.getScene(this.props.state.entry.status)
       }</div>
     );
   }

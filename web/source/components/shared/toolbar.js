@@ -7,20 +7,20 @@ import * as Model from './../../model';
 import Trigger from './../../actions/trigger';
 import * as Actions from './../../actions/types';
 
-import Hint from './hint';
+import Assit from './assit';
 import Timer from './timer';
 
 export default class Toolbar extends React.Component {
   props: {
     trigger: Trigger,
-    hints: Array<string>,
+    assits: Array<string>,
     timestamp: number,
     disabled: boolean,
   }
 
   shouldComponentUpdate(props: {
     trigger: Trigger,
-    hints: Array<string>,
+    assits: Array<string>,
     timestamp: number,
     disabled: boolean,
   }) {
@@ -32,8 +32,8 @@ export default class Toolbar extends React.Component {
   use(event: SyntheticEvent) {
     let target: EventTarget = event.currentTarget;
     if (target instanceof HTMLElement) {
-      let chosen: string = target.dataset.index;
-      this.props.trigger.call(Actions.ACTION_HINT_USE, Number.parseInt(chosen));
+      let name: string = target.dataset.name;
+      this.props.trigger.call(Actions.ACTION_USE, name);
     }
   }
 
@@ -45,9 +45,9 @@ export default class Toolbar extends React.Component {
       }}>
         <Timer timestamp={this.props.timestamp}/>
         <div>{
-          this.props.hints.map((hint: string, index: number) => {
-            if (hint) {
-              return <Hint key={index} index={index} name={hint} use={this.use.bind(this)} disabled={this.props.disabled}/>;
+          this.props.assits.map((assit: string, index: number) => {
+            if (assit) {
+              return <Assit key={index} name={assit} use={this.use.bind(this)} disabled={this.props.disabled}/>;
             }
           })
         }</div>

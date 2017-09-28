@@ -1,27 +1,18 @@
 // @flow
 
-export const ACT_STATUS_SPLASH: string              =   'splash';
+export const ACT_STATUS_NONE: string                =   'none';
 export const ACT_STATUS_PROCESS: string             =   'process';
 export const ACT_STATUS_RESULT: string              =   'result';
 
 export const ACT_PROCESS_DURATION: number           =   30;
 export const ACT_PROCESS_DURATION_WARNING: number   =   10;
 
-export const HINT_NAME_REDO: string                 =    'redo';
-export const HINT_NAME_INFINITE: string             =    'infinite';
-export const HINT_NAME_REDUCE: string               =    'reduce';
-export const HINT_NAME_STATS: string                =    'stats';
-export const HINT_NAME_SKIP: string                 =    'skip';
-export const HINT_NAME_HELP: string                 =    'help';
-
-export const HINT_LIST: Array<string>               =    [
-  HINT_NAME_REDO,
-  HINT_NAME_INFINITE,
-  HINT_NAME_REDUCE,
-  HINT_NAME_STATS,
-  HINT_NAME_SKIP,
-  HINT_NAME_HELP,
-];
+export const ASSIT_NAME_REDO: string                =    'redo';
+export const ASSIT_NAME_INFINITE: string            =    'infinite';
+export const ASSIT_NAME_REDUCE: string              =    'reduce';
+export const ASSIT_NAME_STATS: string               =    'stats';
+export const ASSIT_NAME_SKIP: string                =    'skip';
+export const ASSIT_NAME_HELP: string                =    'help';
 
 export const EFFECT_NAME_BLEACHED: string           =    'bleached';
 export const EFFECT_NAME_BLOOM: string              =    'bloom';
