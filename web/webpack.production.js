@@ -3,9 +3,8 @@ const FS = require('fs');
 const Webpack = require('webpack');
 const CleanPlugin = require('clean-webpack-plugin');
 const FlowPlugin = require('flow-babel-webpack-plugin');
-const ObfuscatorPlugin = require('webpack-obfuscator');
+const UglifyPlugin = require('uglifyjs-webpack-plugin');
 const HtmlPlugin = require('html-webpack-plugin');
-const HtmlInlineSourcePlugin = require('html-webpack-inline-source-plugin');
 const FaviconsPlugin = require('favicons-webpack-plugin');
 const WebappManifestPlugin = require('webapp-manifest-plugin');
 const OnBuildPlugin = require('on-build-webpack');
@@ -42,28 +41,28 @@ module.exports = {
 			DEBUG: false,
 		}),
 		new FlowPlugin(),
-		new ObfuscatorPlugin({
-			compact: true,
-			controlFlowFlattening: true,
-			controlFlowFlatteningThreshold: 0.5,
-			deadCodeInjection: true,
-			deadCodeInjectionThreshold: 0.5,
-			debugProtection: false,
-			debugProtectionInterval: false,
-			disableConsoleOutput: true,
-		  log: false,
-			mangle: false,
-			renameGlobals: false,
-			rotateStringArray: true,
-			selfDefending: false,
-			stringArray: true,
-			stringArrayEncoding: 'base64',
-			stringArrayThreshold: 1.0,
-			unicodeEscapeSequence: false,
+		new UglifyPlugin({
+			parallel: true,
+			sourceMap: false,
+			ecma: 5,
+			mangle: true,
+			compress: {
+				dead_code: true,
+				unused: true,
+				drop_console: true,
+				booleans: true,
+				loops: true,
+				conditionals: true,
+				sequences: true,
+				reduce_vars: true,
+			},
+			output: {
+				comments: false,
+				beautify: false,
+			},
 		}),
 		new HtmlPlugin({
 			template: 'templates/main.html',
-			inlineSource: '.js$',
 			minify: {
 				collapseWhitespace: true,
 				keepClosingSlash: true,
@@ -76,10 +75,9 @@ module.exports = {
 				useShortDoctype: true,
 			},
 		}),
-		new HtmlInlineSourcePlugin(),
 		new FaviconsPlugin({
-			logo: Path.join(__dirname, '..', 'makets', 'logo.png'),
-			prefix: 'icns/',
+			logo: Path.join(__dirname, 'templates', 'logo.png'),
+			prefix: 'icn/',
 			persistentCache: false,
 			background: '#FFFFFF',
 			title: 'WiT?',
@@ -98,9 +96,8 @@ module.exports = {
 			icons: WebappManifestPlugin.FAVICON_PLUGIN,
 		}),
 		new OnBuildPlugin(function() {
-			FS.unlink(Path.join(__dirname, 'build', 'bundle.js'));
-			FS.unlink(Path.join(__dirname, 'build', 'icns', 'manifest.json'));
-			FS.unlink(Path.join(__dirname, 'build', 'icns', 'manifest.webapp'));
+			FS.unlink(Path.join(__dirname, 'build', 'icn', 'manifest.json'));
+			FS.unlink(Path.join(__dirname, 'build', 'icn', 'manifest.webapp'));
     }),
 	],
 };
