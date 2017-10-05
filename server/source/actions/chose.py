@@ -1,24 +1,43 @@
+from datetime import *
+
 import base
+import errors
+import constants
 
 class Chose(base.actions.Identification):
-    def __init__(self, application, entry, task):
+    def __init__(self, entry, task):
         self._task = task
-        super().__init__(application, entry)
+        super().__init__(entry)
 
     def _validate(self, request):
-        if (self._application.request.getParam(request, 'option') == None):
-            raise base.errors.Request('option reqired')
+        super()._validate(request)
 
-        return super()._validate(request)
+        identifier = self._get(request, 'identifier')
+        option = self._get(request, 'option')
+
+        entry = self._entry.get(identifier)
+        if (('status' not in entry) or entry['status'] != constants.STATUS_PROCESS):
+            raise errors.Status()
+
+        if (option == None or (not option.isdigit())):
+            raise errors.Request('option bad value')
+
+        return True
 
     def _process(self, request):
-        identifier = self._application.request.getParam(request, 'identifier')
+        identifier = self._get(request, 'identifier')
+        option = int(self._get(request, 'option'))
+
         entry = self._entry.get(identifier)
-        task = self._task.fetchByIdWithSubjectOption(entry['task'])
-        option = self._application.request.getParam(request, 'option')
-        result = option == task['option']
+        delta = int(datetime.today().timestamp() - entry['timestamp'])
+        if (delta > 30):
+            result = False
+        else:
+            result = (entry['option'] == option)
         self._entry.chose(identifier, result)
+        option = entry['option']
 
         return {
-            'correctoption': task['option'],
+            'option': option,
+            'result': result
         }

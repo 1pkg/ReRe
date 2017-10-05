@@ -1,5 +1,5 @@
-from ..error import *
+import base
 
-class Request(Error):
+class Request(base.Error):
     def __init__(self, message = ''):
         super().__init__(400, message)

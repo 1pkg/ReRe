@@ -1,8 +1,6 @@
 import psycopg2.extras
 
-from ..service import *
-
-class Db(Service):
+class Db:
     def __init__(self, connection):
         self.__connection = connection
         self.__cursor = None
