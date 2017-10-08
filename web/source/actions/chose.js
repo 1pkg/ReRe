@@ -16,8 +16,8 @@ export default (trigger: Trigger, option: string) => {
   .then((response: any) => {
     let state: Model.State = trigger.state();
 
-    state.task.correctoption = response.data.correctoption;
-    if (state.task.correctoption == option) {
+    state.task.option = response.data.option;
+    if (state.task.option == option && response.data.result) {
       state.entry.score += 1;
       trigger.call(Actions.ACTION_FETCH);
     } else {

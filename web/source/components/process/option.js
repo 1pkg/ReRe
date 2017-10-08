@@ -8,7 +8,7 @@ import * as Effects from './../../effects';
 export default class Option extends React.Component {
   props: {
     children: string,
-    name: string,
+    option: number,
     chose: (event: SyntheticEvent) => void,
   }
 
@@ -20,7 +20,7 @@ export default class Option extends React.Component {
         onMouseOver={Effects.hover}
         onMouseOut={Effects.unhover}
         onClick={this.props.chose}
-        data-name={this.props.name}
+        data-option={this.props.option}
       >{
         this.props.children
       }</div>

@@ -5,7 +5,10 @@ class Db:
         self.__connection = connection
         self.__cursor = None
 
-    def _fetch(self, query, params):
+    def _fetch(self, query, params = None):
+        if (params == None):
+            params = {}
+
         self.__open()
         self.__cursor.execute(query, params)
         data = self.__cursor.fetchall()

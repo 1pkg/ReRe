@@ -1,11 +1,11 @@
-import base
 import errors
 import constants
+from .access import *
 
-class Initialize(base.actions.Identification):
-    def __init__(self, entry, assist):
+class Initialize(Access):
+    def __init__(self, application, entry, assist):
         self._assist = assist
-        super().__init__(entry)
+        super().__init__(application, entry)
 
     def _process(self, request):
         identifier = self._get(request, 'identifier')

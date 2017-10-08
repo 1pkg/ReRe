@@ -5,44 +5,15 @@ import flask
 
 import base
 import errors
+import components
 import services
 import actions
 
 class Application:
     def __init__(self, instance):
-        self.__components = {}
-        self.__inject(instance.config);
-        self.__actions = {
-            'identify': actions.Identify(
-                self.__services['entry'],
-            ),
-            'initialize': actions.Initialize(
-                self.__services['entry'],
-                self.__services['assist'],
-            ),
-            'fetch': actions.Fetch(
-                self.__services['entry'],
-                self.__services['subject'],
-                self.__services['option'],
-                self.__services['reference'],
-                self.__services['task'],
-            ),
-            'chose': actions.Chose(
-                self.__services['entry'],
-                self.__services['task'],
-            ),
-            'use': actions.Use(
-                self.__services['entry'],
-            ),
-        }
-
-        instance.before_request(functools.partial(Application.before, self))
-        instance.after_request(functools.partial(Application.after, self))
-        for alias, action in self.__actions.items():
-            bndaction = functools.partial(Application.action, self, action)
-            bndaction.__name__ = alias
-            instance.add_url_rule(rule=f"/{alias}", view_func=bndaction, methods=["GET"])
         self.__instance = instance
+        self.__initialize(instance.config)
+        self.__bind()
 
     def __getattr__(self, component):
         if (component in self.__components):
@@ -56,7 +27,6 @@ class Application:
 
     def before(self):
         pass
-        # return flask.request
 
     def action(self, action):
         return flask.jsonify(action(flask.request))
@@ -67,7 +37,14 @@ class Application:
         response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS')
         return response
 
-    def __inject(self, configs):
+    def __initialize(self, configs):
+        self.__components = {
+            'datetime': components.Datetime(),
+            'http': components.Http(),
+            'random': components.Random(),
+            'sequence': components.Sequence(),
+        }
+
         dbConnection = psycopg2.connect(
             'host={} dbname={} user={} password={}'.format(
                 configs['DB_CONNECTTION']['host'],
@@ -81,15 +58,55 @@ class Application:
             port=configs['REDIS_CONNECTTION']['port'],
             db=configs['REDIS_CONNECTTION']['db']
         )
+
         self.__services = {
-            'entry': services.Entry(redisConnection),
+            'entry': services.Entry(redisConnection, self.datetime.timestamp),
             'subject': services.Subject(dbConnection),
             'option': services.Option(dbConnection),
             'reference': services.Reference(dbConnection),
             'assist': services.Assist(dbConnection),
             'task': services.Task(dbConnection),
+            'effect': services.Effect(dbConnection),
         }
 
+        self.__actions = {
+            'identify': actions.Identify(
+                self,
+                self.__services['entry'],
+            ),
+            'initialize': actions.Initialize(
+                self,
+                self.__services['entry'],
+                self.__services['assist'],
+            ),
+            'fetch': actions.Fetch(
+                self,
+                self.__services['entry'],
+                self.__services['subject'],
+                self.__services['option'],
+                self.__services['reference'],
+                self.__services['task'],
+                self.__services['effect'],
+            ),
+            'chose': actions.Chose(
+                self,
+                self.__services['entry'],
+                self.__services['task'],
+            ),
+            'use': actions.Use(
+                self,
+                self.__services['entry'],
+            ),
+        }
+
+    def __bind(self):
+        self.__instance.before_request(functools.partial(Application.before, self))
+        self.__instance.after_request(functools.partial(Application.after, self))
+        for alias, action in self.__actions.items():
+            bndaction = functools.partial(Application.action, self, action)
+            bndaction.__name__ = alias
+            self.__instance.add_url_rule(rule=f"/{alias}", view_func=bndaction, methods=["GET"])
+
 instance = flask.Flask(__name__)
-instance.config.from_object('conf.Development')
+instance.config.from_object('configuration.Development')
 Application(instance)

@@ -1,11 +1,11 @@
-import psycopg2.extras
-
-from ..action import *
+import base
 import errors
+import constants
 
-class Identification(Action):
-    def __init__(self, entry):
+class Access(base.Action):
+    def __init__(self, application, entry):
         self._entry = entry
+        super().__init__(application)
 
     def _validate(self, request):
         identifier = self._get(request, 'identifier')

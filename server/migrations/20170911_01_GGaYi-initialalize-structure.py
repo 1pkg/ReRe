@@ -83,7 +83,7 @@ group([
           CREATE TABLE IF NOT EXISTS subject (
             id SERIAL NOT NULL PRIMARY KEY,
             type subject_type NOT NULL DEFAULT 'image',
-            object_id INT NOT NULL,
+            object_id INT NOT NULL UNIQUE,
             option_id INT NOT NULL REFERENCES option (id) ON DELETE CASCADE,
             time_stamp TIMESTAMP NOT NULL DEFAULT NOW()
           );
@@ -99,6 +99,7 @@ group([
           CREATE TABLE IF NOT EXISTS effect (
             id SERIAL NOT NULL PRIMARY KEY,
             name VARCHAR(256) NOT NULL UNIQUE,
+            is_active BOOL NOT NULL DEFAULT TRUE,
             description TEXT DEFAULT NULL,
             time_stamp TIMESTAMP NOT NULL DEFAULT NOW()
           );
@@ -126,7 +127,7 @@ group([
           CREATE TABLE IF NOT EXISTS image (
             id SERIAL NOT NULL PRIMARY KEY,
             source_link VARCHAR(256) NOT NULL UNIQUE,
-            source_alt VARCHAR(256) NOT NULL,
+            source_alt VARCHAR(256) DEFAULT NULL,
             description TEXT DEFAULT NULL,
             time_stamp TIMESTAMP NOT NULL DEFAULT NOW()
           );
@@ -143,6 +144,7 @@ group([
         """
           CREATE TABLE IF NOT EXISTS task (
             id SERIAL NOT NULL PRIMARY KEY,
+            label VARCHAR(256) NOT NULL UNIQUE,
             is_active BOOL NOT NULL DEFAULT TRUE,
             description TEXT DEFAULT NULL,
             subject_id INT NOT NULL REFERENCES subject (id) ON DELETE CASCADE,

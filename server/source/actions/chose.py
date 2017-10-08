@@ -1,17 +1,14 @@
-from datetime import *
-
-import base
 import errors
 import constants
+from .access import *
 
-class Chose(base.actions.Identification):
-    def __init__(self, entry, task):
+class Chose(Access):
+    def __init__(self, application, entry, task):
         self._task = task
-        super().__init__(entry)
+        super().__init__(application, entry)
 
     def _validate(self, request):
         super()._validate(request)
-
         identifier = self._get(request, 'identifier')
         option = self._get(request, 'option')
 
@@ -20,7 +17,7 @@ class Chose(base.actions.Identification):
             raise errors.Status()
 
         if (option == None or (not option.isdigit())):
-            raise errors.Request('option bad value')
+            raise errors.Request('option')
 
         return True
 
@@ -29,15 +26,14 @@ class Chose(base.actions.Identification):
         option = int(self._get(request, 'option'))
 
         entry = self._entry.get(identifier)
-        delta = int(datetime.today().timestamp() - entry['timestamp'])
-        if (delta > 30):
+        if (self._application.datetime.timestamp() - int(entry['timestamp']) > 30):
             result = False
         else:
-            result = (entry['option'] == option)
+            result = (int(entry['option']) == option)
         self._entry.chose(identifier, result)
         option = entry['option']
 
         return {
             'option': option,
-            'result': result
+            'result': result,
         }

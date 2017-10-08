@@ -15,7 +15,7 @@ export type Subject = {
 export type Task = {
   options: Array<Option>,
   subject: Subject,
-  correctoption: string,
+  option: number,
 };
 
 export type Entry = {

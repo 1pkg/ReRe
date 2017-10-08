@@ -23,12 +23,8 @@ export default (trigger: Trigger) => {
     let task: Model.Task = {
       options: response.data.options,
       subject: response.data.subject,
-      correctoption: NaN,
+      option: NaN,
     }
-    task.subject.effects = [
-      Constants.EFFECT_LIST[Math.floor(Math.random() * Constants.EFFECT_LIST.length)],
-      Constants.EFFECT_LIST[Math.floor(Math.random() * Constants.EFFECT_LIST.length)],
-    ];
     state.task = task;
 
     trigger.push(Actions.ACTION_FETCH, state);

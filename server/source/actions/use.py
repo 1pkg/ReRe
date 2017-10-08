@@ -1,10 +1,10 @@
-import base
 import errors
 import constants
+from .access import *
 
-class Use(base.actions.Identification):
-    def __init__(self, entry):
-        super().__init__(entry)
+class Use(Access):
+    def __init__(self, application, entry):
+        super().__init__(application, entry)
 
     def _validate(self, request):
         super()._validate(request)
@@ -17,10 +17,10 @@ class Use(base.actions.Identification):
             raise errors.Status()
 
         if (assist == None or (not assist.isdigit())):
-            raise errors.Request('assist bad value')
+            raise errors.Request('assist')
 
         if (int(assist) >= len(entry['assists'])):
-            raise errors.Request('assist bad value')
+            raise errors.Request('assist')
 
         return True
 

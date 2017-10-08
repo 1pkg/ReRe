@@ -16,13 +16,13 @@ export default class Grid extends React.Component {
   props: {
     trigger: Trigger,
     options: Array<Model.Option>,
-    correctoption: string,
+    option: number,
   }
 
   shouldComponentUpdate(props: {
     trigger: Trigger,
     options: Array<Model.Option>,
-    correctoption: string,
+    option: number,
   }) {
     return !DeepEqual(props, this.props);
   }
@@ -30,8 +30,8 @@ export default class Grid extends React.Component {
   chose(event: SyntheticEvent) {
     let target: EventTarget = event.currentTarget;
     if (target instanceof HTMLElement) {
-      let name: string = target.dataset.name;
-      this.props.trigger.call(Actions.ACTION_CHOSE, name);
+      let option: number = Number.parseInt(target.dataset.option);
+      this.props.trigger.call(Actions.ACTION_CHOSE, option);
     }
   }
 
@@ -47,12 +47,12 @@ export default class Grid extends React.Component {
           borderWidth: '0.1em 0em 0.1em 0em', borderStyle: 'solid', color: Constants.COLOR_SECOND,
         }}>{
           this.props.options.map((option: Model.Option, index: number) => {
-            if (this.props.correctoption === '') {
-              return <Option key={index} name={option.name} chose={this.chose.bind(this)}>{
+            if (Number.isNaN(this.props.option)) {
+              return <Option key={index} option={index} chose={this.chose.bind(this)}>{
                 option.name
               }</Option>;
             } else {
-              if (option.name === this.props.correctoption) {
+              if (index === this.props.option) {
                 return <OptionCorrect key={index}>{
                   option.name
                 }</OptionCorrect>;

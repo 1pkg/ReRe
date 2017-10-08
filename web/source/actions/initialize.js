@@ -19,7 +19,6 @@ export default (trigger: Trigger) => {
     state.entry.status = Constants.ACT_STATUS_NONE;
     state.entry.score = 0;
     state.assists = response.data.assists;
-    console.log(response.data.assists);
 
     trigger.push(Actions.ACTION_INITIALIZE, state);
     trigger.call(Actions.ACTION_FETCH);
