@@ -8,5 +8,5 @@ class Reference(Db):
         return self._fetch("""
             SELECT * FROM reference
             WHERE option_id = %(option_id)s
-            ORDER BY RANDOM() LIMIT  %(limit)s
+            ORDER BY RANDOM() LIMIT %(limit)s
         """, {'option_id': optionId, 'limit': limit,})

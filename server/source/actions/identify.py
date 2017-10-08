@@ -1,8 +1,6 @@
 import hashlib
 
 import base
-import errors
-import constants
 
 class Identify(base.Action):
     def __init__(self, application, entry):

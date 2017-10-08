@@ -93,6 +93,21 @@ group([
           DROP TYPE IF EXISTS subject_type;
         """,
     ),
+    # image
+    step(
+        """
+          CREATE TABLE IF NOT EXISTS image (
+            id SERIAL NOT NULL PRIMARY KEY,
+            source_link VARCHAR(256) NOT NULL UNIQUE,
+            source_alt VARCHAR(256) DEFAULT NULL,
+            description TEXT DEFAULT NULL,
+            time_stamp TIMESTAMP NOT NULL DEFAULT NOW()
+          );
+        """,
+        """
+          DROP TABLE IF EXISTS image;
+        """,
+    ),
     # effect
     step(
         """
@@ -108,32 +123,19 @@ group([
           DROP TABLE IF EXISTS effect;
         """,
     ),
-    # subject_effect
+    # effect_conflict
     step(
         """
-          CREATE TABLE IF NOT EXISTS subject_effect (
-            subject_id INT NOT NULL REFERENCES subject (id) ON DELETE CASCADE,
-            effect_id INT NOT NULL REFERENCES subject (id) ON DELETE CASCADE,
-            PRIMARY KEY (subject_id, effect_id)
-          );
-        """,
-        """
-          DROP TABLE IF EXISTS subject_effect;
-        """,
-    ),
-    # image
-    step(
-        """
-          CREATE TABLE IF NOT EXISTS image (
-            id SERIAL NOT NULL PRIMARY KEY,
-            source_link VARCHAR(256) NOT NULL UNIQUE,
-            source_alt VARCHAR(256) DEFAULT NULL,
+          CREATE TABLE IF NOT EXISTS effect_conflict (
+            effect_id_first INT NOT NULL REFERENCES effect (id) ON DELETE CASCADE,
+            effect_id_second INT NOT NULL REFERENCES effect (id) ON DELETE CASCADE,
             description TEXT DEFAULT NULL,
-            time_stamp TIMESTAMP NOT NULL DEFAULT NOW()
+            time_stamp TIMESTAMP NOT NULL DEFAULT NOW(),
+            PRIMARY KEY (effect_id_first, effect_id_second);
           );
         """,
         """
-          DROP TABLE IF EXISTS image;
+          DROP TABLE IF EXISTS effect_conflict;
         """,
     ),
 ])
@@ -166,6 +168,19 @@ group([
         """,
         """
           DROP TABLE IF EXISTS task_option;
+        """,
+    ),
+    # task_effect
+    step(
+        """
+          CREATE TABLE IF NOT EXISTS task_effect (
+            task_id INT NOT NULL REFERENCES task (id) ON DELETE CASCADE,
+            effect_id INT NOT NULL REFERENCES effect (id) ON DELETE CASCADE,
+            PRIMARY KEY (task_id, effect_id)
+          );
+        """,
+        """
+          DROP TABLE IF EXISTS task_effect;
         """,
     ),
 ])

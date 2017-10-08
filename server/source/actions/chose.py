@@ -26,12 +26,12 @@ class Chose(Access):
         option = int(self._get(request, 'option'))
 
         entry = self._entry.get(identifier)
-        if (self._application.datetime.timestamp() - int(entry['timestamp']) > 30):
+        if (entry['timestamp'] != None and (self._application.datetime.timestamp() - int(entry['timestamp']) > 30)):
             result = False
         else:
-            result = (int(entry['option']) == option)
+            result = (int(entry['index']) == option)
         self._entry.chose(identifier, result)
-        option = entry['option']
+        option = entry['index']
 
         return {
             'option': option,

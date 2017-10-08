@@ -16,6 +16,6 @@ class Option(Db):
             SELECT option.*, task_option.*, category.name as category FROM option
             INNER JOIN task_option ON task_option.option_id = option.id
             INNER JOIN category ON option.category_id = category.id
-            WHERE task_option.task_id = %(taskId)s
+            WHERE task_option.task_id = %(task_id)s
             ORDER BY RANDOM()
-        """, {'taskId': taskId,})
+        """, {'task_id': taskId,})

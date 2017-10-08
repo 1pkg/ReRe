@@ -9,6 +9,9 @@ class Entry(Redis):
     def get(self, identifier):
         return self._get(identifier)
 
+    def set(self, identifier, entry):
+        return self._set(identifier, entry)
+
     def identify(self, identifier):
         self._set(identifier, {})
 
@@ -19,15 +22,19 @@ class Entry(Redis):
         entry['assists'] = assists
         entry['task'] = None
         entry['option'] = None
+        entry['index'] = None
+        entry['effects'] = None
         entry['score'] = 0
         self._set(identifier, entry)
 
-    def fetch(self, identifier, task, option):
+    def fetch(self, identifier, task, option, index, effects):
         entry = self._get(identifier)
         entry['timestamp'] = self.__timestamper()
         entry['status'] = constants.STATUS_PROCESS
         entry['task'] = task
         entry['option'] = option
+        entry['index'] = index
+        entry['effects'] = effects
         self._set(identifier, entry)
 
     def chose(self, identifier, result):

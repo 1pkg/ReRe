@@ -9,3 +9,11 @@ class Effect(Db):
             SELECT * FROM effect
             ORDER BY RANDOM() LIMIT %(limit)s
         """, {'limit': limit,})
+
+    def fetchByTaskId(self, taskId):
+        return self._fetch("""
+            SELECT option.*, task_option.*, category.name as category FROM effect
+            INNER JOIN task_effect ON task_effect.effect_id = effect.id
+            WHERE task_effect.task_id = %(task_id)s
+            ORDER BY ASC
+        """, {'task_id': taskId,})

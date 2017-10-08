@@ -25,23 +25,24 @@ class Fetch(Access):
         return True
 
     def _apply(self, data):
+        for option in data['options']:
+            option['references'] = self._reference.fetchByOptionId(option['id'], 3)
         data['subject']['sourcelink'] = data['subject']['source_link']
+        data['subject']['effects'] = [effect['name'] for effect in data['subject']['effects']]
+        self._application.sequence.purge(data, ['category_id', 'option_id', 'parent_category_id', 'task_id', 'object_id', 'source_link', 'source_alt', 'type', 'is_active'])
         return super()._apply(data)
-
-    def _excesses(self):
-        return super()._excesses() + ['category_id', 'option_id', 'parent_category_id', 'task_id', 'object_id', 'source_link', 'source_alt', 'type']
 
     def _process(self, request):
         identifier = self._get(request, 'identifier')
         label = self._get(request, 'label')
 
-        if (label != None):
+        if (label != None):                        # directly
             return self.__fetchByLabel(identifier, label)
         elif (self._application.random.roll(0.5)): # 50%
             return self.__fetchByRating(identifier)
-        elif (self._application.random.roll(0.9)): # 45%
+        elif (self._application.random.roll(0.5)): # 25%
             return self.__fetchByRandom(identifier)
-        else:                               # 5%
+        else:                                      # 25%
             return self.__fetchNew(identifier)
 
     def __fetchByLabel(self, identifier, label):
@@ -49,17 +50,17 @@ class Fetch(Access):
         if (task == None):
             raise errors.Request('label')
         options = self._option.fetchByTaskId(task['id'])
-        for option in options:
-            option['references'] = self._reference.fetchByOptionId(option['id'], 3)
         subject = self._subject.fetchById(task['subject_id'])
-        subject['effects'] = [effect['name'] for effect in self._effect.fetchByRandom(2)]
+        subject['effects'] = self._effect.fetchByTaskId(task['id'])
         self._entry.fetch(
             identifier,
             task['id'],
+            subject['option_id'],
             self._application.sequence.find(
                 options,
                 lambda option: int(option['id']) == int(subject['option_id'])
-            )
+            ),
+            [effect['name'] for effect in subject['effects']]
         )
 
         return {
@@ -67,23 +68,23 @@ class Fetch(Access):
             'subject': subject,
         }
 
-    def __fetchByRating(self, identifier):
+    def __fetchByRating(self, identifier): # todo
         return self.__fetchByRandom(identifier)
 
     def __fetchByRandom(self, identifier):
         task = self._task.fetchByRandom()
         options = self._option.fetchByTaskId(task['id'])
-        for option in options:
-            option['references'] = self._reference.fetchByOptionId(option['id'], 3)
         subject = self._subject.fetchById(task['subject_id'])
-        subject['effects'] = [effect['name'] for effect in self._effect.fetchByRandom(2)]
+        subject['effects'] = self._effect.fetchByTaskId(task['id'])
         self._entry.fetch(
             identifier,
             task['id'],
+            subject['option_id'],
             self._application.sequence.find(
                 options,
                 lambda option: int(option['id']) == int(subject['option_id'])
-            )
+            ),
+            [effect['name'] for effect in subject['effects']]
         )
 
         return {
@@ -93,19 +94,21 @@ class Fetch(Access):
 
     def __fetchNew(self, identifier):
         options = self._option.fetchByRandom(3)
-        for option in options:
-            option['references'] = self._reference.fetchByOptionId(option['id'], 3)
         index = self._application.random.number(len(options))
         subject = self._subject.fetchByOptionId(options[index]['id'])
-        subject['effects'] = [effect['name'] for effect in self._effect.fetchByRandom(2)]
+        subject['effects'] = self._effect.fetchByRandom(2)
+        task = self._task.push(
+            self._application.random.label(),
+            subject['id'],
+            [option['id'] for option in options],
+            [effect['id'] for effect in subject['effects']],
+        )
         self._entry.fetch(
             identifier,
-            self._task.push(
-                self._application.random.label(),
-                subject['id'],
-                [option['id'] for option in options]
-            ),
-            index
+            task,
+            subject['option_id'],
+            index,
+            [effect['name'] for effect in subject['effects']]
         )
 
         return {

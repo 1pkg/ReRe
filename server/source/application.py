@@ -96,6 +96,9 @@ class Application:
             'use': actions.Use(
                 self,
                 self.__services['entry'],
+                self.__services['reference'],
+                self.__services['task'],
+                self.__services['effect'],
             ),
         }
 
