@@ -13,14 +13,14 @@ import Timer from './timer';
 export default class Toolbar extends React.Component {
   props: {
     trigger: Trigger,
-    assits: Array<string>,
+    assists: Array<string>,
     timestamp: number,
     disabled: boolean,
   }
 
   shouldComponentUpdate(props: {
     trigger: Trigger,
-    assits: Array<string>,
+    assists: Array<string>,
     timestamp: number,
     disabled: boolean,
   }) {
@@ -32,8 +32,8 @@ export default class Toolbar extends React.Component {
   use(event: SyntheticEvent) {
     let target: EventTarget = event.currentTarget;
     if (target instanceof HTMLElement) {
-      let name: string = target.dataset.name;
-      this.props.trigger.call(Actions.ACTION_USE, name);
+      let assist: number = Number.parseInt(target.dataset.assist);
+      this.props.trigger.call(Actions.ACTION_USE, assist);
     }
   }
 
@@ -45,10 +45,8 @@ export default class Toolbar extends React.Component {
       }}>
         <Timer timestamp={this.props.timestamp}/>
         <div>{
-          this.props.assits.map((assit: string, index: number) => {
-            if (assit) {
-              return <Assit key={index} name={assit} use={this.use.bind(this)} disabled={this.props.disabled}/>;
-            }
+          this.props.assists.map((assist: string, index: number) => {
+            return <Assit key={index} name={assist} assist={index} use={this.use.bind(this)} disabled={this.props.disabled}/>;
           })
         }</div>
       </div>

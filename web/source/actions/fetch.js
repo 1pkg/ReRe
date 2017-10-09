@@ -7,32 +7,31 @@ import * as Actions from './types';
 
 let interval: number = 0;
 export default (trigger: Trigger) => {
-  let state: Model.State = trigger.state();
   Axios.get('http://localhost:5000/fetch', {
     params: {
-      identifier: state.entry.identifier,
+      identifier: trigger.state().identifier,
     }
   })
   .then((response: any) => {
     let state: Model.State = trigger.state();
-    let timestamp: number = Math.floor(new Date().getTime() / 1000);
-
-    state.entry.timestamp = timestamp;
-    state.entry.status = Constants.ACT_STATUS_PROCESS;
-
-    let task: Model.Task = {
+    state.timestamp = Math.floor(new Date().getTime() / 1000);
+    state.status = Constants.STATUS_PROCESS;
+    state.task = {
       options: response.data.options,
       subject: response.data.subject,
+      effects: response.data.effects,
       option: NaN,
-    }
-    state.task = task;
-
+      references: [],
+      stats: [],
+    };
     trigger.push(Actions.ACTION_FETCH, state);
-
     interval = setInterval(() => {
       trigger.call(Actions.ACTION_TICK, interval);
     }, 1000);
   })
   .catch((exception) => console.log(exception));
   clearInterval(interval);
+  // let state: Model.State = trigger.state();
+  // state.status = Constants.STATUS_PREVIEW;
+  // trigger.push(Actions.ACTION_FETCH, state);
 }

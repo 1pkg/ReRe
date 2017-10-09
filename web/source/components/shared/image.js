@@ -36,8 +36,8 @@ const Effects = {
 
 export default class Image extends React.Component {
   props: {
-    subject: Model.Subject,
-    effected: boolean,
+    subject: string,
+    effects: Array<string>,
   }
 
   state: {
@@ -46,8 +46,8 @@ export default class Image extends React.Component {
   }
 
   constructor(props: {
-    subject : Model.Subject,
-    effected: boolean,
+    subject: string,
+    effects: Array<string>,
   }) {
     super(props);
     this.state = {
@@ -63,8 +63,8 @@ export default class Image extends React.Component {
   }
 
   shouldComponentUpdate(props: {
-    subject : Model.Subject,
-    effected: boolean,
+    subject: string,
+    effects: Array<string>,
   }, state: {
     width: number,
     height: number,
@@ -91,14 +91,14 @@ export default class Image extends React.Component {
   }
 
   render() {
-    if (!this.props.effected) {
+    if (!this.props.effects) {
       return (
         <div style={{
           flexGrow: 1,
           display: 'flex', alignItems: 'center', justifyContent: 'center',
           overflow: 'hidden', maxWidth: '100vw',
         }}>
-          <img src={this.props.subject.sourcelink} style={{
+          <img src={this.props.subject} style={{
               flexGrow: 1, objectFit: 'cover',
           }}/>
         </div>
@@ -106,7 +106,7 @@ export default class Image extends React.Component {
     }
 
     let View = null;
-    this.props.subject.effects.forEach((effect) => {
+    this.props.effects.forEach((effect) => {
       if (!(effect in Effects)) {
         return;
       }
@@ -115,7 +115,7 @@ export default class Image extends React.Component {
       if (!View) {
         View = (
           <Effect size={[this.state.width, this.state.height]}>
-            <GLReactImage source={this.props.subject.sourcelink} resizeMode="cover"/>
+            <GLReactImage source={this.props.subject} resizeMode="cover"/>
           </Effect>
         );
       } else {

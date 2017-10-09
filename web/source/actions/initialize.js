@@ -6,20 +6,19 @@ import Trigger from './trigger';
 import * as Actions from './types';
 
 export default (trigger: Trigger) => {
-  let state: Model.State = trigger.state();
   Axios.get('http://localhost:5000/initialize', {
     params: {
-      identifier: state.entry.identifier,
+      identifier: trigger.state().identifier,
     }
   })
   .then((response: any) => {
     let state: Model.State = trigger.state();
-
-    state.entry.timestamp = NaN;
-    state.entry.status = Constants.ACT_STATUS_NONE;
-    state.entry.score = 0;
+    state.timestamp = NaN;
+    state.status = Constants.STATUS_PREVIEW;
+    state.task = null;
     state.assists = response.data.assists;
-
+    state.score = 0;
+    console.log(state);
     trigger.push(Actions.ACTION_INITIALIZE, state);
     trigger.call(Actions.ACTION_FETCH);
   })

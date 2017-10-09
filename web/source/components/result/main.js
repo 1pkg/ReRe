@@ -15,9 +15,7 @@ import Next from './next';
 export default class Main extends React.Component {
   props: {
     trigger: Trigger,
-    task : Model.Task,
-    assits: Array<string>,
-    score: number,
+    state: Model.State,
   }
 
   render() {
@@ -26,10 +24,10 @@ export default class Main extends React.Component {
         display: 'flex', flexDirection: 'column', alignItems: 'stretch', justifyContent: 'center',
         height: '100vh',
       }}>
-        <Header score={this.props.score}/>
-        <Image subject={this.props.task.subject} effected={false}/>
-        <ToolBar trigger={this.props.trigger} assits={this.props.assits} timestamp={NaN} disabled={true}/>
-        <Grid trigger={this.props.trigger} options={this.props.task.options} option={this.props.task.option}/>
+        <Header score={this.props.state.score}/>
+        <Image subject={this.props.state.task.subject} effects={this.props.state.task.effects}/>
+        <ToolBar trigger={this.props.trigger} assists={this.props.state.assists} timestamp={NaN} disabled={true}/>
+        <Grid trigger={this.props.trigger} options={this.props.state.task.options} option={this.props.state.task.option}/>
         <Next trigger={this.props.trigger}/>
       </div>
     );

@@ -7,11 +7,17 @@ class Initialize(Access):
 
     def _process(self, request):
         identifier = self._get(request, 'identifier')
-
-        assists = self._assist.fetchByRandom(3)
-        assists = [assist['name'] for assist in assists]
-        self._entry.initialalize(identifier, assists)
+        entry = self._entry.get(identifier)
+        entry['timestamp'] = None
+        entry['status'] = self._application.STATUS_INITIALIZE
+        entry['assists'] = [assist['name'] for assist in self._assist.fetchByRandom(3)]
+        entry['task'] = None
+        entry['option'] = None
+        entry['index'] = None
+        entry['effects'] = None
+        entry['score'] = 0
+        self._entry.set(identifier, entry)
 
         return {
-            'assists': assists,
+            'assists': entry['assists'],
         }

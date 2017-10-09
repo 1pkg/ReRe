@@ -10,6 +10,12 @@ import services
 import actions
 
 class Application:
+    STATUS_INITIALIZE     = 'initialize'
+    STATUS_PROCESS        = 'process'
+    STATUS_SKIP           = 'skip'
+    STATUS_RESULT_CORRECT = 'result-correct'
+    STATUS_RESULT_FAIL    = 'result-fail'
+
     def __init__(self, instance):
         self.__instance = instance
         self.__initialize(instance.config)
@@ -60,7 +66,7 @@ class Application:
         )
 
         self.__services = {
-            'entry': services.Entry(redisConnection, self.datetime.timestamp),
+            'entry': services.Entry(redisConnection),
             'subject': services.Subject(dbConnection),
             'option': services.Option(dbConnection),
             'reference': services.Reference(dbConnection),

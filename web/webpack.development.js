@@ -37,8 +37,8 @@ module.exports = {
 
 	plugins: [
 		new Webpack.EnvironmentPlugin({
-			NODE_ENV: 'production',
-			DEBUG: false,
+			NODE_ENV: 'development',
+			DEBUG: true,
 		}),
 		new FlowPlugin(),
 		new HtmlPlugin({

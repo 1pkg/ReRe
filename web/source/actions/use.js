@@ -1,35 +1,48 @@
+import Axios from 'axios';
+
 import * as Model from './../model';
 import * as Constants from './../constants';
 import Trigger from './trigger';
 import * as Actions from './types';
 
-export default (trigger: Trigger, assit: string) => {
-  let state: Model.State = trigger.state();
-  switch (assit) {
-    case Constants.ASSIT_NAME_REDO:
-      state.task.subject.effects = [
-        Constants.EFFECT_LIST[Math.floor(Math.random() * Constants.EFFECT_LIST.length)],
-        Constants.EFFECT_LIST[Math.floor(Math.random() * Constants.EFFECT_LIST.length)],
-      ];
-      break;
-
-    case Constants.ASSIT_NAME_INFINITE:
-      state.entry.timestamp = NaN;
-      break;
-
-      case Constants.ASSIT_NAME_REDUCE:
-        state.task.subject.effects = [state.task.subject.effects[0],];
+export default (trigger: Trigger, assist: string) => {
+  Axios.get('http://localhost:5000/use', {
+    params: {
+      identifier: trigger.state().identifier,
+      assist: assist,
+    }
+  })
+  .then((response: any) => {
+    let state: Model.State = trigger.state();
+    switch (response.data.assist) {
+      case Constants.ASSIT_NAME_REDO:
+        state.task.effects = response.data.effects;
         break;
 
-    case Constants.ASSIT_NAME_SKIP:
-      trigger.call(Actions.ACTION_FETCH);
-      break;
+      case Constants.ASSIT_NAME_INFINITE:
+        state.timestamp = NaN;
+        break;
 
-    default: return;
-  }
-  let index = state.assists.indexOf(assit);
-  if (index > -1) {
-    state.assists.splice(index, 1);
-  }
-  trigger.push(Actions.ACTION_USE, state);
+      case Constants.ASSIT_NAME_REDUCE:
+        state.task.effects = response.data.effects;
+        break;
+
+      case Constants.ASSIT_NAME_STATS:
+        state.task.stats = response.data.stats;
+        break;
+
+      case Constants.ASSIT_NAME_SKIP:
+        state.task = response.data.task;
+        break;
+
+      case Constants.ASSIT_NAME_HELP:
+        state.task.references = response.data.references;
+        break;
+
+      default: return;
+    }
+    state.assists.splice(assist, 1);
+    trigger.push(Actions.ACTION_USE, state);
+  })
+  .catch((exception) => console.log(exception));
 }

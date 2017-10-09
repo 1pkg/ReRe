@@ -16,8 +16,7 @@ class Access(base.Action):
         if (len(identifier) != 32 or (not self.__hex(identifier))):
             raise errors.Identifier()
 
-        entry = self._entry.get(identifier)
-        if (entry == None):
+        if (self._entry.get(identifier) == None):
             raise errors.Identifier()
 
         return True

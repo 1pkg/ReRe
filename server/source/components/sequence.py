@@ -1,5 +1,5 @@
 class Sequence:
-    def find(self, sequence, comporator):
+    def index(self, sequence, comporator):
         for i in range(0, len(sequence)):
             element = sequence[i]
             if (comporator(element)):

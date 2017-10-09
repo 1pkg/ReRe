@@ -32,11 +32,11 @@ export default class Timer extends React.Component {
     }
 
     let timestamp: number = Math.floor(new Date().getTime() / 1000);
-    let difftimestamp: number = Constants.ACT_PROCESS_DURATION - (timestamp - this.props.timestamp);
+    let difftimestamp: number = Constants.PROCESS_DURATION - (timestamp - this.props.timestamp);
     return (
       <div style={{
         position: 'relative',
-        color: (difftimestamp <= Constants.ACT_PROCESS_DURATION_WARNING ? Constants.COLOR_FAIL : Constants.COLOR_MAIN),
+        color: (difftimestamp <= Constants.PROCESS_DURATION_WARNING ? Constants.COLOR_FAIL : Constants.COLOR_MAIN),
       }}>
         <Pinpoint/>
         <div style={{

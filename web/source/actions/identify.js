@@ -6,25 +6,20 @@ import Trigger from './trigger';
 import * as Actions from './types';
 
 export default (trigger: Trigger) => {
-  let state: Model.State = trigger.state();
   Axios.get('http://localhost:5000/identify', {
     params: {
-      identifier: state ? state.entry.identifier : null,
+      identifier: trigger.state() ? trigger.state().identifier : null,
     }
   })
   .then((response: any) => {
-    let entry: Model.Entry = {
-      timestamp: NaN,
-      status: Constants.ACT_STATUS_NONE,
-      score: NaN,
-      identifier: response.data.identifier,
-    };
     let state: Model.State = {
+        identifier: response.data.identifier,
+        timestamp: NaN,
+        status: '',
         task: null,
         assists: [],
-        entry: entry,
+        score: NaN,
     };
-
     trigger.push(Actions.ACTION_IDENTIFY, state);
   })
   .catch((exception) => console.log(exception));

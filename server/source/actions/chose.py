@@ -1,5 +1,4 @@
 import errors
-import constants
 from .access import *
 
 class Chose(Access):
@@ -11,9 +10,9 @@ class Chose(Access):
         super()._validate(request)
         identifier = self._get(request, 'identifier')
         option = self._get(request, 'option')
-
         entry = self._entry.get(identifier)
-        if (('status' not in entry) or entry['status'] != constants.STATUS_PROCESS):
+
+        if (('status' not in entry) or entry['status'] != self._application.STATUS_PROCESS):
             raise errors.Status()
 
         if (option == None or (not option.isdigit())):
@@ -24,16 +23,19 @@ class Chose(Access):
     def _process(self, request):
         identifier = self._get(request, 'identifier')
         option = int(self._get(request, 'option'))
-
         entry = self._entry.get(identifier)
-        if (entry['timestamp'] != None and (self._application.datetime.timestamp() - int(entry['timestamp']) > 30)):
-            result = False
+        result = entry['timestamp'] != None and \
+            (self._application.datetime.timestamp() - int(entry['timestamp'])) < 30 and \
+            int(entry['index']) == option
+        entry['timestamp'] = self._application.datetime.timestamp()
+        if (result):
+            entry['status'] = self._application.STATUS_RESULT_CORRECT
         else:
-            result = (int(entry['index']) == option)
-        self._entry.chose(identifier, result)
-        option = entry['index']
+            entry['status'] = self._application.STATUS_RESULT_FAIL
+        entry['score'] += int(result)
+        self._entry.set(identifier, entry)
 
         return {
-            'option': option,
+            'option': entry['index'],
             'result': result,
         }

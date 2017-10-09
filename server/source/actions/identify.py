@@ -9,7 +9,6 @@ class Identify(base.Action):
 
     def _process(self, request):
         identifier = self._get(request, 'identifier')
-
         if (identifier == None or (self._entry.get(identifier) == None)):
             identifier = self.__getClientIdentifier(request)
         self._entry.identify(identifier)
@@ -25,5 +24,4 @@ class Identify(base.Action):
         hash.update(self._application.http.clientIp(request).encode('utf-8'))
         hash.update(self._application.random.salt().encode('utf-8'))
         identifier = hash.hexdigest()
-
         return identifier

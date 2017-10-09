@@ -9,6 +9,7 @@ import Trigger from './../actions/trigger';
 import * as Actions from './../actions/types';
 
 import None from './none/main';
+import Preview from './preview/main';
 import Process from './process/main';
 import Result from './result/main';
 
@@ -18,32 +19,27 @@ class Main extends React.Component {
     state: Model.State,
   }
 
-  getScene(status: string) {
+  view(status: string) {
+    if (!status) {
+      return (
+        <None trigger={this.props.trigger}/>
+      );
+    }
+
     switch(status) {
-      case Constants.ACT_STATUS_NONE:
+      case Constants.STATUS_PREVIEW:
         return (
-          <None trigger={this.props.trigger}/>
+          <Preview trigger={this.props.trigger} state={this.props.state}/>
         );
 
-      case Constants.ACT_STATUS_PROCESS:
+      case Constants.STATUS_PROCESS:
         return (
-          <Process
-            trigger={this.props.trigger}
-            task={this.props.state.task}
-            assits={this.props.state.assists}
-            timestamp={this.props.state.entry.timestamp}
-            score={this.props.state.entry.score}
-          />
+          <Process trigger={this.props.trigger} state={this.props.state}/>
         );
 
-      case Constants.ACT_STATUS_RESULT:
+      case Constants.STATUS_RESULT:
         return (
-          <Result
-            trigger={this.props.trigger}
-            task={this.props.state.task}
-            assits={this.props.state.assists}
-            score={this.props.state.entry.score}
-          />
+          <Result trigger={this.props.trigger} state={this.props.state}/>
         );
     }
   }
@@ -57,7 +53,7 @@ class Main extends React.Component {
       <div style={{
         color: Constants.COLOR_MAIN, width: '100vw', height: '100vh',
       }}>{
-        this.getScene(this.props.state.entry.status)
+        this.view(this.props.state.status)
       }</div>
     );
   }

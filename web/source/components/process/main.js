@@ -14,10 +14,7 @@ import ToolBar from './../shared/toolbar';
 export default class Main extends React.Component {
   props: {
     trigger: Trigger,
-    task : Model.Task,
-    assits: Array<string>,
-    timestamp: number,
-    score: number,
+    state: Model.State,
   }
 
   render() {
@@ -26,10 +23,10 @@ export default class Main extends React.Component {
         display: 'flex', flexDirection: 'column', alignItems: 'stretch', justifyContent: 'center',
         height: '100vh',
       }}>
-        <Header score={this.props.score}/>
-        <Image subject={this.props.task.subject} effected={true}/>
-        <ToolBar trigger={this.props.trigger} assits={this.props.assits} timestamp={this.props.timestamp} disabled={false}/>
-        <Grid trigger={this.props.trigger} options={this.props.task.options} option={NaN}/>
+        <Header score={this.props.state.score}/>
+        <Image subject={this.props.state.task.subject} effects={this.props.state.task.effects}/>
+        <ToolBar trigger={this.props.trigger} assists={this.props.state.assists} timestamp={this.props.state.timestamp} disabled={false}/>
+        <Grid trigger={this.props.trigger} options={this.props.state.task.options} option={NaN}/>
       </div>
     );
   }

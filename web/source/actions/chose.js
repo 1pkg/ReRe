@@ -6,25 +6,24 @@ import Trigger from './trigger';
 import * as Actions from './types';
 
 export default (trigger: Trigger, option: string) => {
-  let state: Model.State = trigger.state();
   Axios.get('http://localhost:5000/chose', {
     params: {
-      identifier: state.entry.identifier,
+      identifier: trigger.state().identifier,
       option: option,
     }
   })
   .then((response: any) => {
     let state: Model.State = trigger.state();
-
     state.task.option = response.data.option;
     if (state.task.option == option && response.data.result) {
-      state.entry.score += 1;
+      state.status = Constants.STATUS_PREVIEW;
+      state.score += 1;
       trigger.call(Actions.ACTION_FETCH);
     } else {
-      state.entry.timestamp = NaN;
-      state.entry.status = Constants.ACT_STATUS_RESULT;
+      state.status = Constants.STATUS_RESULT;
+      state.timestamp = NaN;
+      state.effects = [];
     }
-
     trigger.push(Actions.ACTION_CHOSE, state);
   })
   .catch((exception) => console.log(exception));

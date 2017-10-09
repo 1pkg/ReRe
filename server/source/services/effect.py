@@ -12,8 +12,8 @@ class Effect(Db):
 
     def fetchByTaskId(self, taskId):
         return self._fetch("""
-            SELECT option.*, task_option.*, category.name as category FROM effect
+            SELECT * FROM effect
             INNER JOIN task_effect ON task_effect.effect_id = effect.id
             WHERE task_effect.task_id = %(task_id)s
-            ORDER BY ASC
+            ORDER BY RANDOM()
         """, {'task_id': taskId,})

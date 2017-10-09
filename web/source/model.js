@@ -6,27 +6,20 @@ export type Option = {
     references: Array<string>,
 };
 
-export type Subject = {
-    sourcelink: string,
-    sourcealt: string,
-    effects: Array<string>,
-};
-
 export type Task = {
   options: Array<Option>,
-  subject: Subject,
+  subject: string,
+  effects: Array<string>,
   option: number,
-};
-
-export type Entry = {
-  timestamp: number,
-  status: string,
-  score: number,
-  identifier: string,
+  references: Array<string>,
+  stats: Array<string>,
 };
 
 export type State = {
+  identifier: string,
+  timestamp: number,
+  status: string,
   task: Task,
   assists: Array<string>,
-  entry: Entry,
+  score: number,
 };

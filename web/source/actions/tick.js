@@ -3,17 +3,17 @@ import * as Constants from './../constants';
 import Trigger from './trigger';
 import * as Actions from './types';
 
+// todo send chose -1 on expire
 export default (trigger: Trigger, interval: number) => {
   let state: Model.State = trigger.state();
-  if (isNaN(state.entry.timestamp)) {
+  if (isNaN(state.timestamp)) {
     clearInterval(interval);
     return;
   }
-
   let timestamp: number = Math.floor(new Date().getTime() / 1000);
-  if (timestamp - state.entry.timestamp >= Constants.ACT_PROCESS_DURATION) {
-    state.entry.status = Constants.ACT_STATUS_RESULT;
-    state.entry.timestamp = NaN;
+  if (timestamp - state.timestamp >= Constants.PROCESS_DURATION) {
+    state.timestamp = NaN;
+    state.status = Constants.STATUS_RESULT;
   }
   trigger.push(Actions.ACTION_TICK, state);
 }

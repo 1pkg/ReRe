@@ -25,6 +25,7 @@ const Icons = {
 export default class Assit extends React.Component {
   props: {
     name: string,
+    assist: number,
     disabled: boolean,
     use: (event: SyntheticEvent) => void,
   }
@@ -48,7 +49,7 @@ export default class Assit extends React.Component {
         onMouseOver={Effects.hover}
         onMouseOut={Effects.unhover}
         onClick={this.props.use}
-        data-name={this.props.name}
+        data-assist={this.props.assist}
       >
         <HintIcon/>
       </span>
