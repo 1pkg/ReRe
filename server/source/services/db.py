@@ -1,8 +1,7 @@
-import psycopg2.extras
-
 class Db:
     def __init__(self, connection):
         self.__connection = connection
+        self.__result = None
         self.__cursor = None
 
     def _fetch(self, query, params = None):
@@ -15,26 +14,25 @@ class Db:
         self.__close()
         return data
 
-    def _execute(self, query, params, result = False, close = True):
-        self.__open(psycopg2.extras.NamedTupleCursor)
+    def _execute(self, query, params, commit = True):
         self.__open()
         self.__cursor.execute(query, params)
-        data = None
-        if (result):
-            data = self.__cursor.fetchone()[0]
-        if (close):
+        if (commit):
+            if (self.__cursor.rowcount != 0):
+                self.__result = self.__cursor.fetchone()
+            else :
+                self.__result = None
             self.__close()
-        return data
+
+    def _result(self):
+        return self.__result
 
     def _commit(self):
         self.__close()
 
-    def __open(self, factory = None):
-        if (factory == None):
-            factory = psycopg2.extras.RealDictCursor
-
+    def __open(self):
         if (self.__cursor == None):
-            self.__cursor = self.__connection.cursor(cursor_factory = factory)
+            self.__cursor = self.__connection.cursor()
 
     def __close(self):
         if (self.__cursor != None):

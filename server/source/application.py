@@ -1,5 +1,6 @@
 import functools
 import psycopg2
+import psycopg2.extras
 import redis
 import flask
 
@@ -57,7 +58,7 @@ class Application:
                 configs['DB_CONNECTTION']['dbname'],
                 configs['DB_CONNECTTION']['user'],
                 configs['DB_CONNECTTION']['password'],
-            )
+            ), cursor_factory = psycopg2.extras.RealDictCursor
         )
         redisConnection = redis.StrictRedis(
             host=configs['REDIS_CONNECTTION']['host'],
@@ -102,6 +103,7 @@ class Application:
             'use': actions.Use(
                 self,
                 self.__services['entry'],
+                self.__services['assist'],
                 self.__services['reference'],
                 self.__services['task'],
                 self.__services['effect'],

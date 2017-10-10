@@ -5,15 +5,9 @@ class Sequence:
             if (comporator(element)):
                 return i
 
-    def purge(self, data, excesses):
-        if isinstance(data, dict):
-            for excess in excesses:
-                if (excess in data):
-                    del data[excess]
-        if isinstance(data, dict):
-            for key, value in data.items():
-                data[key] = self.purge(value, excesses)
-        elif isinstance(data, list):
-            for i in range(0, len(data)):
-                data[i] = self.purge(data[i], excesses)
-        return data
+    def column(self, sequence, column):
+        result = []
+        for item in sequence:
+            if (column in item):
+                result.append(item[column])
+        return result

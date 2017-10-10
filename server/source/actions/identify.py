@@ -23,5 +23,4 @@ class Identify(base.Action):
         hash.update(self._application.http.clientUserAgent(request).encode('utf-8'))
         hash.update(self._application.http.clientIp(request).encode('utf-8'))
         hash.update(self._application.random.salt().encode('utf-8'))
-        identifier = hash.hexdigest()
-        return identifier
+        return hash.hexdigest()

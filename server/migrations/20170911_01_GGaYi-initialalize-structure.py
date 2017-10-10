@@ -58,20 +58,6 @@ group([
           DROP TYPE IF EXISTS reference_source;
         """,
     ),
-    # assist
-    step(
-        """
-          CREATE TABLE IF NOT EXISTS assist (
-            id SERIAL NOT NULL PRIMARY KEY,
-            name VARCHAR(256) NOT NULL UNIQUE,
-            description TEXT DEFAULT NULL,
-            time_stamp TIMESTAMP NOT NULL DEFAULT NOW()
-          );
-        """,
-        """
-          DROP TABLE IF EXISTS assist;
-        """,
-    )
 ])
 
 group([
@@ -141,6 +127,23 @@ group([
 ])
 
 group([
+    # assist
+    step(
+        """
+          CREATE TABLE IF NOT EXISTS assist (
+            id SERIAL NOT NULL PRIMARY KEY,
+            name VARCHAR(256) NOT NULL UNIQUE,
+            description TEXT DEFAULT NULL,
+            time_stamp TIMESTAMP NOT NULL DEFAULT NOW()
+          );
+        """,
+        """
+          DROP TABLE IF EXISTS assist;
+        """,
+    ),
+])
+
+group([
     # task
     step(
         """
@@ -200,26 +203,6 @@ group([
           DROP TABLE IF EXISTS session;
         """,
     ),
-    # social_user
-    step(
-        """
-          CREATE TABLE IF NOT EXISTS social_user (
-            id SERIAL NOT NULL PRIMARY KEY,
-            facebook_profile VARCHAR(256) DEFAULT NULL,
-            twitter_profile VARCHAR(256) DEFAULT NULL,
-            session_id INT NOT NULL REFERENCES session (id) ON DELETE CASCADE,
-            time_stamp TIMESTAMP NOT NULL DEFAULT NOW(),
-            UNIQUE (facebook_profile, twitter_profile),
-            CHECK (facebook_profile IS NOT NULL OR twitter_profile IS NOT NULL)
-          );
-        """,
-        """
-          DROP TABLE IF EXISTS social_user;
-        """,
-    ),
-])
-
-group([
     # answer
     step(
         """
@@ -237,18 +220,37 @@ group([
           DROP TABLE IF EXISTS answer;
         """,
     ),
-    # social_share
+    # share
     step(
         """
-          CREATE TABLE IF NOT EXISTS social_share (
+          DROP TYPE IF EXISTS share_type;
+          CREATE TYPE share_type AS ENUM ('facebook', 'twitter', 'redit');
+          CREATE TABLE IF NOT EXISTS share (
             id SERIAL NOT NULL PRIMARY KEY,
-            facebook_link VARCHAR(256) DEFAULT NULL,
-            twitter_link VARCHAR(256) DEFAULT NULL,
+            type share_type NOT NULL,
+            source_link VARCHAR(256) DEFAULT NULL,
             answer_id INTEGER NOT NULL REFERENCES answer (id) ON DELETE CASCADE
           );
         """,
         """
-          DROP TABLE IF EXISTS social_share;
+          DROP TABLE IF EXISTS share;
+          DROP TYPE IF EXISTS share_type;
+        """,
+    ),
+])
+
+group([
+    # setting
+    step(
+        """
+          CREATE TABLE IF NOT EXISTS setting (
+            id SERIAL NOT NULL PRIMARY KEY,
+            name VARCHAR(256) NOT NULL UNIQUE,
+            value VARCHAR(256) NOT NULL
+          );
+        """,
+        """
+          DROP TABLE IF EXISTS setting;
         """,
     ),
 ])

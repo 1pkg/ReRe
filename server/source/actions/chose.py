@@ -12,7 +12,9 @@ class Chose(Access):
         option = self._get(request, 'option')
         entry = self._entry.get(identifier)
 
-        if (('status' not in entry) or entry['status'] != self._application.STATUS_PROCESS):
+        if (('status' not in entry) or (
+            entry['status'] != self._application.STATUS_PROCESS
+        )):
             raise errors.Status()
 
         if (option == None or (not option.isdigit())):
@@ -27,6 +29,15 @@ class Chose(Access):
         result = entry['timestamp'] != None and \
             (self._application.datetime.timestamp() - int(entry['timestamp'])) < 30 and \
             int(entry['index']) == option
+        self.__setup(identifier, result)
+
+        return {
+            'option': entry['index'],
+            'result': result,
+        }
+
+    def __setup(self, identifier, result):
+        entry = self._entry.get(identifier)
         entry['timestamp'] = self._application.datetime.timestamp()
         if (result):
             entry['status'] = self._application.STATUS_RESULT_CORRECT
@@ -34,8 +45,3 @@ class Chose(Access):
             entry['status'] = self._application.STATUS_RESULT_FAIL
         entry['score'] += int(result)
         self._entry.set(identifier, entry)
-
-        return {
-            'option': entry['index'],
-            'result': result,
-        }

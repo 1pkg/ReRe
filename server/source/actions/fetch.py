@@ -37,13 +37,13 @@ class Fetch(Access):
             return self.__fetchNew(identifier)
 
     def _apply(self, data):
-        for option in data['options']:
-            option['references'] = self._reference.fetchByOptionId(option['id'], 3)
-
-        self._application.sequence.purge(data, [
-            'category_id', 'option_id', 'parent_category_id',
-            'task_id', 'object_id', 'type', 'is_active'
-        ])
+        data['options'] = [{
+            'name': option['name'],
+            'category': option['category'],
+            'references': self._reference.fetchByOptionId(option['id'])
+        } for option in data['options']]
+        data['subject'] = data['subject']['source_link']
+        data['effects'] = self._application.sequence.column(data['effects'], 'name')
         return super()._apply(data)
 
     def __fetchByLabel(self, identifier, label):
@@ -52,31 +52,24 @@ class Fetch(Access):
             raise errors.Request('label')
         options = self._option.fetchByTaskId(task['id'])
         subject = self._subject.fetchById(task['subject_id'])
-        subject['effects'] = self._effect.fetchByTaskId(task['id'])
+        effects = self._effect.fetchByTaskId(task['id'])
         index = self._application.sequence.index(
             options,
             lambda option: int(option['id']) == int(subject['option_id'])
         )
-        entry = self._entry.get(identifier)
-        entry['timestamp'] = self._application.datetime.timestamp()
-        entry['status'] = self._application.STATUS_PROCESS
-        entry['task'] = task['id']
-        entry['option'] = subject['option_id']
-        entry['index'] = index
-        entry['effects'] = [effect['name'] for effect in effects]
-        self._entry.set(identifier, entry)
+        self.__setup(identifier, task['id'], options, index, effects)
 
         return {
             'options': options,
-            'subject': subject['source_link'],
-            'effects': entry['effects'],
+            'subject': subject,
+            'effects': effects,
         }
 
     def __fetchByRating(self, identifier): # todo
         return self.__fetchByRandom(identifier)
 
     def __fetchByRandom(self, identifier):
-        task = self._task.fetchByRandom()
+        task = self._task.fetchOneByRandom()
         options = self._option.fetchByTaskId(task['id'])
         subject = self._subject.fetchById(task['subject_id'])
         effects = self._effect.fetchByTaskId(task['id'])
@@ -84,43 +77,40 @@ class Fetch(Access):
             options,
             lambda option: int(option['id']) == int(subject['option_id'])
         )
-        entry = self._entry.get(identifier)
-        entry['timestamp'] = self._application.datetime.timestamp()
-        entry['status'] = self._application.STATUS_PROCESS
-        entry['task'] = task['id']
-        entry['option'] = subject['option_id']
-        entry['index'] = index
-        entry['effects'] = [effect['name'] for effect in effects]
-        self._entry.set(identifier, entry)
+        self.__setup(identifier, task['id'], options, index, effects)
 
         return {
             'options': options,
-            'subject': subject['source_link'],
-            'effects': entry['effects'],
+            'subject': subject,
+            'effects': effects,
         }
 
     def __fetchNew(self, identifier):
         options = self._option.fetchByRandom(3)
         index = self._application.random.number(len(options))
-        subject = self._subject.fetchByOptionId(options[index]['id'])
+        subject = self._subject.fetchRandomOneByOptionId(options[index]['id'])
         effects = self._effect.fetchByRandom(2)
         task = self._task.push(
             self._application.random.label(),
             subject['id'],
-            [option['id'] for option in options],
-            [effect['id'] for effect in effects]
+            self._application.sequence.column(options, 'id'),
+            self._application.sequence.column(effects, 'id')
         )
+        self.__setup(identifier, task, options, index, effects)
+
+        return {
+            'options': options,
+            'subject': subject,
+            'effects': effects,
+        }
+
+    def __setup(self, identifier, task, options, index, effects):
         entry = self._entry.get(identifier)
         entry['timestamp'] = self._application.datetime.timestamp()
         entry['status'] = self._application.STATUS_PROCESS
         entry['task'] = task
-        entry['option'] = subject['option_id']
+        entry['options'] = self._application.sequence.column(options, 'id')
         entry['index'] = index
-        entry['effects'] = [effect['name'] for effect in effects]
+        entry['effects'] = self._application.sequence.column(effects, 'id')
+        entry['number'] += 1
         self._entry.set(identifier, entry)
-
-        return {
-            'options': options,
-            'subject': subject['source_link'],
-            'effects': entry['effects'],
-        }

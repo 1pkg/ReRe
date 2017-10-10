@@ -2,7 +2,8 @@ import errors
 from .access import *
 
 class Use(Access):
-    def __init__(self, application, entry, reference, task, effect):
+    def __init__(self, application, entry, assist, reference, task, effect):
+        self._assist = assist
         self._reference = reference
         self._task = task
         self._effect = effect
@@ -14,7 +15,9 @@ class Use(Access):
         assist = self._get(request, 'assist')
         entry = self._entry.get(identifier)
 
-        if (('status' not in entry) or entry['status'] != self._application.STATUS_PROCESS):
+        if (('status' not in entry) or (
+            entry['status'] != self._application.STATUS_PROCESS
+        )):
             raise errors.Status()
 
         if (assist == None or (not assist.isdigit())):
@@ -29,27 +32,27 @@ class Use(Access):
         identifier = self._get(request, 'identifier')
         assist = int(self._get(request, 'assist'))
         entry = self._entry.get(identifier)
-        assistName = entry['assists'][assist]
+        id = entry['assists'][assist]
         del entry['assists'][assist]
         self._entry.set(identifier, entry)
-        method = getattr(Use, ('_Use__' + assistName))
+        method = getattr(Use, ('_Use__' + self._assist.fetchById(id)['name']))
         return method(self, request)
 
     def __redo(self, request):
         identifier = self._get(request, 'identifier')
         entry = self._entry.get(identifier)
         effects = self._effect.fetchByRandom(2)
-        entry['effects'] = [effect['name'] for effect in effects]
+        entry['effects'] = self._application.sequence.column(effects, 'id')
         entry['task'] = self._task.repush(
             self._application.random.label(),
             entry['task'],
-            [effect['id'] for effect in effects]
+            entry['effects']
         )
         self._entry.set(identifier, entry)
 
         return {
             'assist': 'redo',
-            'effects': entry['effects'],
+            'effects': self._application.sequence.column(effects, 'name'),
         }
 
     def __infinite(self, request):
@@ -68,10 +71,11 @@ class Use(Access):
         entry = self._entry.get(identifier)
         entry['effects'].pop()
         self._entry.set(identifier, entry)
+        effects = self._effect.fetchByIds(entry['effects'])
 
         return {
             'assist': 'reduce',
-            'effects': entry['effects'],
+            'effects': self._application.sequence.column(effects, 'name'),
         }
 
     def __stats(self, request): # todo
@@ -95,9 +99,10 @@ class Use(Access):
     def __help(self, request):
         identifier = self._get(request, 'identifier')
         entry = self._entry.get(identifier)
-        references =  self._reference.fetchByOptionId(entry['option'], 3)
+        option = entry['options'][entry['index']]
+        reference =  self._reference.fetchRandomOneByOptionId(option)
 
         return {
             'assist': 'help',
-            'references': references,
+            'reference': reference,
         }

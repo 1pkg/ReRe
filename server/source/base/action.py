@@ -14,9 +14,7 @@ class Action:
         return NotImplemented
 
     def _apply(self, data):
-        return self._application.sequence.purge(data, [
-            'id', 'description', 'time_stamp'
-        ])
+        return data
 
     def _get(self, request, key, default = None):
         if (key in request.args):
