@@ -194,8 +194,10 @@ group([
         """
           CREATE TABLE IF NOT EXISTS session (
             id SERIAL NOT NULL PRIMARY KEY,
+            host VARCHAR(256) NOT NULL,
+            user_agent VARCHAR(256) NOT NULL,
             ip INET NOT NULL,
-            device VARCHAR(256) NOT NULL,
+            identifier VARCHAR(256) NOT NULL,
             time_stamp TIMESTAMP NOT NULL DEFAULT NOW()
           );
         """,
@@ -210,9 +212,8 @@ group([
             id SERIAL NOT NULL PRIMARY KEY,
             order_number SMALLINT NOT NULL,
             is_correct BOOL NOT NULL,
-            liked_status BOOL NOT NULL DEFAULT FALSE,
-            session_id INTEGER NOT NULL REFERENCES session (id) ON DELETE CASCADE,
             chosed_option_id INTEGER NOT NULL REFERENCES option (id) ON DELETE CASCADE,
+            session_id INTEGER NOT NULL REFERENCES session (id) ON DELETE CASCADE,
             time_stamp TIMESTAMP NOT NULL DEFAULT NOW()
           );
         """,
@@ -229,7 +230,9 @@ group([
             id SERIAL NOT NULL PRIMARY KEY,
             type share_type NOT NULL,
             source_link VARCHAR(256) DEFAULT NULL,
-            answer_id INTEGER NOT NULL REFERENCES answer (id) ON DELETE CASCADE
+            task_id INTEGER NOT NULL REFERENCES task (id) ON DELETE CASCADE,
+            session_id INTEGER NOT NULL REFERENCES session (id) ON DELETE CASCADE,
+            time_stamp TIMESTAMP NOT NULL DEFAULT NOW()
           );
         """,
         """

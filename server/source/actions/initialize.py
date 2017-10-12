@@ -1,17 +1,23 @@
 from .access import *
 
 class Initialize(Access):
-    def __init__(self, application, entry, assist):
+    def __init__(self, application, entry, setting, assist):
+        self._setting = setting
         self._assist = assist
         super().__init__(application, entry)
 
+    def _apply(self, data):
+        data['assists'] = self._application.sequence.column(data['assists'], 'name')
+        return super()._apply(data)
+
     def _process(self, request):
-        assists = self._assist.fetchByRandom(3)
+        count = int(self._setting.fetchByName('assists-count')['value'])
+        assists = self._assist.fetchByRandom(count)
         identifier = self._get(request, 'identifier')
         self.__setup(identifier, assists)
 
         return {
-            'assists': self._application.sequence.column(assists, 'name'),
+            'assists': assists,
         }
 
     def __setup(self, identifier, assists):

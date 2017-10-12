@@ -2,11 +2,12 @@ import errors
 from .access import *
 
 class Use(Access):
-    def __init__(self, application, entry, assist, reference, task, effect):
+    def __init__(self, application, entry, setting, assist, reference, effect, task):
+        self._setting = setting
         self._assist = assist
         self._reference = reference
-        self._task = task
         self._effect = effect
+        self._task = task
         super().__init__(application, entry)
 
     def _validate(self, request):
@@ -41,7 +42,8 @@ class Use(Access):
     def __redo(self, request):
         identifier = self._get(request, 'identifier')
         entry = self._entry.get(identifier)
-        effects = self._effect.fetchByRandom(2)
+        count = int(self._setting.fetchByName('effects-count')['value'])
+        effects = self._effect.fetchByRandom(count)
         entry['effects'] = self._application.sequence.column(effects, 'id')
         entry['task'] = self._task.repush(
             self._application.random.label(),
@@ -49,10 +51,11 @@ class Use(Access):
             entry['effects']
         )
         self._entry.set(identifier, entry)
+        effects = self._application.sequence.column(effects, 'name')
 
         return {
             'assist': 'redo',
-            'effects': self._application.sequence.column(effects, 'name'),
+            'effects': effects,
         }
 
     def __infinite(self, request):
@@ -72,10 +75,11 @@ class Use(Access):
         entry['effects'].pop()
         self._entry.set(identifier, entry)
         effects = self._effect.fetchByIds(entry['effects'])
+        effects = self._application.sequence.column(effects, 'name')
 
         return {
             'assist': 'reduce',
-            'effects': self._application.sequence.column(effects, 'name'),
+            'effects': effects,
         }
 
     def __stats(self, request): # todo

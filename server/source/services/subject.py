@@ -1,9 +1,6 @@
 from .db import *
 
 class Subject(Db):
-    def __init__(self, connection):
-        super().__init__(connection)
-
     def fetchById(self, id):
         subject = self._fetch("""
             SELECT * FROM subject

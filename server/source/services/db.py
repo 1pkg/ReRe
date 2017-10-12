@@ -18,7 +18,7 @@ class Db:
         self.__open()
         self.__cursor.execute(query, params)
         if (commit):
-            if (self.__cursor.rowcount != 0):
+            if (self.__cursor.description != None):
                 self.__result = self.__cursor.fetchone()
             else :
                 self.__result = None

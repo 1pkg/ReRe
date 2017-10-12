@@ -1,9 +1,6 @@
 from .db import *
 
 class Reference(Db):
-    def __init__(self, connection):
-        super().__init__(connection)
-
     def fetchById(self, id):
         reference = self._fetch("""
             SELECT * FROM reference

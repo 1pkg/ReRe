@@ -68,45 +68,53 @@ class Application:
 
         self.__services = {
             'entry': services.Entry(redisConnection),
+            'setting': services.Setting(dbConnection),
+            'assist': services.Assist(dbConnection),
             'subject': services.Subject(dbConnection),
             'option': services.Option(dbConnection),
             'reference': services.Reference(dbConnection),
-            'assist': services.Assist(dbConnection),
-            'task': services.Task(dbConnection),
             'effect': services.Effect(dbConnection),
+            'task': services.Task(dbConnection),
+            'session': services.Session(dbConnection),
+            'answer': services.Answer(dbConnection),
         }
 
         self.__actions = {
             'identify': actions.Identify(
                 self,
                 self.__services['entry'],
+                self.__services['session'],
             ),
             'initialize': actions.Initialize(
                 self,
                 self.__services['entry'],
+                self.__services['setting'],
                 self.__services['assist'],
             ),
             'fetch': actions.Fetch(
                 self,
                 self.__services['entry'],
-                self.__services['subject'],
+                self.__services['setting'],
                 self.__services['option'],
                 self.__services['reference'],
-                self.__services['task'],
+                self.__services['subject'],
                 self.__services['effect'],
+                self.__services['task'],
             ),
             'chose': actions.Chose(
                 self,
                 self.__services['entry'],
-                self.__services['task'],
+                self.__services['setting'],
+                self.__services['answer'],
             ),
             'use': actions.Use(
                 self,
                 self.__services['entry'],
                 self.__services['assist'],
+                self.__services['setting'],
                 self.__services['reference'],
-                self.__services['task'],
                 self.__services['effect'],
+                self.__services['task'],
             ),
         }
 

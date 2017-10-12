@@ -1,9 +1,6 @@
 from .db import *
 
 class Option(Db):
-    def __init__(self, connection):
-        super().__init__(connection)
-
     def fetchById(self, id):
         option = self._fetch("""
             SELECT * FROM option

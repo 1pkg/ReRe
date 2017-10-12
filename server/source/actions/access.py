@@ -6,6 +6,10 @@ class Access(base.Action):
         self._entry = entry
         super().__init__(application)
 
+    def _apply(self, data):
+        self._entry.push(self.__identifier)
+        return super()._apply(data)
+
     def _validate(self, request):
         super()._validate(request)
         identifier = self._get(request, 'identifier')
@@ -19,6 +23,7 @@ class Access(base.Action):
         if (self._entry.get(identifier) == None):
             raise errors.Identifier()
 
+        self.__identifier = identifier
         return True
 
     def __hex(self, value):

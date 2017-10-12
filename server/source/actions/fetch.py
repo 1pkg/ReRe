@@ -2,12 +2,13 @@ import errors
 from .access import *
 
 class Fetch(Access):
-    def __init__(self, application, entry, subject, option, reference, task, effect):
-        self._subject = subject
+    def __init__(self, application, entry, setting, option, reference, subject, effect, task):
+        self._setting = setting
         self._option = option
         self._reference = reference
-        self._task = task
+        self._subject = subject
         self._effect = effect
+        self._task = task
         super().__init__(application, entry)
 
     def _validate(self, request):
@@ -86,10 +87,12 @@ class Fetch(Access):
         }
 
     def __fetchNew(self, identifier):
-        options = self._option.fetchByRandom(3)
+        count = int(self._setting.fetchByName('options-count')['value'])
+        options = self._option.fetchByRandom(count)
         index = self._application.random.number(len(options))
         subject = self._subject.fetchRandomOneByOptionId(options[index]['id'])
-        effects = self._effect.fetchByRandom(2)
+        count = int(self._setting.fetchByName('effects-count')['value'])
+        effects = self._effect.fetchByRandom(count)
         task = self._task.push(
             self._application.random.label(),
             subject['id'],
@@ -112,5 +115,5 @@ class Fetch(Access):
         entry['options'] = self._application.sequence.column(options, 'id')
         entry['index'] = index
         entry['effects'] = self._application.sequence.column(effects, 'id')
-        entry['number'] += 1
+        entry['number'] = int(entry['number']) + 1
         self._entry.set(identifier, entry)
