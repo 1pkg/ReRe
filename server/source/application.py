@@ -110,8 +110,8 @@ class Application:
             'use': actions.Use(
                 self,
                 self.__services['entry'],
-                self.__services['assist'],
                 self.__services['setting'],
+                self.__services['assist'],
                 self.__services['reference'],
                 self.__services['effect'],
                 self.__services['task'],

@@ -18,7 +18,6 @@ export default (trigger: Trigger) => {
     state.task = null;
     state.assists = response.data.assists;
     state.score = 0;
-    console.log(state);
     trigger.push(Actions.ACTION_INITIALIZE, state);
     trigger.call(Actions.ACTION_FETCH);
   })

@@ -1,12 +1,9 @@
 // @flow
 
 import React from 'react';
+import Lodash from 'lodash';
 import GLReactImage from 'gl-react-image';
 import * as GlReactDom from 'gl-react-dom';
-import DeepEqual from 'deep-equal';
-
-import * as Model from './../../model';
-import * as Constants from './../../constants';
 
 import Bleached from './../../shaders/bleached';
 import Bloom from './../../shaders/bloom';
@@ -19,6 +16,11 @@ import Ripple from './../../shaders/ripple';
 import Sepia from './../../shaders/sepia';
 import WaveHorizontal from './../../shaders/wave-horizontal';
 import WaveVertical from './../../shaders/wave-vertical';
+
+import * as Model from './../../model';
+import Trigger from './../../actions/trigger';
+import * as Actions from './../../actions/types';
+import * as Constants from './../../constants';
 
 const Effects = {
   [Constants.EFFECT_NAME_BLEACHED]: Bleached,
@@ -34,8 +36,9 @@ const Effects = {
   [Constants.EFFECT_NAME_WAVE_VERTICAL]: WaveVertical,
 };
 
-export default class Image extends React.Component {
+export default class Subject extends React.Component {
   props: {
+    trigger: Trigger,
     subject: string,
     effects: Array<string>,
   }
@@ -46,6 +49,7 @@ export default class Image extends React.Component {
   }
 
   constructor(props: {
+    trigger: Trigger,
     subject: string,
     effects: Array<string>,
   }) {
@@ -54,7 +58,6 @@ export default class Image extends React.Component {
       width: 1,
       height: 1,
     };
-
     window.addEventListener('resize', this.fit.bind(this));
   }
 
@@ -69,8 +72,8 @@ export default class Image extends React.Component {
     width: number,
     height: number,
   }) {
-    return !DeepEqual(props, this.props)
-      || !DeepEqual(state, this.state);
+    return !Lodash.isEqual(props, this.props)
+      || !Lodash.isEqual(state, this.state);
   }
 
   fit() {
@@ -85,57 +88,60 @@ export default class Image extends React.Component {
           height: element.getBoundingClientRect().height,
         };
       }
-
       return state;
     });
   }
 
+  build() {
+    let View: any = null;
+    Lodash.each(this.props.effects, (effect) => {
+      if (!(effect in Effects)) {
+        return;
+      }
+
+      let Effect = Effects[effect]
+      if (!View) {
+        View = (
+          <Effect size={[this.state.width, this.state.height]}>
+            <GLReactImage source={this.props.subject} resizeMode="cover"/>
+          </Effect>
+        )
+      } else {
+        View = (
+          <Effect size={[this.state.width, this.state.height]}>{
+            View
+          }</Effect>
+        )
+      }
+    })
+    return View;
+  }
+
   render() {
-    if (!this.props.effects) {
+    if (this.props.effects.length == 0) {
       return (
         <div style={{
           flexGrow: 1,
           display: 'flex', alignItems: 'center', justifyContent: 'center',
           overflow: 'hidden', maxWidth: '100vw',
         }}>
-          <img src={this.props.subject} style={{
-              flexGrow: 1, objectFit: 'cover',
-          }}/>
+          <img src={this.props.subject} style={{flexGrow: 1, objectFit: 'cover',}}/>
         </div>
-      );
+      )
     }
 
-    let View = null;
-    this.props.effects.forEach((effect) => {
-      if (!(effect in Effects)) {
-        return;
-      }
-
-      let Effect = Effects[effect];
-      if (!View) {
-        View = (
-          <Effect size={[this.state.width, this.state.height]}>
-            <GLReactImage source={this.props.subject} resizeMode="cover"/>
-          </Effect>
-        );
-      } else {
-        View = (
-          <Effect size={[this.state.width, this.state.height]}>{
-            View
-          }</Effect>
-        );
-      }
-    });
-
+    let View: any = this.build();
     return (
       <div style={{
         flexGrow: 1,
         display: 'flex', alignItems: 'center', justifyContent: 'center',
         overflow: 'hidden', maxWidth: '100vw',
       }} data-alias="image-holder">
-        <GlReactDom.Surface width={this.state.width} height={this.state.height} onLoad={this.fit.bind(this)}>{
-          View
-        }</GlReactDom.Surface>
+        <GlReactDom.Surface
+          width={this.state.width}
+          height={this.state.height}
+          onLoad={this.fit.bind(this)}
+        >{View}</GlReactDom.Surface>
       </div>
     );
   }

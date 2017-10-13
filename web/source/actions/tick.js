@@ -10,8 +10,7 @@ export default (trigger: Trigger, interval: number) => {
     clearInterval(interval);
     return;
   }
-  let timestamp: number = Math.floor(new Date().getTime() / 1000);
-  if (timestamp - state.timestamp >= Constants.PROCESS_DURATION) {
+  if (trigger.timestamp() - state.timestamp >= Constants.PROCESS_DURATION) {
     state.timestamp = NaN;
     state.status = Constants.STATUS_RESULT;
   }

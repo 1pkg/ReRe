@@ -1,40 +1,32 @@
 // @flow
 
 import React from 'react';
-import DeepEqual from 'deep-equal';
+import Lodash from 'lodash';
 
 import * as Model from './../../model';
 import Trigger from './../../actions/trigger';
 import * as Actions from './../../actions/types';
+import * as Constants from './../../constants';
 
-import Assit from './assit';
 import Timer from './timer';
+import Assit from './assit';
 
 export default class Toolbar extends React.Component {
   props: {
     trigger: Trigger,
     assists: Array<string>,
     timestamp: number,
-    disabled: boolean,
+    active: boolean,
   }
 
   shouldComponentUpdate(props: {
     trigger: Trigger,
     assists: Array<string>,
     timestamp: number,
-    disabled: boolean,
+    active: boolean,
   }) {
-    let timestamp: number = Math.floor(new Date().getTime() / 1000);
-    return !DeepEqual(props, this.props)
-      || timestamp != this.props.timestamp;
-  }
-
-  use(event: SyntheticEvent) {
-    let target: EventTarget = event.currentTarget;
-    if (target instanceof HTMLElement) {
-      let assist: number = Number.parseInt(target.dataset.assist);
-      this.props.trigger.call(Actions.ACTION_USE, assist);
-    }
+    return !Lodash.isEqual(props, this.props)
+      || this.props.timestamp != this.props.trigger.timestamp();
   }
 
   render() {
@@ -43,10 +35,18 @@ export default class Toolbar extends React.Component {
         display: 'flex', alignItems: 'center', justifyContent: 'space-between',
         fontSize: '2em',
       }}>
-        <Timer timestamp={this.props.timestamp}/>
+        <Timer trigger={this.props.trigger} timestamp={this.props.timestamp}/>
         <div>{
-          this.props.assists.map((assist: string, index: number) => {
-            return <Assit key={index} name={assist} assist={index} use={this.use.bind(this)} disabled={this.props.disabled}/>;
+          Lodash.map(this.props.assists, (assist: string, index: number) => {
+            return (
+              <Assit
+                key={index}
+                trigger={this.props.trigger}
+                name={assist}
+                assist={index}
+                active={this.props.active}
+              />
+            )
           })
         }</div>
       </div>

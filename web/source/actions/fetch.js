@@ -14,7 +14,7 @@ export default (trigger: Trigger) => {
   })
   .then((response: any) => {
     let state: Model.State = trigger.state();
-    state.timestamp = Math.floor(new Date().getTime() / 1000);
+    state.timestamp = trigger.timestamp();
     state.status = Constants.STATUS_PROCESS;
     state.task = {
       options: response.data.options,
@@ -31,7 +31,4 @@ export default (trigger: Trigger) => {
   })
   .catch((exception) => console.log(exception));
   clearInterval(interval);
-  // let state: Model.State = trigger.state();
-  // state.status = Constants.STATUS_PREVIEW;
-  // trigger.push(Actions.ACTION_FETCH, state);
 }

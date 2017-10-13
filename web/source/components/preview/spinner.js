@@ -1,8 +1,9 @@
 // @flow
 
 import React from 'react';
+import Velocity from 'velocity-react/velocity-component';
 
-import ArrowRight from 'react-icons/lib/io/arrow-right-b'
+import Spinner from 'react-icons/lib/io/load-a';
 
 import * as Model from './../../model';
 import Trigger from './../../actions/trigger';
@@ -13,25 +14,17 @@ export default class Start extends React.Component {
   props: {
     trigger: Trigger,
   }
-
+  
   render() {
-    let action: any = this.props.trigger.call.bind(
-      this.props.trigger,
-      Actions.ACTION_INITIALIZE
-    )
     return (
       <div style={{
         alignSelf: 'center', flexGrow: 1,
         display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
         fontWeight: 'bold', fontSize: '4em',
       }}>
-        <div style={{
-          display: 'flex', alignItems: 'center', justifyContent: 'center',
-        }} onClick={action}>
-          <span>START</span>
-          &nbsp;
-          <ArrowRight/>
-        </div>
+        <Velocity animation={{rotateZ: "360deg"}} duration={1000} loop={true} runOnMount={true}>
+          <Spinner/>
+        </Velocity>
       </div>
     );
   }

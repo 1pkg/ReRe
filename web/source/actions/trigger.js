@@ -1,7 +1,7 @@
 // @flow
 
 import * as Redux from 'redux';
-import Clone from 'clone';
+import Lodash from 'lodash';
 
 import * as Model from './../model';
 import * as Actions from './types';
@@ -30,7 +30,7 @@ export default class Trigger {
   }
 
   state(): Model.State {
-    return Clone(this.store.getState());
+    return Lodash.clone(this.store.getState());
   }
 
   call(name: string, ...params: Array<any>) {
@@ -41,8 +41,10 @@ export default class Trigger {
   }
 
   push(name: string, state: Model.State) {
-     setTimeout(() => {
-       this.store.dispatch({type: name, state});
-     }, 0);
+     this.store.dispatch({type: name, state});
+  }
+
+  timestamp(): number {
+    return Math.floor(new Date().getTime() / 1000);
   }
 }
