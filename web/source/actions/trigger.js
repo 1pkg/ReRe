@@ -1,50 +1,86 @@
 // @flow
 
-import * as Redux from 'redux';
-import Lodash from 'lodash';
+import * as Redux from 'redux'
+import Lodash from 'lodash'
 
-import * as Model from './../model';
-import * as Actions from './types';
+import * as Model from './../model'
 
-import Tick from './tick';
-import Identify from './identify';
-import Initialize from './initialize';
-import Fetch from './fetch';
-import Chose from './chose';
-import Use from './use';
+import Tick from './tick'
+import Identify from './identify'
+import Initialize from './initialize'
+import Fetch from './fetch'
+import Chose from './chose'
+import Use from './use'
 
 export default class Trigger {
-  actions: Map<string, (trigger: Trigger, params: Array<any>) => void>;
-  store: Redux.Store;
-
-  constructor(store: Redux.Store) {
-    this.store = store;
-
-    this.actions = new Map();
-    this.actions.set(Actions.ACTION_TICK, Tick);
-    this.actions.set(Actions.ACTION_IDENTIFY, Identify);
-    this.actions.set(Actions.ACTION_INITIALIZE, Initialize);
-    this.actions.set(Actions.ACTION_FETCH, Fetch);
-    this.actions.set(Actions.ACTION_CHOSE, Chose);
-    this.actions.set(Actions.ACTION_USE, Use);
-  }
-
-  state(): Model.State {
-    return Lodash.clone(this.store.getState());
-  }
-
-  call(name: string, ...params: Array<any>) {
-    if (this.actions.has(name)) {
-      let action: any = this.actions.get(name);
-      action(this, ...params);
+    actions: {
+        [string]: (trigger: Trigger, params: Array<any>) => void,
     }
-  }
+    store: Redux.Store
+    interval: number
 
-  push(name: string, state: Model.State) {
-     this.store.dispatch({type: name, state});
-  }
+    static get ACTION_TICK(): string {
+        return 'action-tick'
+    }
 
-  timestamp(): number {
-    return Math.floor(new Date().getTime() / 1000);
-  }
+    static get ACTION_IDENTIFY(): string {
+        return 'action-identify'
+    }
+
+    static get ACTION_INITIALIZE(): string {
+        return 'action-initialize'
+    }
+
+    static get ACTION_FETCH(): string {
+        return 'action-fetch'
+    }
+
+    static get ACTION_CHOSE(): string {
+        return 'action-chose'
+    }
+
+    static get ACTION_USE(): string {
+        return 'action-use'
+    }
+
+    constructor(store: Redux.Store): void {
+        this.store = store
+        this.actions = {
+            [Trigger.ACTION_TICK]: Tick,
+            [Trigger.ACTION_IDENTIFY]: Identify,
+            [Trigger.ACTION_INITIALIZE]: Initialize,
+            [Trigger.ACTION_FETCH]: Fetch,
+            [Trigger.ACTION_CHOSE]: Chose,
+            [Trigger.ACTION_USE]: Use,
+        }
+    }
+
+    state(): Model.State {
+        return Lodash.clone(this.store.getState())
+    }
+
+    call(name: string, ...params: Array<any>): void {
+        if (name in this.actions) {
+            this.actions[name](this, ...params)
+        }
+    }
+
+    push(name: string, state: Model.State): void {
+        this.store.dispatch({
+            type: name,
+            state,
+        })
+    }
+
+    timestamp(): number {
+        return Math.floor(new Date().getTime() / 1000)
+    }
+
+    run(task: () => void): void {
+        setInterval(task, 1000)
+    }
+
+    stop(): void {
+        clearInterval(this.interval)
+    }
 }

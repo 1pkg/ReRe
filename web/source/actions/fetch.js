@@ -1,34 +1,32 @@
-import Axios from 'axios';
+import Axios from 'axios'
 
-import * as Model from './../model';
-import * as Constants from './../constants';
-import Trigger from './trigger';
-import * as Actions from './types';
+import * as Model from './../model'
+import Trigger from './trigger'
+import * as Constants from './../constants'
 
-let interval: number = 0;
 export default (trigger: Trigger) => {
-  Axios.get('http://localhost:5000/fetch', {
-    params: {
-      identifier: trigger.state().identifier,
-    }
-  })
-  .then((response: any) => {
-    let state: Model.State = trigger.state();
-    state.timestamp = trigger.timestamp();
-    state.status = Constants.STATUS_PROCESS;
-    state.task = {
-      options: response.data.options,
-      subject: response.data.subject,
-      effects: response.data.effects,
-      option: NaN,
-      references: [],
-      stats: [],
-    };
-    trigger.push(Actions.ACTION_FETCH, state);
-    interval = setInterval(() => {
-      trigger.call(Actions.ACTION_TICK, interval);
-    }, 1000);
-  })
-  .catch((exception) => console.log(exception));
-  clearInterval(interval);
+    trigger.stop()
+    Axios.get('http://localhost:5000/fetch', {
+        params: {
+            identifier: trigger.state().identifier,
+        },
+    })
+        .then((response: any) => {
+            let state: Model.State = trigger.state()
+            state.entry.timestamp = trigger.timestamp()
+            state.entry.status = Constants.STATUS_PROCESS
+            state.task = {
+                options: response.data.options,
+                option: NaN,
+
+                subject: response.data.subject,
+                effects: response.data.effects,
+
+                reference: null,
+                statistic: [],
+            }
+            trigger.push(Trigger.ACTION_FETCH, state)
+            trigger.run(() => trigger.call(Trigger.ACTION_TICK))
+        })
+        .catch(exception => console.log(exception))
 }

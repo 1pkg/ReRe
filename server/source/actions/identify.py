@@ -20,6 +20,7 @@ class Identify(base.Action):
 
         return {
             'identifier': identifier,
+            'settings': {'duration': 30,},
         }
 
     def __make(self, host, userAgent, ip):

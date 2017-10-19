@@ -1,5 +1,7 @@
 [ignore]
 .*/build/.*
+.*/gl-react/.*
+.*/gl-react-dom/.*
 .*/gl-react-image/.*
 
 [include]
@@ -11,3 +13,4 @@ flow-typed
 [lints]
 
 [options]
+unsafe.enable_getters_and_setters=true

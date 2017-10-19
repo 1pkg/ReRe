@@ -1,25 +1,25 @@
 // @flow
 
-import React from 'react';
-import * as GlReact from 'gl-react';
+import React from 'react'
+import * as GlReact from 'gl-react'
 
-import Shaders from './shaders';
+import Shaders from './../shaders'
 
-export default class Bleached extends React.Component {
-  props: {
+type Props = {
     size: [number, number],
     children: GlReact.Node,
-  }
+}
 
-  render() {
-    return (
-      <GlReact.Node
-        shader={Shaders.saturation}
-        uniforms={{
-          factor: 0.0,
-          texture: this.props.children,
-        }}
-      />
-    );
-  }
+export default class Bleached extends React.Component<Props> {
+    render() {
+        return (
+            <GlReact.Node
+                shader={Shaders.saturation}
+                uniforms={{
+                    factor: 0.0,
+                    texture: this.props.children,
+                }}
+            />
+        )
+    }
 }

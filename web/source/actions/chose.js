@@ -1,30 +1,35 @@
-import Axios from 'axios';
+import Axios from 'axios'
 
-import * as Model from './../model';
-import * as Constants from './../constants';
-import Trigger from './trigger';
-import * as Actions from './types';
+import * as Model from './../model'
+import Trigger from './trigger'
+import * as Constants from './../constants'
 
-export default (trigger: Trigger, option: string) => {
-  Axios.get('http://localhost:5000/chose', {
-    params: {
-      identifier: trigger.state().identifier,
-      option: option,
-    }
-  })
-  .then((response: any) => {
-    let state: Model.State = trigger.state();
-    state.task.option = response.data.option;
-    if (state.task.option == option && response.data.result) {
-      state.status = Constants.STATUS_PREVIEW;
-      state.score += 1;
-      trigger.call(Actions.ACTION_FETCH);
-    } else {
-      state.status = Constants.STATUS_RESULT;
-      state.timestamp = NaN;
-      state.effects = [];
-    }
-    trigger.push(Actions.ACTION_CHOSE, state);
-  })
-  .catch((exception) => console.log(exception));
+export default (trigger: Trigger, option: number) => {
+    Axios.get('http://localhost:5000/chose', {
+        params: {
+            identifier: trigger.state().identifier,
+            option: option,
+        },
+    })
+        .then((response: any) => {
+            let state: Model.State = trigger.state()
+            if (response.data.result) {
+                state.entry.timestamp = NaN
+                state.entry.status = Constants.STATUS_PREVIEW
+                state.entry.number += 1
+                state.entry.score += 1
+
+                trigger.call(Trigger.ACTION_FETCH)
+            } else {
+                state.entry.timestamp = NaN
+                state.entry.status = Constants.STATUS_RESULT
+
+                state.task.option = NaN
+                state.task.effects = []
+
+                state.task.option = response.data.option
+            }
+            trigger.push(Trigger.ACTION_CHOSE, state)
+        })
+        .catch(exception => console.log(exception))
 }

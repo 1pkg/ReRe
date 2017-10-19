@@ -1,25 +1,41 @@
 // @flow
 
+export type Reference = {
+    link: string,
+    message: string,
+}
+
 export type Option = {
     name: string,
     category: string,
-    references: Array<string>,
-};
+    reference: Reference,
+}
 
 export type Task = {
-  options: Array<Option>,
-  subject: string,
-  effects: Array<string>,
-  option: number,
-  references: Array<string>,
-  stats: Array<string>,
-};
+    options: Array<Option>,
+    option: number,
+
+    subject: string,
+    effects: Array<string>,
+
+    reference: ?Reference,
+    statistic: Array<number>,
+}
+
+export type Entry = {
+    timestamp: number,
+    status: string,
+    number: number,
+    score: number,
+
+    assists: Array<string>,
+}
 
 export type State = {
-  identifier: string,
-  timestamp: number,
-  status: string,
-  task: Task,
-  assists: Array<string>,
-  score: number,
-};
+    identifier: string,
+    settings: {
+        [string]: string,
+    },
+    entry: ?Entry,
+    task: ?Task,
+}

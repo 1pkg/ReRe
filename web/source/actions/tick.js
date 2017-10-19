@@ -1,18 +1,19 @@
-import * as Model from './../model';
-import * as Constants from './../constants';
-import Trigger from './trigger';
-import * as Actions from './types';
+import * as Model from './../model'
+import Trigger from './trigger'
+import * as Constants from './../constants'
 
-// todo send chose -1 on expire
 export default (trigger: Trigger, interval: number) => {
-  let state: Model.State = trigger.state();
-  if (isNaN(state.timestamp)) {
-    clearInterval(interval);
-    return;
-  }
-  if (trigger.timestamp() - state.timestamp >= Constants.PROCESS_DURATION) {
-    state.timestamp = NaN;
-    state.status = Constants.STATUS_RESULT;
-  }
-  trigger.push(Actions.ACTION_TICK, state);
+    let state: Model.State = trigger.state()
+    if (isNaN(state.entry.timestamp)) {
+        trigger.stop()
+        return
+    }
+    if (
+        trigger.timestamp() - state.entry.timestamp >=
+        state.settings[Constants.SETTING_DURATION]
+    ) {
+        trigger.call(Trigger.ACTION_CHOSE, -1)
+        state.entry.timestamp = NaN
+    }
+    trigger.push(Trigger.ACTION_TICK, state)
 }

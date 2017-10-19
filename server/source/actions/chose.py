@@ -18,7 +18,7 @@ class Chose(Access):
         )):
             raise errors.Status()
 
-        if (option == None or (not option.isdigit())):
+        if (option == None or (not option.lstrip('-').isdigit())):
             raise errors.Request('option')
 
         return True
