@@ -28,8 +28,8 @@ class Chose(Access):
         option = int(self._get(request, 'option'))
         duration = int(self._setting.fetchByName('timestamp-duration')['value'])
         entry = self._entry.get(identifier)
-        result = entry['timestamp'] != None and \
-            (self._application.datetime.timestamp() - int(entry['timestamp'])) < duration and \
+        result = (entry['timestamp'] == None or \
+            (self._application.datetime.timestamp() - int(entry['timestamp'])) < duration) and \
             int(entry['index']) == option
         self._answer.push(int(entry['number']), result, int(entry['options'][option]), identifier)
         self.__setup(identifier, result)

@@ -3,9 +3,10 @@ import hashlib
 import base
 
 class Identify(base.Action):
-    def __init__(self, application, entry, session):
+    def __init__(self, application, entry, setting, session):
         self._entry = entry
         self._session = session
+        self._setting = setting
         super().__init__(application)
 
     def _process(self, request):
@@ -17,10 +18,15 @@ class Identify(base.Action):
             identifier = self.__make(host, userAgent, ip)
             self._session.push(host, userAgent, ip, identifier)
             self._entry.identify(identifier)
+        duration = self._setting.fetchByName('timestamp-duration')['value']
+        expire = self._setting.fetchByName('session-expire')['value']
 
         return {
             'identifier': identifier,
-            'settings': {'duration': 30,},
+            'settings': {
+                'timestamp-duration': duration,
+                'session-expire': expire,
+            },
         }
 
     def __make(self, host, userAgent, ip):

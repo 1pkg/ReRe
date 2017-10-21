@@ -17,6 +17,7 @@ export default class Start extends React.Component<Props> {
         let action: any = this.props.trigger.call.bind(
             this.props.trigger,
             Trigger.ACTION_INITIALIZE,
+            '',
         )
         return (
             <div

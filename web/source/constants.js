@@ -23,4 +23,5 @@ export const EFFECT_NAME_SEPIA: string = 'sepia'
 export const EFFECT_NAME_WAVE_HORIZONTAL: string = 'wave-horizontal'
 export const EFFECT_NAME_WAVE_VERTICAL: string = 'wave-vertical'
 
-export const SETTING_DURATION: string = 'duration'
+export const SETTING_TIMESTAMP_DURATION: string = 'timestamp-duration'
+export const SETTING_SESSION_EXPIRE: string = 'session-expire'

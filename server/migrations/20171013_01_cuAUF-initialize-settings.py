@@ -11,7 +11,7 @@ steps = [
         """
           INSERT INTO setting (name, value) VALUES
           ('assists-count', '2'), ('options-count', '3'), ('effects-count', '3'),
-          ('timestamp-duration', '30');
+          ('timestamp-duration', '30'), ('session-expire', '3600');
         """
     )
 ]

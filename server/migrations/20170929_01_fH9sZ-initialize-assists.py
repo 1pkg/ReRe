@@ -10,7 +10,7 @@ steps = [
     step(
         """
           INSERT INTO assist (name) VALUES
-          ('redo'), ('infinite'), ('reduce'), ('stats'), ('skip'), ('help');  
+          ('redo'), ('infinite'), ('reduce'), ('statistic'), ('skip'), ('help');  
         """
     )
 ]

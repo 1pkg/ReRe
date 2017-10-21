@@ -49,10 +49,11 @@ export default class Main extends React.Component<Props> {
                     trigger={this.props.trigger}
                     assists={this.props.state.entry.assists}
                     duration={
-                        Constants.SETTING_DURATION in this.props.state.settings
+                        Constants.SETTING_TIMESTAMP_DURATION in
+                        this.props.state.settings
                             ? Number(
                                   this.props.state.settings[
-                                      Constants.SETTING_DURATION
+                                      Constants.SETTING_TIMESTAMP_DURATION
                                   ],
                               )
                             : NaN

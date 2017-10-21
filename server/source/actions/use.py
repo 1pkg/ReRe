@@ -45,8 +45,9 @@ class Use(Access):
         count = int(self._setting.fetchByName('effects-count')['value'])
         effects = self._effect.fetchByRandom(count)
         entry['effects'] = self._application.sequence.column(effects, 'id')
+        label = self._application.random.label()
         entry['task'] = self._task.repush(
-            self._application.random.label(),
+            label,
             entry['task'],
             entry['effects']
         )
@@ -55,6 +56,7 @@ class Use(Access):
 
         return {
             'assist': 'redo',
+            'label': label,
             'effects': effects,
         }
 
@@ -82,10 +84,10 @@ class Use(Access):
             'effects': effects,
         }
 
-    def __stats(self, request): # todo
+    def __statistic(self, request): # todo
         return {
-            'assist': 'stats',
-            'stats': [],
+            'assist': 'statistic',
+            'statistic': [],
         }
 
     def __skip(self, request):
@@ -95,10 +97,8 @@ class Use(Access):
         self._entry.set(identifier, entry)
         task = self._application.call('fetch', request)
 
-        return {
-            'assist': 'skip',
-            'task': task,
-        }
+        task.update({'assist': 'skip',})
+        return task
 
     def __help(self, request):
         identifier = self._get(request, 'identifier')

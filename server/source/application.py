@@ -83,6 +83,7 @@ class Application:
             'identify': actions.Identify(
                 self,
                 self.__services['entry'],
+                self.__services['setting'],
                 self.__services['session'],
             ),
             'initialize': actions.Initialize(

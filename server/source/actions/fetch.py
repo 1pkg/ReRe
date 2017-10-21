@@ -27,8 +27,8 @@ class Fetch(Access):
 
     def _process(self, request):
         identifier = self._get(request, 'identifier')
-        label = self._get(request, 'label')
-        if (label != None):                        # directly
+        label = self._get(request, 'label', '')
+        if (label != ''):                          # directly
             return self.__fetchByLabel(identifier, label)
         elif (self._application.random.roll(0.5)): # 50%
             return self.__fetchByRating(identifier)
@@ -64,6 +64,7 @@ class Fetch(Access):
             'options': options,
             'subject': subject,
             'effects': effects,
+            'label': label,
         }
 
     def __fetchByRating(self, identifier): # todo
@@ -78,12 +79,14 @@ class Fetch(Access):
             options,
             lambda option: int(option['id']) == int(subject['option_id'])
         )
+        label = task['label']
         self.__setup(identifier, task['id'], options, index, effects)
 
         return {
             'options': options,
             'subject': subject,
             'effects': effects,
+            'label': label,
         }
 
     def __fetchNew(self, identifier):
@@ -99,12 +102,14 @@ class Fetch(Access):
             self._application.sequence.column(options, 'id'),
             self._application.sequence.column(effects, 'id')
         )
+        label = self._task.fetchById(task)['label']
         self.__setup(identifier, task, options, index, effects)
 
         return {
             'options': options,
             'subject': subject,
             'effects': effects,
+            'label': label,
         }
 
     def __setup(self, identifier, task, options, index, effects):

@@ -5,6 +5,7 @@ import Lodash from 'lodash'
 
 import * as Model from './../model'
 
+import Restore from './restore'
 import Tick from './tick'
 import Identify from './identify'
 import Initialize from './initialize'
@@ -13,39 +14,24 @@ import Chose from './chose'
 import Use from './use'
 
 export default class Trigger {
+    static +ACTION_RESTORE = 'action-restore'
+    static +ACTION_TICK = 'action-tick'
+    static +ACTION_IDENTIFY = 'action-identify'
+    static +ACTION_INITIALIZE = 'action-initialize'
+    static +ACTION_FETCH = 'action-fetch'
+    static +ACTION_CHOSE = 'action-chose'
+    static +ACTION_USE = 'action-use'
+
     actions: {
-        [string]: (trigger: Trigger, params: Array<any>) => void,
+        [string]: (trigger: Trigger, params: Array<any>) => Promise<any>,
     }
     store: Redux.Store
     interval: number
 
-    static get ACTION_TICK(): string {
-        return 'action-tick'
-    }
-
-    static get ACTION_IDENTIFY(): string {
-        return 'action-identify'
-    }
-
-    static get ACTION_INITIALIZE(): string {
-        return 'action-initialize'
-    }
-
-    static get ACTION_FETCH(): string {
-        return 'action-fetch'
-    }
-
-    static get ACTION_CHOSE(): string {
-        return 'action-chose'
-    }
-
-    static get ACTION_USE(): string {
-        return 'action-use'
-    }
-
     constructor(store: Redux.Store): void {
         this.store = store
         this.actions = {
+            [Trigger.ACTION_RESTORE]: Restore,
             [Trigger.ACTION_TICK]: Tick,
             [Trigger.ACTION_IDENTIFY]: Identify,
             [Trigger.ACTION_INITIALIZE]: Initialize,
@@ -59,10 +45,11 @@ export default class Trigger {
         return Lodash.clone(this.store.getState())
     }
 
-    call(name: string, ...params: Array<any>): void {
+    call(name: string, ...params: Array<any>): Promise<any> {
         if (name in this.actions) {
-            this.actions[name](this, ...params)
+            return this.actions[name](this, ...params)
         }
+        return new Promise((resolve, reject) => reject())
     }
 
     push(name: string, state: Model.State): void {
@@ -82,5 +69,11 @@ export default class Trigger {
 
     stop(): void {
         clearInterval(this.interval)
+    }
+
+    archivate(label: string): void {
+        if (history) {
+            history.pushState({}, '', '/?task=' + label)
+        }
     }
 }

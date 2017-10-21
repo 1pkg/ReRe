@@ -50,6 +50,10 @@ type State = {
 export default class Subject extends React.Component<Props, State> {
     fit = () => {
         this.setState((state: State) => {
+            setTimeout(() => {
+                this.forceUpdate()
+            })
+
             let element = ReactDOM.findDOMNode(this)
             if (element instanceof Element) {
                 return {
@@ -58,9 +62,6 @@ export default class Subject extends React.Component<Props, State> {
                 }
             }
             return state
-        })
-        setTimeout(() => {
-            this.forceUpdate()
         })
     }
 
