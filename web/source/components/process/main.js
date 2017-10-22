@@ -10,6 +10,7 @@ import Header from './../shared/header'
 import Grid from './../shared/grid'
 import Subject from './../shared/subject'
 import ToolBar from './../shared/toolbar'
+import Refence from './../shared/refence'
 
 type Props = {
     trigger: Trigger,
@@ -24,6 +25,17 @@ export default class Main extends React.Component<Props> {
             !this.props.state.task
         ) {
             return null
+        }
+
+        let RefenceElement: any = null
+        if (this.props.state.task.reference) {
+            RefenceElement = (
+                <Refence
+                    trigger={this.props.trigger}
+                    message={this.props.state.task.reference.message}
+                    link={this.props.state.task.reference.link}
+                />
+            )
         }
 
         return (
@@ -61,6 +73,7 @@ export default class Main extends React.Component<Props> {
                     timestamp={this.props.state.entry.timestamp}
                     active={true}
                 />
+                {RefenceElement}
                 <Grid
                     trigger={this.props.trigger}
                     options={this.props.state.task.options}

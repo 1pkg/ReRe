@@ -1,14 +1,14 @@
 // @flow
 
-export type Reference = {
-    link: string,
-    message: string,
-}
-
 export type Option = {
     name: string,
     category: string,
-    reference: Reference,
+    hint: string,
+}
+
+export type Reference = {
+    link: string,
+    message: string,
 }
 
 export type Task = {

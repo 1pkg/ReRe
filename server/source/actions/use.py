@@ -105,6 +105,10 @@ class Use(Access):
         entry = self._entry.get(identifier)
         option = entry['options'][entry['index']]
         reference =  self._reference.fetchRandomOneByOptionId(option)
+        reference = {
+            'message': reference['message'],
+            'link': reference['link']
+        }
 
         return {
             'assist': 'help',

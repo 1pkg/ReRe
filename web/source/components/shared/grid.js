@@ -55,6 +55,7 @@ export default class Grid extends React.Component<Props> {
                                     key={index}
                                     trigger={this.props.trigger}
                                     option={index}
+                                    hint={option.hint}
                                     result={result}
                                 >
                                     {option.name}

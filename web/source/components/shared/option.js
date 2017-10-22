@@ -1,10 +1,12 @@
 // @flow
 
 import React from 'react'
+import Tooltip from 'react-tooltip'
 import Lodash from 'lodash'
 
-import Checkmark from 'react-icons/lib/io/checkmark-round'
-import Close from 'react-icons/lib/io/close-round'
+import Help from 'react-icons/lib/io/help-circled'
+import Checkmark from 'react-icons/lib/io/checkmark-circled'
+import Close from 'react-icons/lib/io/close-circled'
 
 import * as Model from './../../model'
 import Trigger from './../../actions/trigger'
@@ -15,26 +17,33 @@ type Props = {
     trigger: Trigger,
     children: string,
     option: number,
+    hint: string,
     result: ?boolean,
 }
 
 export default class Option extends React.Component<Props> {
+    chose = () => {
+        this.props.trigger.call(Trigger.ACTION_CHOSE, this.props.option)
+    }
+
     render() {
         if (Lodash.isNil(this.props.result)) {
-            let action: any = this.props.trigger.call.bind(
-                this.props.trigger,
-                Trigger.ACTION_CHOSE,
-                this.props.option,
-            )
             return (
                 <div
                     style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
                         padding: '0.2em 0em 0.2em 0em',
-                        color: Colors.COLOR_MAIN,
                     }}
-                    onClick={action}
                 >
-                    {this.props.children}
+                    <span onClick={this.chose}>{this.props.children}</span>
+                    &nbsp;
+                    <Help
+                        data-tip={this.props.hint}
+                        style={{ color: Colors.COLOR_VAGUE }}
+                    />
+                    <Tooltip effect="solid" place="right" />
                 </div>
             )
         } else if (this.props.result) {
@@ -45,12 +54,11 @@ export default class Option extends React.Component<Props> {
                         alignItems: 'center',
                         justifyContent: 'center',
                         padding: '0.2em 0em 0.2em 0em',
-                        color: Colors.COLOR_CORRECT,
                     }}
                 >
                     <span>{this.props.children}</span>
                     &nbsp;
-                    <Checkmark />
+                    <Checkmark style={{ color: Colors.COLOR_POSTIVE }} />
                 </div>
             )
         } else {
@@ -61,12 +69,11 @@ export default class Option extends React.Component<Props> {
                         alignItems: 'center',
                         justifyContent: 'center',
                         padding: '0.2em 0em 0.2em 0em',
-                        color: Colors.COLOR_FAIL,
                     }}
                 >
                     <span>{this.props.children}</span>
                     &nbsp;
-                    <Close />
+                    <Close style={{ color: Colors.COLOR_NEGATIVE }} />
                 </div>
             )
         }

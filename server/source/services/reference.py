@@ -18,12 +18,6 @@ class Reference(Db):
             WHERE id IN (%(ids)s)
         """, {'ids': ','.join([str(id) for id in ids]),})
 
-    def fetchByOptionId(self, optionId):
-        return self._fetch("""
-            SELECT * FROM reference
-            WHERE option_id = %(option_id)s
-        """, {'option_id': optionId,})
-
     def fetchRandomOneByOptionId(self, optionId):
         reference = self._fetch("""
             SELECT * FROM reference

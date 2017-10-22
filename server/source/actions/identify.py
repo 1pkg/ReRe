@@ -12,11 +12,11 @@ class Identify(base.Action):
     def _process(self, request):
         identifier = self._get(request, 'identifier')
         if (identifier == None or (self._entry.get(identifier) == None)):
-            host = self._application.http.clientHost(request)
-            userAgent = self._application.http.clientUserAgent(request)
-            ip = self._application.http.clientIp(request)
-            identifier = self.__make(host, userAgent, ip)
-            self._session.push(host, userAgent, ip, identifier)
+            userHost = self._application.http.userHost(request)
+            userAgent = self._application.http.userAgent(request)
+            userIp = self._application.http.userIp(request)
+            identifier = self.__make(userHost, userAgent, userIp)
+            self._session.push(userHost, userAgent, userIp, identifier)
             self._entry.identify(identifier)
         duration = self._setting.fetchByName('timestamp-duration')['value']
         expire = self._setting.fetchByName('session-expire')['value']
@@ -29,10 +29,10 @@ class Identify(base.Action):
             },
         }
 
-    def __make(self, host, userAgent, ip):
+    def __make(self, userHost, userAgent, userIp):
         hash = hashlib.md5()
-        hash.update(host.encode('utf-8'))
+        hash.update(userHost.encode('utf-8'))
         hash.update(userAgent.encode('utf-8'))
-        hash.update(ip.encode('utf-8'))
+        hash.update(userIp.encode('utf-8'))
         hash.update(self._application.random.salt().encode('utf-8'))
         return hash.hexdigest()

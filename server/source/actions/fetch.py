@@ -41,9 +41,9 @@ class Fetch(Access):
         data['options'] = [{
             'name': option['name'],
             'category': option['category'],
-            'references': self._reference.fetchByOptionId(option['id'])
+            'hint': option['hint'],
         } for option in data['options']]
-        data['subject'] = data['subject']['source_link']
+        data['subject'] = data['subject']['link']
         data['effects'] = self._application.sequence.column(data['effects'], 'name')
         return super()._apply(data)
 

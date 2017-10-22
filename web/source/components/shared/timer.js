@@ -56,8 +56,8 @@ export default class Timer extends React.Component<Props> {
                             fontSize: '0.5em',
                             color:
                                 difftimestamp >= this.props.duration * 0.5
-                                    ? Colors.COLOR_MAIN
-                                    : Colors.COLOR_FAIL,
+                                    ? Colors.COLOR_POSTIVE
+                                    : Colors.COLOR_NEGATIVE,
                         }}
                     >
                         {difftimestamp}

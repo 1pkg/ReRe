@@ -123,7 +123,7 @@ export default class Subject extends React.Component<Props, State> {
                     style={{
                         flexGrow: 1,
                         display: 'flex',
-                        alignItems: 'center',
+                        alignItems: 'stretch',
                         justifyContent: 'center',
                         overflow: 'hidden',
                         maxWidth: '100vw',
@@ -137,13 +137,12 @@ export default class Subject extends React.Component<Props, State> {
             )
         }
 
-        let View: any = this.build()
         return (
             <div
                 style={{
                     flexGrow: 1,
                     display: 'flex',
-                    alignItems: 'center',
+                    alignItems: 'stretch',
                     justifyContent: 'center',
                     overflow: 'hidden',
                     maxWidth: '100vw',
@@ -154,7 +153,7 @@ export default class Subject extends React.Component<Props, State> {
                     height={this.state.height}
                     onLoad={this.fit}
                 >
-                    {View}
+                    {this.build()}
                 </GlReactDom.Surface>
             </div>
         )

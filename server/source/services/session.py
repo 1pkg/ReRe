@@ -29,8 +29,8 @@ class Session(Db):
         else:
             return None
 
-    def push(self, host, userAgent, ip, identifier):
+    def push(self, userHost, userAgent, userIp, identifier):
         self._execute("""
-            INSERT INTO session (host, user_agent, ip, identifier)
-            VALUES (%(host)s, %(user_agent)s, %(ip)s, %(identifier)s)
-        """, {'host': host, 'user_agent': userAgent, 'ip': ip, 'identifier': identifier,})
+            INSERT INTO session (user_host, user_agent, user_ip, identifier)
+            VALUES (%(user_host)s, %(user_agent)s, %(user_ip)s, %(identifier)s)
+        """, {'user_host': userHost, 'user_agent': userAgent, 'user_ip': userIp, 'identifier': identifier,})
