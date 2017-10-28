@@ -6,21 +6,21 @@ import Lodash from 'lodash'
 import GLReactImage from 'gl-react-image'
 import * as GlReactDom from 'gl-react-dom'
 
-import Bleached from './../../shaders/bleached'
-import Bloom from './../../shaders/bloom'
-import BlurHorizontal from './../../shaders/blur-horizontal'
-import BlurVertical from './../../shaders/blur-vertical'
-import Crosshatch from './../../shaders/crosshatch'
-import Funnel from './../../shaders/funnel'
-import Pixelation from './../../shaders/pixelation'
-import Ripple from './../../shaders/ripple'
-import Sepia from './../../shaders/sepia'
-import WaveHorizontal from './../../shaders/wave-horizontal'
-import WaveVertical from './../../shaders/wave-vertical'
+import Bleached from './../../../shaders/bleached'
+import Bloom from './../../../shaders/bloom'
+import BlurHorizontal from './../../../shaders/blur-horizontal'
+import BlurVertical from './../../../shaders/blur-vertical'
+import Crosshatch from './../../../shaders/crosshatch'
+import Funnel from './../../../shaders/funnel'
+import Pixelation from './../../../shaders/pixelation'
+import Ripple from './../../../shaders/ripple'
+import Sepia from './../../../shaders/sepia'
+import WaveHorizontal from './../../../shaders/wave-horizontal'
+import WaveVertical from './../../../shaders/wave-vertical'
 
-import * as Model from './../../model'
-import Trigger from './../../actions/trigger'
-import * as Constants from './../../constants'
+import * as Model from './../../../model'
+import Trigger from './../../../actions/trigger'
+import * as Constants from './../../../constants'
 
 const Effects = {
     [Constants.EFFECT_NAME_BLEACHED]: Bleached,
@@ -88,8 +88,8 @@ export default class Subject extends React.Component<Props, State> {
         )
     }
 
-    build() {
-        let View: any = null
+    apply() {
+        let View: ?React.Component<any> = null
         Lodash.each(this.props.effects, effect => {
             if (!(effect in Effects)) {
                 return
@@ -102,6 +102,7 @@ export default class Subject extends React.Component<Props, State> {
                         <GLReactImage
                             source={this.props.subject}
                             resizeMode="cover"
+                            style={{ width: '100%', height: '100%' }}
                         />
                     </Effect>
                 )
@@ -117,35 +118,12 @@ export default class Subject extends React.Component<Props, State> {
     }
 
     render() {
-        if (this.props.effects.length == 0) {
-            return (
-                <div
-                    style={{
-                        flexGrow: 1,
-                        display: 'flex',
-                        alignItems: 'stretch',
-                        justifyContent: 'center',
-                        overflow: 'hidden',
-                        maxWidth: '100vw',
-                    }}
-                >
-                    <img
-                        src={this.props.subject}
-                        style={{ flexGrow: 1, objectFit: 'cover' }}
-                    />
-                </div>
-            )
-        }
-
         return (
             <div
                 style={{
-                    flexGrow: 1,
-                    display: 'flex',
-                    alignItems: 'stretch',
-                    justifyContent: 'center',
+                    width: '100%',
+                    height: '70%',
                     overflow: 'hidden',
-                    maxWidth: '100vw',
                 }}
             >
                 <GlReactDom.Surface
@@ -153,7 +131,7 @@ export default class Subject extends React.Component<Props, State> {
                     height={this.state.height}
                     onLoad={this.fit}
                 >
-                    {this.build()}
+                    {this.apply()}
                 </GlReactDom.Surface>
             </div>
         )

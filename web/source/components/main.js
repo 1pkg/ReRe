@@ -6,12 +6,11 @@ import * as Redux from 'react-redux'
 import * as Model from './../model'
 import Trigger from './../actions/trigger'
 import * as Constants from './../constants'
-import * as Colors from './../colors'
 
-import None from './none/main'
-import Preview from './preview/main'
-import Process from './process/main'
-import Result from './result/main'
+import None from './scenes/none'
+import Preview from './scenes/preview'
+import Process from './scenes/process'
+import Result from './scenes/result'
 
 type Props = {
     trigger: Trigger,
@@ -55,7 +54,6 @@ class Main extends React.Component<Props> {
         return (
             <div
                 style={{
-                    color: Colors.COLOR_MAIN,
                     width: '100vw',
                     height: '100vh',
                 }}

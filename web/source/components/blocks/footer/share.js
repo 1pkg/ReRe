@@ -5,9 +5,7 @@ import React from 'react'
 import Twitter from 'react-icons/lib/io/social-twitter-outline'
 import Facebook from 'react-icons/lib/io/social-facebook-outline'
 
-import * as Model from './../../model'
-import Trigger from './../../actions/trigger'
-import * as Constants from './../../constants'
+import Trigger from './../../../actions/trigger'
 
 type Props = {
     trigger: Trigger,
