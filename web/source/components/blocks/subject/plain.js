@@ -1,8 +1,8 @@
 // @flow
 
-import React from 'react'
-import ReactDOM from 'react-dom'
 import Lodash from 'lodash'
+import React from 'react'
+import * as Reflexbox from 'reflexbox'
 
 type Props = {
     subject: string,
@@ -15,10 +15,11 @@ export default class Subject extends React.Component<Props> {
 
     render() {
         return (
-            <div
+            <Reflexbox.Flex
+                auto
                 style={{
-                    width: '100%',
-                    height: '70%',
+                    maxWidth: '100vw',
+                    maxHeight: '100vh',
                     overflow: 'hidden',
                 }}
             >
@@ -26,12 +27,12 @@ export default class Subject extends React.Component<Props> {
                     src={this.props.subject}
                     alt={'todo'}
                     style={{
+                        objectFit: 'cover',
                         width: '100%',
                         height: '100%',
-                        objectFit: 'cover',
                     }}
                 />
-            </div>
+            </Reflexbox.Flex>
         )
     }
 }

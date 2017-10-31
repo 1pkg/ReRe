@@ -13,3 +13,4 @@ flow-typed
 [lints]
 
 [options]
+module.name_mapper='^~/\(.*\)$' -> '<PROJECT_ROOT>/source/\1'

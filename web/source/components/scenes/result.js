@@ -1,22 +1,21 @@
 // @flow
 
 import React from 'react'
-import Antd from 'antd'
+import * as Reflexbox from 'reflexbox'
 
-import * as Model from './../../model'
-import Trigger from './../../actions/trigger'
-
-import Pick from './../blocks/pick/main'
-import Subject from './../blocks/subject/simple'
-import Score from './../blocks/toolbar/widgets/score'
-import Next from './../blocks/toolbar/widgets/next'
+import * as Model from '~/model'
+import Trigger from '~/actions/trigger'
+import Pick from './../blocks/pick/plain'
+import Subject from './../blocks/subject/plain'
+import Score from './../blocks/toolbar/marks/score'
+import Next from './../blocks/toolbar/marks/next'
 
 type Props = {
     trigger: Trigger,
     state: Model.State,
 }
 
-export default class Main extends React.Component<Props> {
+export default class extends React.Component<Props> {
     render() {
         if (
             !this.props.state ||
@@ -27,44 +26,27 @@ export default class Main extends React.Component<Props> {
         }
 
         return (
-            <Antd.Layout
-                style={{
-                    width: '100%',
-                    height: '100%',
-                }}
-            >
-                <Antd.Layout
-                    style={{
-                        width: '100%',
-                        height: '100%',
-                    }}
-                >
-                    <Antd.Layout.Content
-                        style={{
-                            width: '100%',
-                            height: '100%',
-                        }}
-                    >
-                        <Subject subject={this.props.state.task.subject} />
+            <Reflexbox.Flex auto>
+                <Reflexbox.Box flex column w="90%">
+                    <Reflexbox.Box flex auto style={{ height: '80%' }}>
+                        <Subject
+                            trigger={this.props.trigger}
+                            subject={this.props.state.task.subject}
+                        />
+                    </Reflexbox.Box>
+                    <Reflexbox.Box flex style={{ height: '20%' }} mt="1.0em">
                         <Pick
                             trigger={this.props.trigger}
                             options={this.props.state.task.options}
-                            option={NaN}
+                            option={this.props.state.task.option}
                         />
-                    </Antd.Layout.Content>
-                    <Antd.Layout.Sider
-                        collapsible={false}
-                        defaultCollapsed={true}
-                        style={{
-                            width: '100%',
-                            height: '100%',
-                        }}
-                    >
-                        <Score score={this.props.state.entry.score} />
-                        <Next trigger={this.props.trigger} />
-                    </Antd.Layout.Sider>
-                </Antd.Layout>
-            </Antd.Layout>
+                    </Reflexbox.Box>
+                </Reflexbox.Box>
+                <Reflexbox.Box w="10%">
+                    <Score score={this.props.state.entry.score} />
+                    <Next trigger={this.props.trigger} />
+                </Reflexbox.Box>
+            </Reflexbox.Flex>
         )
     }
 }

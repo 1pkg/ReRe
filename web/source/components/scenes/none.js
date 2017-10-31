@@ -1,50 +1,25 @@
 // @flow
 
 import React from 'react'
-import Antd from 'antd'
+import * as Reflexbox from 'reflexbox'
 
-import * as Model from './../../model'
-import Trigger from './../../actions/trigger'
-
-import Next from './../blocks/toolbar/widgets/next'
+import * as Model from '~/model'
+import Trigger from '~/actions/trigger'
+import Next from './../blocks/toolbar/marks/next'
 
 type Props = {
     trigger: Trigger,
 }
 
-export default class Main extends React.Component<Props> {
+export default class extends React.Component<Props> {
     render() {
         return (
-            <Antd.Layout
-                style={{
-                    width: '100%',
-                    height: '100%',
-                }}
-            >
-                <Antd.Layout
-                    style={{
-                        width: '100%',
-                        height: '100%',
-                    }}
-                >
-                    <Antd.Layout.Content
-                        style={{
-                            width: '100%',
-                            height: '100%',
-                        }}
-                    />
-                    <Antd.Layout.Sider
-                        collapsible={false}
-                        defaultCollapsed={true}
-                        style={{
-                            width: '100%',
-                            height: '100%',
-                        }}
-                    >
-                        <Next trigger={this.props.trigger} />
-                    </Antd.Layout.Sider>
-                </Antd.Layout>
-            </Antd.Layout>
+            <Reflexbox.Flex auto>
+                <Reflexbox.Box flex column w="90%" />
+                <Reflexbox.Box w="10%">
+                    <Next trigger={this.props.trigger} />
+                </Reflexbox.Box>
+            </Reflexbox.Flex>
         )
     }
 }

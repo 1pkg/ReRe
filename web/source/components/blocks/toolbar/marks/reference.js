@@ -1,25 +1,28 @@
 // @flow
 
-import React from 'react'
-import Antd from 'antd'
 import Lodash from 'lodash'
+import React from 'react'
 import Chatbubble from 'react-icons/lib/io/ios-chatbubble-outline'
 
-import Widget from './../widget'
+import Mark from './../mark'
 
 type Props = {
-    message: string,
+    reference: string,
 }
 
-export default class Reference extends React.Component<Props> {
+export default class extends React.Component<Props> {
     shouldComponentUpdate(props: Props) {
         return !Lodash.isEqual(props, this.props)
     }
 
     render() {
+        if (Lodash.isEmpty(this.props.reference)) {
+            return null
+        }
+
         return (
-            <Widget
-                content={this.props.message}
+            <Mark
+                content={this.props.reference}
                 pictogram={<Chatbubble />}
                 hint="refence"
             />

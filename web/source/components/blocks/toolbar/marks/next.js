@@ -3,21 +3,21 @@
 import React from 'react'
 import Login from 'react-icons/lib/io/log-in'
 
-import Trigger from './../../../../actions/trigger'
-import Button from './../button'
+import Trigger from '~/actions/trigger'
+import Toggle from './../toggle'
 
 type Props = {
     trigger: Trigger,
 }
 
-export default class Next extends React.Component<Props> {
+export default class extends React.Component<Props> {
     action = () => {
         this.props.trigger.call(Trigger.ACTION_INITIALIZE)
     }
 
     render() {
         return (
-            <Button pictogram={<Login />} hint="next" onClick={this.action} />
+            <Toggle pictogram={<Login />} hint="next" onClick={this.action} />
         )
     }
 }

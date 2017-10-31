@@ -6,11 +6,6 @@ export type Option = {
     hint: string,
 }
 
-export type Reference = {
-    link: string,
-    message: string,
-}
-
 export type Task = {
     options: Array<Option>,
     option: number,
@@ -18,7 +13,7 @@ export type Task = {
     subject: string,
     effects: Array<string>,
 
-    reference: ?Reference,
+    reference: string,
     statistic: Array<number>,
 }
 

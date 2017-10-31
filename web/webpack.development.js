@@ -21,14 +21,6 @@ module.exports = {
     module: {
         rules: [
             {
-                test: /\.less$/,
-                use: [
-                    'style-loader',
-                    'css-loader',
-                    'less-loader?{"modifyVars":{"primary-color": "#1A1A1A"}}',
-                ],
-            },
-            {
                 test: /\.jsx?$/,
                 exclude: /(node_modules)/,
                 use: {
@@ -36,8 +28,14 @@ module.exports = {
                     options: {
                         presets: ['env', 'flow', 'react'],
                         plugins: [
+                            [
+                                'babel-plugin-root-import',
+                                {
+                                    rootPathPrefix: '~',
+                                    rootPathSuffix: 'source/',
+                                },
+                            ],
                             'transform-class-properties',
-                            ['import', { libraryName: 'antd', style: true }],
                         ],
                     },
                 },

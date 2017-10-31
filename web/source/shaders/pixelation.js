@@ -3,7 +3,7 @@
 import React from 'react'
 import * as GlReact from 'gl-react'
 
-import Shaders from './../shaders'
+import Shaders from './list'
 
 type Props = {
     size: [number, number],

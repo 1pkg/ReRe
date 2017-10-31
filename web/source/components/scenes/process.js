@@ -1,24 +1,24 @@
 // @flow
 
+import Lodash from 'lodash'
 import React from 'react'
-import Antd from 'antd'
+import * as Reflexbox from 'reflexbox'
 
-import * as Model from './../../model'
-import Trigger from './../../actions/trigger'
-
-import Pick from './../blocks/pick/main'
+import * as Model from '~/model'
+import Trigger from '~/actions/trigger'
+import Pick from './../blocks/pick/plain'
 import Subject from './../blocks/subject/effect'
-import Score from './../blocks/toolbar/widgets/score'
-import Timer from './../blocks/toolbar/widgets/timer'
-import Assist from './../blocks/toolbar/widgets/assist'
-import Reference from './../blocks/toolbar/widgets/reference'
+import Score from './../blocks/toolbar/marks/score'
+import Timer from './../blocks/toolbar/marks/timer'
+import Assist from './../blocks/toolbar/marks/assist'
+import Reference from './../blocks/toolbar/marks/reference'
 
 type Props = {
     trigger: Trigger,
     state: Model.State,
 }
 
-export default class Main extends React.Component<Props> {
+export default class extends React.Component<Props> {
     render() {
         if (
             !this.props.state ||
@@ -29,47 +29,39 @@ export default class Main extends React.Component<Props> {
         }
 
         return (
-            <Antd.Layout style={{ width: '100%', height: '100%' }}>
-                <Antd.Layout style={{ width: '100%', height: '100%' }}>
-                    <Antd.Layout.Content
-                        style={{ width: '100%', height: '100%' }}
-                    >
+            <Reflexbox.Flex auto>
+                <Reflexbox.Box flex column w="90%">
+                    <Reflexbox.Box flex auto style={{ height: '80%' }}>
                         <Subject
                             trigger={this.props.trigger}
                             subject={this.props.state.task.subject}
                             effects={this.props.state.task.effects}
                         />
+                    </Reflexbox.Box>
+                    <Reflexbox.Box flex style={{ height: '20%' }} mt="1.0em">
                         <Pick
                             trigger={this.props.trigger}
                             options={this.props.state.task.options}
                             option={NaN}
                         />
-                    </Antd.Layout.Content>
-                    <Antd.Layout.Sider
-                        collapsible={false}
-                        defaultCollapsed={true}
-                        style={{
-                            width: '100%',
-                            height: '100%',
-                            textAlign: 'center',
-                        }}
-                    >
-                        <Score score={this.props.state.entry.score} />
-                        <Timer
-                            trigger={this.props.trigger}
-                            timestamp={this.props.state.entry.timestamp}
-                            duration={30}
-                        />
-                        <Assist
-                            trigger={this.props.trigger}
-                            assists={this.props.state.entry.assists}
-                        />
-                        {/* <Reference
-                            message={this.props.state.task.reference.message}
-                        /> */}
-                    </Antd.Layout.Sider>
-                </Antd.Layout>
-            </Antd.Layout>
+                    </Reflexbox.Box>
+                </Reflexbox.Box>
+                <Reflexbox.Box w="10%">
+                    <Score score={this.props.state.entry.score} />
+                    <Timer
+                        trigger={this.props.trigger}
+                        timestamp={this.props.state.entry.timestamp}
+                        duration={30}
+                    />
+                    <Assist
+                        trigger={this.props.trigger}
+                        assists={Lodash.cloneDeep(
+                            this.props.state.entry.assists,
+                        )}
+                    />
+                    <Reference reference={this.props.state.task.reference} />
+                </Reflexbox.Box>
+            </Reflexbox.Flex>
         )
     }
 }

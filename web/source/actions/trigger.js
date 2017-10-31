@@ -1,10 +1,9 @@
 // @flow
 
-import * as Redux from 'redux'
 import Lodash from 'lodash'
+import * as Redux from 'redux'
 
-import * as Model from './../model'
-
+import * as Model from '~/model'
 import Restore from './restore'
 import Tick from './tick'
 import Identify from './identify'

@@ -1,6 +1,7 @@
 import errors
 from .access import *
 
+
 class Use(Access):
     def __init__(self, application, entry, setting, assist, reference, effect, task):
         self._setting = setting
@@ -84,7 +85,7 @@ class Use(Access):
             'effects': effects,
         }
 
-    def __statistic(self, request): # todo
+    def __statistic(self, request):  # todo
         return {
             'assist': 'statistic',
             'statistic': [],
@@ -97,20 +98,16 @@ class Use(Access):
         self._entry.set(identifier, entry)
         task = self._application.call('fetch', request)
 
-        task.update({'assist': 'skip',})
+        task.update({'assist': 'skip', })
         return task
 
     def __help(self, request):
         identifier = self._get(request, 'identifier')
         entry = self._entry.get(identifier)
         option = entry['options'][entry['index']]
-        reference =  self._reference.fetchRandomOneByOptionId(option)
-        reference = {
-            'message': reference['message'],
-            'link': reference['link']
-        }
+        reference = self._reference.fetchRandomOneByOptionId(option)
 
         return {
             'assist': 'help',
-            'reference': reference,
+            'reference': reference['message'],
         }

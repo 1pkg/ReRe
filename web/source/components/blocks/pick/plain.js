@@ -1,11 +1,11 @@
 // @flow
 
-import React from 'react'
 import Lodash from 'lodash'
+import React from 'react'
+import * as Reflexbox from 'reflexbox'
 
-import * as Model from './../../../model'
-import Trigger from './../../../actions/trigger'
-
+import * as Model from '~/model'
+import Trigger from '~/actions/trigger'
 import Pending from './option/pending'
 import Positive from './option/positive'
 import Negative from './option/negative'
@@ -23,26 +23,8 @@ export default class Main extends React.Component<Props> {
 
     render() {
         return (
-            <div
-                style={{
-                    width: '100%',
-                    height: '20%',
-                    marginTop: '1em',
-                    marginBottom: '1em',
-                    paddingLeft: '10%',
-                    paddingRight: '10%',
-                }}
-            >
-                <div
-                    style={{
-                        width: '100%',
-                        height: '100%',
-                        display: 'flex',
-                        alignItems: 'stretch',
-                        justifyContent: 'space-between',
-                        fontSize: '3.0em',
-                    }}
-                >
+            <Reflexbox.Flex auto>
+                <Reflexbox.Box flex auto justify="space-between">
                     {Lodash.map(
                         this.props.options,
                         (option: Model.Option, index: number) => {
@@ -72,8 +54,8 @@ export default class Main extends React.Component<Props> {
                             }
                         },
                     )}
-                </div>
-            </div>
+                </Reflexbox.Box>
+            </Reflexbox.Flex>
         )
     }
 }

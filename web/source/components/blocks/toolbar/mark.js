@@ -1,10 +1,9 @@
 // @flow
 
-import React from 'react'
-import Antd from 'antd'
 import Lodash from 'lodash'
+import React from 'react'
 
-import Button from './button'
+import Toggle from './toggle'
 
 type Props = {
     content: any,
@@ -14,7 +13,7 @@ type Props = {
 
 type State = { active: boolean }
 
-export default class Timer extends React.Component<Props, State> {
+export default class extends React.Component<Props, State> {
     toggle = () => {
         this.setState((state: State) => {
             return { active: !state.active }
@@ -35,17 +34,11 @@ export default class Timer extends React.Component<Props, State> {
 
     render() {
         return (
-            <Antd.Popover
-                placement="left"
-                content={this.props.content}
-                visible={this.state.active}
-            >
-                <Button
-                    pictogram={this.props.pictogram}
-                    hint={this.props.hint}
-                    onClick={this.toggle}
-                />
-            </Antd.Popover>
+            <Toggle
+                pictogram={this.props.pictogram}
+                hint={this.props.hint}
+                onClick={this.toggle}
+            />
         )
     }
 }

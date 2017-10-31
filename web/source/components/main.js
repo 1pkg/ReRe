@@ -2,11 +2,11 @@
 
 import React from 'react'
 import * as Redux from 'react-redux'
+import * as Reflexbox from 'reflexbox'
 
-import * as Model from './../model'
-import Trigger from './../actions/trigger'
-import * as Constants from './../constants'
-
+import * as Model from '~/model'
+import * as Constants from '~/constants'
+import Trigger from '~/actions/trigger'
 import None from './scenes/none'
 import Preview from './scenes/preview'
 import Process from './scenes/process'
@@ -48,18 +48,17 @@ class Main extends React.Component<Props> {
 
     render() {
         if (!this.props.state || !this.props.state.entry) {
-            return <None trigger={this.props.trigger} />
+            return (
+                <Reflexbox.Flex style={{ width: '100vw', height: '100vh' }}>
+                    <None trigger={this.props.trigger} />
+                </Reflexbox.Flex>
+            )
         }
 
         return (
-            <div
-                style={{
-                    width: '100vw',
-                    height: '100vh',
-                }}
-            >
+            <Reflexbox.Flex style={{ width: '100vw', height: '100vh' }}>
                 {this.view(this.props.state.entry.status)}
-            </div>
+            </Reflexbox.Flex>
         )
     }
 }

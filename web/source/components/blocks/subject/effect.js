@@ -1,26 +1,26 @@
 // @flow
 
+import Lodash from 'lodash'
 import React from 'react'
 import ReactDOM from 'react-dom'
-import Lodash from 'lodash'
 import GLReactImage from 'gl-react-image'
 import * as GlReactDom from 'gl-react-dom'
+import * as Reflexbox from 'reflexbox'
 
-import Bleached from './../../../shaders/bleached'
-import Bloom from './../../../shaders/bloom'
-import BlurHorizontal from './../../../shaders/blur-horizontal'
-import BlurVertical from './../../../shaders/blur-vertical'
-import Crosshatch from './../../../shaders/crosshatch'
-import Funnel from './../../../shaders/funnel'
-import Pixelation from './../../../shaders/pixelation'
-import Ripple from './../../../shaders/ripple'
-import Sepia from './../../../shaders/sepia'
-import WaveHorizontal from './../../../shaders/wave-horizontal'
-import WaveVertical from './../../../shaders/wave-vertical'
-
-import * as Model from './../../../model'
-import Trigger from './../../../actions/trigger'
-import * as Constants from './../../../constants'
+import * as Model from '~/model'
+import * as Constants from '~/constants'
+import Trigger from '~/actions/trigger'
+import Bleached from '~/shaders/bleached'
+import Bloom from '~/shaders/bloom'
+import BlurHorizontal from '~/shaders/blur-horizontal'
+import BlurVertical from '~/shaders/blur-vertical'
+import Crosshatch from '~/shaders/crosshatch'
+import Funnel from '~/shaders/funnel'
+import Pixelation from '~/shaders/pixelation'
+import Ripple from '~/shaders/ripple'
+import Sepia from '~/shaders/sepia'
+import WaveHorizontal from '~/shaders/wave-horizontal'
+import WaveVertical from '~/shaders/wave-vertical'
 
 const Effects = {
     [Constants.EFFECT_NAME_BLEACHED]: Bleached,
@@ -50,9 +50,7 @@ type State = {
 export default class Subject extends React.Component<Props, State> {
     fit = () => {
         this.setState((state: State) => {
-            setTimeout(() => {
-                this.forceUpdate()
-            })
+            setTimeout(() => this.forceUpdate())
 
             let element = ReactDOM.findDOMNode(this)
             if (element instanceof Element) {
@@ -102,7 +100,6 @@ export default class Subject extends React.Component<Props, State> {
                         <GLReactImage
                             source={this.props.subject}
                             resizeMode="cover"
-                            style={{ width: '100%', height: '100%' }}
                         />
                     </Effect>
                 )
@@ -119,10 +116,11 @@ export default class Subject extends React.Component<Props, State> {
 
     render() {
         return (
-            <div
+            <Reflexbox.Flex
+                auto
                 style={{
-                    width: '100%',
-                    height: '70%',
+                    maxWidth: '100vw',
+                    maxHeight: '100vh',
                     overflow: 'hidden',
                 }}
             >
@@ -133,7 +131,7 @@ export default class Subject extends React.Component<Props, State> {
                 >
                     {this.apply()}
                 </GlReactDom.Surface>
-            </div>
+            </Reflexbox.Flex>
         )
     }
 }

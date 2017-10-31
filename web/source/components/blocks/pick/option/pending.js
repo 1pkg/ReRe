@@ -1,9 +1,10 @@
 // @flow
 
+import Lodash from 'lodash'
 import React from 'react'
-import Antd from 'antd'
+import * as Reflexbox from 'reflexbox'
 
-import Trigger from './../../../../actions/trigger'
+import Trigger from '~/actions/trigger'
 
 type Props = {
     trigger: Trigger,
@@ -17,47 +18,30 @@ export default class Pending extends React.Component<Props> {
         this.props.trigger.call(Trigger.ACTION_CHOSE, this.props.option)
     }
 
+    shouldComponentUpdate(props: Props) {
+        return !Lodash.isEqual(props, this.props)
+    }
+
     render() {
         return (
-            <Antd.Card
-                style={{
-                    width: '30%',
-                    height: '100%',
-                }}
-                bodyStyle={{ height: '100%', width: '100%', padding: '1.0em' }}
+            <Reflexbox.Flex
+                column
+                w="30%"
+                justify="space-between"
                 onClick={this.chose}
+                style={{ borderStyle: 'solid', borderWidth: '0.1em' }}
             >
-                <div
-                    style={{
-                        width: '100%',
-                        height: '100%',
-                        display: 'flex',
-                        flexDirection: 'column',
-                        justifyContent: 'space-between',
-                    }}
+                <Reflexbox.Box
+                    style={{ textAlign: 'center', fontWeight: 'bold' }}
                 >
-                    <span
-                        style={{
-                            textAlign: 'center',
-                            fontWeight: 'bold',
-                            fontSize: '2.0em',
-                            opacity: '1.0',
-                        }}
-                    >
-                        {this.props.children}
-                    </span>
-                    <span
-                        style={{
-                            textAlign: 'justify',
-                            fontWeight: 'normal',
-                            fontSize: '1.0em',
-                            opacity: '0.5',
-                        }}
-                    >
-                        <q>{this.props.hint}</q>
-                    </span>
-                </div>
-            </Antd.Card>
+                    {this.props.children}
+                </Reflexbox.Box>
+                <Reflexbox.Box
+                    style={{ textAlign: 'justify', fontWeight: 'normal' }}
+                >
+                    <q>{this.props.hint}</q>
+                </Reflexbox.Box>
+            </Reflexbox.Flex>
         )
     }
 }

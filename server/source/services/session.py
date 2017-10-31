@@ -1,12 +1,13 @@
 from .db import *
 
+
 class Session(Db):
     def fetchById(self, id):
         session = self._fetch("""
             SELECT * FROM session
             WHERE id = %(id)s
             LIMIT 1
-        """, {'id': id,})
+        """, {'id': id, })
         if (len(session) == 1):
             return session[0]
         else:
@@ -16,14 +17,14 @@ class Session(Db):
         return self._fetch("""
             SELECT * FROM session
             WHERE id IN (%(ids)s)
-        """, {'ids': ','.join([str(id) for id in ids]),})
+        """, {'ids': tuple([id for id in ids]), })
 
     def fetchByIdentifier(self, identifier):
         session = self._fetch("""
             SELECT * FROM session
             WHERE identifier = %(identifier)s
             LIMIT 1
-        """, {'identifier': identifier,})
+        """, {'identifier': identifier, })
         if (len(session) == 1):
             return session[0]
         else:
@@ -33,4 +34,4 @@ class Session(Db):
         self._execute("""
             INSERT INTO session (user_host, user_agent, user_ip, identifier)
             VALUES (%(user_host)s, %(user_agent)s, %(user_ip)s, %(identifier)s)
-        """, {'user_host': userHost, 'user_agent': userAgent, 'user_ip': userIp, 'identifier': identifier,})
+        """, {'user_host': userHost, 'user_agent': userAgent, 'user_ip': userIp, 'identifier': identifier, })

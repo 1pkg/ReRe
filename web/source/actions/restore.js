@@ -1,6 +1,6 @@
-import * as Model from './../model'
+import * as Model from '~/model'
+import * as Constants from '~/constants'
 import Trigger from './trigger'
-import * as Constants from './../constants'
 
 export default (trigger: Trigger, state: Model.State): Promise<any> => {
     return new Promise((resolve, reject) => {

@@ -1,5 +1,6 @@
 from .db import *
 
+
 class Subject(Db):
     def fetchById(self, id):
         subject = self._fetch("""
@@ -7,7 +8,7 @@ class Subject(Db):
             INNER JOIN image ON image.id = subject.object_id AND subject.type = %(type)s
             WHERE subject.id = %(id)s
             LIMIT 1
-        """, {'type': 'image', 'id': id,})
+        """, {'type': 'image', 'id': id, })
         if (len(subject) == 1):
             return subject[0]
         else:
@@ -18,7 +19,7 @@ class Subject(Db):
             SELECT * FROM subject
             INNER JOIN image ON image.id = subject.object_id AND subject.type = %(type)s
             WHERE subject.id IN (%(ids)s)
-        """, {'ids': ','.join([str(id) for id in ids]),})
+        """, {'ids': tuple([id for id in ids]), })
 
     def fetchRandomOneByOptionId(self, optionId):
         subject = self._fetch("""
@@ -26,7 +27,7 @@ class Subject(Db):
             INNER JOIN image ON image.id = subject.object_id AND subject.type = %(type)s
             WHERE option_id = %(option_id)s
             ORDER BY RANDOM() LIMIT 1
-        """, {'type': 'image', 'option_id': optionId,})
+        """, {'type': 'image', 'option_id': optionId, })
         if (len(subject) == 1):
             return subject[0]
         else:
