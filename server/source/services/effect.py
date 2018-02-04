@@ -1,24 +1,7 @@
-from .db import *
+from .db import Db
 
 
 class Effect(Db):
-    def fetchById(self, id):
-        effect = self._fetch("""
-            SELECT * FROM effect
-            WHERE id = %(id)s
-            LIMIT 1
-        """, {'id': id, })
-        if (len(effect) == 1):
-            return effect[0]
-        else:
-            return None
-
-    def fetchByIds(self, ids):
-        return self._fetch("""
-            SELECT * FROM effect
-            WHERE id IN %(ids)s
-        """, {'ids': tuple([id for id in ids]), })
-
     def fetchByRandom(self, limit):
         return self._fetch("""
             SELECT * FROM effect

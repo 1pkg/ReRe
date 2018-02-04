@@ -1,5 +1,6 @@
-import base
+from base import Error
 
-class Request(base.Error):
+
+class Request(Error):
     def __init__(self, param):
         super().__init__(400, param)

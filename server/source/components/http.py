@@ -1,5 +1,6 @@
 import socket
 
+
 class Http:
     def userHost(self, request):
         return request.headers['HOST']
@@ -8,27 +9,29 @@ class Http:
         return request.headers['USER-AGENT']
 
     def userIp(self, request):
-        if (request.headers.get('HTTP_X_FORWARDED_FOR')):
-            for varip in request.headers.get('HTTP_X_FORWARDED_FOR').split(','):
+        headers = request.headers
+        if (headers.get('HTTP_X_FORWARDED_FOR')):
+            forward = headers.get('HTTP_X_FORWARDED_FOR').split(',')
+            for varip in forward:
                 if (self.__checkUserIp(varip)):
                     return varip
-        elif (self.__checkUserIp(request.headers.get('HTTP_CLIENT_IP'))):
-            return request.headers.get('HTTP_CLIENT_IP')
-        elif (self.__checkUserIp(request.headers.get('HTTP_X_FORWARDED'))):
-            return request.headers.get('HTTP_X_FORWARDED')
-        elif (self.__checkUserIp(request.headers.get('HTTP_X_CLUSTER_CLIENT_IP'))):
-            return request.headers.get('HTTP_X_CLUSTER_CLIENT_IP')
-        elif (self.__checkUserIp(request.headers.get('HTTP_FORWARDED_FOR'))):
-            return request.headers.get('HTTP_FORWARDED_FOR')
-        elif (self.__checkUserIp(request.headers.get('HTTP_FORWARDED'))):
-            return request.headers.get('HTTP_FORWARDED')
-        elif (self.__checkUserIp(request.headers.get('REMOTE_ADDR'))):
-            return request.headers.get('REMOTE_ADDR')
+        elif (self.__checkUserIp(headers.get('HTTP_CLIENT_IP'))):
+            return headers.get('HTTP_CLIENT_IP')
+        elif (self.__checkUserIp(headers.get('HTTP_X_FORWARDED'))):
+            return headers.get('HTTP_X_FORWARDED')
+        elif (self.__checkUserIp(headers.get('HTTP_X_CLUSTER_CLIENT_IP'))):
+            return headers.get('HTTP_X_CLUSTER_CLIENT_IP')
+        elif (self.__checkUserIp(headers.get('HTTP_FORWARDED_FOR'))):
+            return headers.get('HTTP_FORWARDED_FOR')
+        elif (self.__checkUserIp(headers.get('HTTP_FORWARDED'))):
+            return headers.get('HTTP_FORWARDED')
+        elif (self.__checkUserIp(headers.get('REMOTE_ADDR'))):
+            return headers.get('REMOTE_ADDR')
         else:
             return '0.0.0.0'
 
     def __checkUserIp(self, ip):
-        if (ip == None):
+        if (ip is None):
             return False
         try:
             socket.inet_aton(ip)

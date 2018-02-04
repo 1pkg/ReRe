@@ -4,8 +4,8 @@ class Db:
         self.__result = None
         self.__cursor = None
 
-    def _fetch(self, query, params = None):
-        if (params == None):
+    def _fetch(self, query, params=None):
+        if (params is None):
             params = {}
 
         self.__open()
@@ -14,28 +14,24 @@ class Db:
         self.__close()
         return data
 
-    def _execute(self, query, params, commit = True):
+    def _execute(self, query, params, commit=True):
         self.__open()
         self.__cursor.execute(query, params)
         if (commit):
-            if (self.__cursor.description != None):
-                self.__result = self.__cursor.fetchone()
-            else :
-                self.__result = None
+            if (self.__cursor.description is not None):
+                return self.__cursor.fetchone()
             self.__close()
-
-    def _result(self):
-        return self.__result
+        return None
 
     def _commit(self):
         self.__close()
 
     def __open(self):
-        if (self.__cursor == None):
+        if (self.__cursor is None):
             self.__cursor = self.__connection.cursor()
 
     def __close(self):
-        if (self.__cursor != None):
+        if (self.__cursor is not None):
             self.__connection.commit()
             self.__cursor.close()
             self.__cursor = None

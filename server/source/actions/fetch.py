@@ -1,64 +1,69 @@
-import errors
-from .access import *
+from .access import Access
+from errors import Status, Request
+
 
 class Fetch(Access):
-    def __init__(self, application, entry, setting, option, reference, subject, effect, task):
+    def __init__(
+        self,
+        application,
+        identity,
+        setting,
+        option,
+        subject,
+        effect,
+        task
+    ):
         self._setting = setting
         self._option = option
-        self._reference = reference
         self._subject = subject
         self._effect = effect
         self._task = task
-        super().__init__(application, entry)
+        super().__init__(application, identity)
 
     def _validate(self, request):
         super()._validate(request)
-        identifier = self._get(request, 'identifier')
-        entry = self._entry.get(identifier)
 
-        if (('status' not in entry) or (
-            entry['status'] != self._application.STATUS_INITIALIZE and
-            entry['status'] != self._application.STATUS_RESULT_CORRECT and
-            entry['status'] != self._application.STATUS_SKIP
-        )):
-            raise errors.Status()
+        if (
+            self._entry.status != self._application.STATUS_SESSION_IDENTIFIED
+            and
+            self._entry.status != self._application.STATUS_RESULT_CORRECT
+        ):
+            raise Status()
 
         return True
 
     def _process(self, request):
-        identifier = self._get(request, 'identifier')
-        label = self._get(request, 'label', '')
-        if (label != ''):                          # directly
-            return self.__fetchByLabel(identifier, label)
-        elif (self._application.random.roll(0.5)): # 50%
-            return self.__fetchByRating(identifier)
-        elif (self._application.random.roll(0.5)): # 25%
-            return self.__fetchByRandom(identifier)
-        else:                                      # 25%
-            return self.__fetchNew(identifier)
+        label = self._get(request, 'label')
+        if (label is not None):
+            return self.__fetchByLabel(label)        # directly
+        elif (self._application.random.roll(0.6)):
+            return self.__fetchByRating()            # 60%
+        elif (self._application.random.roll(0.75)):
+            return self.__fetchByRandom()            # 30%
+        else:
+            return self.__fetchNew()                 # 10%
 
     def _apply(self, data):
         data['options'] = [{
             'name': option['name'],
-            'category': option['category'],
             'hint': option['hint'],
+            'link': option['link'],
         } for option in data['options']]
         data['subject'] = data['subject']['link']
-        data['effects'] = self._application.sequence.column(data['effects'], 'name')
+        data['effects'] = \
+            self._application.sequence.column(data['effects'], 'name')
         return super()._apply(data)
 
-    def __fetchByLabel(self, identifier, label):
+    def __fetchByLabel(self, label):
         task = self._task.fetchByLabel(label)
-        if (task == None):
-            raise errors.Request('label')
+        if (task is None):
+            raise Request('label')
+
         options = self._option.fetchByTaskId(task['id'])
         subject = self._subject.fetchById(task['subject_id'])
         effects = self._effect.fetchByTaskId(task['id'])
-        index = self._application.sequence.index(
-            options,
-            lambda option: int(option['id']) == int(subject['option_id'])
-        )
-        self.__setup(identifier, task['id'], options, index, effects)
+        self._entry.fetch(self._application, task['id'])
+        self._identity.set(self._identifier, self._entry)
 
         return {
             'options': options,
@@ -67,20 +72,17 @@ class Fetch(Access):
             'label': label,
         }
 
-    def __fetchByRating(self, identifier): # todo
-        return self.__fetchByRandom(identifier)
+    def __fetchByRating(self):  # todo
+        return self.__fetchByRandom()
 
-    def __fetchByRandom(self, identifier):
+    def __fetchByRandom(self):
         task = self._task.fetchOneByRandom()
         options = self._option.fetchByTaskId(task['id'])
         subject = self._subject.fetchById(task['subject_id'])
         effects = self._effect.fetchByTaskId(task['id'])
-        index = self._application.sequence.index(
-            options,
-            lambda option: int(option['id']) == int(subject['option_id'])
-        )
         label = task['label']
-        self.__setup(identifier, task['id'], options, index, effects)
+        self._entry.fetch(self._application, task['id'])
+        self._identity.set(self._identifier, self._entry)
 
         return {
             'options': options,
@@ -89,21 +91,24 @@ class Fetch(Access):
             'label': label,
         }
 
-    def __fetchNew(self, identifier):
-        count = int(self._setting.fetchByName('options-count')['value'])
-        options = self._option.fetchByRandom(count)
+    def __fetchNew(self):
+        optionsCount = int(self._setting.fetchValueByName('option-count'))
+        options = self._option.fetchByRandom(optionsCount)
+        optionsIds = self._application.sequence.column(options, 'id')
         index = self._application.random.number(len(options))
         subject = self._subject.fetchRandomOneByOptionId(options[index]['id'])
-        count = int(self._setting.fetchByName('effects-count')['value'])
-        effects = self._effect.fetchByRandom(count)
-        task = self._task.push(
-            self._application.random.label(),
+        effectCount = int(self._setting.fetchValueByName('effect-count'))
+        effects = self._effect.fetchByRandom(effectCount)
+        effectIds = self._application.sequence.column(effects, 'id')
+        label = self._application.random.label()
+        taskId = self._task.push(
+            label,
             subject['id'],
-            self._application.sequence.column(options, 'id'),
-            self._application.sequence.column(effects, 'id')
+            optionsIds,
+            effectIds
         )
-        label = self._task.fetchById(task)['label']
-        self.__setup(identifier, task, options, index, effects)
+        self._entry.fetch(self._application, taskId)
+        self._identity.set(self._identifier, self._entry)
 
         return {
             'options': options,
@@ -111,14 +116,3 @@ class Fetch(Access):
             'effects': effects,
             'label': label,
         }
-
-    def __setup(self, identifier, task, options, index, effects):
-        entry = self._entry.get(identifier)
-        entry['timestamp'] = self._application.datetime.timestamp()
-        entry['status'] = self._application.STATUS_PROCESS
-        entry['task'] = task
-        entry['options'] = self._application.sequence.column(options, 'id')
-        entry['index'] = index
-        entry['effects'] = self._application.sequence.column(effects, 'id')
-        entry['number'] = int(entry['number']) + 1
-        self._entry.set(identifier, entry)

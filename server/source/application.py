@@ -4,18 +4,16 @@ import psycopg2.extras
 import redis
 import flask
 
-import base
-import errors
 import components
 import services
 import actions
 
+
 class Application:
-    STATUS_INITIALIZE     = 'initialize'
-    STATUS_PROCESS        = 'process'
-    STATUS_SKIP           = 'skip'
+    STATUS_SESSION_IDENTIFIED = 'session-identified'
+    STATUS_SESSION_PROCESS = 'session-process'
     STATUS_RESULT_CORRECT = 'result-correct'
-    STATUS_RESULT_FAIL    = 'result-fail'
+    STATUS_RESULT_FAIL = 'result-fail'
 
     def __init__(self, instance):
         self.__instance = instance
@@ -39,17 +37,28 @@ class Application:
         return flask.jsonify(action(flask.request))
 
     def after(self, response):
-        response.headers.add('Access-Control-Allow-Origin', '*')
-        response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
-        response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS')
+        response.headers.add(
+            'Access-Control-Allow-Origin',
+            '*'
+        )
+        response.headers.add(
+            'Access-Control-Allow-Headers',
+            'Content-Type,Authorization'
+        )
+        response.headers.add(
+            'Access-Control-Allow-Methods',
+            'GET,PUT,POST,DELETE,OPTIONS'
+        )
         return response
 
     def __initialize(self, configs):
         self.__components = {
             'datetime': components.Datetime(),
+            'hash': components.Hash(),
             'http': components.Http(),
             'random': components.Random(),
             'sequence': components.Sequence(),
+            'validator': components.Validator(),
         }
 
         dbConnection = psycopg2.connect(
@@ -58,7 +67,7 @@ class Application:
                 configs['DB_CONNECTTION']['dbname'],
                 configs['DB_CONNECTTION']['user'],
                 configs['DB_CONNECTTION']['password'],
-            ), cursor_factory = psycopg2.extras.RealDictCursor
+            ), cursor_factory=psycopg2.extras.RealDictCursor
         )
         redisConnection = redis.StrictRedis(
             host=configs['REDIS_CONNECTTION']['host'],
@@ -67,65 +76,65 @@ class Application:
         )
 
         self.__services = {
-            'entry': services.Entry(redisConnection),
-            'setting': services.Setting(dbConnection),
-            'assist': services.Assist(dbConnection),
-            'subject': services.Subject(dbConnection),
-            'option': services.Option(dbConnection),
-            'reference': services.Reference(dbConnection),
-            'effect': services.Effect(dbConnection),
-            'task': services.Task(dbConnection),
-            'session': services.Session(dbConnection),
             'answer': services.Answer(dbConnection),
+            'effect': services.Effect(dbConnection),
+            'identity': services.Identity(redisConnection),
+            'option': services.Option(dbConnection),
+            'session': services.Session(dbConnection),
+            'setting': services.Setting(dbConnection),
+            'subject': services.Subject(dbConnection),
+            'task': services.Task(dbConnection),
         }
 
         self.__actions = {
             'identify': actions.Identify(
                 self,
-                self.__services['entry'],
+                self.__services['identity'],
                 self.__services['setting'],
                 self.__services['session'],
             ),
-            'initialize': actions.Initialize(
-                self,
-                self.__services['entry'],
-                self.__services['setting'],
-                self.__services['assist'],
-            ),
             'fetch': actions.Fetch(
                 self,
-                self.__services['entry'],
+                self.__services['identity'],
                 self.__services['setting'],
                 self.__services['option'],
-                self.__services['reference'],
                 self.__services['subject'],
                 self.__services['effect'],
                 self.__services['task'],
             ),
-            'chose': actions.Chose(
+            'choose': actions.Choose(
                 self,
-                self.__services['entry'],
+                self.__services['identity'],
                 self.__services['setting'],
+                self.__services['session'],
+                self.__services['task'],
                 self.__services['answer'],
             ),
             'use': actions.Use(
                 self,
-                self.__services['entry'],
+                self.__services['identity'],
                 self.__services['setting'],
-                self.__services['assist'],
-                self.__services['reference'],
                 self.__services['effect'],
                 self.__services['task'],
             ),
         }
 
     def __bind(self):
-        self.__instance.before_request(functools.partial(Application.before, self))
-        self.__instance.after_request(functools.partial(Application.after, self))
+        self.__instance.before_request(
+            functools.partial(Application.before, self)
+        )
+        self.__instance.after_request(
+            functools.partial(Application.after, self)
+        )
         for alias, action in self.__actions.items():
             bndaction = functools.partial(Application.action, self, action)
             bndaction.__name__ = alias
-            self.__instance.add_url_rule(rule=f"/{alias}", view_func=bndaction, methods=["GET"])
+            self.__instance.add_url_rule(
+                rule="/{0}".format(alias),
+                view_func=bndaction,
+                methods=["GET"]
+            )
+
 
 instance = flask.Flask(__name__)
 instance.config.from_object('configuration.Development')

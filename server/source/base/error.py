@@ -5,7 +5,8 @@ class Error(Exception):
         self.__message = message
 
     def __str__(self):
-        return 'HTTP error status code: {}, with message {}'.format(self.__code, self.__message)
+        format = 'HTTP error status code: {}, with message {}'
+        return format.format(self.__code, self.__message)
 
     def __repr__(self):
         return '{}|{}'.format(self.__code, self.__message)

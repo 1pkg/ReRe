@@ -1,5 +1,6 @@
-from datetime import *
+import datetime
+
 
 class Datetime:
     def timestamp(self):
-        return datetime.today().timestamp()
+        return datetime.datetime.today().timestamp()

@@ -1,34 +1,24 @@
-import base
-import errors
+from base import Action
+from errors import Identifier
 
-class Access(base.Action):
-    def __init__(self, application, entry):
-        self._entry = entry
+
+class Access(Action):
+    def __init__(self, application, identity):
+        self._identity = identity
         super().__init__(application)
-
-    def _apply(self, data):
-        self._entry.push(self.__identifier)
-        return super()._apply(data)
 
     def _validate(self, request):
         super()._validate(request)
-        identifier = self._get(request, 'identifier')
+        self._identifier = str(self._get(request, 'identifier'))
 
-        if (identifier == None):
-            raise errors.Identifier()
+        if (not self._application.validator.isHex(self._identifier)):
+            raise Identifier()
 
-        if (len(identifier) != 32 or (not self.__hex(identifier))):
-            raise errors.Identifier()
+        if (len(self._identifier) != 128):
+            raise Identifier()
 
-        if (self._entry.get(identifier) == None):
-            raise errors.Identifier()
+        self._entry = self._identity.get(self._identifier)
+        if (self._entry is None):
+            raise Identifier()
 
-        self.__identifier = identifier
         return True
-
-    def __hex(self, value):
-        try:
-            int(value, 16)
-            return True
-        except ValueError:
-            return False

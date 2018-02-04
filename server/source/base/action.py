@@ -16,7 +16,7 @@ class Action:
     def _apply(self, data):
         return data
 
-    def _get(self, request, key, default = None):
+    def _get(self, request, key, default=None):
         if (key in request.args):
             return request.values[key]
         return default
