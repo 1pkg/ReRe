@@ -28,8 +28,8 @@ group([
           CREATE TABLE IF NOT EXISTS option (
             id SERIAL NOT NULL PRIMARY KEY,
             name VARCHAR(256) NOT NULL,
-            hint VARCHAR(1024) NOT NULL,
-            link VARCHAR(1024) NOT NULL,
+            description VARCHAR(1024) DEFAULT NULL,
+            link VARCHAR(256) DEFAULT NULL,
             category_id INT NOT NULL REFERENCES category (id) ON DELETE CASCADE
           );
         """,

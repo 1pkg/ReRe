@@ -24,9 +24,9 @@ class Fetch(Access):
         super()._validate(request)
 
         if (
-            self._entry.status != self._application.STATUS_SESSION_IDENTIFIED
+            self._entry.status != self._entry.STATUS_SESSION_IDENTIFIED
             and
-            self._entry.status != self._application.STATUS_RESULT_CORRECT
+            self._entry.status != self._entry.STATUS_RESULT_CORRECT
         ):
             raise Status()
 
@@ -46,7 +46,7 @@ class Fetch(Access):
     def _apply(self, data):
         data['options'] = [{
             'name': option['name'],
-            'hint': option['hint'],
+            'description': option['description'],
             'link': option['link'],
         } for option in data['options']]
         data['subject'] = data['subject']['link']
@@ -62,7 +62,7 @@ class Fetch(Access):
         options = self._option.fetchByTaskId(task['id'])
         subject = self._subject.fetchById(task['subject_id'])
         effects = self._effect.fetchByTaskId(task['id'])
-        self._entry.fetch(self._application, task['id'])
+        self._entry.fetch(task['id'])
         self._identity.set(self._identifier, self._entry)
 
         return {
@@ -81,7 +81,7 @@ class Fetch(Access):
         subject = self._subject.fetchById(task['subject_id'])
         effects = self._effect.fetchByTaskId(task['id'])
         label = task['label']
-        self._entry.fetch(self._application, task['id'])
+        self._entry.fetch(task['id'])
         self._identity.set(self._identifier, self._entry)
 
         return {
@@ -100,14 +100,20 @@ class Fetch(Access):
         effectCount = int(self._setting.fetchValueByName('effect-count'))
         effects = self._effect.fetchByRandom(effectCount)
         effectIds = self._application.sequence.column(effects, 'id')
-        label = self._application.random.label()
+        self._application.hash.initialize(
+            self._application.datetime.timestamp()
+        )
+        self._application.hash.update(' '.join(map(str, optionsIds)))
+        self._application.hash.update(str(index))
+        self._application.hash.update(' '.join(map(str, effectIds)))
+        label = self._application.hash.result()
         taskId = self._task.push(
             label,
             subject['id'],
             optionsIds,
             effectIds
         )
-        self._entry.fetch(self._application, taskId)
+        self._entry.fetch(taskId)
         self._identity.set(self._identifier, self._entry)
 
         return {

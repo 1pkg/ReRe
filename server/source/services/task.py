@@ -24,17 +24,6 @@ class Task(Db):
         else:
             return None
 
-    def fetchByIdWithOptions(self, id):
-        return self._fetch("""
-            SELECT
-                task_option.option_id,
-                subject.option_id AS correct_option_id
-            FROM task
-            INNER JOIN subject ON subject.id = task.subject_id
-            INNER JOIN task_option ON task_option.task_id = task.id
-            WHERE id = %(id)s
-        """, {'id': id, })
-
     def push(self, label, subjectId, optionIds, effectIds):
         taskId = self._execute("""
             INSERT INTO task (label, subject_id)

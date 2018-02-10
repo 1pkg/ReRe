@@ -8,7 +8,7 @@ class Answer(Db):
             VALUES (
                 %(order_number)s,
                 %(option_id)s,
-                $(sessionId)s
+                %(sessionId)s
             )
         """, {
             'order_number': orderNumber,

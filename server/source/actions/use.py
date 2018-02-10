@@ -13,10 +13,10 @@ class Use(Access):
         super()._validate(request)
         self.__activity = self._get(request, 'activity')
 
-        if (self._entry.status != self._application.STATUS_SESSION_PROCESS):
+        if (self._entry.status != self._entry.STATUS_SESSION_PROCESS):
             raise Status()
 
-        if (self.__activity != 'redo' or self.__activity != 'skip'):
+        if (self.__activity != 'redo' and self.__activity != 'skip'):
             raise Request('activity')
 
         return True
@@ -30,11 +30,15 @@ class Use(Access):
         effects = self._effect.fetchByRandom(effectCount)
         effectNames = self._application.sequence.column(effects, 'name')
         effectIds = self._application.sequence.column(effects, 'id')
-        label = self._application.random.label()
-        oldTaskId = self._entry.taskId
+        self._application.hash.initialize(
+            self._application.datetime.timestamp()
+        )
+        self._application.hash.update(str(self._entry.taskId))
+        self._application.hash.update(' '.join(map(str, effectIds)))
+        label = self._application.hash.result()
         self._entry.taskId = self._task.repush(
             label,
-            oldTaskId,
+            self._entry.taskId,
             effectIds
         )
         self._identity.set(self._identifier, self._entry)
@@ -46,6 +50,8 @@ class Use(Access):
         }
 
     def __skip(self, request):
+        self._entry.skip()
+        self._identity.set(self._identifier, self._entry)
         response = self._application.call('fetch', request)
         response.update({'activity': 'skip', })
         return response

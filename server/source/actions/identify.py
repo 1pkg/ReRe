@@ -32,8 +32,9 @@ class Identify(Action):
             self._identity.set(identifier)
             return {}
 
-        timestamp = self._application.datetime.timestamp()
-        self._application.hash.initialize(timestamp)
+        self._application.hash.initialize(
+            self._application.datetime.timestamp()
+        )
         self._application.hash.update(self.__userHost)
         self._application.hash.update(self.__userAgent)
         self._application.hash.update(self.__userIp)

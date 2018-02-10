@@ -10,11 +10,6 @@ import actions
 
 
 class Application:
-    STATUS_SESSION_IDENTIFIED = 'session-identified'
-    STATUS_SESSION_PROCESS = 'session-process'
-    STATUS_RESULT_CORRECT = 'result-correct'
-    STATUS_RESULT_FAIL = 'result-fail'
-
     def __init__(self, instance):
         self.__instance = instance
         self.__initialize(instance.config)
@@ -107,6 +102,8 @@ class Application:
                 self.__services['identity'],
                 self.__services['setting'],
                 self.__services['session'],
+                self.__services['option'],
+                self.__services['subject'],
                 self.__services['task'],
                 self.__services['answer'],
             ),

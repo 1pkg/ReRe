@@ -1,47 +1,56 @@
 from .access import Access
-from errors import Status, Request
+from errors import Status
 
 
 class Choose(Access):
-    def __init__(self, application, identity, setting, session, task, answer):
+    def __init__(
+        self,
+        application,
+        identity,
+        setting,
+        session,
+        option,
+        subject,
+        task,
+        answer
+    ):
         self._setting = setting
         self._session = session
+        self._option = option
+        self._subject = subject
         self._task = task
         self._answer = answer
         super().__init__(application, identity)
 
     def _validate(self, request):
         super()._validate(request)
-        self.__index = self._get(request, 'index')
+        self.__option = self._get(request, 'option')
 
-        if (self._entry.status != self._application.STATUS_SESSION_PROCESS):
+        if (self._entry.status != self._entry.STATUS_SESSION_PROCESS):
             raise Status()
-
-        if (not self._application.validator.isNumeric(self.__index)):
-            raise Request('index')
 
         return True
 
     def _process(self, request):
         session = self._session.fetchByIdentifier(self._identifier)
-        options = self._task.fetchByIdWithOptions(self._entry.taskId)
-        optionIndex = options[self.__index]
-        optionResult = \
-            optionIndex['option_id'] == optionIndex['correct_option_id']
-        optionIndex = self._application.sequence.index(
+        options = self._option.fetchByTaskId(self._entry.taskId)
+        subject = self._subject.fetchByTaskId(self._entry.taskId)
+        index = self._application.sequence.index(
             options,
             lambda option:
-                int(option['option_id']) == int(option['correct_option_id'])
+                int(option['id']) == int(subject['option_id'])
         )
+        option = options[index]
+        result = option['name'] == self.__option
         self._answer.push(
             self._entry.orderNumber,
-            0,
+            option['id'],
             session['id']
         )
-        self._entry.chose(self._application, optionResult)
+        self._entry.chose(result)
         self._identity.set(self._identifier, self._entry)
 
         return {
-            'index': optionIndex,
-            'result': optionResult,
+            'option': option['name'],
+            'result': result,
         }

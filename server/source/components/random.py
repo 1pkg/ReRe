@@ -1,4 +1,3 @@
-import string
 import random
 
 
@@ -8,11 +7,3 @@ class Random:
 
     def roll(self, percent):
         return random.SystemRandom().random() < percent
-
-    def salt(self, size=32):
-        return str(random.SystemRandom().getrandbits(size))
-
-    def label(self, size=32):
-        hexDigits = [random.SystemRandom().choice(string.hexdigits)
-                     for fake in range(size)]
-        return ''.join(hexDigits)

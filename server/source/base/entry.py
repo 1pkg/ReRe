@@ -1,4 +1,9 @@
 class Entry:
+    STATUS_SESSION_IDENTIFIED = 'session-identified'
+    STATUS_SESSION_PROCESS = 'session-process'
+    STATUS_RESULT_CORRECT = 'result-correct'
+    STATUS_RESULT_FAIL = 'result-fail'
+
     def __init__(self, data):
         self.__dict__.update(self.normalize(data))
 
@@ -8,12 +13,12 @@ class Entry:
             data = {}
 
         if ('status' not in data):
-            data['status'] = 'session-identified'
+            data['status'] = Entry.STATUS_SESSION_IDENTIFIED
 
         if ('taskId' in data):
             data['taskId'] = int(data['taskId'])
         else:
-            data['taskId'] = 0
+            data['taskId'] = None
 
         if ('orderNumber' in data):
             data['orderNumber'] = int(data['orderNumber'])
@@ -22,16 +27,20 @@ class Entry:
 
         return data
 
-    def chose(self, application, result):
+    def chose(self, result):
         self.status = \
-            application.STATUS_RESULT_CORRECT \
+            Entry.STATUS_RESULT_CORRECT \
             if result else \
-            application.STATUS_RESULT_FAIL
+            Entry.STATUS_RESULT_FAIL
 
-    def fetch(self, application, taskId):
-        self.status = application.STATUS_SESSION_PROCESS
-        self.taskId = taskId
+    def fetch(self, taskId):
+        self.status = Entry.STATUS_SESSION_PROCESS
+        self.taskId = int(taskId)
         self.orderNumber = self.orderNumber + 1
+
+    def skip(self):
+        self.status = Entry.STATUS_SESSION_IDENTIFIED
+        self.taskId = None
 
     def get(self):
         return self.__dict__

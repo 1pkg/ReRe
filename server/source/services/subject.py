@@ -13,6 +13,17 @@ class Subject(Db):
         else:
             return None
 
+    def fetchByTaskId(self, taskId):
+        subject = self._fetch("""
+            SELECT subject.* FROM subject
+            INNER JOIN task ON task.subject_id = subject.id
+            WHERE task.id = %(task_id)s
+        """, {'task_id': taskId, })
+        if (len(subject) == 1):
+            return subject[0]
+        else:
+            return None
+
     def fetchRandomOneByOptionId(self, optionId):
         subject = self._fetch("""
             SELECT * FROM subject
