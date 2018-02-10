@@ -14,8 +14,5 @@ class Identity(Redis):
     def get(self, identifier):
         return Entry(self._get(identifier))
 
-    def set(self, identifier, entry=None):
-        if (entry is None):
-            self._set(identifier, {})
-        else:
-            self._set(identifier, entry.get())
+    def set(self, identifier, entry):
+        self._set(identifier, entry.get())

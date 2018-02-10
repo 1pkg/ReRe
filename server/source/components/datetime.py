@@ -1,6 +1,8 @@
 import datetime
 
+from base import Component
 
-class Datetime:
+
+class Datetime(Component):
     def timestamp(self):
         return datetime.datetime.today().timestamp()

@@ -1,4 +1,4 @@
-from base import Action
+from base import Action, Entry
 from errors import Request
 
 
@@ -29,7 +29,9 @@ class Identify(Action):
     def _process(self, request):
         identifier = self._get(request, 'identifier')
         if (self._identity.has(identifier)):
-            self._identity.set(identifier)
+            entry = Entry()
+            entry.identify()
+            self._identity.set(identifier, entry)
             return {}
 
         self._application.hash.initialize(
@@ -45,7 +47,9 @@ class Identify(Action):
             self.__userIp,
             identifier
         )
-        self._identity.set(identifier)
+        entry = Entry()
+        entry.identify()
+        self._identity.set(identifier, entry)
 
         return {
             'identifier': identifier,

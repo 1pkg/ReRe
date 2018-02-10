@@ -1,7 +1,9 @@
 import flask
 
+from base import Service
 
-class Redis:
+
+class Redis(Service):
     def __init__(self, connection):
         self.__connection = connection
 

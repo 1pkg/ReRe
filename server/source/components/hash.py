@@ -1,7 +1,9 @@
 from hashlib import blake2b
 
+from base import Component
 
-class Hash:
+
+class Hash(Component):
     def initialize(self, datetime):
         self.__hash = blake2b()
         self.__hash.update(str(datetime).encode('utf-8'))

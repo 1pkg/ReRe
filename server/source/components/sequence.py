@@ -1,4 +1,7 @@
-class Sequence:
+from base import Component
+
+
+class Sequence(Component):
     def index(self, sequence, comporator):
         for i in range(0, len(sequence)):
             element = sequence[i]

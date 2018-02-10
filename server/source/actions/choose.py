@@ -32,6 +32,8 @@ class Choose(Access):
         return True
 
     def _process(self, request):
+        processExpire = int(self._setting.fetchValueByName('process-expire'))
+        timestamp = self._application.datetime.timestamp()
         session = self._session.fetchByIdentifier(self._identifier)
         options = self._option.fetchByTaskId(self._entry.taskId)
         subject = self._subject.fetchByTaskId(self._entry.taskId)
@@ -41,7 +43,9 @@ class Choose(Access):
                 int(option['id']) == int(subject['option_id'])
         )
         option = options[index]
-        result = option['name'] == self.__option
+        result = \
+            timestamp - self._entry.timestamp < processExpire \
+            and option['name'] == self.__option
         self._answer.push(
             self._entry.orderNumber,
             option['id'],

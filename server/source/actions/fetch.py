@@ -62,7 +62,8 @@ class Fetch(Access):
         options = self._option.fetchByTaskId(task['id'])
         subject = self._subject.fetchById(task['subject_id'])
         effects = self._effect.fetchByTaskId(task['id'])
-        self._entry.fetch(task['id'])
+        timestamp = self._application.datetime.timestamp()
+        self._entry.fetch(task['id'], timestamp)
         self._identity.set(self._identifier, self._entry)
 
         return {
@@ -81,7 +82,8 @@ class Fetch(Access):
         subject = self._subject.fetchById(task['subject_id'])
         effects = self._effect.fetchByTaskId(task['id'])
         label = task['label']
-        self._entry.fetch(task['id'])
+        timestamp = self._application.datetime.timestamp()
+        self._entry.fetch(task['id'], timestamp)
         self._identity.set(self._identifier, self._entry)
 
         return {
@@ -100,9 +102,8 @@ class Fetch(Access):
         effectCount = int(self._setting.fetchValueByName('effect-count'))
         effects = self._effect.fetchByRandom(effectCount)
         effectIds = self._application.sequence.column(effects, 'id')
-        self._application.hash.initialize(
-            self._application.datetime.timestamp()
-        )
+        timestamp = self._application.datetime.timestamp()
+        self._application.hash.initialize(timestamp)
         self._application.hash.update(' '.join(map(str, optionsIds)))
         self._application.hash.update(str(index))
         self._application.hash.update(' '.join(map(str, effectIds)))
@@ -113,7 +114,7 @@ class Fetch(Access):
             optionsIds,
             effectIds
         )
-        self._entry.fetch(taskId)
+        self._entry.fetch(taskId, timestamp)
         self._identity.set(self._identifier, self._entry)
 
         return {

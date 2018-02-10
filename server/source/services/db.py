@@ -1,4 +1,7 @@
-class Db:
+from base import Service
+
+
+class Db(Service):
     def __init__(self, connection):
         self.__connection = connection
         self.__result = None

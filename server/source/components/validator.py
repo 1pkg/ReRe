@@ -1,4 +1,7 @@
-class Validator:
+from base import Component
+
+
+class Validator(Component):
     def isHex(self, value):
         try:
             int(value, 16)

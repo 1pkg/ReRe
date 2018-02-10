@@ -1,7 +1,9 @@
 import socket
 
+from base import Component
 
-class Http:
+
+class Http(Component):
     def userHost(self, request):
         return request.headers['HOST']
 
