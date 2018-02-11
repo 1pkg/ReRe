@@ -4,3 +4,8 @@
 
 /server/env/
 /server/**/__pycache__/
+
+/parser/env/
+/parser/**/__pycache__/
+/parser/targets/
+/parser/dump/

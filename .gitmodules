@@ -1,0 +1,3 @@
+[submodule "parser/crawlers/tor"]
+	path = parser/crawlers/tor
+	url = https://github.com/alex-miller-0/Tor_Crawler
