@@ -15,22 +15,27 @@ class Image(Fetcher):
 
     def fetch(self, query):
         try:
-            self._logger.info('image fetch: {0}'.format(query))
+            self._logger.info('image start fetching from {0}'.format(query))
             image = PImage.open(BytesIO(requests.get(query).content))
-        except Exception:
-            self._logger.warning('image doesn\'t support')
+            width, height = image.size
+            self._logger.info('fetching done successfully')
+            self._logger.info('image size {0} x {1}'.format(width, height))
+        except Exception as exception:
+            self._logger.error(str(exception))
             return None
 
         if (not self.__check(image)):
-            width, height = image.size
-            self._logger.warning('image doesn\'t fit in, size {0} x {1}'.format(width, height))
+            self._logger.warning('image doesn\'t pass check')
             return None
-
-        return self.__save(image)
+        else:
+            return {'url': query, 'file': self.__save(image)}
 
     def __check(self, image):
         width, height = image.size
-        return width > 256 and height > 256 and width < 4096 and height < 4096
+        return \
+            width > 256 and height > 256 and \
+            width < 4096 and height < 4096 and \
+            (width / height) < 5.0 and (height / width) < 5.0
 
     def __save(self, image):
         width, height = image.size
@@ -45,8 +50,8 @@ class Image(Fetcher):
             fileName = Image.__makeImageName()
             fullName = path.join(self.__dir, fileName)
 
-        self._logger.info('image save: {0}'.format(fileName))
         image.save(path.join(self.__dir, fileName), 'PNG')
+        self._logger.info('image saved as {0}'.format(fileName))
         return fileName
 
     @staticmethod

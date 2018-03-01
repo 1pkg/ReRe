@@ -13,4 +13,4 @@ class Json(Keeper):
 
     def write(self, data):
         with open(self.__fileName, 'w') as file:
-            json.dump(data, file)
+            json.dump(data, file, indent=4)

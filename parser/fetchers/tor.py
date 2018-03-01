@@ -15,6 +15,11 @@ class Tor(Fetcher):
         self.__tor = TorCrawler(n_requests=100)
 
     def fetch(self, query):
-        self._logger.info('tor fetch: {0}, with ip {1}'.format(query, self.__tor.ip))
-        headers = {'user-agent': self.__agent.random, }
-        return self.__tor.get(query, headers=headers)
+        try:
+            self._logger.info('tor start fetching from {0}, with tor ip {1}'.format(query, self.__tor.ip))
+            response = self.__tor.get(query, headers={'user-agent': self.__agent.random})
+            self._logger.info('fetching done successfully')
+            return response
+        except Exception as exception:
+            self._logger.error(str(exception))
+            return None

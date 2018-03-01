@@ -1,3 +1,6 @@
+from datetime import datetime, timedelta
+
+
 class Target:
     def __init__(self, image, wiki, logger, keepers):
         self._image = image
@@ -7,58 +10,82 @@ class Target:
         self._keepers = keepers
 
     def process(self):
+        items, processed, skipped = self._fetchItems(), [], []
+        totalCount, startTimestamp = len(items), datetime.today().timestamp()
+
         self._logger.info('==================================================')
-        items, processed = self._fetchItems(), []
         for item in items:
+
+            self._logger.info('target processing item {0} {1}'.format(item['title'], item['url']))
+            result = self._fetchFromWiki(
+                item['title'],
+                item['category'],
+                item['parentCategory']
+            )
+            if (result is None):
+                result = None
+                # result = self._fetchFromTarget(
+                #     item['url'],
+                #     item['category'],
+                #     item['parentCategory']
+                # )
+            if (result is None):
+                skipped.append(item)
+                self._logger.info('target skipped item')
+            else:
+                processed.append(result)
+                self._logger.info('target processed item')
+
+            processedCount, skippedCount = len(processed), len(skipped)
+            timeDelta = datetime.today().timestamp() - startTimestamp
             print(
-                'processing {0} total {0} processed {1} percent {2:.2f}%'.format(
-                    self._name, len(items), len(processed),
-                    len(processed) / len(items)
+                'target {0} total {1} processed {2} skipped {3}'.format(
+                    self._name,
+                    totalCount,
+                    processedCount,
+                    skippedCount,
                 )
             )
-
-            self._logger.info('start processing item: {0}'.format(item['title']))
-            try:
-                result = self._fetchFromWiki(
-                    item['title'],
-                    item['category'],
-                    item['parentCategory']
+            print(
+                'total percent {0:.2f}% processed percent {1:.2f}% skipped percent {2:.2f}%'.format(
+                    (processedCount + skippedCount) / totalCount * 100,
+                    processedCount / totalCount * 100,
+                    skippedCount / totalCount * 100,
                 )
-                if (result is None):
-                    self._logger.warning('wiki issues skip element')
-                    continue
-                processed.append(result)
-            except Exception as exception:
-                self._logger.error(str(exception))
-                continue
-            self._logger.info('finish processing item: {0}'.format(item['title']))
+            )
+            print(
+                'running time {0} approximately remaining time {1}'.format(
+                    str(timedelta(seconds=timeDelta)),
+                    str(timedelta(seconds=int((timeDelta / ((processedCount + skippedCount) / totalCount))) - timeDelta)),
+                )
+            )
+            print("\n")
+        self._logger.info('==================================================')
 
         for keeper in self._keepers:
             keeper.write(processed)
-        self._logger.info('==================================================')
 
     def _fetchItems(self):
         return NotImplemented
 
+    def _fetchFromTarget(self, url, category, parentCategory):
+        return NotImplemented
+
     def _fetchFromWiki(self, title, category, parentCategory):
-        wikiQuery = '{0} ({1})'.format(title, category)
-        page = self._wiki.fetch(wikiQuery)
-        if (page is None):
-            return
+        response = self._wiki.fetch(title)
+        if (response is None):
+            return None
 
-        wikiImages, images = page.images, []
-        for image in wikiImages:
-            if (len(images) >= 3):
-                break
-
-            result = self._image.fetch(image)
-            if (result is not None):
-                images.append(result)
+        images = []
+        for wikiImage in response.filter_images:
+            image = self._image.fetch(wikiImage)
+            if (image is not None):
+                images.append(image)
 
         return {
-            'name': page.title,
-            'description': page.summary,
-            'link': page.url,
+            'name': response.title,
+            'description': response.summary,
+            'link': response.url,
             'images': images,
-            'category': {'name': category, 'parentName': parentCategory, }
+            'category': {'name': category, 'parentName': parentCategory}
         }
