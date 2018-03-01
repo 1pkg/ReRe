@@ -9,3 +9,5 @@
 /parser/**/__pycache__/
 /parser/targets/
 /parser/dump/
+/parser/log/
+/parser/index.py

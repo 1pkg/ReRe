@@ -1,7 +1,9 @@
 import psycopg2
 
+from base import Keeper
 
-class Sql:
+
+class Sql(Keeper):
     def __init__(self, configs):
         self.__dbConnection = psycopg2.connect(
             'host={} dbname={} user={} password={}'.format(
@@ -69,16 +71,6 @@ class Sql:
                 )
         self.__close()
 
-    def __open(self):
-        if (self.__cursor is None):
-            self.__cursor = self.__connection.cursor()
-
-    def __close(self):
-        if (self.__cursor is not None):
-            self.__connection.commit()
-            self.__cursor.close()
-            self.__cursor = None
-
     def __pushCategory(self, category, parentCategory=None):
         if (parentCategory is None):
             self.__cursor.execute("""
@@ -118,3 +110,13 @@ class Sql:
             'option_id': optionId,
         })
         return self.__cursor.fetchone()['id']
+
+    def __open(self):
+        if (self.__cursor is None):
+            self.__cursor = self.__connection.cursor()
+
+    def __close(self):
+        if (self.__cursor is not None):
+            self.__connection.commit()
+            self.__cursor.close()
+            self.__cursor = None
