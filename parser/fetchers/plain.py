@@ -9,31 +9,35 @@ class Plain(Fetcher):
         super().__init__(logger, usebs)
 
     def fetch(self, htype, query, params={}):
-        self._logger.info('''
-                plain start fetching from {0} with {1}
-            '''.format(query, str(params)))
-        if htype == self.TYPE_GET:
-            response = requests.get(
-                query,
-                params=params,
-                headers=self.headers(),
-                timeout=self.DEFAULT_TIMEOUT,
-            )
-        elif htype == self.TYPE_POST:
-            response = requests.post(
-                query,
-                data=params,
-                headers=self.headers(),
-                timeout=self.DEFAULT_TIMEOUT,
-            )
-        else:
-            self._logger.error('''
-                    plain doesn\'t supply htype {0}
-                '''.format(htype))
+        try:
+            self._logger.info('''
+                    plain start fetching from {0} with {1}
+                '''.format(query, str(params)))
+            if htype == self.TYPE_GET:
+                response = requests.get(
+                    query,
+                    params=params,
+                    headers=self.headers(),
+                    timeout=self.DEFAULT_TIMEOUT,
+                )
+            elif htype == self.TYPE_POST:
+                response = requests.post(
+                    query,
+                    data=params,
+                    headers=self.headers(),
+                    timeout=self.DEFAULT_TIMEOUT,
+                )
+            else:
+                self._logger.error('''
+                        plain doesn\'t supply htype {0}
+                    '''.format(htype))
+                return None
+            self._logger.info('plain fetched successfully')
+        except Exception as exception:
+            self._logger.error(str(exception))
             return None
-        self._logger.info('plain fetched successfully')
 
         if self._usebs:
-            return BeautifulSoup(response.content, 'html.parser')
+            return BeautifulSoup(response.content, 'lxml')
         else:
             return response

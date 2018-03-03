@@ -75,7 +75,7 @@ class Target:
                 str(timedelta(seconds=int(timeDelta))),
                 str(timedelta(seconds=int(timeDelta / totalRatio - timeDelta))),
             )).strip())
-            print("\n")
+            print('\n')
         self._logger.info('''
             ==================================================
         ''')
@@ -98,8 +98,9 @@ class Target:
             return None
 
         return {
-            'name': response.title,
+            'name': title,
             'description': response.summary,
             'link': response.url,
+            'source': 'wiki',
             'category': {'name': category, 'parentName': parentCategory}
         }

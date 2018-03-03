@@ -9,9 +9,14 @@ from base import Fetcher
 
 
 class Tor(Fetcher):
+    MAX_REQUEST_COUNT = 100
+
     def __init__(self, logger, usebs=True):
         super().__init__(logger, usebs)
-        self.__tor = TorCrawler(n_requests=25, use_bs=usebs)
+        self.__tor = TorCrawler(
+            n_requests=self.MAX_REQUEST_COUNT,
+            use_bs=usebs,
+        )
 
     def fetch(self, htype, query, params={}):
         try:
