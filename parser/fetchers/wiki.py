@@ -6,6 +6,9 @@ from base import Fetcher
 
 
 class Wiki(Fetcher):
+    MINIMAL_RATIO = 80
+    SEARCH_PAGE_COUNT = 5
+
     def __init__(self, logger):
         super().__init__(logger, False)
 
@@ -38,7 +41,6 @@ class Wiki(Fetcher):
             self._logger.info('''
                 fetching done successfully
             ''')
-            response.filter_images = self.__filterImage(query, response)
             return response
         except Exception as exception:
             self._logger.error(str(exception))
@@ -48,7 +50,10 @@ class Wiki(Fetcher):
         self._logger.info('''
             wiki start searching on {0}
         '''.format(query))
-        searchResult = wikipedia.search(query)
+        searchResult = wikipedia.search(
+            query,
+            self.SEARCH_PAGE_COUNT
+        )
         self._logger.info('''
             searching done successfully
         ''')
@@ -56,28 +61,17 @@ class Wiki(Fetcher):
 
     def __choose(self, query, searchResult):
         chooseResult = None
-        smallQuery = re.sub('\s\(.*\)', '', query)
-        for pageName in searchResult:
-            ratioFull = fuzz.token_sort_ratio(query, pageName)
-            ratioSmall = fuzz.token_sort_ratio(smallQuery, pageName)
+        simpleQuery = re.sub('\s\(.*\)', '', query)
+        for index in range(0, len(searchResult)):
+            searchPage = searchResult[index]
+            ratio = (
+                fuzz.token_sort_ratio(query, searchPage) +
+                fuzz.token_sort_ratio(simpleQuery, searchPage)
+            ) / 2 - index * 5
             self._logger.info('''
                 wiki filter search result {0} ratio {1}
-            '''.format(pageName, ratioFull + ratioSmall))
-            if (ratioFull + ratioSmall >= 130):
-                chooseResult = pageName
+            '''.format(searchPage, ratio))
+            if (ratio >= self.MINIMAL_RATIO):
+                chooseResult = searchPage
                 break
         return chooseResult
-
-    def __filterImage(self, query, response):
-        images = []
-        smallQuery = re.sub('\s\(.*\)', '', query)
-        for image in response.images:
-            imagePart = image.rsplit('/', 1)[-1]
-            ratioFull = fuzz.token_sort_ratio(query, imagePart)
-            ratioSmall = fuzz.token_sort_ratio(smallQuery, imagePart)
-            self._logger.info('''
-                wiki filter images {0} ratio {1}
-            '''.format(image, ratioFull + ratioSmall))
-            if (ratioFull + ratioSmall >= 100):
-                images.append(image)
-        return images

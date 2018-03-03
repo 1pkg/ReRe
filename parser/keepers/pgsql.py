@@ -3,7 +3,7 @@ import psycopg2
 from base import Keeper
 
 
-class Sql(Keeper):
+class PGSql(Keeper):
     def __init__(self, configs):
         self.__dbConnection = psycopg2.connect(
             'host={} dbname={} user={} password={}'.format(
@@ -16,7 +16,7 @@ class Sql(Keeper):
         self.__open()
 
     def read(self):
-        self.__cursor.execute("""
+        self.__cursor.execute('''
             SELECT
                 option.id,
                 option.name,
@@ -28,13 +28,13 @@ class Sql(Keeper):
             INNER JOIN category on category.id = option.category_id
             LEFT JOIN category as parent_cattegory
                 on parent_cattegory.id = category.parent_cattegory_id
-        """)
+        ''')
         options = self.__cursor.fetchall()
         for option in options:
-            self.__cursor.execute("""
+            self.__cursor.execute('''
                 SELECT link FROM subject
                 WHERE option_id = %(optionId)s
-            """, {'optionId': option['id']})
+            ''', {'optionId': option['id']})
             option['subjects'] = self.__cursor.fetchall()
         self.__close()
 
@@ -73,26 +73,26 @@ class Sql(Keeper):
 
     def __pushCategory(self, category, parentCategory=None):
         if (parentCategory is None):
-            self.__cursor.execute("""
+            self.__cursor.execute('''
                 INSERT IGNORE INTO category (name)
                 VALUES (%(name)s)
                 RETURNING id
-            """, {'name': category})
+            ''', {'name': category})
         else:
-            self.__cursor.execute("""
+            self.__cursor.execute('''
                 INSERT IGNORE INTO category
                 (name, SELECT id FROM category WHERE name = %(parentName)s)
                 VALUES (%(name)s)
                 RETURNING id
-            """, {'name': category, 'parentName': parentCategory, })
+            ''', {'name': category, 'parentName': parentCategory, })
         return self.__cursor.fetchone()['id']
 
     def __pushOption(self, name, categoryId, description=None, link=None):
-        self.__cursor.execute("""
+        self.__cursor.execute('''
             INSERT IGNORE INTO option (name, category_id, description, link)
             VALUES (%(name)s, %('category_id')s, %('description')s, %('link')s)
             RETURNING id
-        """, {
+        ''', {
             'name': name,
             'category_id': categoryId,
             'description': description,
@@ -101,11 +101,11 @@ class Sql(Keeper):
         return self.__cursor.fetchone()['id']
 
     def __pushSubject(self, link, optionId):
-        self.__cursor.execute("""
+        self.__cursor.execute('''
             INSERT IGNORE INTO subject (link, option_id)
             VALUES (%(link)s, %('option_id')s)
             RETURNING id
-        """, {
+        ''', {
             'link': link,
             'option_id': optionId,
         })

@@ -6,7 +6,7 @@ class Fetcher:
     TYPE_POST = 'post'
     TYPE_WIKI = 'wiki'
 
-    DEFAULT_TIMEOUT = 15.0
+    DEFAULT_TIMEOUT = 5.0
 
     TEST_URL = 'https://en.wikipedia.org/wiki/Tommy_Wiseau'
 

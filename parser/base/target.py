@@ -28,18 +28,22 @@ class Target:
                 item['parentCategory']
             )
             if (result is None):
-                result = None
-                # result = self._fetchFromTarget(
-                #     item['url'],
-                #     item['category'],
-                #     item['parentCategory']
-                # )
+                result = self._fetchFromTarget(
+                    item['url'],
+                    item['title'],
+                    item['category'],
+                    item['parentCategory']
+                )
             if (result is None):
                 skipped.append(item)
                 self._logger.info('''
                     target skipped item
                 ''')
             else:
+                result['images'] = self._image.fetch(
+                    self._image.TYPE_GET,
+                    item['title']
+                )
                 processed.append(result)
                 self._logger.info('''
                     target processed item
@@ -68,8 +72,8 @@ class Target:
             print(re.sub('\s+', ' ', '''
                 running time {0} approximately remaining time {1}
             '''.format(
-                str(timedelta(seconds=timeDelta)),
-                str(timedelta(seconds=timeDelta / totalRatio - timeDelta)),
+                str(timedelta(seconds=int(timeDelta))),
+                str(timedelta(seconds=int(timeDelta / totalRatio - timeDelta))),
             )).strip())
             print("\n")
         self._logger.info('''
@@ -82,7 +86,7 @@ class Target:
     def _fetchItems(self):
         return NotImplemented
 
-    def _fetchFromTarget(self, url, category, parentCategory):
+    def _fetchFromTarget(self, url, title, category, parentCategory):
         return NotImplemented
 
     def _fetchFromWiki(self, title, category, parentCategory):
@@ -93,19 +97,9 @@ class Target:
         if (response is None):
             return None
 
-        images = []
-        for wikiImage in response.filter_images:
-            image = self._image.fetch(
-                self._image.TYPE_GET,
-                wikiImage,
-            )
-            if (image is not None):
-                images.append(image)
-
         return {
             'name': response.title,
             'description': response.summary,
             'link': response.url,
-            'images': images,
             'category': {'name': category, 'parentName': parentCategory}
         }

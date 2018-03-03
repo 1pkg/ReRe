@@ -10,8 +10,8 @@ class Plain(Fetcher):
 
     def fetch(self, htype, query, params={}):
         self._logger.info('''
-                plain start fetching from {0}
-            '''.format(query))
+                plain start fetching from {0} with {1}
+            '''.format(query, str(params)))
         if htype == self.TYPE_GET:
             response = requests.get(
                 query,
@@ -36,4 +36,4 @@ class Plain(Fetcher):
         if self._usebs:
             return BeautifulSoup(response.content, 'html.parser')
         else:
-            return response.content
+            return response

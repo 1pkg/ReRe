@@ -1,17 +1,18 @@
 from binascii import hexlify
 from os import path, urandom
 from io import BytesIO
-from PIL import Image as PImage
+from PIL import ImageFile, Image as PImage
 
 from base import Fetcher, Constants
-from .proxy import Proxy
+from .plain import Plain
 
 
 class Image(Fetcher):
     def __init__(self, logger):
+        ImageFile.LOAD_TRUNCATED_IMAGES = True
         super().__init__(logger, False)
         self.__dir = path.join(Constants.DUMP_PATH, 'images')
-        self.__proxy = Proxy(logger, False)
+        self.__plain = Plain(logger, False)
 
     def fetch(self, htype, query, params={}):
         try:
@@ -19,8 +20,16 @@ class Image(Fetcher):
                 image start fetching from {0}
             '''.format(query))
             if htype == self.TYPE_GET:
-                response = self.__proxy.fetch(htype, query)
-                image = PImage.open(BytesIO(response))
+                response = self.__plain.fetch(
+                    self.TYPE_GET,
+                    query
+                )
+                if response is None:
+                    self._logger.warning('''
+                        image get empty response
+                    ''')
+                    return None
+                image = PImage.open(BytesIO(response.content))
             else:
                 raise Exception('''
                     image doesn\'t supply htype {0}

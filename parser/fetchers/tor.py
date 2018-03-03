@@ -11,13 +11,13 @@ from base import Fetcher
 class Tor(Fetcher):
     def __init__(self, logger, usebs=True):
         super().__init__(logger, usebs)
-        self.__tor = TorCrawler(n_requests=100, use_bs=usebs)
+        self.__tor = TorCrawler(n_requests=25, use_bs=usebs)
 
     def fetch(self, htype, query, params={}):
         try:
             self._logger.info('''
-                tor start fetching from {0}, with tor ip {1}
-            '''.format(query, self.__tor.ip))
+                tor start fetching from {0}, with {1}, on ip {2}
+            '''.format(query, str(params), self.__tor.ip))
             if htype == self.TYPE_GET:
                 query += '?{0}'.format(urllib.parse.urlencode(params))
                 response = self.__tor.get(

@@ -1,4 +1,7 @@
 from .json import Json
-from .sql import Sql
+from .pgsql import PGSql
 
-__all__ = ['Json', 'Sql']
+__all__ = [
+    'Json',
+    'PGSql',
+]
