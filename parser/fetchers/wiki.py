@@ -6,7 +6,7 @@ from base import Fetcher
 
 
 class Wiki(Fetcher):
-    MINIMAL_RATIO = 80
+    MINIMAL_RATIO = 75
     SEARCH_PAGE_COUNT = 5
 
     def __init__(self, logger):
@@ -71,7 +71,7 @@ class Wiki(Fetcher):
             self._logger.info('''
                 wiki filter search result {0} ratio {1}
             '''.format(searchPage, ratio))
-            if (ratio >= self.MINIMAL_RATIO):
+            if ratio >= self.MINIMAL_RATIO:
                 chooseResult = searchPage
                 break
         return chooseResult

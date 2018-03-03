@@ -37,7 +37,7 @@ class Plain(Fetcher):
             self._logger.error(str(exception))
             return None
 
-        if self._usebs:
+        if self._usebs == True:
             return BeautifulSoup(response.content, 'lxml')
         else:
             return response

@@ -11,8 +11,8 @@ class Image(Fetcher):
     DESIRE_WIDTH = 1366
     DESIRE_HEIGHT = 768
 
-    MAX_DISPROPORTION = 5.0
-    MAX_SIZE = 8192
+    MAX_DISPROPORTION = 3.0
+    MAX_SIZE = 2056
     MIN_SIZE = 256
 
     def __init__(self, logger):
@@ -52,7 +52,7 @@ class Image(Fetcher):
             self._logger.error(str(exception))
             return None
 
-        if (not self.__check(image, size)):
+        if not self.__check(image, size):
             self._logger.warning('''
                 image doesn't pass check
             ''')
@@ -67,18 +67,22 @@ class Image(Fetcher):
             width >= self.MIN_SIZE and height >= self.MIN_SIZE and \
             width <= self.MAX_SIZE and height <= self.MAX_SIZE and \
             (width / height) < self.MAX_DISPROPORTION and \
-            (height / width) < self.MAX_DISPROPORTION
+            (height / width) < (self.MAX_DISPROPORTION / 2.0)
 
     def __crop(self, image, size):
         width, height = size
         ratioWidth = self.DESIRE_WIDTH / width
         ratioHeight = self.DESIRE_HEIGHT / height
-        if (ratioWidth > ratioHeight):
+        if ratioWidth > ratioHeight:
             newSize = (self.DESIRE_WIDTH, int(height * ratioWidth))
         else:
             newSize = (int(width * ratioHeight), self.DESIRE_HEIGHT)
         image = image.resize(newSize, PImage.ANTIALIAS)
-        image = image.crop((0, 0, self.DESIRE_WIDTH, self.DESIRE_HEIGHT))
+        left = int((newSize[0] - self.DESIRE_WIDTH) / 2.0)
+        top = int((newSize[1] - self.DESIRE_HEIGHT) / 2.0)
+        right = int((newSize[0] + self.DESIRE_WIDTH) / 2.0)
+        bottom = int((newSize[1] + self.DESIRE_HEIGHT) / 2.0)
+        image = image.crop((left, top, right, bottom))
         self._logger.info('''
             image resized to {0}, than cropped
         '''.format(str(newSize)))

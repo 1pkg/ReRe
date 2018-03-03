@@ -112,11 +112,11 @@ class PGSql(Keeper):
         return self.__cursor.fetchone()['id']
 
     def __open(self):
-        if (self.__cursor is None):
+        if self.__cursor is None:
             self.__cursor = self.__connection.cursor()
 
     def __close(self):
-        if (self.__cursor is not None):
+        if self.__cursor is not None:
             self.__connection.commit()
             self.__cursor.close()
             self.__cursor = None

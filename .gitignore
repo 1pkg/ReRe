@@ -10,4 +10,5 @@
 /parser/targets/
 /parser/dump/
 /parser/log/
+/parser/fetchers/proxy.py
 /parser/index.py
