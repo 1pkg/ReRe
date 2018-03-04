@@ -117,7 +117,6 @@ class Sqlite(Keeper):
         return self.__cursor.fetchone()[0]
 
     def __pushSubject(self, link, source, optionId):
-        print(link, source, optionId)
         self.__cursor.execute('''
             INSERT OR IGNORE INTO subject (link, source, option_id) VALUES
             (?, ?, ?);

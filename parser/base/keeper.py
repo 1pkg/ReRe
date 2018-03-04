@@ -6,6 +6,9 @@ class Keeper:
         self.__session = session
 
     def __fix(self, item):
+        if item is None:
+            return None
+
         return re.sub(
             '\s+',
             ' ',

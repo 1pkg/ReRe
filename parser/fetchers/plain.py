@@ -6,6 +6,7 @@ from base import Fetcher
 class Plain(Fetcher):
     def __init__(self, logger):
         super().__init__(logger)
+        self.__session = requests.session()
 
     def fetch(self, htype, query, params={}):
         try:
@@ -13,7 +14,7 @@ class Plain(Fetcher):
                 plain start fetching from {0} with {1}
             '''.format(query, str(params)))
             if htype == self.TYPE_GET:
-                response = requests.get(
+                response = self.__session.get(
                     query,
                     params=params,
                     headers=self.headers(),
@@ -24,7 +25,7 @@ class Plain(Fetcher):
                 ''')
                 return response
             elif htype == self.TYPE_POST:
-                response = requests.post(
+                response = self.__session.post(
                     query,
                     data=params,
                     headers=self.headers(),

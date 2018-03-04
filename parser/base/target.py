@@ -13,7 +13,7 @@ class Target:
     def process(self):
         items, processed, skipped = self._fetchItems(), [], []
         totalCount, startTimestamp = len(items), datetime.today().timestamp()
-        fromWiki, fromTarget = 0, 0
+        fromWiki, fromTarget, result = 0, 0, None
 
         self._logger.info('''
             ==================================================
@@ -138,8 +138,10 @@ class Target:
 
         processedCount, skippedCount = len(processed), len(skipped)
         timeDelta = datetime.today().timestamp() - startTimestamp
-        totalRatio = (processedCount + skippedCount) / totalCount
-        remainingTime = timeDelta / totalRatio - timeDelta
+        totalRatio = 0.0 if totalCount == 0 \
+            else (processedCount + skippedCount) / totalCount
+        remainingTime = 0.0 if totalRatio == 0.0 \
+            else timeDelta / totalRatio - timeDelta
         print(re.sub('\s+', ' ', '''
             target {0} total {1} processed {2} skipped {3}
             wiki {4} target {5}
@@ -159,10 +161,10 @@ class Target:
             target percent {4:.2f}%
         '''.format(
             totalRatio * 100,
-            processedCount / totalCount * 100,
-            skippedCount / totalCount * 100,
-            fromWiki / processedCount * 100,
-            fromTarget / processedCount * 100,
+            0.0 if totalCount == 0 else processedCount / totalCount * 100,
+            0.0 if totalCount == 0 else skippedCount / totalCount * 100,
+            0.0 if processedCount == 0 else fromWiki / processedCount * 100,
+            0.0 if processedCount == 0 else fromTarget / processedCount * 100,
         ), flags=re.DOTALL | re.IGNORECASE).strip())
         print(re.sub('\s+', ' ', '''
             running time {0} approximately remaining time {1}

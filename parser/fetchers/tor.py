@@ -12,12 +12,6 @@ class Tor(Fetcher):
     MAX_REQUEST_COUNT = 100
     __instance = None
 
-    @staticmethod
-    def instance(logger):
-        if Tor.__instance is None:
-            Tor.__instance = Tor(logger)
-        return Tor.__instance
-
     def __init__(self, logger):
         super().__init__(logger)
         self.__tor = TorCrawler(
@@ -38,12 +32,14 @@ class Tor(Fetcher):
                 response = self.__tor.get(
                     query,
                     headers=self.headers(),
+                    timeout=self.DEFAULT_TIMEOUT * 3.0,
                 )
             elif htype == self.TYPE_POST:
                 response = self.__tor.post(
                     query,
                     data=params,
                     headers=self.headers(),
+                    timeout=self.DEFAULT_TIMEOUT * 3.0,
                 )
             else:
                 raise Exception('''
