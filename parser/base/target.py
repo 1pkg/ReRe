@@ -24,6 +24,7 @@ class Target:
             self._logger.info('''
                 ==================================================
                 ==================================================
+                ==================================================
             ''')
 
             item = items[index]
@@ -53,7 +54,7 @@ class Target:
                 fromTarget -= 1
                 skipped.append(item)
                 self._logger.info('''
-                    target skipped item
+                    target skipped item has no result
                 ''')
                 self.__print(
                     result,
@@ -66,15 +67,15 @@ class Target:
                 )
                 continue
 
-            result['images'] = self._image.fetch(
+            result['subjects'] = self._image.fetch(
                 self._image.TYPE_GET,
-                item['title']
+                result['name']
             )
-            if len(result['images']) == 0:
+            if len(result['subjects']) == 0:
                 fromTarget -= 1
                 skipped.append(item)
                 self._logger.info('''
-                    target skipped item
+                    target skipped item has no subjects
                 ''')
                 self.__print(
                     result,
@@ -149,7 +150,7 @@ class Target:
             skippedCount,
             fromWiki,
             fromTarget,
-        )).strip())
+        ), flags=re.DOTALL | re.IGNORECASE).strip())
         print(re.sub('\s+', ' ', '''
             total percent {0:.2f}%
             processed percent {1:.2f}%
@@ -162,13 +163,13 @@ class Target:
             skippedCount / totalCount * 100,
             fromWiki / processedCount * 100,
             fromTarget / processedCount * 100,
-        )).strip())
+        ), flags=re.DOTALL | re.IGNORECASE).strip())
         print(re.sub('\s+', ' ', '''
             running time {0} approximately remaining time {1}
         '''.format(
             str(timedelta(seconds=int(timeDelta))),
             str(timedelta(seconds=int(remainingTime))),
-        )).strip())
+        ), flags=re.DOTALL | re.IGNORECASE).strip())
         print('\n')
 
     def _fetchItems(self):
@@ -190,5 +191,8 @@ class Target:
             'description': response.summary,
             'link': response.url,
             'source': 'wiki',
-            'category': {'name': category, 'parentName': parentCategory}
+            'category': {
+                'name': category,
+                'parentName': parentCategory,
+            }
         }

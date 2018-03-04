@@ -11,15 +11,15 @@ class Image(Fetcher):
     DESIRE_WIDTH = 1366
     DESIRE_HEIGHT = 768
 
-    MAX_DISPROPORTION = 3.0
+    MAX_DISPROPORTION = 2.0
     MAX_SIZE = 2056
     MIN_SIZE = 256
 
     def __init__(self, logger):
         ImageFile.LOAD_TRUNCATED_IMAGES = True
-        super().__init__(logger, False)
+        super().__init__(logger)
         self.__dir = path.join(Constants.DUMP_PATH, 'images')
-        self.__plain = Plain(logger, False)
+        self.__plain = Plain(logger)
 
     def fetch(self, htype, query, params={}):
         try:
@@ -29,7 +29,8 @@ class Image(Fetcher):
             if htype == self.TYPE_GET:
                 response = self.__plain.fetch(
                     self.TYPE_GET,
-                    query
+                    query,
+                    params,
                 )
                 if response is None:
                     self._logger.warning('''
@@ -46,8 +47,8 @@ class Image(Fetcher):
                 fetching done successfully
             ''')
             self._logger.info('''
-                image size {0} x {1}
-            '''.format(size[0], size[1]))
+                image {0}
+            '''.format(str(size)))
         except Exception as exception:
             self._logger.error(str(exception))
             return None
@@ -59,7 +60,10 @@ class Image(Fetcher):
             return None
         else:
             result = self.__save(image, size)
-            return {'original': query, 'link': result}
+            return {
+                'link': result,
+                'source': query,
+            }
 
     def __check(self, image, size):
         width, height = size

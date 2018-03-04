@@ -10,13 +10,23 @@ from base import Fetcher
 
 class Tor(Fetcher):
     MAX_REQUEST_COUNT = 100
+    __instance = None
 
-    def __init__(self, logger, usebs=True):
-        super().__init__(logger, usebs)
+    @staticmethod
+    def instance(logger):
+        if Tor.__instance is None:
+            Tor.__instance = Tor(logger)
+        return Tor.__instance
+
+    def __init__(self, logger):
+        super().__init__(logger)
         self.__tor = TorCrawler(
             n_requests=self.MAX_REQUEST_COUNT,
-            use_bs=usebs,
+            use_bs=False,
         )
+
+    def rotate(self):
+        self.__tor.rotate()
 
     def fetch(self, htype, query, params={}):
         try:

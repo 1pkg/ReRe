@@ -10,9 +10,8 @@ class Fetcher:
 
     TEST_URL = 'https://en.wikipedia.org/wiki/Tommy_Wiseau'
 
-    def __init__(self, logger, usebs):
+    def __init__(self, logger):
         self._logger = logger
-        self._usebs = usebs
         self._agent = UserAgent()
 
     def headers(self):

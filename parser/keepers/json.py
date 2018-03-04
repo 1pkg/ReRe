@@ -4,18 +4,11 @@ from base import Keeper
 
 
 class Json(Keeper):
-    def __init__(self, fileName, session):
+    def __init__(self, session, fileName):
+        super().__init__(session)
         self.__fileName = fileName
-        self.__session = session
 
-    def read(self):
-        with open(self.__fileName, 'r') as file:
-            return json.loads(file)
-
-    def write(self, data):
-        data = {
-            'session': self.__session,
-            'items': data,
-        }
+    def write(self, items):
+        data = super().write(items)
         with open(self.__fileName, 'w') as file:
             json.dump(data, file, indent=4)

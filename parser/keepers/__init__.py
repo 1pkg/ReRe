@@ -1,7 +1,7 @@
 from .json import Json
-from .pgsql import PGSql
+from .sqlite import Sqlite
 
 __all__ = [
     'Json',
-    'PGSql',
+    'Sqlite',
 ]

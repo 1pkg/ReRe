@@ -6,11 +6,11 @@ from base import Fetcher
 
 
 class Wiki(Fetcher):
-    MINIMAL_RATIO = 75
+    MINIMAL_RATIO = 80
     SEARCH_PAGE_COUNT = 5
 
     def __init__(self, logger):
-        super().__init__(logger, False)
+        super().__init__(logger)
 
     def fetch(self, htype, query, params={}):
         if htype != self.TYPE_WIKI:
@@ -61,7 +61,12 @@ class Wiki(Fetcher):
 
     def __choose(self, query, searchResult):
         chooseResult = None
-        simpleQuery = re.sub('\s\(.*\)', '', query)
+        simpleQuery = re.sub(
+            '\s\(.*\)',
+            '',
+            query,
+            flags=re.DOTALL | re.IGNORECASE
+        )
         for index in range(0, len(searchResult)):
             searchPage = searchResult[index]
             ratio = (
