@@ -76,7 +76,7 @@ class Sqlite(Keeper):
 
     def __pushSession(self, session):
         self.__cursor.execute('''
-            INSERT INTO session (guid)
+            INSERT OR IGNORE INTO session (guid)
             VALUES (?);
         ''', (session,))
         self.__commit()

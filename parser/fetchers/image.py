@@ -94,12 +94,16 @@ class Image(Fetcher):
 
     def __save(self, image, size):
         image = self.__crop(image, size)
-        fileName = hexlify(urandom(16)).decode() + '.png'
+        fileName = '{0}.png'.format(hexlify(urandom(16)).decode())
         fullName = path.join(self.__dir, fileName)
         while path.isfile(fullName):
-            fileName = hexlify(urandom(16)).decode() + '.png'
+            fileName = '{0}.png'.format(hexlify(urandom(16)).decode())
             fullName = path.join(self.__dir, fileName)
-        image.save(path.join(self.__dir, fileName), 'PNG')
+        image.convert('RGB').save(
+            path.join(self.__dir, fileName),
+            'PNG',
+            optimize=True,
+        )
         self._logger.info('''
             image saved as {0}
         '''.format(fileName))

@@ -11,4 +11,4 @@
 /parser/dump/
 /parser/log/
 /parser/fetchers/proxy.py
-/parser/index.py
+/parser/main.py

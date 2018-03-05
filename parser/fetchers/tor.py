@@ -18,9 +18,13 @@ class Tor(Fetcher):
             n_requests=self.MAX_REQUEST_COUNT,
             use_bs=False,
         )
+        self.rotate()
 
     def rotate(self):
         self.__tor.rotate()
+        self._logger.info('''
+            tor fetcher rotation new ip {0}
+        '''.format(self.__tor.ip))
 
     def fetch(self, htype, query, params={}):
         try:
