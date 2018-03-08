@@ -6,8 +6,8 @@ from base import Fetcher
 
 
 class Wiki(Fetcher):
-    MINIMAL_RATIO = 80
-    SEARCH_PAGE_COUNT = 5
+    MINIMAL_RATIO = 75
+    SEARCH_PAGE_COUNT = 7
 
     def __init__(self, logger):
         super().__init__(logger)

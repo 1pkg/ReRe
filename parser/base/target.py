@@ -7,19 +7,18 @@ class Target:
         self._image = image
         self._wiki = wiki
         self._logger = logger
-        self._name = self.__class__.__name__.lower()
         self._keepers = keepers
 
     def process(self):
         items, processed, skipped = self._fetchItems(), [], []
         totalCount, startTimestamp = len(items), datetime.today().timestamp()
-        fromWiki, fromTarget, result = 0, 0, None
+        fromWiki, fromTarget, fromSource, result = 0, 0, None, None
 
         self._logger.info('''
             ==================================================
-                            {0} PROCESSING START
+                            PROCESSING START
             ==================================================
-        '''.format(self._name))
+        ''')
         for index in range(0, totalCount):
             self._logger.info('''
                 ==================================================
@@ -27,35 +26,80 @@ class Target:
                 ==================================================
             ''')
 
-            item = items[index]
-            self._logger.info('''
-                target processing item {0} {1} index {2}
-            '''.format(
-                item['title'],
-                item['url'],
-                index,
-            ))
-            result = self._fetchFromWiki(
-                item['title'],
-                item['category'],
-                item['parentCategory']
-            )
-            fromWiki += 1
-            if result is None:
-                fromWiki -= 1
-                result = self._fetchFromTarget(
+            try:
+                item = items[index]
+                self._logger.info('''
+                    target processing item {0} {1} index {2}
+                '''.format(
+                    item['title'],
                     item['url'],
+                    index,
+                ))
+                result = self._fetchFromWiki(
                     item['title'],
                     item['category'],
                     item['parentCategory']
                 )
-                fromTarget += 1
-            if result is None:
-                fromTarget -= 1
-                skipped.append(item)
+                fromSource = 'wiki'
+                fromWiki += 1
+                if result is None:
+                    fromWiki -= 1
+                    result = self._fetchFromTarget(
+                        item['url'],
+                        item['title'],
+                        item['category'],
+                        item['parentCategory']
+                    )
+                    fromSource = 'target'
+                    fromTarget += 1
+                if result is None:
+                    fromSource = None
+                    fromTarget -= 1
+                    skipped.append(item)
+                    self._logger.info('''
+                        target skipped item has no result
+                    ''')
+                    self.__print(
+                        result,
+                        processed,
+                        skipped,
+                        fromWiki,
+                        totalCount,
+                        fromTarget,
+                        startTimestamp
+                    )
+                    continue
+
+                result['subjects'] = self._image.fetch(
+                    self._image.TYPE_GET,
+                    result['name']
+                )
+                if len(result['subjects']) == 0:
+                    if fromSource == 'wiki':
+                        fromWiki -= 1
+                    elif fromSource == 'target':
+                        fromTarget -= 1
+                    fromSource = None
+
+                    skipped.append(item)
+                    self._logger.info('''
+                        target skipped item has no subjects
+                    ''')
+                    self.__print(
+                        result,
+                        processed,
+                        skipped,
+                        fromWiki,
+                        totalCount,
+                        fromTarget,
+                        startTimestamp
+                    )
+                    continue
+
+                processed.append(result)
                 self._logger.info('''
-                    target skipped item has no result
-                ''')
+                    target processed item {0}
+                '''.format(str(result)))
                 self.__print(
                     result,
                     processed,
@@ -65,60 +109,26 @@ class Target:
                     fromTarget,
                     startTimestamp
                 )
-                continue
-
-            result['subjects'] = self._image.fetch(
-                self._image.TYPE_GET,
-                result['name']
-            )
-            if len(result['subjects']) == 0:
-                fromTarget -= 1
-                skipped.append(item)
-                self._logger.info('''
-                    target skipped item has no subjects
-                ''')
-                self.__print(
-                    result,
-                    processed,
-                    skipped,
-                    fromWiki,
-                    totalCount,
-                    fromTarget,
-                    startTimestamp
-                )
-                continue
-
-            processed.append(result)
-            self._logger.info('''
-                target processed item {0}
-            '''.format(str(result)))
-            self.__print(
-                result,
-                processed,
-                skipped,
-                fromWiki,
-                totalCount,
-                fromTarget,
-                startTimestamp
-            )
+            except Exception as exception:
+                self._logger.error(str(exception))
 
         self._logger.info('''
             ==================================================
-                            {0} PROCESSING FINISHED
+                            PROCESSING FINISHED
             ==================================================
-        '''.format(self._name))
+        ''')
         self.__keep(processed)
 
     def __keep(self, processed):
         self._logger.info('''
-            target {0} start keeping
-        '''.format(self._name))
+            start keeping
+        ''')
         try:
             for keeper in self._keepers:
                 keeper.write(processed)
             self._logger.info('''
-                target {0} keep done successfully
-            '''.format(self._name))
+                keep done successfully
+            ''')
         except Exception as exception:
             self._logger.error(str(exception))
 
@@ -146,7 +156,7 @@ class Target:
             target {0} total {1} processed {2} skipped {3}
             wiki {4} target {5}
         '''.format(
-            self._name,
+            self.__class__.__name__,
             totalCount,
             processedCount,
             skippedCount,
@@ -173,6 +183,25 @@ class Target:
             str(timedelta(seconds=int(remainingTime))),
         ), flags=re.DOTALL | re.IGNORECASE).strip())
         print('\n')
+
+    def _deadFetch(self, query, params={}):
+        tryCount = 1
+        response = self._fetcher.fetch(
+            self._fetcher.TYPE_GET,
+            query,
+            params,
+        )
+        while tryCount < self.MAX_TRY and \
+                (response is None or response.status_code != 200):
+            if callable(getattr(self._fetcher, 'rotate', None)):
+                self._fetcher.rotate()
+            response = self._fetcher.fetch(
+                self._fetcher.TYPE_GET,
+                query,
+                params,
+            )
+            tryCount += 1
+        return response
 
     def _fetchItems(self):
         return NotImplemented

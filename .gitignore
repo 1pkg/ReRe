@@ -7,8 +7,7 @@
 
 /parser/env/
 /parser/**/__pycache__/
-/parser/targets/
 /parser/dump/
 /parser/log/
+/parser/targets/
 /parser/fetchers/proxy.py
-/parser/main.py

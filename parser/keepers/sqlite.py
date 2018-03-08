@@ -70,7 +70,13 @@ class Sqlite(Keeper):
           );
         ''')
         self.__cursor.execute('''
-          INSERT OR IGNORE INTO category (name) VALUES ('fictional character');
+          INSERT OR IGNORE INTO category (name) VALUES
+          ('any'),
+          ('animal'),
+          ('plant'),
+          ('thing'),
+          ('fictional character'),
+          ('person');
         ''')
         self.__close()
 
@@ -112,8 +118,8 @@ class Sqlite(Keeper):
         self.__commit()
 
         self.__cursor.execute('''
-            SELECT last_insert_rowid() FROM option;
-        ''')
+            SELECT id FROM option WHERE name = ? AND link = ?;
+        ''', (name, link))
         return self.__cursor.fetchone()[0]
 
     def __pushSubject(self, link, source, optionId):
@@ -124,8 +130,8 @@ class Sqlite(Keeper):
         self.__commit()
 
         self.__cursor.execute('''
-            SELECT last_insert_rowid() FROM subject;
-        ''')
+            SELECT id FROM subject WHERE link = ?
+        ''', (link,))
         return self.__cursor.fetchone()[0]
 
     def __open(self):
