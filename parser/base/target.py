@@ -162,7 +162,7 @@ class Target:
             skippedCount,
             fromWiki,
             fromTarget,
-        ), flags=re.DOTALL | re.IGNORECASE).strip())
+        ), flags=re.IGNORECASE).strip())
         print(re.sub('\s+', ' ', '''
             total percent {0:.2f}%
             processed percent {1:.2f}%
@@ -175,13 +175,13 @@ class Target:
             0.0 if totalCount == 0 else skippedCount / totalCount * 100,
             0.0 if processedCount == 0 else fromWiki / processedCount * 100,
             0.0 if processedCount == 0 else fromTarget / processedCount * 100,
-        ), flags=re.DOTALL | re.IGNORECASE).strip())
+        ), flags=re.IGNORECASE).strip())
         print(re.sub('\s+', ' ', '''
             running time {0} approximately remaining time {1}
         '''.format(
             str(timedelta(seconds=int(timeDelta))),
             str(timedelta(seconds=int(remainingTime))),
-        ), flags=re.DOTALL | re.IGNORECASE).strip())
+        ), flags=re.IGNORECASE).strip())
         print('\n')
 
     def _deadFetch(self, query, params={}):

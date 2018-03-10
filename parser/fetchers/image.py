@@ -3,7 +3,7 @@ from os import path, urandom
 from io import BytesIO
 from PIL import ImageFile, Image as PImage
 
-from base import Fetcher, Constants
+from base import Fetcher
 from .plain import Plain
 
 
@@ -11,14 +11,14 @@ class Image(Fetcher):
     DESIRE_WIDTH = 1366
     DESIRE_HEIGHT = 768
 
-    MAX_DISPROPORTION = 2.0
+    MAX_DISPROPORTION = 1.5
     MAX_SIZE = 2056
     MIN_SIZE = 256
 
-    def __init__(self, logger):
+    def __init__(self, logger, path):
         ImageFile.LOAD_TRUNCATED_IMAGES = True
         super().__init__(logger)
-        self.__dir = path.join(Constants.DUMP_PATH, 'images')
+        self.__dir = path
         self.__plain = Plain(logger)
 
     def fetch(self, htype, query, params={}):
@@ -60,6 +60,8 @@ class Image(Fetcher):
             return None
         else:
             result = self.__save(image, size)
+            if result is None:
+                return None
             return {
                 'link': result,
                 'source': query,
@@ -70,7 +72,7 @@ class Image(Fetcher):
         return \
             width >= self.MIN_SIZE and height >= self.MIN_SIZE and \
             width <= self.MAX_SIZE and height <= self.MAX_SIZE and \
-            (width / height) < self.MAX_DISPROPORTION and \
+            (width / height) < (self.MAX_DISPROPORTION * 2.0) and \
             (height / width) < (self.MAX_DISPROPORTION / 2.0)
 
     def __crop(self, image, size):
@@ -99,12 +101,16 @@ class Image(Fetcher):
         while path.isfile(fullName):
             fileName = '{0}.png'.format(hexlify(urandom(16)).decode())
             fullName = path.join(self.__dir, fileName)
-        image.convert('RGB').save(
-            path.join(self.__dir, fileName),
-            'PNG',
-            optimize=True,
-        )
-        self._logger.info('''
-            image saved as {0}
-        '''.format(fileName))
-        return fileName
+        try:
+            image.convert('RGB').save(
+                path.join(self.__dir, fileName),
+                'PNG',
+                optimize=True,
+            )
+            self._logger.info('''
+                image saved as {0}
+            '''.format(fileName))
+            return fileName
+        except Exception as exception:
+            self._logger.info(str(exception))
+            return None

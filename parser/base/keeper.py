@@ -13,7 +13,7 @@ class Keeper:
             '\s+',
             ' ',
             item,
-            flags=re.DOTALL | re.IGNORECASE
+            flags=re.IGNORECASE
         ).strip()
 
     def _sanitalize(self, items):

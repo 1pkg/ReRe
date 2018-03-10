@@ -6,7 +6,7 @@ from base import Fetcher
 
 
 class Wiki(Fetcher):
-    MINIMAL_RATIO = 75
+    MINIMAL_RATIO = 70
     SEARCH_PAGE_COUNT = 7
 
     def __init__(self, logger):
@@ -60,12 +60,12 @@ class Wiki(Fetcher):
         return searchResult
 
     def __choose(self, query, searchResult):
-        chooseResult = None
+        choosedResults = []
         simpleQuery = re.sub(
             '\s\(.*\)',
             '',
             query,
-            flags=re.DOTALL | re.IGNORECASE
+            flags=re.IGNORECASE
         )
         for index in range(0, len(searchResult)):
             searchPage = searchResult[index]
@@ -77,6 +77,9 @@ class Wiki(Fetcher):
                 wiki filter search result {0} ratio {1}
             '''.format(searchPage, ratio))
             if ratio >= self.MINIMAL_RATIO:
-                chooseResult = searchPage
-                break
-        return chooseResult
+                choosedResults.append((searchPage, ratio))
+        if len(choosedResults) > 0:
+            choosedResults.sort(key=lambda result: result[1])
+            return choosedResults[0][0]
+        else:
+            return None
