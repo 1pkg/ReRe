@@ -79,7 +79,7 @@ class Wiki(Fetcher):
             if ratio >= self.MINIMAL_RATIO:
                 choosedResults.append((searchPage, ratio))
         if len(choosedResults) > 0:
-            choosedResults.sort(key=lambda result: result[1])
+            choosedResults.sort(key=lambda result: result[1], reverse=True)
             return choosedResults[0][0]
         else:
             return None

@@ -56,7 +56,7 @@ class Target:
                     fromSource = None
                     fromTarget -= 1
                     skipped.append(item)
-                    self._logger.info('''
+                    self._logger.warning('''
                         target skipped item has no result
                     ''')
                     self.__print(
@@ -82,7 +82,7 @@ class Target:
                     fromSource = None
 
                     skipped.append(item)
-                    self._logger.info('''
+                    self._logger.warning('''
                         target skipped item has no subjects
                     ''')
                     self.__print(

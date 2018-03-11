@@ -1,3 +1,4 @@
+import warnings
 from binascii import hexlify
 from os import path, urandom
 from io import BytesIO
@@ -76,6 +77,9 @@ class Image(Fetcher):
             (height / width) < (self.MAX_DISPROPORTION / 2.0)
 
     def __crop(self, image, size):
+        self._logger.info('''
+            image start resizing and cropping
+        ''')
         width, height = size
         ratioWidth = self.DESIRE_WIDTH / width
         ratioHeight = self.DESIRE_HEIGHT / height
@@ -90,7 +94,7 @@ class Image(Fetcher):
         bottom = int((newSize[1] + self.DESIRE_HEIGHT) / 2.0)
         image = image.crop((left, top, right, bottom))
         self._logger.info('''
-            image resized to {0}, than cropped
+            image resized and cropped {0}
         '''.format(str(newSize)))
         return image
 
@@ -101,16 +105,19 @@ class Image(Fetcher):
         while path.isfile(fullName):
             fileName = '{0}.png'.format(hexlify(urandom(16)).decode())
             fullName = path.join(self.__dir, fileName)
-        try:
-            image.convert('RGB').save(
-                path.join(self.__dir, fileName),
-                'PNG',
-                optimize=True,
-            )
-            self._logger.info('''
-                image saved as {0}
-            '''.format(fileName))
-            return fileName
-        except Exception as exception:
-            self._logger.info(str(exception))
-            return None
+
+        with warnings.catch_warnings():
+            warnings.filterwarnings('error')
+            try:
+                image.convert('RGB').save(
+                    path.join(self.__dir, fileName),
+                    'PNG',
+                    optimize=True,
+                )
+                self._logger.info('''
+                    image saved as {0}
+                '''.format(fileName))
+                return fileName
+            except Exception as exception:
+                self._logger.error(str(exception))
+                return None

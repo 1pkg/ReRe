@@ -8,7 +8,7 @@ from threading import Thread
 import targets
 from base import Formatter, Target
 from keepers import Json, Sqlite
-from fetchers import Image, Wiki
+from fetchers import IMediator, Wiki
 
 argparser = ArgumentParser(description='Parser')
 argparser.add_argument(
@@ -45,7 +45,7 @@ argparser.add_argument(
 
 
 def initialize(session, clean):
-    if clean == True:
+    if clean:
         if os.path.exists(DUMP_PATH):
             shutil.rmtree(DUMP_PATH)
         if os.path.exists(LOG_PATH):
@@ -86,7 +86,7 @@ def run(
     logger.addHandler(handler)
 
     target = target(
-        Image(logger),
+        IMediator(logger, CURREN_IMAGES_PATH),
         Wiki(logger),
         logger,
         [sqliteKeeper, jsonKeeper]
