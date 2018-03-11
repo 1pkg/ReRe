@@ -1,4 +1,3 @@
-import warnings
 from binascii import hexlify
 from os import path, urandom
 from io import BytesIO
@@ -12,7 +11,7 @@ class Image(Fetcher):
     DESIRE_WIDTH = 1366
     DESIRE_HEIGHT = 768
 
-    MAX_DISPROPORTION = 1.5
+    MAX_DISPROPORTION = 1.3
     MAX_SIZE = 2056
     MIN_SIZE = 256
 
@@ -106,18 +105,16 @@ class Image(Fetcher):
             fileName = '{0}.png'.format(hexlify(urandom(16)).decode())
             fullName = path.join(self.__dir, fileName)
 
-        with warnings.catch_warnings():
-            warnings.filterwarnings('error')
-            try:
-                image.convert('RGB').save(
-                    path.join(self.__dir, fileName),
-                    'PNG',
-                    optimize=True,
-                )
-                self._logger.info('''
-                    image saved as {0}
-                '''.format(fileName))
-                return fileName
-            except Exception as exception:
-                self._logger.error(str(exception))
-                return None
+        try:
+            image.convert('RGB').save(
+                path.join(self.__dir, fileName),
+                'PNG',
+                optimize=True,
+            )
+            self._logger.info('''
+                image saved as {0}
+            '''.format(fileName))
+            return fileName
+        except Exception as exception:
+            self._logger.error(str(exception))
+            return None
