@@ -1,5 +1,6 @@
+import warnings
 from binascii import hexlify
-from os import path, urandom
+from os import path, urandom, remove
 from io import BytesIO
 from PIL import ImageFile, Image as PImage
 
@@ -11,7 +12,7 @@ class Image(Fetcher):
     DESIRE_WIDTH = 1366
     DESIRE_HEIGHT = 768
 
-    MAX_DISPROPORTION = 1.3
+    MAX_DISPROPORTION = 2.0
     MAX_SIZE = 2056
     MIN_SIZE = 256
 
@@ -37,7 +38,11 @@ class Image(Fetcher):
                         image get empty response
                     ''')
                     return None
-                image = PImage.open(BytesIO(response.content))
+                with warnings.catch_warnings():
+                    warnings.filterwarnings('ignore')
+                    stream = BytesIO(response.content)
+                    stream.seek(0)
+                    image = PImage.open(stream)
             else:
                 raise Exception('''
                     image doesn\'t supply htype {0}
@@ -72,8 +77,8 @@ class Image(Fetcher):
         return \
             width >= self.MIN_SIZE and height >= self.MIN_SIZE and \
             width <= self.MAX_SIZE and height <= self.MAX_SIZE and \
-            (width / height) < (self.MAX_DISPROPORTION * 2.0) and \
-            (height / width) < (self.MAX_DISPROPORTION / 2.0)
+            (width / height) <= (self.MAX_DISPROPORTION * 1.5) and \
+            (height / width) <= (self.MAX_DISPROPORTION / 2.0)
 
     def __crop(self, image, size):
         self._logger.info('''
@@ -105,16 +110,21 @@ class Image(Fetcher):
             fileName = '{0}.png'.format(hexlify(urandom(16)).decode())
             fullName = path.join(self.__dir, fileName)
 
-        try:
-            image.convert('RGB').save(
-                path.join(self.__dir, fileName),
-                'PNG',
-                optimize=True,
-            )
-            self._logger.info('''
-                image saved as {0}
-            '''.format(fileName))
-            return fileName
-        except Exception as exception:
-            self._logger.error(str(exception))
-            return None
+        with warnings.catch_warnings():
+            warnings.filterwarnings('ignore')
+            try:
+                image = image.convert('RGB')
+                image.save(
+                    fullName,
+                    'PNG',
+                    optimize=True,
+                )
+                self._logger.info('''
+                    image saved as {0}
+                '''.format(fileName))
+                return fileName
+            except Exception as exception:
+                if path.exists(fullName):
+                    remove(fullName)
+                self._logger.error(str(exception))
+                return None

@@ -40,6 +40,8 @@ argparser.add_argument(
 )
 argparser.add_argument(
     '--clean',
+    type=bool,
+    default=False,
     help='should previous dump be clean',
 )
 

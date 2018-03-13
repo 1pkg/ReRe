@@ -71,12 +71,16 @@ class Sqlite(Keeper):
         ''')
         self.__cursor.execute('''
           INSERT OR IGNORE INTO category (name) VALUES
-          ('any'),
-          ('animal'),
-          ('plant'),
-          ('thing'),
-          ('fictional character'),
-          ('person');
+          ('any');
+        ''')
+        self.__commit()
+        self.__cursor.execute('''
+          INSERT OR IGNORE INTO category (name, parent_category_id) VALUES
+          ('animal', 1),
+          ('plant', 1),
+          ('thing', 1),
+          ('fictional character', 1),
+          ('person', 1);
         ''')
         self.__close()
 

@@ -9,5 +9,6 @@
 /parser/**/__pycache__/
 /parser/dump/
 /parser/log/
+/parser/*.tar.gz
 /parser/targets/
 /parser/fetchers/proxy.py

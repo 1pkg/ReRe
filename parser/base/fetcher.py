@@ -19,7 +19,7 @@ class Fetcher:
             'dnt': '1',
             'x-requested-with': 'XMLHttpRequest',
             'referer': self.TEST_URL,
-            'user-agent': self._agent.random,
+            'user-agent': self._agent.firefox,
         }
 
     def fetch(self, htype, query, params={}):

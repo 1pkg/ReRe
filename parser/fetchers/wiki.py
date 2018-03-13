@@ -1,4 +1,5 @@
 import re
+import warnings
 import wikipedia
 from fuzzywuzzy import fuzz
 
@@ -37,7 +38,9 @@ class Wiki(Fetcher):
             self._logger.info('''
                 wiki start fetching from {0}
             '''.format(chooseResult))
-            response = wikipedia.page(chooseResult)
+            with warnings.catch_warnings():
+                warnings.filterwarnings('ignore')
+                response = wikipedia.page(chooseResult)
             self._logger.info('''
                 fetching done successfully
             ''')
