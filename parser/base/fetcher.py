@@ -17,9 +17,8 @@ class Fetcher:
     def headers(self):
         return {
             'dnt': '1',
-            'x-requested-with': 'XMLHttpRequest',
             'referer': self.TEST_URL,
-            'user-agent': self._agent.firefox,
+            'user-agent': self._agent.random,
         }
 
     def fetch(self, htype, query, params={}):
