@@ -51,7 +51,7 @@ class Target:
                     self._logger.warning('''
                         target skipped item has no result
                     ''')
-                    self.__print(
+                    self._stats(
                         result,
                         processed,
                         skipped,
@@ -69,7 +69,7 @@ class Target:
                     self._logger.warning('''
                         target skipped item has no subjects
                     ''')
-                    self.__print(
+                    self._stats(
                         result,
                         processed,
                         skipped,
@@ -82,7 +82,7 @@ class Target:
                 self._logger.info('''
                     target processed item {0}
                 '''.format(str(result)))
-                self.__print(
+                self._stats(
                     result,
                     processed,
                     skipped,
@@ -98,9 +98,9 @@ class Target:
                             PROCESSING FINISHED
             ==================================================
         ''')
-        self.__keep(processed)
+        self._keep(processed)
 
-    def __keep(self, processed):
+    def _keep(self, processed):
         self._logger.info('''
             start keeping
         ''')
@@ -113,7 +113,7 @@ class Target:
         except Exception as exception:
             self._logger.error(str(exception))
 
-    def __print(
+    def _stats(
         self,
         result,
         processed,
@@ -127,15 +127,14 @@ class Target:
             else (processedCount + skippedCount) / totalCount
         remainingTime = 0.0 if totalRatio == 0.0 \
             else timeDelta / totalRatio - timeDelta
-        print(re.sub('\s+', ' ', '''
-            target {0} total {1} processed {2} skipped {3}
+        self._logger.info(re.sub('\s+', ' ', '''
+            total {0} processed {1} skipped {2}
         '''.format(
-            self.__class__.__name__,
             totalCount,
             processedCount,
             skippedCount,
         ), flags=re.IGNORECASE).strip())
-        print(re.sub('\s+', ' ', '''
+        self._logger.info(re.sub('\s+', ' ', '''
             total percent {0:.2f}%
             processed percent {1:.2f}%
             skipped percent {2:.2f}%
@@ -144,31 +143,30 @@ class Target:
             0.0 if totalCount == 0 else processedCount / totalCount * 100,
             0.0 if totalCount == 0 else skippedCount / totalCount * 100,
         ), flags=re.IGNORECASE).strip())
-        print(re.sub('\s+', ' ', '''
+        self._logger.info(re.sub('\s+', ' ', '''
             running time {0} approximately remaining time {1}
         '''.format(
             str(timedelta(seconds=int(timeDelta))),
             str(timedelta(seconds=int(remainingTime))),
         ), flags=re.IGNORECASE).strip())
-        print('\n')
 
     def _deadFetch(self, query, params={}):
-        tryCount = 1
-        response = self._fetcher.fetch(
-            self._fetcher.TYPE_GET,
-            query,
-            params,
-        )
+        tryCount, response = 1, None
         while tryCount < self.MAX_TRY and \
                 (response is None or response.status_code != 200):
-            if callable(getattr(self._fetcher, 'rotate', None)):
-                self._fetcher.rotate()
-            response = self._fetcher.fetch(
-                self._fetcher.TYPE_GET,
-                query,
-                params,
-            )
-            tryCount += 1
+            try:
+                tryCount += 1
+                response = self._fetcher.fetch(
+                    self._fetcher.TYPE_GET,
+                    query,
+                    params,
+                )
+            except Exception as exception:
+                self._logger.error(str(exception))
+            finally:
+                if response is None or response.status_code != 200 and \
+                        callable(getattr(self._fetcher, 'rotate', None)):
+                    self._fetcher.rotate()
         return response
 
     def _fetchItems(self):

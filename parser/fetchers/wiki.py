@@ -7,7 +7,7 @@ from base import Fetcher
 
 
 class Wiki(Fetcher):
-    MINIMAL_RATIO = 70
+    MINIMAL_RATIO = 72
     SEARCH_PAGE_COUNT = 7
 
     def __init__(self, logger):
@@ -45,6 +45,29 @@ class Wiki(Fetcher):
                 fetching done successfully
             ''')
             return response
+        except wikipedia.DisambiguationError as disambiguation:
+            try:
+                chooseResult = disambiguation.options[0]
+                ratio = fuzz.token_sort_ratio(query, chooseResult)
+                self._logger.warning('''
+                    wiki fallback search {0} ratio {1}
+                '''.format(chooseResult, ratio))
+                if ratio >= self.MINIMAL_RATIO:
+                    self._logger.info('''
+                        wiki start fetching from {0}
+                    '''.format(chooseResult))
+                    with warnings.catch_warnings():
+                        warnings.filterwarnings('ignore')
+                        response = wikipedia.page(chooseResult)
+                    self._logger.info('''
+                        fetching done successfully
+                    ''')
+                    return response
+                else:
+                    return None
+            except Exception as exception:
+                self._logger.error(str(exception))
+                return None
         except Exception as exception:
             self._logger.error(str(exception))
             return None
