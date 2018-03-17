@@ -1,4 +1,6 @@
+import os
 import random
+from binascii import hexlify
 
 from base import Component
 
@@ -9,3 +11,6 @@ class Random(Component):
 
     def roll(self, percent):
         return random.SystemRandom().random() < percent
+
+    def salt(self):
+        return hexlify(os.urandom(32))

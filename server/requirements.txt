@@ -1,14 +1,18 @@
+alembic==0.9.8
 backports.csv==1.0.5
 cli-helpers==0.2.3
 click==6.7
 configobj==5.0.6
 Flask==0.12.2
+Flask-Migrate==2.1.1
 Flask-SQLAlchemy==2.3.2
 humanize==0.5.1
 iniherit==0.3.9
 itsdangerous==0.24
 Jinja2==2.9.6
+Mako==1.0.7
 MarkupSafe==1.0
+mccabe==0.6.1
 pgcli==1.7.0
 pgspecial==1.8.0
 prompt-toolkit==1.0.15
@@ -16,7 +20,6 @@ psycopg2==2.7.4
 psycopg2-binary==2.7.4
 Pygments==2.2.0
 python-slugify==1.2.4
-redis==2.10.6
 requirements==0.1
 setproctitle==1.1.10
 six==1.10.0

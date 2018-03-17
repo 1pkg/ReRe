@@ -20,7 +20,9 @@ class Option(Alchemy.Model):
     )
     link = Alchemy.Column(
         Alchemy.String,
-        nullable=False,
+        # nullable=False,
+        default=None,
+        server_default=Alchemy.text('null'),
     )
     source = Alchemy.Column(
         Alchemy.String,
@@ -29,12 +31,12 @@ class Option(Alchemy.Model):
     )
 
     subjects = Alchemy.relationship(
-        'subject',
+        'Subject',
         backref='option',
         passive_deletes=True,
     )
     answers = Alchemy.relationship(
-        'answer',
+        'Answer',
         backref='option',
         passive_deletes=True,
     )

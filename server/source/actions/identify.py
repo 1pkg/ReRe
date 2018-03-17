@@ -1,60 +1,31 @@
-from base import Action, Entry
-from errors import Request
+import json
+
+import errors
+from models import Task
+from .access import Access
 
 
-class Identify(Action):
-    def __init__(self, application, identity, setting, session):
-        self._identity = identity
-        self._setting = setting
-        self._session = session
-        super().__init__(application)
-
+class Identify(Access):
     def _validate(self, request):
         super()._validate(request)
-        self.__userHost = self._application.http.userHost(request)
-        self.__userAgent = self._application.http.userAgent(request)
-        self.__userIp = self._application.http.userIp(request)
+        validator = self._application.validator
 
-        if (self.__userHost is None):
-            raise Request('user_host')
+        self._identity = str(self._get(request, 'identity'))
+        try:
+            self._identity = json.loads(self._identity)
+        except Exception:
+            raise errors.Identity()
 
-        if (self.__userAgent is None):
-            raise Request('user_agent')
+        if 'timestamp' not in self._identity \
+                or not validator.isNumeric(self._identity['timestamp']) \
+                or 'task_id' not in self._identity \
+                or not validator.isNumeric(self._identity['task_id']):
+            raise errors.Identity()
 
-        if (self.__userIp is None):
-            raise Request('user_ip')
-
-        return True
-
-    def _process(self, request):
-        identifier = self._get(request, 'identifier')
-        if (self._identity.has(identifier)):
-            entry = Entry()
-            entry.identify()
-            self._identity.set(identifier, entry)
-            return {}
-
-        self._application.hash.initialize(
-            self._application.datetime.timestamp()
-        )
-        self._application.hash.update(self.__userHost)
-        self._application.hash.update(self.__userAgent)
-        self._application.hash.update(self.__userIp)
-        identifier = self._application.hash.result()
-        self._session.push(
-            self.__userHost,
-            self.__userAgent,
-            self.__userIp,
-            identifier
-        )
-        entry = Entry()
-        entry.identify()
-        self._identity.set(identifier, entry)
-
-        return {
-            'identifier': identifier,
-            'settings': {
-                'session-expire':
-                    self._setting.fetchValueByName('session-expire'),
-            },
-        }
+        self._timestamp = int(self._identity['timestamp'])
+        self._task = \
+            Task \
+            .query \
+            .get(int(self._identity['task_id']))
+        if self._task is None:
+            raise errors.Identity()

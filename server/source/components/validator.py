@@ -14,3 +14,6 @@ class Validator(Component):
             return int(value) > 0
         except ValueError:
             return False
+
+    def isEmpty(self, value):
+        return value is None or value == ''

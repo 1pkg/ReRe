@@ -2,15 +2,13 @@ from base import Component
 
 
 class Sequence(Component):
-    def index(self, sequence, comporator):
-        for i in range(0, len(sequence)):
-            element = sequence[i]
-            if (comporator(element)):
-                return i
-
     def column(self, sequence, column):
         result = []
         for item in sequence:
-            if (column in item):
-                result.append(item[column])
+            if isinstance(item, dict):
+                if column in item:
+                    result.append(item[column])
+            else:
+                if hasattr(item, column):
+                    result.append(getattr(item, column))
         return result

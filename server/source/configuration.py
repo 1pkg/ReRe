@@ -6,39 +6,19 @@ class Configuration:
     JSON_AS_ASCII = False
     USE_X_SENDFILE = False
     LOGGER_NAME = ''
+    SQLALCHEMY_TRACK_MODIFICATIONS = True
     LOGGER_HANDLER_POLICY = 'always'
 
 
 class Production(Configuration):
-    DB_CONNECTTION = {
-        'host': 'localhost',
-        'dbname': 'wit',
-        'user': 'default',
-        'password': ''
-    }
-    REDIS_CONNECTTION = {
-        'host': 'localhost',
-        'port': 6379,
-        'db': 0
-    }
     SQLALCHEMY_DATABASE_URI = 'postgresql://default:@localhost/test'
 
 
 class Development(Configuration):
-    DB_CONNECTTION = {
-        'host': 'localhost',
-        'dbname': 'wit',
-        'user': 'default',
-        'password': ''
-    }
-    REDIS_CONNECTTION = {
-        'host': 'localhost',
-        'port': 6379,
-        'db': 0
-    }
     SQLALCHEMY_DATABASE_URI = 'postgresql://default:@localhost/test'
     DEBUG = True
 
 
 class Testing(Configuration):
+    SQLALCHEMY_DATABASE_URI = 'sqlite://:memory'
     TESTING = True

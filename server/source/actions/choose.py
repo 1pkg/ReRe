@@ -1,60 +1,44 @@
-from .access import Access
-from errors import Status
+import errors
+from base import Alchemy
+from models import Answer, Setting
+from .identify import Identify
 
 
-class Choose(Access):
-    def __init__(
-        self,
-        application,
-        identity,
-        setting,
-        session,
-        option,
-        subject,
-        task,
-        answer
-    ):
-        self._setting = setting
-        self._session = session
-        self._option = option
-        self._subject = subject
-        self._task = task
-        self._answer = answer
-        super().__init__(application, identity)
-
+class Choose(Identify):
     def _validate(self, request):
         super()._validate(request)
+        validator = self._application.validator
+
         self.__option = self._get(request, 'option')
+        if not validator.isNumeric(self.__option):
+            raise errors.Request('option')
 
-        if (self._entry.status != self._entry.STATUS_SESSION_PROCESS):
-            raise Status()
-
-        return True
+        self.__option = int(self.__option)
+        if len(self._task.options) < self.__option:
+            raise errors.Request('option')
 
     def _process(self, request):
-        processExpire = int(self._setting.fetchValueByName('process-expire'))
+        expire = int(
+            Setting
+            .query
+            .filter_by(name='identity-expire')
+            .one().value
+        )
         timestamp = self._application.datetime.timestamp()
-        session = self._session.fetchByIdentifier(self._identifier)
-        options = self._option.fetchByTaskId(self._entry.taskId)
-        subject = self._subject.fetchByTaskId(self._entry.taskId)
-        index = self._application.sequence.index(
-            options,
-            lambda option:
-                int(option['id']) == int(subject['option_id'])
-        )
-        option = options[index]
+        correctOption = self._task.subject.option
+        choosenOption = self._task.options[self.__option - 1]
         result = \
-            timestamp - self._entry.timestamp < processExpire \
-            and option['name'] == self.__option
-        self._answer.push(
-            self._entry.orderNumber,
-            option['id'],
-            session['id']
+            timestamp - self._timestamp < expire \
+            and correctOption.id == choosenOption.id
+        answer = Answer(
+            task_id=self._task.id,
+            option_id=choosenOption.id,
+            session_id=self._session.id,
         )
-        self._entry.chose(result)
-        self._identity.set(self._identifier, self._entry)
+        Alchemy.session.add(answer)
+        Alchemy.session.commit()
 
         return {
-            'option': option['name'],
             'result': result,
+            'option': correctOption.name,
         }

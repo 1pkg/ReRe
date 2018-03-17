@@ -17,7 +17,6 @@ class Subject(Alchemy.Model):
     source = Alchemy.Column(
         Alchemy.String,
         nullable=False,
-        unique=True,
     )
     option_id = Alchemy.Column(
         Alchemy.Integer,
@@ -27,7 +26,7 @@ class Subject(Alchemy.Model):
     )
 
     tasks = Alchemy.relationship(
-        'task',
+        'Task',
         backref='subject',
         passive_deletes=True,
     )

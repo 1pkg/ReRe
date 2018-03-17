@@ -30,15 +30,15 @@ class Task(Alchemy.Model):
     )
 
     options = Alchemy.relationship(
-        'option',
+        'Option',
         secondary='task_option',
     )
     effects = Alchemy.relationship(
-        'effect',
+        'Effect',
         secondary='task_effect',
     )
     answers = Alchemy.relationship(
-        'answer',
+        'Answer',
         backref='task',
         passive_deletes=True,
     )

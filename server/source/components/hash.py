@@ -4,12 +4,8 @@ from base import Component
 
 
 class Hash(Component):
-    def initialize(self, datetime):
-        self.__hash = blake2b()
-        self.__hash.update(str(datetime).encode('utf-8'))
-
-    def result(self):
-        return self.__hash.hexdigest()
-
-    def update(self, piece):
-        self.__hash.update(str(piece).encode('utf-8'))
+    def hex(self, *args):
+        hexHash = blake2b()
+        for arg in args:
+            hexHash.update(str(arg).encode('utf-8'))
+        return hexHash.hexdigest()

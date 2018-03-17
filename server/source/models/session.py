@@ -36,7 +36,7 @@ class Session(Alchemy.Model):
     )
 
     answers = Alchemy.relationship(
-        'answer',
+        'Answer',
         backref='session',
         passive_deletes=True,
     )

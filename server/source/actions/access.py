@@ -1,24 +1,24 @@
+import errors
 from base import Action
-from errors import Identifier
+from models import Session
 
 
 class Access(Action):
-    def __init__(self, application, identity):
-        self._identity = identity
-        super().__init__(application)
-
     def _validate(self, request):
         super()._validate(request)
-        self._identifier = str(self._get(request, 'identifier'))
+        validator = self._application.validator
 
-        if (not self._application.validator.isHex(self._identifier)):
-            raise Identifier()
+        self._token = str(self._get(request, 'token'))
+        if not validator.isHex(self._token):
+            raise errors.Token()
 
-        if (len(self._identifier) != 128):
-            raise Identifier()
+        if len(self._token) != 128:
+            raise errors.Token()
 
-        self._entry = self._identity.get(self._identifier)
-        if (self._entry is None):
-            raise Identifier()
-
-        return True
+        self._session = \
+            Session \
+            .query \
+            .filter_by(token=self._token) \
+            .one()
+        if self._session is None:
+            raise errors.Token()

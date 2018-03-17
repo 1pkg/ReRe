@@ -31,7 +31,7 @@ group([
           CREATE TABLE IF NOT EXISTS subject (
             id SERIAL NOT NULL PRIMARY KEY,
             link VARCHAR NOT NULL UNIQUE,
-            source VARCHAR NOT NULL UNIQUE,
+            source VARCHAR NOT NULL,
             option_id INT NOT NULL REFERENCES option (id) ON DELETE CASCADE
           );
         """,
