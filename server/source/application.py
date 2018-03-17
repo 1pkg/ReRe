@@ -3,10 +3,13 @@ import psycopg2
 import psycopg2.extras
 import redis
 import flask
+import flask_migrate
 
 import components
 import services
 import actions
+import models
+from base import Alchemy
 
 
 class Application:
@@ -135,4 +138,8 @@ class Application:
 
 instance = flask.Flask(__name__)
 instance.config.from_object('configuration.Development')
+with instance.app_context():
+    Alchemy.init_app(instance)
+    Alchemy.create_all()
+migrate = flask_migrate.Migrate(instance, Alchemy)
 Application(instance)

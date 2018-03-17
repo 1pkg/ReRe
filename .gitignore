@@ -4,6 +4,7 @@
 
 /server/env/
 /server/**/__pycache__/
+/server/migrations/
 
 /parser/env/
 /parser/**/__pycache__/

@@ -21,6 +21,7 @@ class Production(Configuration):
         'port': 6379,
         'db': 0
     }
+    SQLALCHEMY_DATABASE_URI = 'postgresql://default:@localhost/test'
 
 
 class Development(Configuration):
@@ -35,6 +36,7 @@ class Development(Configuration):
         'port': 6379,
         'db': 0
     }
+    SQLALCHEMY_DATABASE_URI = 'postgresql://default:@localhost/test'
     DEBUG = True
 
 
