@@ -23,6 +23,7 @@ class Subject(Alchemy.Model):
         Alchemy.Integer,
         Alchemy.ForeignKey('option.id', ondelete='cascade'),
         nullable=False,
+        index=True,
     )
 
     tasks = Alchemy.relationship(

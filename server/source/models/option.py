@@ -20,8 +20,7 @@ class Option(Alchemy.Model):
     )
     link = Alchemy.Column(
         Alchemy.String,
-        nullable=True,
-        default=None,
+        nullable=False,
     )
     source = Alchemy.Column(
         Alchemy.String,

@@ -17,4 +17,5 @@ class Setting(Alchemy.Model):
     value = Alchemy.Column(
         Alchemy.String,
         default=None,
+        server_default=Alchemy.text('null'),
     )
