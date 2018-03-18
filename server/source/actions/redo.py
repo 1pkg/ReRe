@@ -1,15 +1,16 @@
-from base import Alchemy
 from models import Task, Effect, Setting
 from .identify import Identify
 from .task import Task as TaskFormat
 
 
 class Redo(Identify, TaskFormat):
+    CONNECTION_LIMIT = '1 per second, 10 per minute'
+
     def _process(self, request):
         effects = \
             Effect \
             .query \
-            .order_by(Alchemy.func.random()) \
+            .order_by(self._application.db.func.random()) \
             .limit(int(
                 Setting
                 .query
@@ -29,6 +30,6 @@ class Redo(Identify, TaskFormat):
         )
         task.options = self._task.options
         task.effects = effects
-        Alchemy.session.add(task)
-        Alchemy.session.commit()
-        return self.format(task)
+        self._application.db.session.add(task)
+        self._application.db.session.commit()
+        return self._format(task)

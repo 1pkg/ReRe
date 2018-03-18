@@ -1,10 +1,11 @@
 import errors
-from base import Alchemy
 from models import Answer, Setting
 from .identify import Identify
 
 
 class Choose(Identify):
+    CONNECTION_LIMIT = '1 per second, 100 per minute'
+
     def _validate(self, request):
         super()._validate(request)
         validator = self._application.validator
@@ -35,8 +36,8 @@ class Choose(Identify):
             option_id=choosenOption.id,
             session_id=self._session.id,
         )
-        Alchemy.session.add(answer)
-        Alchemy.session.commit()
+        self._application.db.session.add(answer)
+        self._application.db.session.commit()
 
         return {
             'result': result,

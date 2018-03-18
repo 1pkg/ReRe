@@ -8,6 +8,10 @@ class Configuration:
     LOGGER_NAME = ''
     SQLALCHEMY_TRACK_MODIFICATIONS = True
     LOGGER_HANDLER_POLICY = 'always'
+    TRAP_HTTP_EXCEPTIONS = True
+
+    RATELIMIT_DEFAULT = '100 per minute'
+    RATELIMIT_STRATEGY = 'moving-window'
 
 
 class Production(Configuration):

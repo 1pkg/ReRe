@@ -9,10 +9,7 @@ class Access(Action):
         validator = self._application.validator
 
         token = str(self._get(request, 'token'))
-        if not validator.isHex(token):
-            raise errors.Token()
-
-        if len(token) != 128:
+        if len(token) != 128 or not validator.isHex(token):
             raise errors.Token()
 
         self._session = \

@@ -1,9 +1,11 @@
 import errors
-from base import Action, Alchemy
+from base import Action
 from models import Session, Setting
 
 
 class Handshake(Action):
+    CONNECTION_LIMIT = '2 per minute'
+
     def _validate(self, request):
         super()._validate(request)
         validator = self._application.validator
@@ -33,13 +35,18 @@ class Handshake(Action):
             user_ip=self.__userIp,
             token=token,
         )
-        Alchemy.session.add(session)
-        Alchemy.session.commit()
+        self._application.db.session.add(session)
+        self._application.db.session.commit()
         setting = {
             'session-expire':
                 Setting
                 .query
                 .filter_by(name='session-expire')
+                .one().value,
+            'identity-expire':
+                Setting
+                .query
+                .filter_by(name='identity-expire')
                 .one().value,
         }
 

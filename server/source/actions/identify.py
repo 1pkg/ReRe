@@ -10,15 +10,19 @@ class Identify(Access):
         super()._validate(request)
         validator = self._application.validator
 
-        identity = self._application.crypto.decrypt(
-            Setting
-            .query
-            .filter_by(name='identity-secret-key')
-            .one()
-            .value,
-            str(self._get(request, 'identity')),
-        )
-        identity = json.loads(identity)
+        try:
+            identity = self._application.crypto.decrypt(
+                Setting
+                .query
+                .filter_by(name='identity-secret-key')
+                .one()
+                .value,
+                str(self._get(request, 'identity')),
+            )
+            identity = json.loads(identity)
+        except Exception:
+            raise errors.Identity()
+
         if 'timestamp' not in identity \
                 or not validator.isNumeric(identity['timestamp']) \
                 or 'task_id' not in identity \

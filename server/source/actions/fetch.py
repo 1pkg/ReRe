@@ -1,19 +1,20 @@
 import errors
-from base import Alchemy
 from models import Task, Option, Subject, Effect, Setting
 from .access import Access
 from .task import Task as TaskFormat
 
 
 class Fetch(Access, TaskFormat):
+    CONNECTION_LIMIT = '1 per second, 100 per minute'
+
     def _process(self, request):
         label = str(self._get(request, 'label', ''))
         if label is not '':
-            return self.format(self.__fetchByLabel(label))
+            return self._format(self.__fetchByLabel(label))
         elif self._application.random.roll(0.8):
-            return self.format(self.__fetchByRandom())
+            return self._format(self.__fetchByRandom())
         else:
-            return self.format(self.__fetchNew())
+            return self._format(self.__fetchNew())
 
     def __fetchByLabel(self, label):
         task = \
@@ -29,14 +30,14 @@ class Fetch(Access, TaskFormat):
         return \
             Task \
             .query \
-            .order_by(Alchemy.func.random()) \
+            .order_by(self._application.db.func.random()) \
             .first()
 
     def __fetchNew(self):
         options = \
             Option \
             .query \
-            .order_by(Alchemy.func.random()) \
+            .order_by(self._application.db.func.random()) \
             .limit(int(
                 Setting
                 .query
@@ -48,12 +49,12 @@ class Fetch(Access, TaskFormat):
             Subject \
             .query \
             .filter_by(option_id=options[index].id) \
-            .order_by(Alchemy.func.random()) \
+            .order_by(self._application.db.func.random()) \
             .first()
         effects = \
             Effect \
             .query \
-            .order_by(Alchemy.func.random()) \
+            .order_by(self._application.db.func.random()) \
             .limit(int(
                 Setting.query
                 .filter_by(name='effect-count')
@@ -71,6 +72,6 @@ class Fetch(Access, TaskFormat):
         )
         task.effects = effects
         task.options = options
-        Alchemy.session.add(task)
-        Alchemy.session.commit()
+        self._application.db.session.add(task)
+        self._application.db.session.commit()
         return task

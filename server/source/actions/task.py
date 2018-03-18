@@ -5,7 +5,7 @@ from models import Setting
 
 
 class Task(Action):
-    def format(self, task):
+    def _format(self, task):
         identity = self._application.crypto.encrypt(
             Setting
             .query
