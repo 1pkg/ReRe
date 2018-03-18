@@ -11,4 +11,4 @@ class Http(Component):
         return request.headers['USER-AGENT']
 
     def userIp(self, request):
-        return flask_limiter.util.get_ipaddr()
+        return flask_limiter.util.get_remote_address()

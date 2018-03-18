@@ -5,6 +5,7 @@
 /server/env/
 /server/**/__pycache__/
 /server/migrations/
+/server/settings/production.cfg
 
 /parser/env/
 /parser/**/__pycache__/
