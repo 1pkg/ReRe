@@ -1,7 +1,7 @@
 import json
 
 import errors
-from models import Task
+from models import Task, Setting
 from .access import Access
 
 
@@ -10,22 +10,27 @@ class Identify(Access):
         super()._validate(request)
         validator = self._application.validator
 
-        self._identity = str(self._get(request, 'identity'))
-        try:
-            self._identity = json.loads(self._identity)
-        except Exception:
+        identity = self._application.crypto.decrypt(
+            Setting
+            .query
+            .filter_by(name='identity-secret-key')
+            .one()
+            .value,
+            str(self._get(request, 'identity')),
+        )
+        identity = json.loads(identity)
+        if 'timestamp' not in identity \
+                or not validator.isNumeric(identity['timestamp']) \
+                or 'task_id' not in identity \
+                or not validator.isNumeric(identity['task_id']) \
+                or 'token' not in identity \
+                or self._session.token != identity.token:
             raise errors.Identity()
 
-        if 'timestamp' not in self._identity \
-                or not validator.isNumeric(self._identity['timestamp']) \
-                or 'task_id' not in self._identity \
-                or not validator.isNumeric(self._identity['task_id']):
-            raise errors.Identity()
-
-        self._timestamp = int(self._identity['timestamp'])
+        self._timestamp = int(identity['timestamp'])
         self._task = \
             Task \
             .query \
-            .get(int(self._identity['task_id']))
+            .get(int(identity['task_id']))
         if self._task is None:
             raise errors.Identity()

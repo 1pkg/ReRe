@@ -2,41 +2,18 @@ import errors
 from base import Alchemy
 from models import Task, Option, Subject, Effect, Setting
 from .access import Access
+from .task import Task as TaskFormat
 
 
-class Fetch(Access):
+class Fetch(Access, TaskFormat):
     def _process(self, request):
-        task, label = None, str(self._get(request, 'label', ''))
+        label = str(self._get(request, 'label', ''))
         if label is not '':
-            task = self.__fetchByLabel(label)
+            return self.format(self.__fetchByLabel(label))
         elif self._application.random.roll(0.8):
-            task = self.__fetchByRandom()
+            return self.format(self.__fetchByRandom())
         else:
-            task = self.__fetchNew()
-
-        return {
-            'identity': {
-                'task_id': task.id,
-                'timestamp': self._application.datetime.timestamp(),
-            },
-            'task': {
-                'options': [{
-                    'name': option.name,
-                    'description': option.description,
-                    'link': option.link,
-                    'source': option.source,
-                } for option in task.options],
-                'subject': {
-                    'link': task.subject.link,
-                    'source': task.subject.source,
-                },
-                'effects': [{
-                    'name': effect.name,
-                    'shader': effect.shader,
-                } for effect in task.effects],
-                'label': task.label,
-            },
-        }
+            return self.format(self.__fetchNew())
 
     def __fetchByLabel(self, label):
         task = \

@@ -1,9 +1,10 @@
 from base import Alchemy
 from models import Task, Effect, Setting
 from .identify import Identify
+from .task import Task as TaskFormat
 
 
-class Redo(Identify):
+class Redo(Identify, TaskFormat):
     def _process(self, request):
         effects = \
             Effect \
@@ -30,27 +31,4 @@ class Redo(Identify):
         task.effects = effects
         Alchemy.session.add(task)
         Alchemy.session.commit()
-
-        return {
-            'identity': {
-                'task_id': task.id,
-                'timestamp': self._application.datetime.timestamp(),
-            },
-            'task': {
-                'options': [{
-                    'name': option.name,
-                    'description': option.description,
-                    'link': option.link,
-                    'source': option.source,
-                } for option in task.options],
-                'subject': {
-                    'link': task.subject.link,
-                    'source': task.subject.source,
-                },
-                'effects': [{
-                    'name': effect.name,
-                    'shader': effect.shader,
-                } for effect in task.effects],
-                'label': task.label,
-            },
-        }
+        return self.format(task)
