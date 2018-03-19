@@ -1,4 +1,3 @@
-import re
 from datetime import datetime, timedelta
 
 
@@ -24,7 +23,12 @@ class Target:
                 ==================================================
                 ==================================================
             ''')
-
+            self._stats(
+                processed,
+                skipped,
+                totalCount,
+                startTimestamp,
+            )
             try:
                 item = items[index]
                 self._logger.info('''
@@ -34,30 +38,14 @@ class Target:
                     item['url'],
                     index,
                 ))
-                result = self._fetchFromWiki(
-                    item['title'],
-                    item['category'],
-                    item['parentCategory']
-                )
+                result = self._fetchFromWiki(item['title'])
                 if result is None:
-                    result = self._fetchFromTarget(
-                        item['url'],
-                        item['title'],
-                        item['category'],
-                        item['parentCategory']
-                    )
+                    result = self._fetchFromTarget(item['url'], item['title'])
                 if result is None:
                     skipped.append(item)
                     self._logger.warning('''
                         target skipped item has no result
                     ''')
-                    self._stats(
-                        result,
-                        processed,
-                        skipped,
-                        totalCount,
-                        startTimestamp
-                    )
                     continue
 
                 result['subjects'] = self._image.fetch(
@@ -69,26 +57,12 @@ class Target:
                     self._logger.warning('''
                         target skipped item has no subjects
                     ''')
-                    self._stats(
-                        result,
-                        processed,
-                        skipped,
-                        totalCount,
-                        startTimestamp
-                    )
                     continue
 
                 processed.append(result)
                 self._logger.info('''
                     target processed item {0}
                 '''.format(str(result)))
-                self._stats(
-                    result,
-                    processed,
-                    skipped,
-                    totalCount,
-                    startTimestamp
-                )
             except Exception as exception:
                 skipped.append(item)
                 self._logger.error(str(exception))
@@ -115,11 +89,10 @@ class Target:
 
     def _stats(
         self,
-        result,
         processed,
         skipped,
         totalCount,
-        startTimestamp
+        startTimestamp,
     ):
         processedCount, skippedCount = len(processed), len(skipped)
         timeDelta = datetime.today().timestamp() - startTimestamp
@@ -127,14 +100,14 @@ class Target:
             else (processedCount + skippedCount) / totalCount
         remainingTime = 0.0 if totalRatio == 0.0 \
             else timeDelta / totalRatio - timeDelta
-        self._logger.info(re.sub('\s+', ' ', '''
+        self._logger.info('''
             total {0} processed {1} skipped {2}
         '''.format(
             totalCount,
             processedCount,
             skippedCount,
-        ), flags=re.IGNORECASE).strip())
-        self._logger.info(re.sub('\s+', ' ', '''
+        ))
+        self._logger.info('''
             total percent {0:.2f}%
             processed percent {1:.2f}%
             skipped percent {2:.2f}%
@@ -142,13 +115,13 @@ class Target:
             totalRatio * 100,
             0.0 if totalCount == 0 else processedCount / totalCount * 100,
             0.0 if totalCount == 0 else skippedCount / totalCount * 100,
-        ), flags=re.IGNORECASE).strip())
-        self._logger.info(re.sub('\s+', ' ', '''
+        ))
+        self._logger.info('''
             running time {0} approximately remaining time {1}
         '''.format(
             str(timedelta(seconds=int(timeDelta))),
             str(timedelta(seconds=int(remainingTime))),
-        ), flags=re.IGNORECASE).strip())
+        ))
 
     def _deadFetch(self, query, params={}):
         tryCount, response = 1, None
@@ -172,14 +145,11 @@ class Target:
     def _fetchItems(self):
         return NotImplemented
 
-    def _fetchFromTarget(self, url, title, category, parentCategory):
+    def _fetchFromTarget(self, url, title):
         return NotImplemented
 
-    def _fetchFromWiki(self, title, category, parentCategory):
-        response = self._wiki.fetch(
-            self._wiki.TYPE_WIKI,
-            title,
-        )
+    def _fetchFromWiki(self, title):
+        response = self._wiki.fetch(self._wiki.TYPE_WIKI, title)
         if response is None:
             return None
 
@@ -188,8 +158,4 @@ class Target:
             'description': response.summary,
             'link': response.url,
             'source': 'wiki',
-            'category': {
-                'name': category,
-                'parentName': parentCategory,
-            }
         }

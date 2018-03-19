@@ -41,10 +41,9 @@ class Static(Fetcher):
                         timeout=self.DEFAULT_TIMEOUT,
                     )
                 else:
-                    self._logger.error('''
+                    raise Exception('''
                         static doesn\'t supply htype {0}
                     '''.format(htype))
-                    return None
             except Exception as exception:
                 self._logger.error(str(exception))
 

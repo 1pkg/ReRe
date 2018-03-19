@@ -9,12 +9,10 @@ from .plain import Plain
 
 
 class Image(Fetcher):
-    DESIRE_WIDTH = 1366
-    DESIRE_HEIGHT = 768
-
-    MAX_DISPROPORTION = 2.0
-    MAX_SIZE = 2056
-    MIN_SIZE = 256
+    DESIRE_LARGE_MEASURE = 1920
+    DESIRE_SMALL_MEASURE = 1080
+    MAX_DISPROPORTION = 3.0
+    MIN_SCALE_SIZE = 256
 
     def __init__(self, logger, path):
         ImageFile.LOAD_TRUNCATED_IMAGES = True
@@ -64,46 +62,60 @@ class Image(Fetcher):
             ''')
             return None
         else:
-            result = self.__save(image, size)
+            image = self.__crop(image, size)
+            result = self.__save(image)
             if result is None:
                 return None
             return {
                 'link': result,
                 'source': query,
+                'orientation':
+                'portrait' if
+                image.size.width > image.size.height
+                else 'landscape',
             }
 
     def __check(self, image, size):
         width, height = size
         return \
-            width >= self.MIN_SIZE and height >= self.MIN_SIZE and \
-            width <= self.MAX_SIZE and height <= self.MAX_SIZE and \
-            (width / height) <= (self.MAX_DISPROPORTION * 1.5) and \
-            (height / width) <= (self.MAX_DISPROPORTION / 2.0)
+            width >= self.MIN_SCALE_SIZE \
+            and height >= self.MIN_SCALE_SIZE and \
+            (width / height) <= (self.MAX_DISPROPORTION) and \
+            (height / width) <= (self.MAX_DISPROPORTION)
 
     def __crop(self, image, size):
         self._logger.info('''
             image start resizing and cropping
         ''')
         width, height = size
-        ratioWidth = self.DESIRE_WIDTH / width
-        ratioHeight = self.DESIRE_HEIGHT / height
-        if ratioWidth > ratioHeight:
-            newSize = (self.DESIRE_WIDTH, int(height * ratioWidth))
+        if width >= height:
+            desireWidth = self.DESIRE_LARGE_MEASURE
+            desireHeight = self.DESIRE_SMALL_MEASURE
         else:
-            newSize = (int(width * ratioHeight), self.DESIRE_HEIGHT)
+            desireHeight = self.DESIRE_LARGE_MEASURE
+            desireWidth = self.DESIRE_SMALL_MEASURE
+        ratioWidth = desireWidth / width
+        ratioHeight = desireHeight / height
+        if ratioWidth > ratioHeight:
+            newSize = (desireWidth, int(height * ratioWidth))
+        else:
+            newSize = (int(width * ratioHeight), desireHeight)
         image = image.resize(newSize, PImage.ANTIALIAS)
-        left = int((newSize[0] - self.DESIRE_WIDTH) / 2.0)
-        top = int((newSize[1] - self.DESIRE_HEIGHT) / 2.0)
-        right = int((newSize[0] + self.DESIRE_WIDTH) / 2.0)
-        bottom = int((newSize[1] + self.DESIRE_HEIGHT) / 2.0)
-        image = image.crop((left, top, right, bottom))
-        self._logger.info('''
-            image resized and cropped {0}
-        '''.format(str(newSize)))
-        return image
+        left = int((newSize[0] - desireWidth) / 2.0)
+        top = int((newSize[1] - desireHeight) / 2.0)
+        right = int((newSize[0] + desireWidth) / 2.0)
+        bottom = int((newSize[1] + desireHeight) / 2.0)
+        try:
+            image = image.crop((left, top, right, bottom))
+            self._logger.info('''
+                image resized and cropped {0}
+            '''.format(str(newSize)))
+            return image
+        except Exception as exception:
+            self._logger.error(str(exception))
+            return None
 
-    def __save(self, image, size):
-        image = self.__crop(image, size)
+    def __save(self, image):
         fileName = '{0}.png'.format(hexlify(urandom(16)).decode())
         fullName = path.join(self.__dir, fileName)
         while path.isfile(fullName):

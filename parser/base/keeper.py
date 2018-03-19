@@ -6,15 +6,7 @@ class Keeper:
         self.__session = session
 
     def __fix(self, item):
-        if item is None:
-            return None
-
-        return re.sub(
-            '\s+',
-            ' ',
-            item,
-            flags=re.IGNORECASE
-        ).strip()
+        return re.sub('\s+', ' ', item).strip()
 
     def _sanitalize(self, items):
         newItems = []
@@ -22,12 +14,8 @@ class Keeper:
             newItems.append({
                 'name': self.__fix(item['name']),
                 'description': self.__fix(item['description']),
-                'source': self.__fix(item['source']),
+                'source': item['source'],
                 'link': item['link'],
-                'category': {
-                    'name': self.__fix(item['category']['name']),
-                    'parentName': self.__fix(item['category']['parentName']),
-                },
                 'subjects': item['subjects'],
             })
         return newItems

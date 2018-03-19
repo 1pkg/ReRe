@@ -36,10 +36,9 @@ class Plain(Fetcher):
                 ''')
                 return response
             else:
-                self._logger.error('''
+                raise Exception('''
                     plain doesn\'t supply htype {0}
                 '''.format(htype))
-                return None
             self._logger.info('plain fetched successfully')
         except Exception as exception:
             self._logger.error(str(exception))
