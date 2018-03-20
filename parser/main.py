@@ -24,30 +24,25 @@ argparser.add_argument(
     help='max count of fetch try on various errors',
 )
 argparser.add_argument(
-    '--start_offset',
+    '--offset',
     type=int,
     help='start offset of items that will be fetched from each target',
 )
 argparser.add_argument(
-    '--max_count',
+    '--limit',
     type=int,
     help='max count of items that will be fetched from each target',
 )
 argparser.add_argument(
-    '--max_try',
-    type=int,
-    help='max count of fetch try on various errors',
-)
-argparser.add_argument(
-    '--clean',
+    '--clear',
     type=bool,
     default=False,
-    help='should previous dump be clean',
+    help='should previous dump been clean',
 )
 
 
-def initialize(session, clean):
-    if clean:
+def initialize(session, clear):
+    if clear:
         if os.path.exists(DUMP_PATH):
             shutil.rmtree(DUMP_PATH)
         if os.path.exists(LOG_PATH):
@@ -65,9 +60,8 @@ def run(
     session,
     name,
     target,
-    startOffest,
-    maxCount,
-    maxTry,
+    offest,
+    limit,
 ):
     sqliteKeeper = Sqlite(
         session,
@@ -93,12 +87,10 @@ def run(
         logger,
         [sqliteKeeper, jsonKeeper]
     )
-    if startOffest is not None:
-        target.START_OFFSET = startOffest
-    if maxCount is not None:
-        target.MAX_COUNT = maxCount
-    if maxTry is not None:
-        target.MAX_TRY = maxTry
+    if offest is not None:
+        target.OFFSET = offest
+    if limit is not None:
+        target.LIMIT = limit
     target.process()
 
 
@@ -111,7 +103,7 @@ CURREN_IMAGES_PATH = os.path.join(CURRENT_DUMP_PATH, 'images')
 LOG_PATH = os.path.abspath(os.path.join(__file__, '..', 'log'))
 CURRENT_LOG_PATH = os.path.join(LOG_PATH, arguments.session)
 
-initialize(arguments.session, bool(arguments.clean))
+initialize(arguments.session, bool(arguments.clear))
 for name, target in targets.__dict__.items():
     if isinstance(target, type) and issubclass(target, Target) \
             and (len(arguments.targets) == 0 or name in arguments.targets):
@@ -119,7 +111,6 @@ for name, target in targets.__dict__.items():
             arguments.session,
             name,
             target,
-            arguments.start_offset,
-            arguments.max_count,
-            arguments.max_try,
+            arguments.offset,
+            arguments.limit,
         )).start()

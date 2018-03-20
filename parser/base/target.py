@@ -72,6 +72,12 @@ class Target:
                             PROCESSING FINISHED
             ==================================================
         ''')
+        self._stats(
+            processed,
+            skipped,
+            totalCount,
+            startTimestamp,
+        )
         self._keep(processed)
 
     def _keep(self, processed):
@@ -125,7 +131,7 @@ class Target:
 
     def _deadFetch(self, query, params={}):
         tryCount, response = 1, None
-        while tryCount < self.MAX_TRY and \
+        while tryCount < 100 and \
                 (response is None or response.status_code != 200):
             try:
                 tryCount += 1

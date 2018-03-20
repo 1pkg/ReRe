@@ -11,8 +11,8 @@ from .plain import Plain
 class Image(Fetcher):
     DESIRE_LARGE_MEASURE = 1920
     DESIRE_SMALL_MEASURE = 1080
-    MAX_DISPROPORTION = 3.0
-    MIN_SCALE_SIZE = 256
+    MAX_DISPROPORTION = 2.75
+    MIN_SCALE_SIZE = 512
 
     def __init__(self, logger, path):
         ImageFile.LOAD_TRUNCATED_IMAGES = True
@@ -71,7 +71,7 @@ class Image(Fetcher):
                 'source': query,
                 'orientation':
                 'portrait' if
-                image.size.width > image.size.height
+                image.size[0] > image.size[1]
                 else 'landscape',
             }
 

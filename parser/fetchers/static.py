@@ -8,7 +8,7 @@ class Static(Fetcher):
     def __init__(self, logger):
         super().__init__(logger)
         self.__session = requests.session()
-        self.__proxy = os.environ['STATIC_PROXY']
+        self.__proxy = os.environ['PARS_STATIC_PROXY']
 
     def fetch(self, htype, query, params={}):
         self._logger.info('''
