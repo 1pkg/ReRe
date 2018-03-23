@@ -1,6 +1,4 @@
 class Action:
-    CONNECTION_LIMIT = '100 per minute'
-
     def __init__(self, application):
         self._application = application
 

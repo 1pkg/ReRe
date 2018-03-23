@@ -12,7 +12,6 @@ class Option(Alchemy.Model):
     name = Alchemy.Column(
         Alchemy.String,
         nullable=False,
-        index=True,
     )
     description = Alchemy.Column(
         Alchemy.String,
@@ -20,14 +19,11 @@ class Option(Alchemy.Model):
     )
     link = Alchemy.Column(
         Alchemy.String,
-        # nullable=False,
-        default=None,
-        server_default=Alchemy.text('null'),
+        nullable=False,
     )
     source = Alchemy.Column(
         Alchemy.String,
         nullable=False,
-        index=True,
     )
 
     subjects = Alchemy.relationship(

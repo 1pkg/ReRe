@@ -6,11 +6,15 @@
 /server/**/__pycache__/
 /server/migrations/
 /server/settings/production.cfg
+/server/yoyo.ini
 
 /parser/env/
 /parser/**/__pycache__/
 /parser/dump/
 /parser/log/
-/parser/*.tar.gz
 /parser/targets/
 /parser/fetchers/proxy.py
+/parser/*.sql
+/parser/*.tar.gz
+/parser/*.db
+/parser/*.list

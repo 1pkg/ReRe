@@ -1,4 +1,10 @@
+from enum import Enum
 from base import Alchemy
+
+
+class Orientation(Enum):
+    portrait = 'portrait'
+    landscape = 'landscape'
 
 
 class Subject(Alchemy.Model):
@@ -17,6 +23,11 @@ class Subject(Alchemy.Model):
     source = Alchemy.Column(
         Alchemy.String,
         nullable=False,
+    )
+    orientation = Alchemy.Column(
+        Alchemy.Enum(Orientation),
+        nullable=False,
+        index=True,
     )
     option_id = Alchemy.Column(
         Alchemy.Integer,

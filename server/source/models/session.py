@@ -26,7 +26,7 @@ class Session(Alchemy.Model):
     token = Alchemy.Column(
         Alchemy.String,
         nullable=False,
-        index=True,
+        unique=True,
     )
     time_stamp = Alchemy.Column(
         Alchemy.DateTime,

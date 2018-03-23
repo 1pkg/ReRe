@@ -7,11 +7,7 @@ from models import Setting
 class Task(Action):
     def _format(self, task):
         identity = self._application.crypto.encrypt(
-            Setting
-            .query
-            .filter_by(name='identity-secret-key')
-            .one()
-            .value,
+            str(Setting.get('identity-secret-key')),
             json.dumps({
                 'task_id': task.id,
                 'token': self._session.token,
@@ -23,6 +19,7 @@ class Task(Action):
             json.dumps({
                 'link': task.subject.link,
                 'source': task.subject.source,
+                'orientation': task.subject.orientation,
             }),
         )
         return {

@@ -23,6 +23,9 @@ class Handshake(Action):
             raise errors.Request('user_ip')
 
     def _process(self, request):
+        setting = {
+            'choose-period': int(Setting.get('choose-period')),
+        }
         token = self._application.hash.hex(
             self._application.random.salt(),
             self.__userHost,
@@ -37,18 +40,6 @@ class Handshake(Action):
         )
         self._application.db.session.add(session)
         self._application.db.session.commit()
-        setting = {
-            'session-expire':
-                Setting
-                .query
-                .filter_by(name='session-expire')
-                .one().value,
-            'identity-expire':
-                Setting
-                .query
-                .filter_by(name='identity-expire')
-                .one().value,
-        }
 
         return {
             'token': token,

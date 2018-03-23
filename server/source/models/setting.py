@@ -16,6 +16,10 @@ class Setting(Alchemy.Model):
     )
     value = Alchemy.Column(
         Alchemy.String,
-        default=None,
-        server_default=Alchemy.text('null'),
+        nullable=False,
     )
+
+    @staticmethod
+    def get(name):
+        return Setting.query \
+            .filter_by(name=name).one().value

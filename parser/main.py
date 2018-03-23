@@ -56,13 +56,7 @@ def initialize(session, clear):
         os.makedirs(CURRENT_LOG_PATH)
 
 
-def run(
-    session,
-    name,
-    target,
-    offest,
-    limit,
-):
+def run(session, name, target, offest, limit):
     sqliteKeeper = Sqlite(
         session,
         os.path.join(CURRENT_DUMP_PATH, 'targets.db'),
@@ -105,12 +99,13 @@ CURRENT_LOG_PATH = os.path.join(LOG_PATH, arguments.session)
 
 initialize(arguments.session, bool(arguments.clear))
 for name, target in targets.__dict__.items():
-    if isinstance(target, type) and issubclass(target, Target) \
-            and (len(arguments.targets) == 0 or name in arguments.targets):
-        Thread(target=run, args=(
-            arguments.session,
-            name,
-            target,
-            arguments.offset,
-            arguments.limit,
-        )).start()
+    if len(arguments.targets) == 0 or name in arguments.targets:
+        if isinstance(target, type):
+            if issubclass(target, Target):
+                Thread(target=run, args=(
+                    arguments.session,
+                    name,
+                    target,
+                    arguments.offset,
+                    arguments.limit,
+                )).start()

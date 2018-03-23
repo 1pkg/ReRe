@@ -12,11 +12,7 @@ class Identify(Access):
 
         try:
             identity = self._application.crypto.decrypt(
-                Setting
-                .query
-                .filter_by(name='identity-secret-key')
-                .one()
-                .value,
+                str(Setting.get('identity-secret-key')),
                 str(self._get(request, 'identity')),
             )
             identity = json.loads(identity)
@@ -32,9 +28,7 @@ class Identify(Access):
             raise errors.Identity()
 
         self._timestamp = int(identity['timestamp'])
-        self._task = \
-            Task \
-            .query \
+        self._task = Task.query \
             .get(int(identity['task_id']))
         if self._task is None:
             raise errors.Identity()

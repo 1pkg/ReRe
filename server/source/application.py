@@ -1,7 +1,7 @@
 import flask
 import flask_migrate
 import flask_limiter
-import werkzeug
+import flask_cors
 import functools
 
 import base
@@ -11,6 +11,8 @@ import actions
 
 class Application:
     def __init__(self, instance):
+        self.__components = {}
+        self.__actions = {}
         self.__setup(instance)
         self.__init(instance)
         self.__bind(instance)
@@ -26,67 +28,54 @@ class Application:
             return self.__actions[action](request)
         return None
 
-    def action(self, action):
+    def action(self, action, instance):
         try:
             return flask.jsonify(action(flask.request))
         except base.Error as error:
             return flask.jsonify({'error': str(error)})
         except Exception as exception:
-            if self.instance.debug:
+            if instance.debug:
                 raise exception
             else:
                 instance.logger.error(str(exception))
-                return ''
+                return flask.jsonify({'error': ''})
 
     def before(self):
         pass
 
     def after(self, response):
-        response.headers.add(
-            'Access-Control-Allow-Origin',
-            '*',
-        )
-        response.headers.add(
-            'Access-Control-Allow-Headers',
-            'Content-Type,Authorization',
-        )
-        response.headers.add(
-            'Access-Control-Allow-Methods',
-            'GET,PUT,POST,DELETE,OPTIONS',
-        )
         return response
 
     def __setup(self, instance):
         instance.config.from_envvar('WIT_SETIING')
         with instance.app_context():
+            self.cors = flask_cors.CORS
+            self.cors(instance)
+
             self.db = base.Alchemy
             self.db.init_app(instance)
             self.db.create_all()
             self.migrate = flask_migrate.Migrate(instance, self.db)
 
-            getRemoteAddr = flask_limiter.util.get_remote_address
-            self.limiter = flask_limiter.Limiter(key_func=getRemoteAddr)
+            remoteAddr = flask_limiter.util.get_remote_address
+            self.limiter = flask_limiter.Limiter(key_func=remoteAddr)
             self.limiter.init_app(instance)
 
+            if not instance.debug:
+                instance.register_error_handler(
+                    Exception,
+                    lambda exception: flask.jsonify({'error': ''}),
+                )
+
     def __init(self, instance):
-        if not instance.debug:
-            for name, exception in werkzeug.exceptions.__dict__.items():
-                if isinstance(exception, type) \
-                        and issubclass(exception, Exception):
-                    instance.register_error_handler(
-                        exception,
-                        lambda exception: '',
-                    )
-        self.__components = {}
         for name, component in components.__dict__.items():
-            if isinstance(component, type) \
-                    and issubclass(component, base.Component):
-                self.__components[name.lower()] = component()
-        self.__actions = {}
+            if isinstance(component, type):
+                if issubclass(component, base.Component):
+                    self.__components[name.lower()] = component(self)
         for name, action in actions.__dict__.items():
-            if isinstance(action, type) \
-                    and issubclass(action, base.Action):
-                self.__actions[name.lower()] = action(self)
+            if isinstance(action, type):
+                if issubclass(action, base.Action):
+                    self.__actions[name.lower()] = action(self)
 
     def __bind(self, instance):
         before = functools.partial(Application.before, self)
@@ -98,15 +87,14 @@ class Application:
                 Application.action,
                 self,
                 action,
+                instance,
             )
             bndaction.__name__ = alias
             bndaction.__module__ = action.__module__
             self.limiter.limit(action.CONNECTION_LIMIT)(bndaction)
-            instance.add_url_rule(
-                rule='/{}'.format(alias),
-                view_func=bndaction,
-                methods=['GET', 'POST'],
-            )
+            rule = '/{}'.format(alias)
+            req = ['GET', 'POST'] if instance.debug else ['POST']
+            instance.add_url_rule(view_func=bndaction, rule=rule, methods=req)
 
 
 instance = flask.Flask(__name__)

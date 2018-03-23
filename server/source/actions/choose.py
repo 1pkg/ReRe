@@ -19,12 +19,7 @@ class Choose(Identify):
             raise errors.Request('option')
 
     def _process(self, request):
-        expire = int(
-            Setting
-            .query
-            .filter_by(name='identity-expire')
-            .one().value
-        )
+        expire = int(Setting.get('identity-expire'))
         timestamp = self._application.datetime.timestamp()
         correctOption = self._task.subject.option
         choosenOption = self._task.options[self.__option - 1]
