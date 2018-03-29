@@ -11,7 +11,7 @@ steps = [
         """
           INSERT INTO setting (name, value) VALUES
           ('option-count', '3'), ('effect-count', '3'),
-          ('choose-period', '30'), ('identity-secret-key', '');
+          ('choose-period', '60'), ('identity-secret-key', '');
         """
     )
 ]

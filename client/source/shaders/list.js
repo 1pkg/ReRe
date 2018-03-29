@@ -1,5 +1,3 @@
-// @flow
-
 import * as GlReact from 'gl-react'
 
 export default GlReact.Shaders.create({

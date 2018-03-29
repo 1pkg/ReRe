@@ -1,3 +1,5 @@
+from random import shuffle
+
 import errors
 from models import Task, Orientation, Option, Subject, Effect, Setting
 from .access import Access
@@ -33,13 +35,15 @@ class Fetch(Access, TaskFormat):
             .order_by(self._application.db.func.random()).first()
 
     def __fetchNew(self, orientation):
-        options = Option.query \
-            .order_by(self._application.db.func.random()) \
-            .limit(int(Setting.get('option-count'))).all()
-        index = self._application.random.number(len(options))
         subject = Subject.query \
-            .filter_by(option_id=options[index].id, orientation=orientation) \
+            .filter_by(orientation=orientation) \
             .order_by(self._application.db.func.random()).first()
+        options = Option.query \
+            .filter(Option.id != subject.option_id) \
+            .order_by(self._application.db.func.random()) \
+            .limit(int(Setting.get('option-count')) - 1).all() \
+            + [subject.option]
+        shuffle(options)
         effects = Effect.query \
             .order_by(self._application.db.func.random()) \
             .limit(int(Setting.get('effect-count'))).all()

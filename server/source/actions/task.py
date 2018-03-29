@@ -19,7 +19,7 @@ class Task(Action):
             json.dumps({
                 'link': task.subject.link,
                 'source': task.subject.source,
-                'orientation': task.subject.orientation,
+                'orientation': str(task.subject.orientation),
             }),
         )
         return {
@@ -29,7 +29,7 @@ class Task(Action):
                     'name': option.name,
                     'description': option.description,
                     'link': option.link,
-                    'source': option.source,
+                    'source': str(option.source),
                 } for option in task.options],
                 'subject': subject,
                 'effects': [{

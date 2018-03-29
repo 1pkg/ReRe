@@ -2,7 +2,7 @@
     "name": "wit-web",
     "version": "0.0.1",
     "dependencies": {
-        "axios": "^0.17.1",
+        "axios": "^0.18.0",
         "gl-react": "^3.13.0",
         "gl-react-dom": "^3.13.0",
         "gl-react-image": "^3.1.0",
@@ -24,17 +24,15 @@
         "babel-plugin-root-import": "^5.1.0",
         "babel-plugin-transform-class-properties": "^6.24.1",
         "babel-preset-env": "^1.6.0",
-        "babel-preset-flow": "^6.23.0",
         "babel-preset-react": "^6.24.1",
         "clean-webpack-plugin": "^0.1.18",
-        "favicons-webpack-plugin": "0.0.7",
-        "flow-bin": "^0.64.0",
-        "html-webpack-plugin": "^2.30.1",
+        "favicons-webpack-plugin": "0.0.8",
+        "html-webpack-plugin": "^3.1.0",
         "on-build-webpack": "^0.1.0",
-        "uglifyjs-webpack-plugin": "^1.1.8",
         "webapp-manifest-plugin": "0.0.4",
-        "webpack": "^3.10.0",
-        "webpack-dev-server": "^2.11.1"
+        "webpack": "^4.3.0",
+        "webpack-cli": "^2.0.13",
+        "webpack-dev-server": "^3.1.1"
     },
     "scripts": {
         "development": "webpack-dev-server --config webpack.development.js --hot --watch-poll",

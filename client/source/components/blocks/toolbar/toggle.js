@@ -1,16 +1,8 @@
-// @flow
-
 import Lodash from 'lodash'
 import React from 'react'
 
-type Props = {
-    pictogram: any,
-    hint: string,
-    onClick: () => void,
-}
-
-export default class extends React.Component<Props> {
-    shouldComponentUpdate(props: Props) {
+export default class extends React.Component {
+    shouldComponentUpdate(props) {
         return !Lodash.isEqual(props, this.props)
     }
 

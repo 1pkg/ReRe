@@ -3,6 +3,7 @@ import flask_migrate
 import flask_limiter
 import flask_cors
 import functools
+import flask.ext.mobility
 
 import base
 import components
@@ -47,10 +48,13 @@ class Application:
         return response
 
     def __setup(self, instance):
-        instance.config.from_envvar('WIT_SETIING')
+        instance.config.from_envvar('FLASK_SETIING')
         with instance.app_context():
             self.cors = flask_cors.CORS
             self.cors(instance)
+
+            self.mobility = flask.ext.mobility.Mobility
+            self.mobility(instance)
 
             self.db = base.Alchemy
             self.db.init_app(instance)

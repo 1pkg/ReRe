@@ -6,13 +6,13 @@ class Validator(Component):
         try:
             int(value, 16)
             return True
-        except ValueError:
+        except Exception:
             return False
 
     def isNumeric(self, value):
         try:
             return int(value) > 0
-        except ValueError:
+        except Exception:
             return False
 
     def isEmpty(self, value):

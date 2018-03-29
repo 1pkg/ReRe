@@ -1,5 +1,3 @@
-// @flow
-
 import Lodash from 'lodash'
 import React from 'react'
 import Time from 'react-icons/lib/io/ios-time-outline'
@@ -8,18 +6,9 @@ import Infinite from 'react-icons/lib/io/ios-infinite-outline'
 import Trigger from '~/actions/trigger'
 import Mark from './../mark'
 
-type Props = {
-    trigger: Trigger,
-    timestamp: number,
-    duration: number,
-}
-
-export default class extends React.Component<Props> {
-    shouldComponentUpdate(props: Props) {
-        return (
-            !Lodash.isEqual(props, this.props) ||
-            this.props.timestamp != this.props.trigger.timestamp()
-        )
+export default class extends React.Component {
+    shouldComponentUpdate(props) {
+        return !Lodash.isEqual(props, this.props)
     }
 
     render() {
@@ -29,9 +18,7 @@ export default class extends React.Component<Props> {
             )
         }
 
-        let difftimestamp: number =
-            this.props.duration -
-            (this.props.trigger.timestamp() - this.props.timestamp)
+        let difftimestamp: number = 100
         return <Mark content={difftimestamp} pictogram={<Time />} hint="time" />
     }
 }

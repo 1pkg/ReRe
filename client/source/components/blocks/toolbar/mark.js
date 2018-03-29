@@ -1,31 +1,21 @@
-// @flow
-
 import Lodash from 'lodash'
 import React from 'react'
 
 import Toggle from './toggle'
 
-type Props = {
-    content: any,
-    pictogram: any,
-    hint: string,
-}
-
-type State = { active: boolean }
-
-export default class extends React.Component<Props, State> {
+export default class extends React.Component {
     toggle = () => {
-        this.setState((state: State) => {
+        this.setState(state => {
             return { active: !state.active }
         })
     }
 
-    constructor(props: Props) {
+    constructor(props) {
         super(props)
         this.state = { active: false }
     }
 
-    shouldComponentUpdate(props: Props, state: State) {
+    shouldComponentUpdate(props, state) {
         return (
             !Lodash.isEqual(props, this.props) ||
             !Lodash.isEqual(state, this.state)

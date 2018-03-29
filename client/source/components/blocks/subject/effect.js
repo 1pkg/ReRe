@@ -1,5 +1,3 @@
-// @flow
-
 import Lodash from 'lodash'
 import React from 'react'
 import ReactDOM from 'react-dom'
@@ -7,9 +5,9 @@ import GLReactImage from 'gl-react-image'
 import * as GlReactDom from 'gl-react-dom'
 import * as Reflexbox from 'reflexbox'
 
-import * as Model from '~/model'
 import * as Constants from '~/constants'
 import Trigger from '~/actions/trigger'
+
 import Bleached from '~/shaders/bleached'
 import Bloom from '~/shaders/bloom'
 import BlurHorizontal from '~/shaders/blur-horizontal'
@@ -36,20 +34,9 @@ const Effects = {
     [Constants.EFFECT_NAME_WAVE_VERTICAL]: WaveVertical,
 }
 
-type Props = {
-    trigger: Trigger,
-    subject: string,
-    effects: Array<string>,
-}
-
-type State = {
-    width: number,
-    height: number,
-}
-
-export default class Subject extends React.Component<Props, State> {
+export default class Subject extends React.Component {
     fit = () => {
-        this.setState((state: State) => {
+        this.setState(state => {
             setTimeout(() => this.forceUpdate())
 
             let element = ReactDOM.findDOMNode(this)
@@ -63,7 +50,7 @@ export default class Subject extends React.Component<Props, State> {
         })
     }
 
-    constructor(props: Props) {
+    constructor(props) {
         super(props)
         this.state = {
             width: 0,
@@ -79,7 +66,7 @@ export default class Subject extends React.Component<Props, State> {
         window.removeEventListener('resize', this.fit)
     }
 
-    shouldComponentUpdate(props: Props, state: State) {
+    shouldComponentUpdate(props, state) {
         return (
             !Lodash.isEqual(props, this.props) ||
             !Lodash.isEqual(state, this.state)
@@ -87,7 +74,7 @@ export default class Subject extends React.Component<Props, State> {
     }
 
     apply() {
-        let View: ?React.Component<any> = null
+        let View = null
         Lodash.each(this.props.effects, effect => {
             if (!(effect in Effects)) {
                 return

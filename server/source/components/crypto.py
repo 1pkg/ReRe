@@ -1,5 +1,6 @@
 import base64
 import hashlib
+from urllib.parse import quote
 from Crypto import Random
 from Crypto.Cipher import AES
 
@@ -12,7 +13,8 @@ class Crypto(Component):
         iv = Random.new().read(AES.block_size)
         key = hashlib.sha256(key.encode()).digest()
         cipher = AES.new(key, AES.MODE_CBC, iv)
-        return base64.b64encode(iv + cipher.encrypt(data)).decode('ascii')
+        encryped = base64.b64encode(iv + cipher.encrypt(data))
+        return quote(encryped.decode('ascii'))
 
     def decrypt(self, key, data):
         data = base64.b64decode(data)

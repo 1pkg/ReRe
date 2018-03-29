@@ -1,16 +1,9 @@
-// @flow
-
 import React from 'react'
 import * as GlReact from 'gl-react'
 
 import Shaders from './list'
 
-type Props = {
-    size: [number, number],
-    children: GlReact.Node,
-}
-
-export default class BlurVertical extends React.Component<Props> {
+export default class BlurVertical extends React.Component {
     render() {
         return (
             <GlReact.Node

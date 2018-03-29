@@ -1,24 +1,15 @@
-// @flow
-
 import Lodash from 'lodash'
 import React from 'react'
 import * as Reflexbox from 'reflexbox'
 
 import Trigger from '~/actions/trigger'
 
-type Props = {
-    trigger: Trigger,
-    option: number,
-    children: string,
-    hint: string,
-}
-
-export default class Pending extends React.Component<Props> {
+export default class Pending extends React.Component {
     chose = () => {
-        this.props.trigger.call(Trigger.ACTION_CHOSE, this.props.option)
+        this.props.trigger.call(Trigger.ACTION_CHOOSE, this.props.option)
     }
 
-    shouldComponentUpdate(props: Props) {
+    shouldComponentUpdate(props) {
         return !Lodash.isEqual(props, this.props)
     }
 

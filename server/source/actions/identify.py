@@ -24,7 +24,7 @@ class Identify(Access):
                 or 'task_id' not in identity \
                 or not validator.isNumeric(identity['task_id']) \
                 or 'token' not in identity \
-                or self._session.token != identity.token:
+                or self._session.token != identity['token']:
             raise errors.Identity()
 
         self._timestamp = int(identity['timestamp'])

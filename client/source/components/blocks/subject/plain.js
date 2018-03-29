@@ -1,15 +1,9 @@
-// @flow
-
 import Lodash from 'lodash'
 import React from 'react'
 import * as Reflexbox from 'reflexbox'
 
-type Props = {
-    subject: string,
-}
-
-export default class Subject extends React.Component<Props> {
-    shouldComponentUpdate(props: Props) {
+export default class Subject extends React.Component {
+    shouldComponentUpdate(props) {
         return !Lodash.isEqual(props, this.props)
     }
 

@@ -4,6 +4,7 @@ const HtmlPlugin = require('html-webpack-plugin')
 
 module.exports = {
     entry: './source/application.js',
+    devtool: 'source-map',
 
     output: {
         publicPath: '/build',
@@ -26,7 +27,7 @@ module.exports = {
                 use: {
                     loader: 'babel-loader',
                     options: {
-                        presets: ['env', 'flow', 'react'],
+                        presets: ['env', 'react'],
                         plugins: [
                             [
                                 'babel-plugin-root-import',

@@ -16,7 +16,7 @@ class Redo(Identify, TaskFormat):
             self._application.sequence.column(self._task.options, 'id'),
             self._application.sequence.column(effects, 'id'),
         )
-        task = Task(label=label, subject_id=self._task.id)
+        task = Task(label=label, subject_id=self._task.subject_id)
         task.options = self._task.options
         task.effects = effects
         self._application.db.session.add(task)

@@ -25,7 +25,7 @@ module.exports = {
                 use: {
                     loader: 'babel-loader',
                     options: {
-                        presets: ['env', 'flow', 'react'],
+                        presets: ['env', 'react'],
                         plugins: [
                             [
                                 'babel-plugin-root-import',
@@ -48,26 +48,6 @@ module.exports = {
             NODE_ENV: 'production',
             DEBUG: false,
         }),
-        // new UglifyPlugin({
-        //     parallel: true,
-        //     sourceMap: false,
-        //     ecma: 5,
-        //     mangle: true,
-        //     compress: {
-        //         dead_code: true,
-        //         unused: true,
-        //         drop_console: true,
-        //         booleans: true,
-        //         loops: true,
-        //         conditionals: true,
-        //         sequences: true,
-        //         reduce_vars: true,
-        //     },
-        //     output: {
-        //         comments: false,
-        //         beautify: false,
-        //     },
-        // }),
         new HtmlPlugin({
             template: 'templates/main.html',
             minify: {

@@ -6,6 +6,9 @@ class Orientation(Enum):
     portrait = 'portrait'
     landscape = 'landscape'
 
+    def __str__(self):
+        return str(self.value)
+
 
 class Subject(Alchemy.Model):
     __tablename__ = 'subject'
