@@ -14,7 +14,5 @@
 /parser/log/
 /parser/targets/
 /parser/fetchers/proxy.py
-/parser/*.sql
-/parser/*.tar.gz
-/parser/*.db
-/parser/*.list
+/parser/fetchers/imediator.py
+/parser/*.tar.gz*

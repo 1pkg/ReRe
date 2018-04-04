@@ -30,8 +30,8 @@ class Fetch(Access, TaskFormat):
         raise errors.Request('label')
 
     def __fetchByRandom(self, orientation):
-        return Task.query(Subject) \
-            .filter_by(orientation=orientation) \
+        return Task.query \
+            .filter(Subject.orientation == orientation) \
             .order_by(self._application.db.func.random()).first()
 
     def __fetchNew(self, orientation):

@@ -2,8 +2,8 @@ import flask
 import flask_migrate
 import flask_limiter
 import flask_cors
+import flask_mobility
 import functools
-import flask.ext.mobility
 
 import base
 import components
@@ -48,12 +48,12 @@ class Application:
         return response
 
     def __setup(self, instance):
-        instance.config.from_envvar('FLASK_SETIING')
+        instance.config.from_envvar('FLASK_SETTING')
         with instance.app_context():
             self.cors = flask_cors.CORS
             self.cors(instance)
 
-            self.mobility = flask.ext.mobility.Mobility
+            self.mobility = flask_mobility.Mobility
             self.mobility(instance)
 
             self.db = base.Alchemy
@@ -95,7 +95,8 @@ class Application:
             )
             bndaction.__name__ = alias
             bndaction.__module__ = action.__module__
-            self.limiter.limit(action.CONNECTION_LIMIT)(bndaction)
+            if not instance.debug:
+                self.limiter.limit(action.CONNECTION_LIMIT)(bndaction)
             rule = '/{}'.format(alias)
             req = ['GET', 'POST'] if instance.debug else ['POST']
             instance.add_url_rule(view_func=bndaction, rule=rule, methods=req)

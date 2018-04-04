@@ -3,6 +3,7 @@
     "version": "0.0.1",
     "dependencies": {
         "axios": "^0.18.0",
+        "crypto-js": "^3.1.9-1",
         "gl-react": "^3.13.0",
         "gl-react-dom": "^3.13.0",
         "gl-react-image": "^3.1.0",
@@ -35,8 +36,11 @@
         "webpack-dev-server": "^3.1.1"
     },
     "scripts": {
-        "development": "webpack-dev-server --config webpack.development.js --hot --watch-poll",
-        "build-development": "webpack --config webpack.development.js --progress --profile --colors",
-        "build-production": "webpack -p --config webpack.production.js --progress --profile --colors"
+        "development":
+            "webpack-dev-server --config webpack.development.js --mode development --hot --watch-poll",
+        "build-development":
+            "webpack --config webpack.development.js --mode development --progress --profile --colors",
+        "build-production":
+            "webpack -p --config webpack.production.js --mode production --progress --profile --colors"
     }
 }

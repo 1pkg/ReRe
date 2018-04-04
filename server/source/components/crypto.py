@@ -1,7 +1,5 @@
 import base64
-import hashlib
-from urllib.parse import quote
-from Crypto import Random
+import binascii
 from Crypto.Cipher import AES
 
 from base import Component
@@ -10,24 +8,31 @@ from base import Component
 class Crypto(Component):
     def encrypt(self, key, data):
         data = self.__pad(data)
-        iv = Random.new().read(AES.block_size)
-        key = hashlib.sha256(key.encode()).digest()
-        cipher = AES.new(key, AES.MODE_CBC, iv)
-        encryped = base64.b64encode(iv + cipher.encrypt(data))
-        return quote(encryped.decode('ascii'))
+        iv = binascii.a2b_hex(self.__iv(key))
+        key = binascii.a2b_hex(key)
+        cipher = AES.new(key, AES.MODE_CBC, iv, segment_size=128)
+        data = cipher.encrypt(data)
+        data = base64.b64encode(data)
+        return data.decode('utf-8')
 
     def decrypt(self, key, data):
+        iv = binascii.a2b_hex(self.__iv(key))
+        key = binascii.a2b_hex(key)
         data = base64.b64decode(data)
-        iv = data[:AES.block_size]
-        key = hashlib.sha256(key.encode()).digest()
-        cipher = AES.new(key, AES.MODE_CBC, iv)
-        data = cipher.decrypt(data[AES.block_size:])
-        return self.__unpad(data).decode('utf-8')
+        cipher = AES.new(key, AES.MODE_CBC, iv, segment_size=128)
+        data = cipher.decrypt(data)
+        return self.__unpad(data)
 
     @staticmethod
-    def __pad(data):
-        return data + (32 - len(data) % 32) * chr(32 - len(data) % 32)
+    def __iv(key, size=32):
+        return key[::-1][:size]
 
     @staticmethod
-    def __unpad(data):
-        return data[:-ord(data[len(data) - 1:])]
+    def __pad(data, size=16):
+        length = len(data)
+        padsize = size - (length % size)
+        return data.ljust(length + padsize, chr(padsize))
+
+    @staticmethod
+    def __unpad(data, size=16):
+        return data[:len(data) - data[-1]]
