@@ -1,11 +1,10 @@
 import Axios from 'axios'
 
-import * as Constants from '~/constants'
 import Trigger from './trigger'
 
 export default trigger => {
     return new Promise((resolve, reject) => {
-        Axios.get(Constants.ACTION_HANDSHAKE, {
+        Axios.get(API.concat('handshake'), {
             params: {},
         })
             .then(response => {

@@ -1,12 +1,11 @@
 import Axios from 'axios'
 
-import * as Constants from '~/constants'
 import Trigger from './trigger'
 
 export default (trigger, option) => {
     let state = trigger.state()
     return new Promise((resolve, reject) => {
-        Axios.get(Constants.ACTION_CHOOSE, {
+        Axios.get(API.concat('choose'), {
             params: {
                 token: state.token,
                 identity: state.identity,
@@ -16,9 +15,10 @@ export default (trigger, option) => {
             .then(response => {
                 let state = trigger.state()
                 state.option = response.data.option
+                state.timestamp = null
                 state.status = response.data.result
-                    ? Constants.STATE_STATUS_CORRECT
-                    : Constants.STATE_STATUS_WRONG
+                    ? trigger.STATUS_CORRECT
+                    : trigger.STATUS_WRONG
                 trigger.push(Trigger.ACTION_CHOOSE, state)
                 resolve()
             })

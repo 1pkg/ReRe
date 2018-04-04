@@ -1,6 +1,9 @@
 const Path = require('path')
+const FS = require('fs')
 const Webpack = require('webpack')
 const HtmlPlugin = require('html-webpack-plugin')
+
+let settings = FS.readFileSync('./settings/development.json')
 
 module.exports = {
     entry: './source/application.js',
@@ -49,6 +52,7 @@ module.exports = {
             NODE_ENV: 'development',
             DEBUG: true,
         }),
+        new Webpack.DefinePlugin(JSON.parse(settings)),
         new HtmlPlugin({
             template: 'templates/main.html',
         }),

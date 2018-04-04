@@ -1,14 +1,12 @@
 import Axios from 'axios'
 
-import * as Constants from '~/constants'
-import Crypto from '~/utils/crypto'
+import { Crypto, Json, Timestamp } from '~/helpers'
 import Trigger from './trigger'
 
 export default (trigger, label = '') => {
     let state = trigger.state()
-    let crypto = new Crypto()
     return new Promise((resolve, reject) => {
-        Axios.get(Constants.ACTION_FETCH, {
+        Axios.get(API.concat('fetch'), {
             params: {
                 token: state.token,
                 label: label,
@@ -16,14 +14,14 @@ export default (trigger, label = '') => {
         })
             .then(response => {
                 let state = trigger.state()
+                state.option = null
                 state.identity = response.data.identity
                 state.task = response.data.task
-                state.task.subject = JSON.parse(
-                    crypto.decrypt(state.token, state.task.subject),
+                state.task.subject = Json.decode(
+                    Crypto.decrypt(state.token, state.task.subject),
                 )
-                state.status = Constants.STATE_STATUS_ACTIVE
-                state.option = null
-                state.timestamp = null
+                state.timestamp = Timestamp.current()
+                state.status = trigger.STATUS_ACTIVE
                 trigger.push(Trigger.ACTION_FETCH, state)
                 resolve()
             })

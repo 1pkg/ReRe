@@ -5,9 +5,7 @@ import GLReactImage from 'gl-react-image'
 import * as GlReactDom from 'gl-react-dom'
 import * as Reflexbox from 'reflexbox'
 
-import * as Constants from '~/constants'
 import Trigger from '~/actions/trigger'
-
 import Bleached from '~/shaders/bleached'
 import Bloom from '~/shaders/bloom'
 import BlurHorizontal from '~/shaders/blur-horizontal'
@@ -20,18 +18,30 @@ import Sepia from '~/shaders/sepia'
 import WaveHorizontal from '~/shaders/wave-horizontal'
 import WaveVertical from '~/shaders/wave-vertical'
 
+const EFFECT_NAME_BLEACHED = 'bleached'
+const EFFECT_NAME_BLOOM = 'bloom'
+const EFFECT_NAME_BLUR_HORIZONTAL = 'blur-horizontal'
+const EFFECT_NAME_BLUR_VERTICAL = 'blur-vertical'
+const EFFECT_NAME_CROSSHATCH = 'crosshatch'
+const EFFECT_NAME_FUNNEL = 'funnel'
+const EFFECT_NAME_PIXELATION = 'pixelation'
+const EFFECT_NAME_RIPPLE = 'ripple'
+const EFFECT_NAME_SEPIA = 'sepia'
+const EFFECT_NAME_WAVE_HORIZONTAL = 'wave-horizontal'
+const EFFECT_NAME_WAVE_VERTICAL = 'wave-vertical'
+
 const Effects = {
-    [Constants.EFFECT_NAME_BLEACHED]: Bleached,
-    [Constants.EFFECT_NAME_BLOOM]: Bloom,
-    [Constants.EFFECT_NAME_BLUR_HORIZONTAL]: BlurHorizontal,
-    [Constants.EFFECT_NAME_BLUR_VERTICAL]: BlurVertical,
-    [Constants.EFFECT_NAME_CROSSHATCH]: Crosshatch,
-    [Constants.EFFECT_NAME_FUNNEL]: Funnel,
-    [Constants.EFFECT_NAME_PIXELATION]: Pixelation,
-    [Constants.EFFECT_NAME_RIPPLE]: Ripple,
-    [Constants.EFFECT_NAME_SEPIA]: Sepia,
-    [Constants.EFFECT_NAME_WAVE_HORIZONTAL]: WaveHorizontal,
-    [Constants.EFFECT_NAME_WAVE_VERTICAL]: WaveVertical,
+    [EFFECT_NAME_BLEACHED]: Bleached,
+    [EFFECT_NAME_BLOOM]: Bloom,
+    [EFFECT_NAME_BLUR_HORIZONTAL]: BlurHorizontal,
+    [EFFECT_NAME_BLUR_VERTICAL]: BlurVertical,
+    [EFFECT_NAME_CROSSHATCH]: Crosshatch,
+    [EFFECT_NAME_FUNNEL]: Funnel,
+    [EFFECT_NAME_PIXELATION]: Pixelation,
+    [EFFECT_NAME_RIPPLE]: Ripple,
+    [EFFECT_NAME_SEPIA]: Sepia,
+    [EFFECT_NAME_WAVE_HORIZONTAL]: WaveHorizontal,
+    [EFFECT_NAME_WAVE_VERTICAL]: WaveVertical,
 }
 
 export default class Subject extends React.Component {

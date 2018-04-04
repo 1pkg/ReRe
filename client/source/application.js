@@ -3,49 +3,46 @@ import ReactDOM from 'react-dom'
 import * as Redux from 'redux'
 import * as ReactRedux from 'react-redux'
 import ReduxThunk from 'redux-thunk'
-import UrlParse from 'url-parse'
-import Store from 'store'
-import ExpireStorePlugin from 'store/plugins/expire'
 
-import * as Constants from './constants'
+import { Store, Url } from './helpers'
 import Trigger from './actions/trigger'
-
 import Main from './components/main'
 
 let compose =
     process.env.NODE_ENV !== 'production' &&
     window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
 compose = compose ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ : Redux.compose
-Store.addPlugin(ExpireStorePlugin)
 
 let store = Redux.createStore((state = null, action) => {
-    if (action.data) {
+    if ('data' in action && action.data) {
         trigger.call(action.name, ...Object.values(action.data))
-        return action.state ? action.state : state
+        return state
     }
-    Store.set(
-        Constants.STORE_STATE_KEY,
-        action.state,
-        Constants.STORE_STATE_EXPIRE,
-    )
-    return action.state ? action.state : state
+
+    if ('state' in action && action.state) {
+        Store.update(action.state)
+        return action.state
+    }
+
+    return state
 }, compose(Redux.applyMiddleware(ReduxThunk)))
 let trigger = new Trigger(store)
 
 let dispatch = trigger => {
-    let state = Store.get(Constants.STORE_STATE_KEY)
-    if (!state) {
-        trigger.call(Trigger.ACTION_HANDSHAKE).then(() => {
-            let urlData = UrlParse(window.location, true)
-            if (urlData.query && 'task' in urlData.query) {
-                trigger.call(Trigger.ACTION_FETCH, urlData.query.task)
-            } else {
-                trigger.call(Trigger.ACTION_FETCH)
-            }
-        })
+    let state = Store.state()
+    if (state) {
+        trigger.push('store', state)
         return
     }
-    trigger.push(null, state)
+
+    trigger.call(Trigger.ACTION_HANDSHAKE).then(() => {
+        let url = Url.parse()
+        if ('task' in url.query) {
+            trigger.call(Trigger.ACTION_FETCH, url.query.task)
+        } else {
+            trigger.call(Trigger.ACTION_FETCH)
+        }
+    })
 }
 dispatch(trigger)
 

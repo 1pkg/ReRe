@@ -8,6 +8,8 @@ const FaviconsPlugin = require('favicons-webpack-plugin')
 const WebappManifestPlugin = require('webapp-manifest-plugin')
 const OnBuildPlugin = require('on-build-webpack')
 
+let settings = FS.readFileSync('./settings/production.json')
+
 module.exports = {
     entry: './source/application.js',
 
@@ -48,6 +50,7 @@ module.exports = {
             NODE_ENV: 'production',
             DEBUG: false,
         }),
+        new Webpack.DefinePlugin(JSON.parse(settings)),
         new HtmlPlugin({
             template: 'templates/main.html',
             minify: {

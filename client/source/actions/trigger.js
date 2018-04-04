@@ -7,6 +7,10 @@ import Handshake from './handshake'
 import Redo from './redo'
 
 export default class Trigger {
+    static STATUS_ACTIVE = 'status-active'
+    static STATUS_CORRECT = 'status-correct'
+    static STATUS_WRONG = 'status-wrong'
+
     static ACTION_CHOSE = 'action-chose'
     static ACTION_FETCH = 'action-fetch'
     static ACTION_HANDSHAKE = 'action-handshake'
@@ -34,6 +38,6 @@ export default class Trigger {
     }
 
     push(name, state) {
-        this.store.dispatch({ type: null, name, state })
+        this.store.dispatch({ type: name, name, state })
     }
 }

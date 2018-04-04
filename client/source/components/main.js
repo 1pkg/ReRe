@@ -2,7 +2,6 @@ import React from 'react'
 import * as Redux from 'react-redux'
 import * as Reflexbox from 'reflexbox'
 
-import * as Constants from '~/constants'
 import Trigger from '~/actions/trigger'
 import Process from './scenes/process'
 import Result from './scenes/result'
@@ -10,11 +9,11 @@ import Result from './scenes/result'
 class Main extends React.Component {
     view(trigger, state) {
         switch (state.status) {
-            case Constants.STATE_STATUS_ACTIVE:
+            case trigger.STATUS_ACTIVE:
                 return <Process trigger={trigger} state={state} />
 
-            case Constants.STATE_STATUS_CORRECT:
-            case Constants.STATE_STATUS_WRONG:
+            case trigger.STATUS_CORRECT:
+            case trigger.STATUS_WRONG:
                 return <Result trigger={trigger} state={state} />
 
             default:
