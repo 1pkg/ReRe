@@ -10,12 +10,11 @@
         "lodash": "^4.17.5",
         "react": "^16.2.0",
         "react-dom": "^16.2.0",
-        "react-icons": "^2.2.5",
         "react-redux": "^5.0.6",
         "redux": "^3.7.2",
         "redux-thunk": "^2.2.0",
-        "reflexbox": "^3.0.1",
         "store": "^2.0.12",
+        "styled-components": "^3.2.5",
         "url-parse": "^1.2.0"
     },
     "devDependencies": {
@@ -36,11 +35,8 @@
         "webpack-dev-server": "^3.1.1"
     },
     "scripts": {
-        "development":
-            "webpack-dev-server --config webpack.development.js --mode development --hot --watch-poll",
-        "build-development":
-            "webpack --config webpack.development.js --mode development --progress --profile --colors",
-        "build-production":
-            "webpack -p --config webpack.production.js --mode production --progress --profile --colors"
+        "development": "webpack-dev-server --config webpack.development.js --mode development --hot --watch-poll",
+        "build-development": "webpack --config webpack.development.js --mode development --progress --profile --colors",
+        "build-production": "webpack -p --config webpack.production.js --mode production --progress --profile --colors"
     }
 }

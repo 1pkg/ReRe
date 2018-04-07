@@ -11,7 +11,7 @@ export default class Trigger {
     static STATUS_CORRECT = 'status-correct'
     static STATUS_WRONG = 'status-wrong'
 
-    static ACTION_CHOSE = 'action-chose'
+    static ACTION_CHOOSE = 'action-chose'
     static ACTION_FETCH = 'action-fetch'
     static ACTION_HANDSHAKE = 'action-handshake'
     static ACTION_REDO = 'action-redo'

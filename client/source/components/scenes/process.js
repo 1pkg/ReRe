@@ -1,44 +1,60 @@
 import Lodash from 'lodash'
 import React from 'react'
-import * as Reflexbox from 'reflexbox'
+import styled from 'styled-components'
 
 import Trigger from '~/actions/trigger'
-import Pick from './../blocks/pick/plain'
 import Subject from './../blocks/subject/effect'
-import Timer from './../blocks/toolbar/marks/timer'
+import Choose from './../blocks/options/choose'
+
+let MainContainer = styled.div`
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+`
+
+let SubjectContainer = styled.div`
+    flex: 3 1 0;
+    display: flex;
+`
+
+let OptionContainer = styled.div`
+    flex: 1 1 0;
+    display: flex;
+`
+
+let OptionWrapper = styled.div`
+    flex: 1 1 0;
+    margin: 0.5rem;
+`
 
 export default class extends React.Component {
     render() {
-        if (!this.props.state || !this.props.state.task) {
-            return null
-        }
-
         return (
-            <Reflexbox.Flex auto>
-                <Reflexbox.Box flex column w="90%">
-                    <Reflexbox.Box flex auto style={{ height: '80%' }}>
-                        <Subject
-                            trigger={this.props.trigger}
-                            subject={this.props.state.task.subject}
-                            effects={this.props.state.task.effects}
-                        />
-                    </Reflexbox.Box>
-                    <Reflexbox.Box flex style={{ height: '20%' }} mt="1.0em">
-                        <Pick
-                            trigger={this.props.trigger}
-                            options={this.props.state.task.options}
-                            option={NaN}
-                        />
-                    </Reflexbox.Box>
-                </Reflexbox.Box>
-                <Reflexbox.Box w="10%">
-                    <Timer
+            <MainContainer>
+                <SubjectContainer>
+                    <Subject
                         trigger={this.props.trigger}
-                        timestamp={100}
-                        duration={30}
+                        subject={this.props.state.task.subject}
+                        effects={this.props.state.task.effects}
                     />
-                </Reflexbox.Box>
-            </Reflexbox.Flex>
+                </SubjectContainer>
+                <OptionContainer>
+                    {Lodash.map(
+                        this.props.state.task.options,
+                        (option, index) => {
+                            return (
+                                <OptionWrapper key={index}>
+                                    <Choose
+                                        trigger={this.props.trigger}
+                                        index={index}
+                                        option={option}
+                                    />
+                                </OptionWrapper>
+                            )
+                        },
+                    )}
+                </OptionContainer>
+            </MainContainer>
         )
     }
 }

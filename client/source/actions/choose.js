@@ -17,8 +17,8 @@ export default (trigger, option) => {
                 state.option = response.data.option
                 state.timestamp = null
                 state.status = response.data.result
-                    ? trigger.STATUS_CORRECT
-                    : trigger.STATUS_WRONG
+                    ? Trigger.STATUS_CORRECT
+                    : Trigger.STATUS_WRONG
                 trigger.push(Trigger.ACTION_CHOOSE, state)
                 resolve()
             })

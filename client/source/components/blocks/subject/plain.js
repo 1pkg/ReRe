@@ -1,32 +1,34 @@
 import Lodash from 'lodash'
 import React from 'react'
-import * as Reflexbox from 'reflexbox'
+import styled from 'styled-components'
 
-export default class Subject extends React.Component {
+let Container = styled.div`
+    flex: 1;
+    max-width: 100vw;
+    max-height: 100vh;
+    overflow: hidden;
+`
+
+let Image = styled.img`
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+`
+
+export default class extends React.Component {
     shouldComponentUpdate(props) {
         return !Lodash.isEqual(props, this.props)
     }
 
+    link() {
+        return 'images/' + this.props.subject.link
+    }
+
     render() {
         return (
-            <Reflexbox.Flex
-                auto
-                style={{
-                    maxWidth: '100vw',
-                    maxHeight: '100vh',
-                    overflow: 'hidden',
-                }}
-            >
-                <img
-                    src={this.props.subject}
-                    alt={'todo'}
-                    style={{
-                        objectFit: 'cover',
-                        width: '100%',
-                        height: '100%',
-                    }}
-                />
-            </Reflexbox.Flex>
+            <Container>
+                <Image src={this.link()} />
+            </Container>
         )
     }
 }

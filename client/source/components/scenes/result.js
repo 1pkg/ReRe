@@ -1,38 +1,61 @@
+import Lodash from 'lodash'
 import React from 'react'
-import * as Reflexbox from 'reflexbox'
+import styled from 'styled-components'
 
 import Trigger from '~/actions/trigger'
-import Pick from './../blocks/pick/plain'
 import Subject from './../blocks/subject/plain'
-import Next from './../blocks/toolbar/marks/next'
+import Correct from './../blocks/options/correct'
+import Wrong from './../blocks/options/wrong'
+
+let MainContainer = styled.div`
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+`
+
+let SubjectContainer = styled.div`
+    flex: 3 1 0;
+    display: flex;
+`
+
+let OptionContainer = styled.div`
+    flex: 1 1 0;
+    display: flex;
+`
+
+let OptionWrapper = styled.div`
+    flex: 1 1 0;
+    margin: 0.5rem;
+`
 
 export default class extends React.Component {
     render() {
-        if (!this.props.state || !this.props.state.task) {
-            return null
-        }
-
         return (
-            <Reflexbox.Flex auto>
-                <Reflexbox.Box flex column w="90%">
-                    <Reflexbox.Box flex auto style={{ height: '80%' }}>
-                        <Subject
-                            trigger={this.props.trigger}
-                            subject={this.props.state.task.subject}
-                        />
-                    </Reflexbox.Box>
-                    <Reflexbox.Box flex style={{ height: '20%' }} mt="1.0em">
-                        <Pick
-                            trigger={this.props.trigger}
-                            options={this.props.state.task.options}
-                            option={this.props.state.task.option}
-                        />
-                    </Reflexbox.Box>
-                </Reflexbox.Box>
-                <Reflexbox.Box w="10%">
-                    <Next trigger={this.props.trigger} />
-                </Reflexbox.Box>
-            </Reflexbox.Flex>
+            <MainContainer>
+                <SubjectContainer>
+                    <Subject
+                        trigger={this.props.trigger}
+                        subject={this.props.state.task.subject}
+                        effects={this.props.state.task.effects}
+                    />
+                </SubjectContainer>
+                <OptionContainer>
+                    {Lodash.map(
+                        this.props.state.task.options,
+                        (option, index) => {
+                            let Option =
+                                option.name === this.props.state.option
+                                    ? Correct
+                                    : Wrong
+                            return (
+                                <OptionWrapper key={index}>
+                                    <Option option={option} />
+                                </OptionWrapper>
+                            )
+                        },
+                    )}
+                </OptionContainer>
+            </MainContainer>
         )
     }
 }

@@ -2,8 +2,8 @@ import Lodash from 'lodash'
 import React from 'react'
 import ReactDOM from 'react-dom'
 import GLReactImage from 'gl-react-image'
-import * as GlReactDom from 'gl-react-dom'
-import * as Reflexbox from 'reflexbox'
+import { Surface } from 'gl-react-dom'
+import styled from 'styled-components'
 
 import Trigger from '~/actions/trigger'
 import Bleached from '~/shaders/bleached'
@@ -18,33 +18,28 @@ import Sepia from '~/shaders/sepia'
 import WaveHorizontal from '~/shaders/wave-horizontal'
 import WaveVertical from '~/shaders/wave-vertical'
 
-const EFFECT_NAME_BLEACHED = 'bleached'
-const EFFECT_NAME_BLOOM = 'bloom'
-const EFFECT_NAME_BLUR_HORIZONTAL = 'blur-horizontal'
-const EFFECT_NAME_BLUR_VERTICAL = 'blur-vertical'
-const EFFECT_NAME_CROSSHATCH = 'crosshatch'
-const EFFECT_NAME_FUNNEL = 'funnel'
-const EFFECT_NAME_PIXELATION = 'pixelation'
-const EFFECT_NAME_RIPPLE = 'ripple'
-const EFFECT_NAME_SEPIA = 'sepia'
-const EFFECT_NAME_WAVE_HORIZONTAL = 'wave-horizontal'
-const EFFECT_NAME_WAVE_VERTICAL = 'wave-vertical'
-
 const Effects = {
-    [EFFECT_NAME_BLEACHED]: Bleached,
-    [EFFECT_NAME_BLOOM]: Bloom,
-    [EFFECT_NAME_BLUR_HORIZONTAL]: BlurHorizontal,
-    [EFFECT_NAME_BLUR_VERTICAL]: BlurVertical,
-    [EFFECT_NAME_CROSSHATCH]: Crosshatch,
-    [EFFECT_NAME_FUNNEL]: Funnel,
-    [EFFECT_NAME_PIXELATION]: Pixelation,
-    [EFFECT_NAME_RIPPLE]: Ripple,
-    [EFFECT_NAME_SEPIA]: Sepia,
-    [EFFECT_NAME_WAVE_HORIZONTAL]: WaveHorizontal,
-    [EFFECT_NAME_WAVE_VERTICAL]: WaveVertical,
+    bleached: Bleached,
+    bloom: Bloom,
+    'blur-horizontal': BlurHorizontal,
+    'blur-vertical': BlurVertical,
+    crosshatch: Crosshatch,
+    funnel: Funnel,
+    pixelation: Pixelation,
+    ripple: Ripple,
+    sepia: Sepia,
+    'wave-horizontal': WaveHorizontal,
+    'wave-vertical': WaveVertical,
 }
 
-export default class Subject extends React.Component {
+let Container = styled.div`
+    flex: 1;
+    max-width: 100vw;
+    max-height: 100vh;
+    overflow: hidden;
+`
+
+export default class extends React.Component {
     fit = () => {
         this.setState(state => {
             setTimeout(() => this.forceUpdate())
@@ -62,10 +57,7 @@ export default class Subject extends React.Component {
 
     constructor(props) {
         super(props)
-        this.state = {
-            width: 0,
-            height: 0,
-        }
+        this.state = { width: 0, height: 0 }
     }
 
     componentDidMount() {
@@ -83,21 +75,22 @@ export default class Subject extends React.Component {
         )
     }
 
+    link() {
+        return 'images/' + this.props.subject.link
+    }
+
     apply() {
         let View = null
         Lodash.each(this.props.effects, effect => {
-            if (!(effect in Effects)) {
+            if (!(effect.name in Effects)) {
                 return
             }
 
-            let Effect = Effects[effect]
+            let Effect = Effects[effect.name]
             if (!View) {
                 View = (
                     <Effect size={[this.state.width, this.state.height]}>
-                        <GLReactImage
-                            source={this.props.subject}
-                            resizeMode="cover"
-                        />
+                        <GLReactImage source={this.link()} resizeMode="cover" />
                     </Effect>
                 )
             } else {
@@ -113,22 +106,15 @@ export default class Subject extends React.Component {
 
     render() {
         return (
-            <Reflexbox.Flex
-                auto
-                style={{
-                    maxWidth: '100vw',
-                    maxHeight: '100vh',
-                    overflow: 'hidden',
-                }}
-            >
-                <GlReactDom.Surface
+            <Container>
+                <Surface
                     width={this.state.width}
                     height={this.state.height}
                     onLoad={this.fit}
                 >
                     {this.apply()}
-                </GlReactDom.Surface>
-            </Reflexbox.Flex>
+                </Surface>
+            </Container>
         )
     }
 }

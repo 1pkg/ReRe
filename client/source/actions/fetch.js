@@ -21,7 +21,7 @@ export default (trigger, label = '') => {
                     Crypto.decrypt(state.token, state.task.subject),
                 )
                 state.timestamp = Timestamp.current()
-                state.status = trigger.STATUS_ACTIVE
+                state.status = Trigger.STATUS_ACTIVE
                 trigger.push(Trigger.ACTION_FETCH, state)
                 resolve()
             })

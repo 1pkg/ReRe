@@ -1,39 +1,52 @@
+import Lodash from 'lodash'
 import React from 'react'
-import * as Redux from 'react-redux'
-import * as Reflexbox from 'reflexbox'
+import { connect } from 'react-redux'
+import styled from 'styled-components'
 
 import Trigger from '~/actions/trigger'
 import Process from './scenes/process'
 import Result from './scenes/result'
 
-class Main extends React.Component {
-    view(trigger, state) {
-        switch (state.status) {
-            case trigger.STATUS_ACTIVE:
-                return <Process trigger={trigger} state={state} />
+let Container = styled.div`
+    display: flex;
+    width: 100vw;
+    height: 100vh;
+`
 
-            case trigger.STATUS_CORRECT:
-            case trigger.STATUS_WRONG:
-                return <Result trigger={trigger} state={state} />
-
-            default:
-                return null
-        }
-    }
-
-    render() {
-        if (!this.props.state || !'status' in this.props.state) {
-            return null
-        }
-
-        return (
-            <Reflexbox.Flex style={{ width: '100vw', height: '100vh' }}>
-                {this.view(this.props.trigger, this.props.state)}
-            </Reflexbox.Flex>
-        )
-    }
-}
-
-export default Redux.connect(state => {
+export default connect(state => {
     return { state }
-})(Main)
+})(
+    class extends React.Component {
+        scene(trigger, state) {
+            if (
+                !state ||
+                !'status' in state ||
+                !state.status ||
+                !'task' in state ||
+                !state.task
+            ) {
+                return null
+            }
+
+            switch (state.status) {
+                case Trigger.STATUS_ACTIVE:
+                    return <Process trigger={trigger} state={state} />
+
+                case Trigger.STATUS_CORRECT:
+                case Trigger.STATUS_WRONG:
+                    return <Result trigger={trigger} state={state} />
+
+                default:
+                    return null
+            }
+        }
+
+        render() {
+            return (
+                <Container>
+                    {this.scene(this.props.trigger, this.props.state)}
+                </Container>
+            )
+        }
+    },
+)
