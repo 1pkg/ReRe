@@ -3,8 +3,10 @@ import React from 'react'
 import styled from 'styled-components'
 
 const BaseWrapper = styled.div`
+    flex: 1 1 0;
     width: 100%;
     height: 100%;
+    margin: 0.5rem;
     padding: 0.3rem;
     border: 0.01rem solid rgba(0, 0, 0, 0.5);
 `
@@ -18,16 +20,6 @@ const ChooseWrapper = BaseWrapper.extend`
 const DisabledWrapper = BaseWrapper.extend`
     opacity: 0.5;
     text-decoration: line-through;
-`
-
-const ActiveWrapper = styled.div`
-    width: 100%;
-    height: 100%;
-    padding: 0.3rem;
-    border: 0.01rem solid rgba(0, 0, 0, 0.5);
-    &:hover {
-        box-shadow: 0.1rem 0.1rem 0.1rem 0.1rem rgba(0, 0, 0, 0.3);
-    }
 `
 
 const TitleBlock = styled.div`
@@ -105,7 +97,7 @@ export default class extends React.Component {
     render() {
         let Wrapper = this.wrapper()
         return (
-            <Wrapper onClick={this.props.action}>
+            <Wrapper onClick={this.props.action ? this.props.action : () => {}}>
                 <TitleBlock>
                     <MainTitle>{this.title()}</MainTitle>
                     <SubTitle>{this.subtile()}</SubTitle>

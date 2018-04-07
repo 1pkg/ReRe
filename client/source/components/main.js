@@ -1,10 +1,9 @@
-import Lodash from 'lodash'
 import React from 'react'
 import { connect } from 'react-redux'
 import styled from 'styled-components'
 
 import Trigger from '~/actions/trigger'
-import Process from './scenes/process'
+import Choose from './scenes/choose'
 import Result from './scenes/result'
 
 let Container = styled.div`
@@ -30,7 +29,7 @@ export default connect(state => {
 
             switch (state.status) {
                 case Trigger.STATUS_ACTIVE:
-                    return <Process trigger={trigger} state={state} />
+                    return <Choose trigger={trigger} state={state} />
 
                 case Trigger.STATUS_CORRECT:
                 case Trigger.STATUS_WRONG:
