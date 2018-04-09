@@ -26,7 +26,6 @@ class Answer(Alchemy.Model):
     option_id = Alchemy.Column(
         Alchemy.Integer,
         Alchemy.ForeignKey('option.id', ondelete='cascade'),
-        nullable=False,
         index=True,
     )
     session_id = Alchemy.Column(

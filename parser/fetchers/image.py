@@ -70,9 +70,9 @@ class Image(Fetcher):
                 'link': result,
                 'source': query,
                 'orientation':
-                'portrait' if
+                'landscape' if
                 image.size[0] > image.size[1]
-                else 'landscape',
+                else 'portrait',
             }
 
     def __check(self, image, size):

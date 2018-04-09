@@ -4,6 +4,12 @@ import Option from './option'
 
 export default class extends React.Component {
     render() {
-        return <Option option={this.props.option} wrapper="base" />
+        return (
+            <Option
+                option={this.props.option}
+                action={() => {}}
+                wrapper="base"
+            />
+        )
     }
 }

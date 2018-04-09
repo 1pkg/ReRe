@@ -24,6 +24,7 @@ class Handshake(Action):
 
     def _process(self, request):
         setting = {
+            'mobile': int(request.MOBILE),
             'choose-period': int(Setting.get('choose-period')),
         }
         token = self._application.hash.hex(

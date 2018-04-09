@@ -5,6 +5,7 @@ import Base from './base'
 import Subject from './../blocks/subject/source'
 import Correct from './../blocks/options/correct'
 import Wrong from './../blocks/options/wrong'
+import Toolbar from './../blocks/toolbar/short'
 
 export default class extends React.Component {
     subject() {
@@ -19,12 +20,23 @@ export default class extends React.Component {
         })
     }
 
+    toolbar() {
+        return (
+            <Toolbar
+                state={this.props.state}
+                trigger={this.props.trigger}
+                settings={this.props.state.settings}
+                timestamp={this.props.state.timestamp}
+            />
+        )
+    }
+
     render() {
         return (
             <Base
-                trigger={this.props.trigger}
                 subject={this.subject()}
                 options={this.options()}
+                toolbar={this.toolbar()}
             />
         )
     }

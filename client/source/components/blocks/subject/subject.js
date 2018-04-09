@@ -29,7 +29,6 @@ export default class extends React.Component {
     fit = () => {
         this.setState(state => {
             setTimeout(() => this.forceUpdate())
-
             let element = ReactDOM.findDOMNode(this)
             if (!element instanceof Element) {
                 return state

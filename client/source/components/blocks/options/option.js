@@ -53,8 +53,11 @@ const Source = styled.div`
 `
 
 export default class extends React.Component {
-    shouldComponentUpdate(props) {
-        return !Lodash.isEqual(props, this.props)
+    shouldComponentUpdate(props, state) {
+        return (
+            !Lodash.isEqual(props, this.props) ||
+            !Lodash.isEqual(state, this.state)
+        )
     }
 
     title() {
@@ -97,7 +100,7 @@ export default class extends React.Component {
     render() {
         let Wrapper = this.wrapper()
         return (
-            <Wrapper onClick={this.props.action ? this.props.action : () => {}}>
+            <Wrapper onClick={this.props.action}>
                 <TitleBlock>
                     <MainTitle>{this.title()}</MainTitle>
                     <SubTitle>{this.subtile()}</SubTitle>

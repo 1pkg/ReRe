@@ -3,7 +3,7 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import styled from 'styled-components'
 
-import Toolbar from './../blocks/toolbar/toolbar'
+import Toggle from './../blocks/toolbar/toggle'
 
 let MainContainer = styled.div`
     flex: 1;
@@ -25,6 +25,11 @@ let NoneOptionContainer = styled.div`
     display: none;
 `
 
+let ToolbarContainer = styled.div`
+    display: flex;
+    align-items: center;
+`
+
 export default class extends React.Component {
     shouldComponentUpdate(props, state) {
         return (
@@ -40,6 +45,7 @@ export default class extends React.Component {
 
     toggle = () => {
         this.setState(state => {
+            setTimeout(() => this.forceUpdate())
             setTimeout(() => window.dispatchEvent(new Event('resize')))
             return { full: !state.full }
         })
@@ -52,11 +58,10 @@ export default class extends React.Component {
         return (
             <MainContainer>
                 <SubjectContainer>{this.props.subject}</SubjectContainer>
-                <Toolbar
-                    trigger={this.props.trigger}
-                    full={this.state.full}
-                    toggle={this.toggle}
-                />
+                <ToolbarContainer>
+                    <Toggle full={this.state.full} toggle={this.toggle} />
+                    {this.props.toolbar}
+                </ToolbarContainer>
                 <OptionContainer>{this.props.options}</OptionContainer>
             </MainContainer>
         )

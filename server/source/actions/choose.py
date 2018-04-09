@@ -11,10 +11,13 @@ class Choose(Identify):
         validator = self._application.validator
 
         self.__option = self._get(request, 'option')
-        if not validator.isNumeric(self.__option):
+        if not validator.isNumeric(self.__option, False):
             raise errors.Request('option')
 
         self.__option = int(self.__option)
+        if self.__option == -1:
+            return
+
         if len(self._task.options) < self.__option:
             raise errors.Request('option')
 
@@ -22,13 +25,17 @@ class Choose(Identify):
         expire = int(Setting.get('choose-period'))
         timestamp = self._application.datetime.timestamp()
         correctOption = self._task.subject.option
-        choosenOption = self._task.options[self.__option - 1]
-        result = \
-            timestamp - self._timestamp < expire \
-            and correctOption.id == choosenOption.id
+        if self.__option != -1:
+            choosenOption = self._task.options[self.__option - 1]
+            result = \
+                timestamp - self._timestamp < expire \
+                and correctOption.id == choosenOption.id
+        else:
+            choosenOption = None
+            result = False
         answer = Answer(
             task_id=self._task.id,
-            option_id=choosenOption.id,
+            option_id=None if choosenOption is None else choosenOption.id,
             session_id=self._session.id,
         )
         self._application.db.session.add(answer)

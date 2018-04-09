@@ -9,9 +9,12 @@ class Validator(Component):
         except Exception:
             return False
 
-    def isNumeric(self, value):
+    def isNumeric(self, value, positive=True):
         try:
-            return int(value) > 0
+            value = int(value)
+            if positive:
+                return value > 0
+            return True
         except Exception:
             return False
 
