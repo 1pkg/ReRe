@@ -7,6 +7,7 @@
         "gl-react": "^3.13.0",
         "gl-react-dom": "^3.13.0",
         "gl-react-image": "^3.1.0",
+        "history": "^4.7.2",
         "lodash": "^4.17.5",
         "react": "^16.2.0",
         "react-dom": "^16.2.0",

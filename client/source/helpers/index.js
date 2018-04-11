@@ -1,4 +1,5 @@
 export { default as Crypto } from './crypto'
+export { default as History } from './history'
 export { default as Json } from './json'
 export { default as Store } from './store'
 export { default as Timestamp } from './timestamp'

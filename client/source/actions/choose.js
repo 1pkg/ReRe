@@ -19,11 +19,11 @@ export default (trigger, option) => {
                 state.status = response.data.result
                     ? Trigger.STATUS_CORRECT
                     : Trigger.STATUS_WRONG
+
                 trigger.push(Trigger.ACTION_CHOOSE, state)
                 resolve()
             })
             .catch(exception => {
-                console.log(exception)
                 reject()
             })
     })

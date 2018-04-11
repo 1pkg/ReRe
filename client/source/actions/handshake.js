@@ -10,11 +10,11 @@ export default trigger => {
             .then(response => {
                 let state = response.data
                 state.status = null
+
                 trigger.push(Trigger.ACTION_HANDSHAKE, state)
                 resolve()
             })
             .catch(exception => {
-                console.log(exception)
                 reject()
             })
     })
