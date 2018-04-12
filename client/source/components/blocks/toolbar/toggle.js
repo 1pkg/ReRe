@@ -4,7 +4,7 @@ import styled from 'styled-components'
 import Collapse from './collapse'
 import Expand from './expand'
 
-let Container = styled.div`
+const Container = styled.div`
     flex: 2 1 0;
 `
 
@@ -17,7 +17,10 @@ export default class extends React.Component {
         let Toggler = this.toggler()
         return (
             <Container>
-                <Toggler toggle={this.props.toggle} />
+                <Toggler
+                    toggle={this.props.toggle}
+                    mobile={this.props.mobile}
+                />
             </Container>
         )
     }

@@ -10,6 +10,12 @@ export default class extends React.Component {
     }
 
     render() {
-        return <Button glyph={<Refresh />} action={this.redo} />
+        return (
+            <Button
+                glyph={<Refresh />}
+                action={this.redo}
+                mobile={this.props.mobile}
+            />
+        )
     }
 }

@@ -33,6 +33,11 @@ class Choose(Identify):
         else:
             choosenOption = None
             result = False
+        sequence = self._application.sequence
+        option = sequence.index(
+            self._task.options,
+            lambda option: option.id == correctOption.id
+        )
         answer = Answer(
             task_id=self._task.id,
             option_id=None if choosenOption is None else choosenOption.id,
@@ -43,5 +48,5 @@ class Choose(Identify):
 
         return {
             'result': result,
-            'option': correctOption.name,
+            'option': option,
         }

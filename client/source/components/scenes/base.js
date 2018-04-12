@@ -3,31 +3,44 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import styled from 'styled-components'
 
+import Carousel from './../blocks/carousel'
 import Toggle from './../blocks/toolbar/toggle'
 
-let MainContainer = styled.div`
+const MainContainer = styled.div`
     flex: 1;
     display: flex;
     flex-direction: column;
 `
 
-let SubjectContainer = styled.div`
+const SubjectContainer = styled.div`
     flex: 3 1 0;
     display: flex;
 `
 
-let FullOptionContainer = styled.div`
+const MobileSubjectContainer = SubjectContainer.extend``
+
+const DesktopSubjectContainer = SubjectContainer.extend`
+    @media (max-width: 480px) {
+        flex: 5 1 0;
+    }
+    @media (max-height: 270px) {
+        flex: 1 1 0;
+    }
+`
+
+const FullOptionContainer = styled.div`
     flex: 1 1 0;
     display: flex;
 `
 
-let NoneOptionContainer = styled.div`
+const NoneOptionContainer = styled.div`
     display: none;
 `
 
-let ToolbarContainer = styled.div`
+const ToolbarContainer = styled.div`
     display: flex;
     align-items: center;
+    margin-top: 0.5rem;
 `
 
 export default class extends React.Component {
@@ -45,19 +58,46 @@ export default class extends React.Component {
 
     toggle = () => {
         this.setState(state => {
-            setTimeout(() => this.forceUpdate())
             setTimeout(() => window.dispatchEvent(new Event('resize')))
             return { full: !state.full }
         })
     }
 
-    render() {
+    mobile() {
         let OptionContainer = this.state.full
             ? FullOptionContainer
             : NoneOptionContainer
         return (
             <MainContainer>
-                <SubjectContainer>{this.props.subject}</SubjectContainer>
+                <MobileSubjectContainer>
+                    {this.props.subject}
+                </MobileSubjectContainer>
+                <ToolbarContainer>
+                    <Toggle
+                        full={this.state.full}
+                        toggle={this.toggle}
+                        mobile
+                    />
+                    {this.props.toolbar}
+                </ToolbarContainer>
+                <OptionContainer>
+                    <Carousel option={this.props.option}>
+                        {this.props.options}
+                    </Carousel>
+                </OptionContainer>
+            </MainContainer>
+        )
+    }
+
+    desktop() {
+        let OptionContainer = this.state.full
+            ? FullOptionContainer
+            : NoneOptionContainer
+        return (
+            <MainContainer>
+                <DesktopSubjectContainer>
+                    {this.props.subject}
+                </DesktopSubjectContainer>
                 <ToolbarContainer>
                     <Toggle full={this.state.full} toggle={this.toggle} />
                     {this.props.toolbar}
@@ -65,5 +105,13 @@ export default class extends React.Component {
                 <OptionContainer>{this.props.options}</OptionContainer>
             </MainContainer>
         )
+    }
+
+    render() {
+        if (this.props.state.settings.mobile) {
+            return this.mobile()
+        } else {
+            return this.desktop()
+        }
     }
 }

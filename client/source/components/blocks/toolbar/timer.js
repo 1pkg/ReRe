@@ -6,15 +6,16 @@ import Trigger from '~/actions/trigger'
 import { Timestamp } from '~/helpers'
 import Button from './button'
 
-let Container = styled.div`
-    height: 100%;
+const Container = styled.div`
     display: flex;
     align-items: center;
 `
 
-let Period = styled.div`
-    font-size: 0.5rem;
-    color: gray;
+const Period = styled.div`
+    font-size: 0.7rem;
+    font-style: italic;
+    text-transform: lowercase;
+    margin-right: 0.1rem;
 `
 
 const TICK_INTERVAL = 1000
@@ -70,12 +71,12 @@ export default class extends React.Component {
         return (
             <Container>
                 <Period>{this.state.period}</Period>
-                <Clock style={{ verticalAlign: 'none' }} />
+                <Clock />
             </Container>
         )
     }
 
     render() {
-        return <Button glyph={this.glyph()} action={() => {}} />
+        return <Button glyph={this.glyph()} mobile={this.props.mobile} />
     }
 }

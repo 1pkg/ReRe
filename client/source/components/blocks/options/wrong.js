@@ -7,7 +7,7 @@ export default class extends React.Component {
         return (
             <Option
                 option={this.props.option}
-                action={() => {}}
+                mobile={this.props.mobile}
                 wrapper="disabled"
             />
         )

@@ -5,14 +5,14 @@ import GLReactImage from 'gl-react-image'
 import { Surface } from 'gl-react-dom'
 import styled from 'styled-components'
 
-let Container = styled.div`
+const Container = styled.div`
     flex: 1;
     max-width: 100vw;
     max-height: 100vh;
     overflow: hidden;
 `
 
-let Image = styled.img`
+const Image = styled.img`
     width: 100%;
     height: 100%;
     object-fit: cover;

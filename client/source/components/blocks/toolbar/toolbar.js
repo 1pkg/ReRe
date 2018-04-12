@@ -6,16 +6,20 @@ import Fetch from './fetch'
 import Redo from './redo'
 import Timer from './timer'
 
-let Container = styled.div`
+const Container = styled.div`
     flex: 1 1 0;
     display: flex;
+    align-items: center;
+    @media (max-width: 480px) {
+        flex: 5 1 0;
+    }
 `
 
-let FullContainer = Container.extend`
+const FullContainer = Container.extend`
     justify-content: space-between;
 `
 
-let ShortContainer = Container.extend`
+const ShortContainer = Container.extend`
     justify-content: flex-end;
 `
 
@@ -33,6 +37,7 @@ export default class extends React.Component {
                 <Action
                     key={index}
                     trigger={this.props.trigger}
+                    mobile={this.props.settings.mobile}
                     timestamp={this.props.timestamp}
                     settings={this.props.settings}
                 />

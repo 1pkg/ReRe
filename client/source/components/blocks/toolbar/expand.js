@@ -5,6 +5,12 @@ import Button from './button'
 
 export default class extends React.Component {
     render() {
-        return <Button glyph={<DoubleUp />} action={this.props.toggle} />
+        return (
+            <Button
+                glyph={<DoubleUp />}
+                action={this.props.toggle}
+                mobile={this.props.mobile}
+            />
+        )
     }
 }

@@ -22,6 +22,7 @@ export default class extends React.Component {
                 <Choose
                     key={index}
                     trigger={this.props.trigger}
+                    mobile={this.props.state.settings.mobile}
                     index={index}
                     option={option}
                 />

@@ -2,6 +2,8 @@
 initialize settings
 """
 
+from binascii import hexlify
+from os import urandom
 from yoyo import step
 
 __depends__ = {}
@@ -11,7 +13,7 @@ steps = [
         """
           INSERT INTO setting (name, value) VALUES
           ('option-count', '3'), ('effect-count', '2'),
-          ('choose-period', '60'), ('identity-secret-key', '');
-        """
+          ('choose-period', '30'), ('identity-secret-key', '{}');
+        """.format(hexlify(urandom(16)).decode())
     )
 ]

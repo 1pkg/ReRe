@@ -12,3 +12,9 @@ class Sequence(Component):
                 if hasattr(item, column):
                     result.append(getattr(item, column))
         return result
+
+    def index(self, sequence, callback):
+        for index, item in enumerate(sequence):
+            if callback(item):
+                return index
+        return -1

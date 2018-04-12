@@ -10,6 +10,12 @@ export default class extends React.Component {
     }
 
     render() {
-        return <Button glyph={<DoubleRight />} action={this.choose} />
+        return (
+            <Button
+                glyph={<DoubleRight />}
+                action={this.choose}
+                mobile={this.props.mobile}
+            />
+        )
     }
 }

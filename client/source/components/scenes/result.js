@@ -14,9 +14,14 @@ export default class extends React.Component {
 
     options() {
         return Lodash.map(this.props.state.task.options, (option, index) => {
-            let Option =
-                option.name === this.props.state.option ? Correct : Wrong
-            return <Option key={index} option={option} />
+            let Option = this.props.state.option === index ? Correct : Wrong
+            return (
+                <Option
+                    key={index}
+                    mobile={this.props.state.settings.mobile}
+                    option={option}
+                />
+            )
         })
     }
 
@@ -34,9 +39,11 @@ export default class extends React.Component {
     render() {
         return (
             <Base
+                state={this.props.state}
                 subject={this.subject()}
                 options={this.options()}
                 toolbar={this.toolbar()}
+                option={this.props.state.option}
             />
         )
     }

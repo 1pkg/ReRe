@@ -4,52 +4,85 @@ import styled from 'styled-components'
 
 const BaseWrapper = styled.div`
     flex: 1 1 0;
-    width: 100%;
-    height: 100%;
     margin: 0.5rem;
-    padding: 0.3rem;
+    padding: 0.5rem;
+    overflow: hidden;
     border: 0.01rem solid rgba(0, 0, 0, 0.5);
+    box-shadow: 0.1rem 0.1rem 0.1rem 0.1rem rgba(0, 0, 0, 0.3);
 `
 
-const ChooseWrapper = BaseWrapper.extend`
-    &:hover {
-        box-shadow: 0.1rem 0.1rem 0.1rem 0.1rem rgba(0, 0, 0, 0.3);
+const MobileBaseWrapper = BaseWrapper.extend``
+
+const DesktopBaseWrapper = BaseWrapper.extend`
+    @media (max-width: 480px), (max-height: 270px) {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
     }
 `
 
-const DisabledWrapper = BaseWrapper.extend`
+const MobileChooseWrapper = MobileBaseWrapper.extend``
+
+const MobileDisabledWrapper = MobileBaseWrapper.extend`
     opacity: 0.5;
-    text-decoration: line-through;
+`
+
+const DesktopChooseWrapper = DesktopBaseWrapper.extend``
+
+const DesktopDisabledWrapper = DesktopBaseWrapper.extend`
+    opacity: 0.5;
 `
 
 const TitleBlock = styled.div`
     margin-bottom: 0.5rem;
     text-align: center;
+
+    ${DesktopChooseWrapper}:hover & {
+        cursor: pointer;
+    }
 `
 
 const MainTitle = styled.div`
-    font-size: 1rem;
+    font-size: 0.9rem;
     font-weight: bold;
     text-transform: capitalize;
 `
 
 const SubTitle = styled.div`
-    font-size: 0.5rem;
-    color: gray;
+    font-size: 0.7rem;
+    font-style: italic;
     text-transform: lowercase;
 `
 
-const Text = styled.div`
-    font-size: 0.5rem;
-    height: 50%;
+const BaseText = styled.div`
+    font-size: 0.8rem;
     overflow: hidden;
     text-align: justify;
 `
 
-const Source = styled.div`
+const MobileText = BaseText.extend`
+    height: 65%;
+`
+
+const DesktopText = BaseText.extend`
+    height: 50%;
+    @media (max-width: 480px), (max-height: 270px) {
+        display: none;
+    }
+`
+
+const BaseSource = styled.div`
     margin-top: 0.5rem;
-    font-size: 0.5rem;
+    font-size: 0.7rem;
     text-align: right;
+`
+
+const MobileSource = BaseSource.extend``
+
+const DesktopSource = BaseSource.extend`
+    @media (max-width: 480px), (max-height: 270px) {
+        text-align: center;
+    }
 `
 
 export default class extends React.Component {
@@ -87,27 +120,55 @@ export default class extends React.Component {
     wrapper() {
         switch (this.props.wrapper) {
             case 'choose':
-                return ChooseWrapper
+                return this.props.mobile
+                    ? MobileChooseWrapper
+                    : DesktopChooseWrapper
 
             case 'disabled':
-                return DisabledWrapper
+                return this.props.mobile
+                    ? MobileDisabledWrapper
+                    : DesktopDisabledWrapper
 
             default:
-                return BaseWrapper
+                return this.props.mobile
+                    ? MobileBaseWrapper
+                    : DesktopBaseWrapper
         }
     }
 
-    render() {
+    mobile() {
         let Wrapper = this.wrapper()
         return (
-            <Wrapper onClick={this.props.action}>
-                <TitleBlock>
+            <Wrapper>
+                <TitleBlock onClick={this.props.action}>
                     <MainTitle>{this.title()}</MainTitle>
                     <SubTitle>{this.subtile()}</SubTitle>
                 </TitleBlock>
-                <Text>{this.text()}</Text>
-                <Source>{this.source()}</Source>
+                <MobileText>{this.text()}</MobileText>
+                <MobileSource>{this.source()}</MobileSource>
             </Wrapper>
         )
+    }
+
+    desktop() {
+        let Wrapper = this.wrapper()
+        return (
+            <Wrapper>
+                <TitleBlock onClick={this.props.action}>
+                    <MainTitle>{this.title()}</MainTitle>
+                    <SubTitle>{this.subtile()}</SubTitle>
+                </TitleBlock>
+                <DesktopText>{this.text()}</DesktopText>
+                <DesktopSource>{this.source()}</DesktopSource>
+            </Wrapper>
+        )
+    }
+
+    render() {
+        if (this.props.mobile) {
+            return this.mobile()
+        } else {
+            return this.desktop()
+        }
     }
 }
