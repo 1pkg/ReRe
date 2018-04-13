@@ -12,6 +12,7 @@ export default class extends React.Component {
             <Subject
                 subject={this.props.state.task.subject}
                 effects={this.props.state.task.effects}
+                shaders={this.props.state.shaders}
             />
         )
     }

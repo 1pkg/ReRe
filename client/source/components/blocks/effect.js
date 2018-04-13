@@ -1,16 +1,15 @@
 import React from 'react'
-import * as GlReact from 'gl-react'
+import { Node } from 'gl-react'
 
-import Shaders from './list'
-
-export default class Ripple extends React.Component {
+export default class extends React.Component {
     render() {
         return (
-            <GlReact.Node
-                shader={Shaders.ripple}
+            <Node
+                shader={this.props.shader}
                 uniforms={{
                     size: this.props.size,
                     texture: this.props.children,
+                    ...this.props.uniform,
                 }}
             />
         )

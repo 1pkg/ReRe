@@ -36,7 +36,12 @@ const DesktopDisabledWrapper = DesktopBaseWrapper.extend`
 const TitleBlock = styled.div`
     margin-bottom: 0.5rem;
     text-align: center;
-
+    ${MobileChooseWrapper}:active & {
+        color: transparent;
+    }
+    ${DesktopChooseWrapper}:active & {
+        color: transparent;
+    }
     ${DesktopChooseWrapper}:hover & {
         cursor: pointer;
     }
@@ -61,7 +66,7 @@ const BaseText = styled.div`
 `
 
 const MobileText = BaseText.extend`
-    height: 65%;
+    height: 60%;
 `
 
 const DesktopText = BaseText.extend`
@@ -137,7 +142,7 @@ export default class extends React.Component {
     }
 
     mobile() {
-        let Wrapper = this.wrapper()
+        const Wrapper = this.wrapper()
         return (
             <Wrapper>
                 <TitleBlock onClick={this.props.action}>
@@ -151,7 +156,7 @@ export default class extends React.Component {
     }
 
     desktop() {
-        let Wrapper = this.wrapper()
+        const Wrapper = this.wrapper()
         return (
             <Wrapper>
                 <TitleBlock onClick={this.props.action}>

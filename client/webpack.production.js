@@ -37,6 +37,7 @@ module.exports = {
                                 },
                             ],
                             'transform-class-properties',
+                            'babel-plugin-transform-object-rest-spread',
                         ],
                     },
                 },

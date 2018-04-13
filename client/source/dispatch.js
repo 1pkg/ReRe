@@ -13,7 +13,7 @@ export default trigger => {
     }
 
     let state = Store.state()
-    if (state) {
+    if (state !== undefined) {
         trigger.push('store', state)
         return
     }

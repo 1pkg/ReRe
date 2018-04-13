@@ -17,7 +17,7 @@ class Fetch(Access, TaskFormat):
             Orientation.landscape
         if label is not '':
             return self._format(self.__fetchByLabel(label))
-        elif self._application.random.roll(0.9):
+        elif self._application.random.roll(0.0):
             return self._format(self.__fetchByRandom(orientation))
         else:
             return self._format(self.__fetchNew(orientation))

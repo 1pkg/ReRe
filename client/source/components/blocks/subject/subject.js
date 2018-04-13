@@ -5,6 +5,8 @@ import GLReactImage from 'gl-react-image'
 import { Surface } from 'gl-react-dom'
 import styled from 'styled-components'
 
+import Effect from './../effect'
+
 const Container = styled.div`
     flex: 1;
     max-width: 100vw;
@@ -60,20 +62,31 @@ export default class extends React.Component {
     effect() {
         let Subject = null
         Lodash.each(this.props.effects, effect => {
-            if (!(effect.name in this.props.effectsDB)) {
+            let shader = Lodash.find(
+                this.props.shaders,
+                shader => shader.name === effect.name,
+            )
+            if (shader === undefined) {
                 return
             }
 
-            let Effect = this.props.effectsDB[effect.name]
-            if (!Subject) {
+            if (Subject === null) {
                 Subject = (
-                    <Effect size={[this.state.width, this.state.height]}>
+                    <Effect
+                        shader={shader.shader}
+                        size={[this.state.width, this.state.height]}
+                        uniform={shader.uniform}
+                    >
                         <GLReactImage source={this.link()} resizeMode="cover" />
                     </Effect>
                 )
             } else {
                 Subject = (
-                    <Effect size={[this.state.width, this.state.height]}>
+                    <Effect
+                        shader={shader.shader}
+                        size={[this.state.width, this.state.height]}
+                        uniform={shader.uniform}
+                    >
                         {Subject}
                     </Effect>
                 )

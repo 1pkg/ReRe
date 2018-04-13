@@ -26,8 +26,6 @@ export default trigger => {
                 trigger.push(Trigger.ACTION_REDO, state)
                 resolve()
             })
-            .catch(exception => {
-                reject()
-            })
+            .catch(exception => reject())
     })
 }

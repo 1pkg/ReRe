@@ -1,6 +1,6 @@
 import errors
 from base import Action
-from models import Session, Setting
+from models import Effect, Session, Setting
 
 
 class Handshake(Action):
@@ -27,6 +27,14 @@ class Handshake(Action):
             'mobile': int(request.MOBILE),
             'choose-period': int(Setting.get('choose-period')),
         }
+        shaders = []
+        effects = Effect.query.all()
+        for effect in effects:
+            shaders.append({
+                'name': effect.name,
+                'shader': effect.shader,
+                'uniform': effect.uniform,
+            })
         token = self._application.hash.hex(
             self._application.random.salt(),
             self.__userHost,
@@ -45,4 +53,5 @@ class Handshake(Action):
         return {
             'token': token,
             'settings': setting,
+            'shaders': shaders,
         }

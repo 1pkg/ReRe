@@ -14,7 +14,7 @@ export default class extends React.Component {
     }
 
     render() {
-        let Toggler = this.toggler()
+        const Toggler = this.toggler()
         return (
             <Container>
                 <Toggler

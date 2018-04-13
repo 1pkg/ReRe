@@ -29,8 +29,6 @@ export default (trigger, label = '', push = true) => {
                 trigger.push(Trigger.ACTION_FETCH, state)
                 resolve()
             })
-            .catch(exception => {
-                reject()
-            })
+            .catch(exception => reject())
     })
 }

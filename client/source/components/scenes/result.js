@@ -14,7 +14,7 @@ export default class extends React.Component {
 
     options() {
         return Lodash.map(this.props.state.task.options, (option, index) => {
-            let Option = this.props.state.option === index ? Correct : Wrong
+            const Option = this.props.state.option === index ? Correct : Wrong
             return (
                 <Option
                     key={index}

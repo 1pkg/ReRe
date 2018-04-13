@@ -32,10 +32,7 @@ class Task(Action):
                     'source': str(option.source),
                 } for option in task.options],
                 'subject': subject,
-                'effects': [{
-                    'name': effect.name,
-                    'shader': effect.shader,
-                } for effect in task.effects],
+                'effects': [{'name': effect.name} for effect in task.effects],
                 'label': task.label,
             },
         }

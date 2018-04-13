@@ -3,16 +3,43 @@ import React from 'react'
 import Swipeable from 'react-swipeable'
 import styled from 'styled-components'
 
-const Container = styled(Swipeable)`
+const Container = styled.div`
+    flex: 1 1 0;
+    display: flex;
+    flex-direction: column;
+`
+
+const SwipeableContainer = styled(Swipeable)`
     flex: 1 1 0;
     display: flex;
     overflow: hidden;
 `
 
-const Wrapper = styled.div`
+const SwipeableWrapper = styled.div`
     flex: 1 0 100%;
     order: ${props => props.order};
     display: flex;
+`
+
+const DotContainer = styled.div`
+    align-self: center;
+    display: flex;
+`
+
+const BaseDot = styled.div`
+    width: 0.5rem;
+    height: 0.5rem;
+    border-radius: 0.5rem;
+    margin: 0.2rem;
+    background-color: currentColor;
+`
+
+const ActiveDot = BaseDot.extend`
+    opacity: 0.8;
+`
+
+const DisabledDot = BaseDot.extend`
+    opacity: 0.4;
 `
 
 export default class extends React.Component {
@@ -61,15 +88,29 @@ export default class extends React.Component {
         if (!this.state) return null
 
         return (
-            <Container onSwipedRight={this.previous} onSwipedLeft={this.next}>
-                {Lodash.map(this.props.children, (child, index) => {
-                    let order = index === this.state.index ? 0 : 1
-                    return (
-                        <Wrapper key={index} order={order}>
-                            {child}
-                        </Wrapper>
-                    )
-                })}
+            <Container>
+                <SwipeableContainer
+                    onSwipedRight={this.previous}
+                    onSwipedLeft={this.next}
+                >
+                    {Lodash.map(this.props.children, (child, index) => {
+                        let order = index === this.state.index ? 0 : 1
+                        return (
+                            <SwipeableWrapper key={index} order={order}>
+                                {child}
+                            </SwipeableWrapper>
+                        )
+                    })}
+                </SwipeableContainer>
+                <DotContainer>
+                    {Lodash.map(this.props.children, (child, index) => {
+                        if (index === this.state.index) {
+                            return <ActiveDot key={index} />
+                        } else {
+                            return <DisabledDot key={index} />
+                        }
+                    })}
+                </DotContainer>
             </Container>
         )
     }

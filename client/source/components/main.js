@@ -6,7 +6,7 @@ import Trigger from '~/actions/trigger'
 import Choose from './scenes/choose'
 import Result from './scenes/result'
 
-let Container = styled.div`
+const Container = styled.div`
     display: flex;
     width: 100vw;
     height: 100vh;

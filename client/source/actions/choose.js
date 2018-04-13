@@ -23,8 +23,6 @@ export default (trigger, option) => {
                 trigger.push(Trigger.ACTION_CHOOSE, state)
                 resolve()
             })
-            .catch(exception => {
-                reject()
-            })
+            .catch(exception => reject())
     })
 }

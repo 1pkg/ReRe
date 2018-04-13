@@ -64,7 +64,7 @@ export default class extends React.Component {
     }
 
     mobile() {
-        let OptionContainer = this.state.full
+        const OptionContainer = this.state.full
             ? FullOptionContainer
             : NoneOptionContainer
         return (
@@ -90,7 +90,7 @@ export default class extends React.Component {
     }
 
     desktop() {
-        let OptionContainer = this.state.full
+        const OptionContainer = this.state.full
             ? FullOptionContainer
             : NoneOptionContainer
         return (

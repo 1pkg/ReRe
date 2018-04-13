@@ -46,7 +46,7 @@ export default class extends React.Component {
     }
 
     render() {
-        let Container = this.props.full ? FullContainer : ShortContainer
+        const Container = this.props.full ? FullContainer : ShortContainer
         return <Container>{this.actions()}</Container>
     }
 }

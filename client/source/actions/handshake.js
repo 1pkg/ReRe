@@ -14,8 +14,6 @@ export default trigger => {
                 trigger.push(Trigger.ACTION_HANDSHAKE, state)
                 resolve()
             })
-            .catch(exception => {
-                reject()
-            })
+            .catch(exception => reject())
     })
 }
