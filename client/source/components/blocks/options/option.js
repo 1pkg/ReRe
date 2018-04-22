@@ -11,7 +11,9 @@ const BaseWrapper = styled.div`
     box-shadow: 0.1rem 0.1rem 0.1rem 0.1rem rgba(0, 0, 0, 0.3);
 `
 
-const MobileBaseWrapper = BaseWrapper.extend``
+const MobileBaseWrapper = BaseWrapper.extend`
+    overflow: scroll;
+`
 
 const DesktopBaseWrapper = BaseWrapper.extend`
     @media (max-width: 480px), (max-height: 270px) {
@@ -36,10 +38,7 @@ const DesktopDisabledWrapper = DesktopBaseWrapper.extend`
 const TitleBlock = styled.div`
     margin-bottom: 0.5rem;
     text-align: center;
-    ${MobileChooseWrapper}:active & {
-        color: transparent;
-    }
-    ${DesktopChooseWrapper}:active & {
+    &:active {
         color: transparent;
     }
     ${DesktopChooseWrapper}:hover & {
@@ -65,12 +64,11 @@ const BaseText = styled.div`
     text-align: justify;
 `
 
-const MobileText = BaseText.extend`
-    height: 60%;
-`
+const MobileText = BaseText.extend``
 
 const DesktopText = BaseText.extend`
     height: 50%;
+    overflow-y: scroll;
     @media (max-width: 480px), (max-height: 270px) {
         display: none;
     }
@@ -110,8 +108,11 @@ export default class extends React.Component {
 
     text() {
         let words = this.props.option.description.split(' ')
+        if (words.length <= 100) {
+            return this.props.option.description
+        }
         words = words.slice(0, 100)
-        return words.join(' ')
+        return `${words.join(' ')}  ...`
     }
 
     source() {

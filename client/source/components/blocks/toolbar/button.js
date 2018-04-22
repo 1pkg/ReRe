@@ -3,6 +3,7 @@ import React from 'react'
 import styled from 'styled-components'
 
 const Container = styled.div`
+    user-select: none;
     display: contents;
     &:active {
         color: transparent;

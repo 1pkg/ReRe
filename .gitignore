@@ -1,12 +1,14 @@
 /client/node_modules/
 /client/build/
-/client/settings/production.json
+/client/settings/*.json
+!/client/settings/*.dist.json
 /client/npm-debug.log
 
 /server/env/
 /server/**/__pycache__/
 /server/migrations/
-/server/settings/production.cfg
+/server/settings/*.cfg
+!/server/settings/*.dist.cfg
 /server/yoyo.ini
 
 /parser/env/

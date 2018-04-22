@@ -1,16 +1,18 @@
-precision highp float;
-varying vec2 uv;
+precision mediump float;
+
 uniform sampler2D texture;
 uniform vec2 size;
 
-void main() {
-    vec2 position = -1.0 + 2.0 * gl_FragCoord.xy / size.xy;
-    float r = dot(position, position);
-    if (r < 0.5) {
-        float koef = 0.1 - r / 5.0;
-        vec2 coord = gl_FragCoord.xy / size.xy + (position / length(position)) * koef;
-        gl_FragColor = vec4(texture2D(texture, coord).xyz, 1.0);
-    } else {
-        gl_FragColor = texture2D(texture, uv);
+vec2 funnel(vec2 coords) {
+    vec2 position = -1.0 + 2.0 * coords;
+    float rad = dot(position, position);
+    if (rad < 0.5) {
+        return coords;
     }
+    float coef = 0.1 - rad / 5.0;
+    return coords + (position / length(position)) * coef;
+}
+
+void main() {
+    gl_FragColor = texture2D(texture, funnel(gl_FragCoord.xy / size.xy));
 }

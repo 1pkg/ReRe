@@ -1,10 +1,17 @@
-precision highp float;
+precision mediump float;
+
 uniform sampler2D texture;
 uniform vec2 size;
 
+uniform float frequency;
+uniform float amplitude;
+
+vec2 ripple(vec2 coords) {
+    vec2 position = -1.0 + 2.0 * coords;
+    float coef = cos(frequency * length(position)) * amplitude;
+    return coords + (position / length(position)) * coef;
+}
+
 void main() {
-    vec2 position = -1.0 + 2.0 * gl_FragCoord.xy / size.xy;
-    float koef = cos(length(position) * 30.0) * 0.03;
-    vec2 coord = gl_FragCoord.xy / size.xy + (position / length(position)) * koef;
-    gl_FragColor = vec4(texture2D(texture, coord).xyz, 1.0);
+    gl_FragColor = texture2D(texture, ripple(gl_FragCoord.xy / size));
 }

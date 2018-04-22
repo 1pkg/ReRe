@@ -1,25 +1,26 @@
-precision highp float;
-varying vec2 uv;
+precision mediump float;
+
 uniform sampler2D texture;
 uniform vec2 size;
-uniform int orientation;
 
-vec2 waveHorizontal(vec2 coord) {
-    float pi = 3.14159;
-    float w = size.x / 200.0 * pi;
-    float y = sin(w * coord.x) * 0.33;
-    return vec2(coord.x, coord.y + y);
+uniform bool orientation;
+uniform float frequency;
+uniform float amplitude;
+
+vec4 waveHorizontal(vec2 coords) {
+    float y = sin(size.x / frequency * coords.x) * amplitude;
+    return texture2D(texture, vec2(coords.x, coords.y + y));
 }
 
-vec2 waveVertical(vec2 coord) {
-    float pi = 3.14159;
-    float w = size.y / 200.0 * pi;
-    float x = cos(w * coord.y) * 0.33;
-    return vec2(coord.x + x, coord.y);
+vec4 waveVertical(vec2 coords) {
+    float x = cos(size.y / frequency * coords.y) * amplitude;
+    return texture2D(texture, vec2(coords.x + x, coords.y));
 }
 
 void main() {
-    vec2 coord = orientation == 1 ? waveHorizontal(uv) : waveVertical(uv);
-    vec4 color = texture2D(texture, coord);
-    gl_FragColor = color;
+    if (orientation) {
+        gl_FragColor = waveHorizontal(gl_FragCoord.xy / size);
+    } else {
+        gl_FragColor = waveVertical(gl_FragCoord.xy / size);
+    }
 }

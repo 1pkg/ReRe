@@ -1,14 +1,21 @@
-precision highp float;
-varying vec2 uv;
+precision mediump float;
+
 uniform sampler2D texture;
 uniform vec2 size;
-uniform float factor;
+
+uniform float scale;
+
+vec2 pixelation(vec2 coords) {
+    vec2 scalevec = 1.0 / vec2(
+        float(size.x) / scale,
+        float(size.y) / scale
+    );
+    return vec2(
+        scalevec.x * floor(coords.x / scalevec.x),
+        scalevec.y * floor(coords.y / scalevec.y)
+    );
+}
 
 void main() {
-    vec2 size = vec2(float(size.x) / factor, float(size.y) / factor);
-    vec4 color = texture2D(texture, uv);
-    float dx = (1.0 / size.x);
-    float dy = (1.0 / size.y);
-    vec2 coord = vec2(dx * floor(uv.x / dx), dy * floor(uv.y / dy));
-    gl_FragColor = texture2D(texture, coord);
+    gl_FragColor = texture2D(texture, pixelation(gl_FragCoord.xy / size));
 }

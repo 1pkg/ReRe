@@ -1,25 +1,65 @@
-import os
-import sys
-import re
 import json
-
 from yoyo import step
 
+import sys
+import os
+sys.path.insert(0, os.path.abspath('shaders'))
 
-def parse(shadersPath, shaderFiles):
-    fragShaders = {}
-    for shaderFile in shaderFiles:
-        path = os.path.join(shadersPath, '{}.frag'.format(shaderFile))
-        with open(path, 'r') as frag:
-            frag = frag.read().strip().replace('\n', ' ')
-            frag = re.sub('\s+', ' ', frag)
-            fragShaders[shaderFile] = {'frag': frag}
-    return fragShaders
+from composer import compose
+
+__depends__ = {}
 
 
 def steps(conn):
     cursor = conn.cursor()
-    for shader in shaders:
+    for shader in [
+        compose('brighter', 'brightness', {
+            'scale': 0.5,
+        }),
+        compose('darker', 'brightness', {
+            'scale': -0.5,
+        }),
+        compose('bloom', 'bloom', {
+            'scale': 0.3,
+        }),
+        compose('inverse', 'inverse', {}),
+        compose('sepia', 'sepia', {}),
+        compose('bleached', 'saturation', {
+            'saturation': 0.0,
+        }),
+        compose('oversaturated', 'saturation', {
+            'saturation': 25.0,
+        }),
+        compose('blur-horizontal', 'blur', {
+            'orientation': True,
+            'iterations': 50.0,
+            'sigma': 10.0,
+        }),
+        compose('blur-vertical', 'blur', {
+            'orientation': False,
+            'iterations': 50.0,
+            'sigma': 10.0,
+        }),
+        compose('wave-horizontal', 'wave', {
+            'orientation': True,
+            'frequency': 50,
+            'amplitude': 0.25,
+        }),
+        compose('wave-vertical', 'wave', {
+            'orientation': False,
+            'frequency': 50,
+            'amplitude': 0.25,
+        }),
+        compose('ripple', 'ripple', {
+            'frequency': 25,
+            'amplitude': 0.1,
+        }),
+        compose('funnel', 'funnel', {}),
+        compose('pixelation', 'pixelation', {
+            'scale': 10.0,
+        }),
+        compose('crosshatch', 'crosshatch', {}),
+    ]:
         cursor.execute('''
             INSERT INTO effect (name, shader, uniform) VALUES
             ('{}', '{}', '{}')
@@ -29,79 +69,5 @@ def steps(conn):
             json.dumps(shader['uniform']),
         ))
 
-
-currentPath = os.path.dirname(sys.argv[0])
-shadersPath = os.path.join(currentPath, '..', '..', 'shaders')
-fragShaders = parse(shadersPath, [
-    'bloom',
-    'blur',
-    'crosshatch',
-    'funnel',
-    'pixelation',
-    'ripple',
-    'saturation',
-    'sepia',
-    'wave',
-])
-shaders = [
-    {
-        'name': 'bleached',
-        'shader': fragShaders['saturation'],
-        'uniform': {'factor': 0.0},
-    },
-    {
-        'name': 'bloom',
-        'shader': fragShaders['bloom'],
-        'uniform': {'factor': 50.0},
-    },
-    {
-        'name': 'blur-horizontal',
-        'shader': fragShaders['blur'],
-        'uniform': {'factor': 60.0, 'sigma': 20.0, 'orientation': 1},
-    },
-    {
-        'name': 'blur-vertical',
-        'shader': fragShaders['blur'],
-        'uniform': {'factor': 60.0, 'sigma': 20.0, 'orientation': 0},
-    },
-    {
-        'name': 'crosshatch',
-        'shader': fragShaders['crosshatch'],
-        'uniform': {},
-    },
-    {
-        'name': 'funnel',
-        'shader': fragShaders['funnel'],
-        'uniform': {},
-    },
-    {
-        'name': 'pixelation',
-        'shader': fragShaders['pixelation'],
-        'uniform': {'factor': 10.0},
-    },
-    {
-        'name': 'ripple',
-        'shader': fragShaders['ripple'],
-        'uniform': {},
-    },
-    {
-        'name': 'sepia',
-        'shader': fragShaders['sepia'],
-        'uniform': {},
-    },
-    {
-        'name': 'wave-horizontal',
-        'shader': fragShaders['wave'],
-        'uniform': {'orientation': 1},
-    },
-    {
-        'name': 'wave-vertical',
-        'shader': fragShaders['wave'],
-        'uniform': {'orientation': 0},
-    },
-]
-
-
-__depends__ = {}
 
 step(steps)

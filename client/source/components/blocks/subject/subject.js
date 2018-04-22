@@ -36,8 +36,8 @@ export default class extends React.Component {
                 return state
             }
             return {
-                width: element.getBoundingClientRect().width,
-                height: element.getBoundingClientRect().height,
+                width: Math.floor(element.getBoundingClientRect().width),
+                height: Math.floor(element.getBoundingClientRect().height),
             }
         })
     }
@@ -73,18 +73,25 @@ export default class extends React.Component {
             if (Subject === null) {
                 Subject = (
                     <Effect
+                        width={this.state.width}
+                        height={this.state.height}
                         shader={shader.shader}
-                        size={[this.state.width, this.state.height]}
                         uniform={shader.uniform}
                     >
-                        <GLReactImage source={this.link()} resizeMode="cover" />
+                        <GLReactImage
+                            source={this.link()}
+                            width={this.state.width}
+                            height={this.state.height}
+                            resizeMode="cover"
+                        />
                     </Effect>
                 )
             } else {
                 Subject = (
                     <Effect
+                        width={this.state.width}
+                        height={this.state.height}
                         shader={shader.shader}
-                        size={[this.state.width, this.state.height]}
                         uniform={shader.uniform}
                     >
                         {Subject}
@@ -94,6 +101,7 @@ export default class extends React.Component {
         })
         return (
             <Surface
+                pixelRatio={1}
                 width={this.state.width}
                 height={this.state.height}
                 onLoad={this.fit}
