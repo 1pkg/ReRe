@@ -19,9 +19,6 @@ def steps(conn):
         compose('darker', 'brightness', {
             'scale': -0.5,
         }),
-        compose('bloom', 'bloom', {
-            'scale': 0.3,
-        }),
         compose('inverse', 'inverse', {}),
         compose('sepia', 'sepia', {}),
         compose('bleached', 'saturation', {
@@ -30,6 +27,7 @@ def steps(conn):
         compose('oversaturated', 'saturation', {
             'saturation': 25.0,
         }),
+        compose('posterize', 'posterize', {}),
         compose('blur-horizontal', 'blur', {
             'orientation': True,
             'iterations': 50.0,
@@ -59,6 +57,16 @@ def steps(conn):
             'scale': 10.0,
         }),
         compose('crosshatch', 'crosshatch', {}),
+        compose('fisheye', 'fisheye', {
+            'scale': 0.25,
+        }),
+        compose('emboss', 'emboss', {}),
+        compose('twist', 'twist', {
+            'rotation': 4.0,
+        }),
+        compose('tornado', 'twist', {
+            'rotation': 8.0,
+        }),
     ]:
         cursor.execute('''
             INSERT INTO effect (name, shader, uniform) VALUES
