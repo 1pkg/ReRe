@@ -1,6 +1,8 @@
+import os
 import flask
 import flask_migrate
 import flask_limiter
+import flask_cache
 import flask_cors
 import flask_mobility
 import functools
@@ -65,6 +67,9 @@ class Application:
             self.limiter = flask_limiter.Limiter(key_func=remoteAddr)
             self.limiter.init_app(instance)
 
+            self.cache = flask_cache.Cache(with_jinja2_ext=False)
+            self.cache.init_app(instance)
+
             if not instance.debug:
                 instance.register_error_handler(
                     Exception,
@@ -86,6 +91,14 @@ class Application:
         after = functools.partial(Application.after, self)
         instance.before_request(before)
         instance.after_request(after)
+        instance.add_url_rule(
+            view_func=lambda:
+            flask.send_from_directory(
+                os.path.join(__file__, '..', 'static'),
+                'favicon.ico',
+            ),
+            rule='/favicon.ico',
+        )
         for alias, action in self.__actions.items():
             bndaction = functools.partial(
                 Application.action,
@@ -96,7 +109,14 @@ class Application:
             bndaction.__name__ = alias
             bndaction.__module__ = action.__module__
             if not instance.debug:
-                self.limiter.limit(action.CONNECTION_LIMIT)(bndaction)
+                if action.CONNECTION_LIMIT is not None:
+                    bndaction = self.limiter.limit
+                    (action.CONNECTION_LIMIT)
+                    (bndaction)
+                if action.CACHE_EXPIRE is not None:
+                    bndaction = self.cache.cached
+                    (action.CACHE_EXPIRE)
+                    (bndaction)
             rule = '/{}'.format(alias)
             req = ['GET', 'POST'] if instance.debug else ['POST']
             instance.add_url_rule(view_func=bndaction, rule=rule, methods=req)

@@ -1,10 +1,11 @@
 import errors
 from base import Action
-from models import Effect, Session, Setting
+from models import Session
 
 
 class Handshake(Action):
-    CONNECTION_LIMIT = '2 per minute'
+    CONNECTION_LIMIT = '1/minute;10/hour;100/day'
+    CACHE_EXPIRE = None
 
     def _validate(self, request):
         super()._validate(request)
@@ -23,18 +24,7 @@ class Handshake(Action):
             raise errors.Request('user_ip')
 
     def _process(self, request):
-        setting = {
-            'mobile': int(request.MOBILE),
-            'choose-period': int(Setting.get('choose-period')),
-        }
-        shaders = []
-        effects = Effect.query.all()
-        for effect in effects:
-            shaders.append({
-                'name': effect.name,
-                'shader': effect.shader,
-                'uniform': effect.uniform,
-            })
+        mobile = int(request.MOBILE)
         token = self._application.hash.hex(
             self._application.random.salt(),
             self.__userHost,
@@ -52,6 +42,5 @@ class Handshake(Action):
 
         return {
             'token': token,
-            'settings': setting,
-            'shaders': shaders,
+            'mobile': mobile,
         }

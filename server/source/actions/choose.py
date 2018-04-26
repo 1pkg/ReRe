@@ -1,10 +1,11 @@
 import errors
 from models import Answer, Setting
-from .identify import Identify
+from .mixins import Identify
 
 
 class Choose(Identify):
-    CONNECTION_LIMIT = '1 per second, 100 per minute'
+    CONNECTION_LIMIT = '1/second;100/minute;10000/hour'
+    CACHE_EXPIRE = None
 
     def _validate(self, request):
         super()._validate(request)
@@ -18,7 +19,8 @@ class Choose(Identify):
         if self.__option == -1:
             return
 
-        if len(self._task.options) < self.__option:
+        if len(self._task.options) < self.__option \
+                or self.__option <= 0:
             raise errors.Request('option')
 
     def _process(self, request):
@@ -37,7 +39,7 @@ class Choose(Identify):
         option = sequence.index(
             self._task.options,
             lambda option: option.id == correctOption.id
-        )
+        ) + 1
         answer = Answer(
             task_id=self._task.id,
             option_id=None if choosenOption is None else choosenOption.id,

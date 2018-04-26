@@ -2,12 +2,12 @@ from random import shuffle
 
 import errors
 from models import Task, Orientation, Option, Subject, Effect, Setting
-from .access import Access
-from .task import Task as TaskFormat
+from .mixins import Access, Memoize
 
 
-class Fetch(Access, TaskFormat):
-    CONNECTION_LIMIT = '1 per second, 100 per minute'
+class Fetch(Access, Memoize):
+    CONNECTION_LIMIT = '1/second;100/minute;10000/hour'
+    CACHE_EXPIRE = None
 
     def _process(self, request):
         label = str(self._get(request, 'label', ''))

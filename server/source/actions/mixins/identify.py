@@ -1,7 +1,5 @@
-import json
-
 import errors
-from models import Task, Setting
+from models import Task
 from .access import Access
 
 
@@ -10,16 +8,10 @@ class Identify(Access):
         super()._validate(request)
         validator = self._application.validator
 
-        try:
-            identity = self._application.crypto.decrypt(
-                str(Setting.get('identity-secret-key')),
-                str(self._get(request, 'identity')),
-            )
-            identity = json.loads(identity)
-        except Exception:
-            raise errors.Identity()
-
-        if 'timestamp' not in identity \
+        key = 'token-{}'.format(self._session.token)
+        identity = self._application.cache.get(key)
+        if identity is None \
+                or 'timestamp' not in identity \
                 or not validator.isNumeric(identity['timestamp']) \
                 or 'task_id' not in identity \
                 or not validator.isNumeric(identity['task_id']) \

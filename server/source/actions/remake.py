@@ -1,10 +1,10 @@
 from models import Task, Effect, Setting
-from .identify import Identify
-from .task import Task as TaskFormat
+from .mixins import Identify, Memoize
 
 
-class Redo(Identify, TaskFormat):
-    CONNECTION_LIMIT = '1 per second, 10 per minute'
+class Remake(Identify, Memoize):
+    CONNECTION_LIMIT = '1/second;100/minute;10000/hour'
+    CACHE_EXPIRE = None
 
     def _process(self, request):
         effects = Effect.query \
