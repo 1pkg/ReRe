@@ -4,7 +4,7 @@ import { Crypto, History, Json } from '~/helpers'
 import Trigger from './trigger'
 
 export default async trigger => {
-    let state = await Axios.get(API.concat('remake'), {
+    let response = await Axios.get(API.concat('remake'), {
         params: { token: trigger.state().token },
     })
     let state = trigger.state()

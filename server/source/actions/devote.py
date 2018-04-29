@@ -17,6 +17,7 @@ class Devote(Access):
             })
         setting = {
             'choose-period': int(Setting.get('choose-period')),
+            'disclaimer-message': str(Setting.get('disclaimer-message')),
         }
 
         return {

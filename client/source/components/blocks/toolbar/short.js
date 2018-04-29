@@ -1,7 +1,7 @@
 import React from 'react'
 
-import Toolbar from './toolbar'
-import Fetch from './fetch'
+import Toolbar from './base'
+import Fetch from './../widgets/fetch'
 
 export default class extends React.Component {
     render() {

@@ -31,7 +31,7 @@ const BaseDot = styled.div`
     height: 0.5rem;
     border-radius: 0.5rem;
     margin: 0.2rem;
-    background-color: currentColor;
+    background-color: black;
 `
 
 const ActiveDot = BaseDot.extend`
@@ -52,7 +52,7 @@ export default class extends React.Component {
 
     componentDidMount() {
         let size = this.props.children.length - 1
-        let index = this.props.option ? this.props.option : 0
+        let index = this.props.option ? this.props.option - 1 : 0
         this.setState(state => {
             return { size, index }
         })

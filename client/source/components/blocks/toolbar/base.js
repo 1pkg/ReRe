@@ -2,10 +2,6 @@ import Lodash from 'lodash'
 import React from 'react'
 import styled from 'styled-components'
 
-import Fetch from './fetch'
-import Redo from './redo'
-import Timer from './timer'
-
 const Container = styled.div`
     flex: 1 1 0;
     display: flex;

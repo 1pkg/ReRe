@@ -11,14 +11,14 @@ const Container = styled.div`
 `
 
 const DesktopContainer = Container.extend`
-    font-size: 1.5rem;
+    font-size: ${props => (props.small ? '1rem' : '1.5rem')};
     &:hover {
         cursor: pointer;
     }
 `
 
 const MobileContainer = Container.extend`
-    font-size: 2rem;
+    font-size: ${props => (props.small ? '1rem' : '2rem')};
 `
 
 export default class extends React.Component {
@@ -32,7 +32,7 @@ export default class extends React.Component {
     render() {
         const Container = this.props.mobile ? MobileContainer : DesktopContainer
         return (
-            <Container onClick={this.props.action}>
+            <Container onClick={this.props.action} small={this.props.small}>
                 {this.props.glyph}
             </Container>
         )

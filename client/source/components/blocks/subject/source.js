@@ -1,6 +1,6 @@
 import React from 'react'
 
-import Subject from './subject'
+import Subject from './base'
 
 export default class extends React.Component {
     render() {

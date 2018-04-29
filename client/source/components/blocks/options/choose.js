@@ -1,7 +1,7 @@
 import React from 'react'
 
 import Trigger from '~/actions/trigger'
-import Option from './option'
+import Option from './base'
 
 export default class extends React.Component {
     choose = () => {

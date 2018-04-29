@@ -1,8 +1,8 @@
 import React from 'react'
 import styled from 'styled-components'
 
-import Collapse from './collapse'
-import Expand from './expand'
+import Collapse from './../widgets/collapse'
+import Expand from './../widgets/expand'
 
 const Container = styled.div`
     flex: 2 1 0;

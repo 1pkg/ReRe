@@ -1,6 +1,6 @@
 import React from 'react'
 
-import Option from './option'
+import Option from './base'
 
 export default class extends React.Component {
     render() {
