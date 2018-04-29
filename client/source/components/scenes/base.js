@@ -108,7 +108,7 @@ export default class extends React.Component {
     }
 
     render() {
-        if (this.props.state.settings.mobile) {
+        if (this.props.state.mobile) {
             return this.mobile()
         } else {
             return this.desktop()

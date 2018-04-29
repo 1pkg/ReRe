@@ -11,7 +11,7 @@ const OnBuildPlugin = require('on-build-webpack')
 let settings = FS.readFileSync('./settings/production.json')
 
 module.exports = {
-    entry: './source/application.js',
+    entry: ['babel-polyfill', './source/application.js'],
 
     output: {
         publicPath: '/',

@@ -6,7 +6,7 @@ const HtmlPlugin = require('html-webpack-plugin')
 let settings = FS.readFileSync('./settings/development.json')
 
 module.exports = {
-    entry: './source/application.js',
+    entry: ['babel-polyfill', './source/application.js'],
     devtool: 'source-map',
 
     output: {

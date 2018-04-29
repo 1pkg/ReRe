@@ -1,10 +1,12 @@
 import Lodash from 'lodash'
-import * as Redux from 'redux'
 
 import Choose from './choose'
+import Devote from './devote'
 import Fetch from './fetch'
 import Handshake from './handshake'
-import Redo from './redo'
+import Land from './land'
+import Remake from './remake'
+import Report from './report'
 
 export default class Trigger {
     static STATUS_ACTIVE = 'status-active'
@@ -12,17 +14,23 @@ export default class Trigger {
     static STATUS_WRONG = 'status-wrong'
 
     static ACTION_CHOOSE = 'action-chose'
+    static ACTION_DEVOTE = 'action-devote'
     static ACTION_FETCH = 'action-fetch'
     static ACTION_HANDSHAKE = 'action-handshake'
-    static ACTION_REDO = 'action-redo'
+    static ACTION_LAND = 'action-land'
+    static ACTION_REMAKE = 'action-remake'
+    static ACTION_REPORT = 'action-report'
 
     constructor(store) {
         this.store = store
         this.actions = {
             [Trigger.ACTION_CHOOSE]: Choose,
+            [Trigger.ACTION_DEVOTE]: Devote,
             [Trigger.ACTION_FETCH]: Fetch,
             [Trigger.ACTION_HANDSHAKE]: Handshake,
-            [Trigger.ACTION_REDO]: Redo,
+            [Trigger.ACTION_LAND]: Land,
+            [Trigger.ACTION_REMAKE]: Remake,
+            [Trigger.ACTION_REPORT]: Report,
         }
     }
 
@@ -30,14 +38,14 @@ export default class Trigger {
         return Lodash.clone(this.store.getState())
     }
 
-    call(name, ...params) {
+    push(name, state) {
+        this.store.dispatch({ type: name, name, state })
+    }
+
+    async call(name, ...params) {
         if (name in this.actions) {
             return this.actions[name](this, ...params)
         }
-        return new Promise((resolve, reject) => reject())
-    }
-
-    push(name, state) {
-        this.store.dispatch({ type: name, name, state })
+        return async () => {}
     }
 }

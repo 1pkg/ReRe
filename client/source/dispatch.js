@@ -1,24 +1,21 @@
-import { Store, Url, History } from './helpers'
+import { Store, Url } from './helpers'
 import Trigger from './actions/trigger'
 
-export default trigger => {
-    History.change(label => trigger.call(Trigger.ACTION_FETCH, label, false))
+export default async trigger => {
+    let state = Store.state()
+    if (state == null || !'token' in state) {
+        state = await trigger.call(Trigger.ACTION_HANDSHAKE)
+    }
+    if (!('settings' in state || 'shaders' in state)) {
+        state = await trigger.call(Trigger.ACTION_DEVOTE)
+    }
 
     let query = Url.parse().query
-    if ('label' in query) {
-        trigger.call(Trigger.ACTION_HANDSHAKE).then(() => {
-            trigger.call(Trigger.ACTION_FETCH, query.label)
-        })
-        return
-    }
-
-    let state = Store.state()
-    if (state !== undefined) {
+    if (state.status != null) {
         trigger.push('store', state)
-        return
+    } else if ('label' in query) {
+        await trigger.call(Trigger.ACTION_FETCH, query.label)
+    } else {
+        await trigger.call(Trigger.ACTION_FETCH)
     }
-
-    trigger.call(Trigger.ACTION_HANDSHAKE).then(() => {
-        trigger.call(Trigger.ACTION_FETCH)
-    })
 }

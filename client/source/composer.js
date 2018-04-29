@@ -1,11 +1,12 @@
 import { createStore, applyMiddleware } from 'redux'
 import ReduxThunk from 'redux-thunk'
 
-import { Store } from './helpers'
+import { Store, History } from './helpers'
 import Trigger from './actions/trigger'
 
 export default compose => {
-    let store = createStore((state = null, action) => {
+    History.change(label => trigger.call(Trigger.ACTION_FETCH, label, false))
+    let store = createStore((state = {}, action) => {
         if ('data' in action && action.data) {
             trigger.call(action.name, ...Object.values(action.data))
             return state

@@ -6,7 +6,7 @@ import Button from './button'
 
 export default class extends React.Component {
     redo = () => {
-        this.props.trigger.call(Trigger.ACTION_REDO)
+        this.props.trigger.call(Trigger.ACTION_REMAKE)
     }
 
     render() {

@@ -5,7 +5,7 @@ import Option from './option'
 
 export default class extends React.Component {
     choose = () => {
-        this.props.trigger.call(Trigger.ACTION_CHOOSE, this.props.index + 1)
+        this.props.trigger.call(Trigger.ACTION_CHOOSE, this.props.index)
     }
 
     render() {

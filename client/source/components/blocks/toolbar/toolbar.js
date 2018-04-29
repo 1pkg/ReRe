@@ -37,7 +37,7 @@ export default class extends React.Component {
                 <Action
                     key={index}
                     trigger={this.props.trigger}
-                    mobile={this.props.settings.mobile}
+                    mobile={this.props.mobile}
                     timestamp={this.props.timestamp}
                     settings={this.props.settings}
                 />

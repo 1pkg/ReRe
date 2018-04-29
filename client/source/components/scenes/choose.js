@@ -19,11 +19,12 @@ export default class extends React.Component {
 
     options() {
         return Lodash.map(this.props.state.task.options, (option, index) => {
+            ++index
             return (
                 <Choose
                     key={index}
                     trigger={this.props.trigger}
-                    mobile={this.props.state.settings.mobile}
+                    mobile={this.props.state.mobile}
                     index={index}
                     option={option}
                 />
@@ -35,6 +36,7 @@ export default class extends React.Component {
         return (
             <Toolbar
                 trigger={this.props.trigger}
+                mobile={this.props.state.mobile}
                 settings={this.props.state.settings}
                 timestamp={this.props.state.timestamp}
             />
