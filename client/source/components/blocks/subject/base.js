@@ -3,18 +3,18 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import GLReactImage from 'gl-react-image'
 import { Surface } from 'gl-react-dom'
-import styled from 'styled-components'
+import Styled from 'styled-components'
 
 import Effect from './../widgets/effect'
 
-const Container = styled.div`
+const Container = Styled.div`
     flex: 1;
     max-width: 100vw;
     max-height: 100vh;
     overflow: hidden;
 `
 
-const Image = styled.img`
+const Image = Styled.img`
     width: 100%;
     height: 100%;
     object-fit: cover;
@@ -32,9 +32,6 @@ export default class extends React.Component {
         this.setState(state => {
             setTimeout(() => this.forceUpdate())
             let element = ReactDOM.findDOMNode(this)
-            if (!element instanceof Element) {
-                return state
-            }
             return {
                 width: Math.floor(element.getBoundingClientRect().width),
                 height: Math.floor(element.getBoundingClientRect().height),

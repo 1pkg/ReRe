@@ -13,7 +13,6 @@ export default class extends React.Component {
             <Option
                 option={this.props.option}
                 action={this.choose}
-                mobile={this.props.mobile}
                 wrapper="choose"
             />
         )

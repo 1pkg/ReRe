@@ -5,6 +5,7 @@ import flask_limiter
 import flask_cache
 import flask_cors
 import flask_mobility
+import flask_mail
 import functools
 
 import base
@@ -52,23 +53,26 @@ class Application:
     def __setup(self, instance):
         instance.config.from_envvar('FLASK_SETTING')
         with instance.app_context():
-            self.cors = flask_cors.CORS
-            self.cors(instance)
-
-            self.mobility = flask_mobility.Mobility
-            self.mobility(instance)
+            self.settings = instance.config
+            self.extensions = {}
 
             self.db = base.Alchemy
             self.db.init_app(instance)
             self.db.create_all()
-            self.migrate = flask_migrate.Migrate(instance, self.db)
 
-            remoteAddr = flask_limiter.util.get_remote_address
-            self.limiter = flask_limiter.Limiter(key_func=remoteAddr)
-            self.limiter.init_app(instance)
+            flask_cors.CORS(instance)
+            flask_mobility.Mobility(instance)
+            flask_migrate.Migrate(instance, base.Alchemy)
 
-            self.cache = flask_cache.Cache(with_jinja2_ext=False)
-            self.cache.init_app(instance)
+            self.extensions['mail'] = flask_mail.Mail()
+            self.extensions['mail'].init_app(instance)
+
+            remote = flask_limiter.util.get_remote_address
+            self.extensions['limiter'] = flask_limiter.Limiter(key_func=remote)
+            self.extensions['limiter'].init_app(instance)
+
+            self.extensions['cache'] = flask_cache.Cache(with_jinja2_ext=False)
+            self.extensions['cache'].init_app(instance)
 
             if not instance.debug:
                 instance.register_error_handler(
@@ -94,32 +98,32 @@ class Application:
         instance.add_url_rule(
             view_func=lambda:
             flask.send_from_directory(
-                os.path.join(__file__, '..', 'static'),
+                os.path.join(os.path.dirname(__file__), '..', 'static'),
                 'favicon.ico',
             ),
             rule='/favicon.ico',
         )
         for alias, action in self.__actions.items():
-            bndaction = functools.partial(
+            bound = functools.partial(
                 Application.action,
                 self,
                 action,
                 instance,
             )
-            bndaction.__name__ = alias
-            bndaction.__module__ = action.__module__
+            bound.__name__ = alias
+            bound.__module__ = action.__module__
             if not instance.debug:
                 if action.CONNECTION_LIMIT is not None:
-                    bndaction = self.limiter.limit
-                    (action.CONNECTION_LIMIT)
-                    (bndaction)
+                    limiter = self.extensions['limiter']
+                    bound = limiter.limit(action.CONNECTION_LIMIT)(bound)
                 if action.CACHE_EXPIRE is not None:
-                    bndaction = self.cache.cached
-                    (action.CACHE_EXPIRE)
-                    (bndaction)
-            rule = '/{}'.format(alias)
-            req = ['GET', 'POST'] if instance.debug else ['POST']
-            instance.add_url_rule(view_func=bndaction, rule=rule, methods=req)
+                    cache = self.extensions['cache']
+                    bound = cache.cached(action.CACHE_EXPIRE)(bound)
+            rule = f'/{alias}'
+            req = ['GET', 'POST', 'OPTIONS'] \
+                if instance.debug \
+                else ['POST', 'OPTIONS']
+            instance.add_url_rule(view_func=bound, rule=rule, methods=req)
 
 
 instance = flask.Flask(__name__)

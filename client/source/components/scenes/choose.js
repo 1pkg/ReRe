@@ -24,7 +24,6 @@ export default class extends React.Component {
                 <Choose
                     key={index}
                     trigger={this.props.trigger}
-                    mobile={this.props.state.mobile}
                     index={index}
                     option={option}
                 />
@@ -36,7 +35,6 @@ export default class extends React.Component {
         return (
             <Toolbar
                 trigger={this.props.trigger}
-                mobile={this.props.state.mobile}
                 settings={this.props.state.settings}
                 timestamp={this.props.state.timestamp}
             />
@@ -46,7 +44,7 @@ export default class extends React.Component {
     render() {
         return (
             <Base
-                state={this.props.state}
+                settings={this.props.state.settings}
                 subject={this.subject()}
                 options={this.options()}
                 toolbar={this.toolbar()}

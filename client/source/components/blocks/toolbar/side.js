@@ -1,26 +1,28 @@
 import React from 'react'
-import styled from 'styled-components'
+import Styled from 'styled-components'
 
-import Collapse from './../widgets/collapse'
-import Expand from './../widgets/expand'
+import Toggle from './../widgets/toggle'
+import Disclaimer from './../widgets/disclaimer'
 
-const Container = styled.div`
+const Container = Styled.div`
     flex: 2 1 0;
+    display: flex;
+`
+
+const HalfContainer = Styled.div`
+    flex: 0 1 50%;
+    display: flex;
+    justify-content: space-between;
 `
 
 export default class extends React.Component {
-    toggler() {
-        return this.props.full ? Collapse : Expand
-    }
-
     render() {
-        const Toggler = this.toggler()
         return (
             <Container>
-                <Toggler
-                    toggle={this.props.toggle}
-                    mobile={this.props.mobile}
-                />
+                <HalfContainer>
+                    <Toggle full={this.props.full} toggle={this.props.toggle} />
+                    <Disclaimer disclaimer={this.props.disclaimer} />
+                </HalfContainer>
             </Container>
         )
     }

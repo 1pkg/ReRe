@@ -1,32 +1,32 @@
 import Lodash from 'lodash'
 import React from 'react'
 import Swipeable from 'react-swipeable'
-import styled from 'styled-components'
+import Styled from 'styled-components'
 
-const Container = styled.div`
+const Container = Styled.div`
     flex: 1 1 0;
     display: flex;
     flex-direction: column;
 `
 
-const SwipeableContainer = styled(Swipeable)`
+const SwipeableContainer = Styled(Swipeable)`
     flex: 1 1 0;
     display: flex;
     overflow: hidden;
 `
 
-const SwipeableWrapper = styled.div`
+const SwipeableWrapper = Styled.div`
     flex: 1 0 100%;
     order: ${props => props.order};
     display: flex;
 `
 
-const DotContainer = styled.div`
+const DotContainer = Styled.div`
     align-self: center;
     display: flex;
 `
 
-const BaseDot = styled.div`
+const BaseDot = Styled.div`
     width: 0.5rem;
     height: 0.5rem;
     border-radius: 0.5rem;

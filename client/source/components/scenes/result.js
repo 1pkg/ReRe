@@ -16,13 +16,7 @@ export default class extends React.Component {
         return Lodash.map(this.props.state.task.options, (option, index) => {
             ++index
             const Option = this.props.state.option === index ? Correct : Wrong
-            return (
-                <Option
-                    key={index}
-                    mobile={this.props.state.mobile}
-                    option={option}
-                />
-            )
+            return <Option key={index} option={option} />
         })
     }
 
@@ -30,7 +24,6 @@ export default class extends React.Component {
         return (
             <Toolbar
                 state={this.props.state}
-                mobile={this.props.state.mobile}
                 trigger={this.props.trigger}
                 settings={this.props.state.settings}
                 timestamp={this.props.state.timestamp}
@@ -41,7 +34,7 @@ export default class extends React.Component {
     render() {
         return (
             <Base
-                state={this.props.state}
+                settings={this.props.state.settings}
                 subject={this.subject()}
                 options={this.options()}
                 toolbar={this.toolbar()}

@@ -1,17 +1,17 @@
 import React from 'react'
 import Clock from 'react-icons/lib/fa/clock-o'
-import styled from 'styled-components'
+import Styled from 'styled-components'
 
 import Trigger from '~/actions/trigger'
 import { Timestamp } from '~/helpers'
 import Button from './button'
 
-const Container = styled.div`
+const Container = Styled.div`
     display: flex;
     align-items: center;
 `
 
-const Period = styled.div`
+const Period = Styled.div`
     font-size: 0.7rem;
     font-style: italic;
     text-transform: lowercase;
@@ -77,6 +77,6 @@ export default class extends React.Component {
     }
 
     render() {
-        return <Button glyph={this.glyph()} mobile={this.props.mobile} />
+        return <Button glyph={this.glyph()} />
     }
 }

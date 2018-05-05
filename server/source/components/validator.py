@@ -19,4 +19,4 @@ class Validator(Component):
             return False
 
     def isEmpty(self, value):
-        return value is None or value == ''
+        return value is None or value == '' or value == 'None'

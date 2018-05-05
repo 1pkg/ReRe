@@ -10,9 +10,10 @@ class Handshake(Action):
     def _validate(self, request):
         super()._validate(request)
         validator = self._application.validator
-        self.__userHost = str(self._application.http.userHost(request))
-        self.__userAgent = str(self._application.http.userAgent(request))
-        self.__userIp = str(self._application.http.userIp(request))
+        http = self._application.http
+        self.__userHost = str(http.userHost(request))
+        self.__userAgent = str(http.userAgent(request))
+        self.__userIp = str(http.userIp(request))
 
         if validator.isEmpty(self.__userHost):
             raise errors.Request('user_host')
@@ -24,9 +25,14 @@ class Handshake(Action):
             raise errors.Request('user_ip')
 
     def _process(self, request):
-        mobile = int(request.MOBILE)
-        token = self._application.hash.hex(
-            self._application.random.salt(),
+        db = self._application.db
+        device = self._application.device
+        c_hash = self._application.hash
+        random = self._application.random
+
+        orientation = str(device.orientation(request))
+        token = c_hash.hex(
+            random.salt(),
             self.__userHost,
             self.__userAgent,
             self.__userIp,
@@ -37,10 +43,9 @@ class Handshake(Action):
             user_ip=self.__userIp,
             token=token,
         )
-        self._application.db.session.add(session)
-        self._application.db.session.commit()
-
+        db.session.add(session)
+        db.session.commit()
         return {
             'token': token,
-            'mobile': mobile,
+            'orientation': orientation,
         }

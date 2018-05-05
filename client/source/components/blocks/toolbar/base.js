@@ -1,8 +1,8 @@
 import Lodash from 'lodash'
 import React from 'react'
-import styled from 'styled-components'
+import Styled from 'styled-components'
 
-const Container = styled.div`
+const Container = Styled.div`
     flex: 1 1 0;
     display: flex;
     align-items: center;
@@ -33,7 +33,6 @@ export default class extends React.Component {
                 <Action
                     key={index}
                     trigger={this.props.trigger}
-                    mobile={this.props.mobile}
                     timestamp={this.props.timestamp}
                     settings={this.props.settings}
                 />

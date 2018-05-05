@@ -1,17 +1,19 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import styled from 'styled-components'
+import Cross from 'react-icons/lib/fa/close'
+import Styled from 'styled-components'
 
-import Close from './close'
+import { Device } from '~/helpers'
+import Button from './button'
 
-const Container = styled.div`
+const Container = Styled.div`
     z-index: 1;
     position: fixed;
-    left: 0px;
-    top: 0px;
+    left: 0rem;
+    top: 0rem;
     width: 100%;
     height: 100%;
-    overflow: auto;
+    overflow-y: auto;
     background-color: rgba(0, 0, 0, 0.9);
 `
 
@@ -23,24 +25,24 @@ const DisabledContainer = Container.extend`
     display: none;
 `
 
-const InnerContainer = styled.div`
+const InnerContainer = Styled.div`
     padding: 2.5rem;
     background-color: white;
 `
 
 const DesktopInnerContainer = InnerContainer.extend`
-    margin: 5rem;
+    margin: 5rem 5rem 0rem 5rem;
 `
 
 const MobileInnerContainer = InnerContainer.extend``
 
-const TitleContainer = styled.div`
+const TitleContainer = Styled.div`
     display: flex;
     justify-content: space-between;
     align-items: center;
     margin-bottom: 1.5rem;
 `
-const Title = styled.div`
+const Title = Styled.div`
     flex: 1 0 0;
     font-size: 1.5rem;
     font-weight: bold;
@@ -48,11 +50,31 @@ const Title = styled.div`
     text-align: center;
 `
 
-const Text = styled.div`
+const Content = Styled.div`
     font-size: 1rem;
     text-align: justify;
     white-space: pre-wrap;
 `
+
+class Close extends React.Component {
+    componentDidMount() {
+        document.addEventListener('keydown', this.hotkey, false)
+    }
+
+    componentWillUnmount() {
+        document.removeEventListener('keydown', this.hotkey, false)
+    }
+
+    hotkey = event => {
+        if (event.keyCode === 27) {
+            this.props.action()
+        }
+    }
+
+    render() {
+        return <Button glyph={<Cross />} action={this.props.action} />
+    }
+}
 
 export default class extends React.Component {
     hide = event => {
@@ -66,7 +88,7 @@ export default class extends React.Component {
         const Container = this.props.active
             ? ActiveContainer
             : DisabledContainer
-        const InnerContainer = this.props.mobile
+        const InnerContainer = Device.mobile()
             ? MobileInnerContainer
             : DesktopInnerContainer
         return (
@@ -74,12 +96,9 @@ export default class extends React.Component {
                 <InnerContainer>
                     <TitleContainer>
                         <Title>{this.props.title}</Title>
-                        <Close
-                            action={this.props.hide}
-                            mobile={this.props.mobile}
-                        />
+                        <Close action={this.props.hide} />
                     </TitleContainer>
-                    <Text>{this.props.message}</Text>
+                    <Content>{this.props.content}</Content>
                 </InnerContainer>
             </Container>
         )

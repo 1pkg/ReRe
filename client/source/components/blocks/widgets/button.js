@@ -1,8 +1,10 @@
 import Lodash from 'lodash'
 import React from 'react'
-import styled from 'styled-components'
+import Styled from 'styled-components'
 
-const Container = styled.div`
+import { Device } from '~/helpers'
+
+const Container = Styled.div`
     user-select: none;
     display: contents;
     &:active {
@@ -30,7 +32,7 @@ export default class extends React.Component {
     }
 
     render() {
-        const Container = this.props.mobile ? MobileContainer : DesktopContainer
+        const Container = Device.mobile() ? MobileContainer : DesktopContainer
         return (
             <Container onClick={this.props.action} small={this.props.small}>
                 {this.props.glyph}

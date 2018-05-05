@@ -32,7 +32,7 @@ class Session(Alchemy.Model):
         Alchemy.DateTime,
         nullable=False,
         default=datetime.utcnow,
-        server_default=Alchemy.text('now()')
+        server_default=Alchemy.text('now()'),
     )
 
     answers = Alchemy.relationship(

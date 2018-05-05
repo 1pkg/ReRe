@@ -16,6 +16,13 @@ class Task(Alchemy.Model):
         nullable=False,
         unique=True,
     )
+    active = Alchemy.Column(
+        Alchemy.Boolean,
+        nullable=False,
+        default=True,
+        server_default=Alchemy.text('true'),
+        index=True,
+    )
     time_stamp = Alchemy.Column(
         Alchemy.DateTime,
         nullable=False,

@@ -1,4 +1,4 @@
-import flask_limiter
+from flask_limiter import util
 
 from base import Component
 
@@ -11,4 +11,4 @@ class Http(Component):
         return request.headers['USER-AGENT']
 
     def userIp(self, request):
-        return flask_limiter.util.get_remote_address()
+        return util.get_remote_address()

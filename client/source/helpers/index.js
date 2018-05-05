@@ -1,4 +1,5 @@
 export { default as Crypto } from './crypto'
+export { default as Device } from './device'
 export { default as History } from './history'
 export { default as Json } from './json'
 export { default as Store } from './store'

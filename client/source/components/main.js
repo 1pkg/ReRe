@@ -1,12 +1,12 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import styled from 'styled-components'
+import Styled from 'styled-components'
 
 import Trigger from '~/actions/trigger'
 import Choose from './scenes/choose'
 import Result from './scenes/result'
 
-const Container = styled.div`
+const Container = Styled.div`
     display: flex;
     width: 100vw;
     height: 100vh;

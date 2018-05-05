@@ -1,5 +1,6 @@
 alembic==0.9.8
 backports.csv==1.0.5
+blinker==1.4
 cli-helpers==0.2.3
 click==6.7
 configobj==5.0.6
@@ -7,6 +8,7 @@ Flask==0.12.2
 Flask-Cache==0.13.1
 Flask-Cors==3.0.3
 Flask-Limiter==1.0.1
+Flask-Mail==0.9.1
 Flask-Migrate==2.1.1
 Flask-Mobility==0.1.1
 Flask-SQLAlchemy==2.3.2

@@ -4,12 +4,6 @@ import Option from './base'
 
 export default class extends React.Component {
     render() {
-        return (
-            <Option
-                option={this.props.option}
-                mobile={this.props.mobile}
-                wrapper="disabled"
-            />
-        )
+        return <Option option={this.props.option} wrapper="disabled" />
     }
 }

@@ -3,16 +3,20 @@ import json
 from base import Action
 
 
-class Memoize(Action):
+class Format(Action):
     def _format(self, task):
+        datetime = self._application.datetime
+        cache = self._application.cache
+        crypto = self._application.crypto
+
         identity = {
             'task_id': task.id,
             'token': self._session.token,
-            'timestamp': self._application.datetime.timestamp(),
+            'timestamp': datetime.timestamp(),
         }
-        key = 'token-{}'.format(self._session.token)
-        self._application.cache.set(key, identity)
-        subject = self._application.crypto.encrypt(
+        key = f'token-{self._session.token}'
+        cache.set(key, identity)
+        subject = crypto.encrypt(
             self._session.token,
             json.dumps({
                 'link': task.subject.link,

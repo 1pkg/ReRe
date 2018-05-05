@@ -1,4 +1,5 @@
 import Lodash from 'lodash'
+import Axios from 'axios'
 
 import Choose from './choose'
 import Devote from './devote'
@@ -32,6 +33,8 @@ export default class Trigger {
             [Trigger.ACTION_REMAKE]: Remake,
             [Trigger.ACTION_REPORT]: Report,
         }
+        Axios.defaults.baseURL = API
+        Axios.defaults.headers.post['Content-Type'] = POST_CONTENT_TYPE
     }
 
     state() {

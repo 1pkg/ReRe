@@ -1,3 +1,5 @@
+from functools import lru_cache
+
 from base import Alchemy
 
 
@@ -20,6 +22,7 @@ class Setting(Alchemy.Model):
     )
 
     @staticmethod
+    @lru_cache(maxsize=None)
     def get(name):
         return Setting.query \
             .filter_by(name=name).one().value

@@ -1,24 +1,29 @@
 from models import Task, Effect, Setting
-from .mixins import Identify, Memoize
+from .mixins import Identify, Format
 
 
-class Remake(Identify, Memoize):
+class Remake(Identify, Format):
     CONNECTION_LIMIT = '1/second;100/minute;10000/hour'
     CACHE_EXPIRE = None
 
     def _process(self, request):
+        db = self._application.db
+        c_hash = self._application.hash
+        random = self._application.random
+        sequence = self._application.sequence
+
         effects = Effect.query \
-            .order_by(self._application.db.func.random()) \
+            .order_by(db.func.random()) \
             .limit(int(Setting.get('effect-count'))).all()
-        label = self._application.hash.hex(
-            self._application.random.salt(),
+        label = c_hash.hex(
+            random.salt(),
             self._task.subject.id,
-            self._application.sequence.column(self._task.options, 'id'),
-            self._application.sequence.column(effects, 'id'),
+            sequence.column(self._task.options, 'id'),
+            sequence.column(effects, 'id'),
         )
         task = Task(label=label, subject_id=self._task.subject_id)
         task.options = self._task.options
         task.effects = effects
-        self._application.db.session.add(task)
-        self._application.db.session.commit()
+        db.session.add(task)
+        db.session.commit()
         return self._format(task)

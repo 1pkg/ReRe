@@ -1,39 +1,49 @@
+import Lodash from 'lodash'
 import React from 'react'
-import ExclamationTriangle from 'react-icons/lib/fa/exclamation-triangle'
-import styled from 'styled-components'
+import File from 'react-icons/lib/fa/file-o'
+import Styled from 'styled-components'
 
 import Button from './button'
+import Modal from './modal'
 
-const Container = styled.div`
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-`
-
-const Text = styled.div`
-    font-size: 0.5rem;
-    font-style: italic;
-    text-transform: lowercase;
-`
+const Container = Styled.div``
 
 export default class extends React.Component {
-    glyph() {
+    constructor(props) {
+        super(props)
+        this.state = { modal: false }
+    }
+
+    shouldComponentUpdate(props, state) {
         return (
-            <Container>
-                <ExclamationTriangle />
-                <Text>Disclaimer</Text>
-            </Container>
+            !Lodash.isEqual(props, this.props) ||
+            !Lodash.isEqual(state, this.state)
         )
+    }
+
+    show = () => {
+        this.setState(state => {
+            return { modal: true }
+        })
+    }
+
+    hide = () => {
+        this.setState(state => {
+            return { modal: false }
+        })
     }
 
     render() {
         return (
-            <Button
-                glyph={this.glyph()}
-                action={this.props.show}
-                mobile={this.props.mobile}
-                small
-            />
+            <Container>
+                <Button glyph={<File />} action={this.show} />
+                <Modal
+                    title={'Disclaimer'}
+                    content={this.props.disclaimer}
+                    active={this.state.modal}
+                    hide={this.hide}
+                />
+            </Container>
         )
     }
 }

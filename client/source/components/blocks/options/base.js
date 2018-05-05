@@ -1,8 +1,10 @@
 import Lodash from 'lodash'
 import React from 'react'
-import styled from 'styled-components'
+import Styled from 'styled-components'
 
-const BaseWrapper = styled.div`
+import { Device } from '~/helpers'
+
+const BaseWrapper = Styled.div`
     flex: 1 1 0;
     margin: 0.5rem;
     padding: 0.5rem;
@@ -35,7 +37,7 @@ const DesktopDisabledWrapper = DesktopBaseWrapper.extend`
     opacity: 0.5;
 `
 
-const TitleBlock = styled.div`
+const TitleBlock = Styled.div`
     margin-bottom: 0.5rem;
     text-align: center;
     &:active {
@@ -46,19 +48,19 @@ const TitleBlock = styled.div`
     }
 `
 
-const MainTitle = styled.div`
+const MainTitle = Styled.div`
     font-size: 0.9rem;
     font-weight: bold;
     text-transform: capitalize;
 `
 
-const SubTitle = styled.div`
+const SubTitle = Styled.div`
     font-size: 0.7rem;
     font-style: italic;
     text-transform: lowercase;
 `
 
-const BaseText = styled.div`
+const BaseText = Styled.div`
     font-size: 0.8rem;
     overflow: hidden;
     text-align: justify;
@@ -74,7 +76,7 @@ const DesktopText = BaseText.extend`
     }
 `
 
-const BaseSource = styled.div`
+const BaseSource = Styled.div`
     margin-top: 0.5rem;
     font-size: 0.7rem;
     text-align: right;
@@ -126,19 +128,17 @@ export default class extends React.Component {
     wrapper() {
         switch (this.props.wrapper) {
             case 'choose':
-                return this.props.mobile
+                return Device.mobile()
                     ? MobileChooseWrapper
                     : DesktopChooseWrapper
 
             case 'disabled':
-                return this.props.mobile
+                return Device.mobile()
                     ? MobileDisabledWrapper
                     : DesktopDisabledWrapper
 
             default:
-                return this.props.mobile
-                    ? MobileBaseWrapper
-                    : DesktopBaseWrapper
+                return Device.mobile() ? MobileBaseWrapper : DesktopBaseWrapper
         }
     }
 
@@ -171,10 +171,6 @@ export default class extends React.Component {
     }
 
     render() {
-        if (this.props.mobile) {
-            return this.mobile()
-        } else {
-            return this.desktop()
-        }
+        return Device.mobile() ? this.mobile() : this.desktop()
     }
 }
