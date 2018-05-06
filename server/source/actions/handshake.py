@@ -16,13 +16,13 @@ class Handshake(Action):
         self.__userIp = str(http.userIp(request))
 
         if validator.isEmpty(self.__userHost):
-            raise errors.Request('user_host')
+            raise errors.Request('user_host', self.__userHost)
 
         if validator.isEmpty(self.__userAgent):
-            raise errors.Request('user_agent')
+            raise errors.Request('user_agent', self.__userAgent)
 
         if validator.isEmpty(self.__userIp):
-            raise errors.Request('user_ip')
+            raise errors.Request('user_ip', self.__userIp)
 
     def _process(self, request):
         db = self._application.db

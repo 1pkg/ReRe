@@ -12,7 +12,7 @@ class Report(Identify):
         self.__message = str(self._get(request, 'message')).strip()
 
         if validator.isEmpty(self.__message):
-            raise errors.Request('message')
+            raise errors.Request('message', self.__message)
 
     def _process(self, request):
         mail = self._application.mail

@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import Styled from 'styled-components'
 
 import Trigger from '~/actions/trigger'
+import Maintenance from './scenes/maintenance'
 import Choose from './scenes/choose'
 import Result from './scenes/result'
 
@@ -16,15 +17,13 @@ export default connect(state => {
     return { state }
 })(
     class extends React.Component {
+        componentDidCatch(error, info) {
+            this.props.trigger.push('reload', {})
+        }
+
         scene(trigger, state) {
-            if (
-                !state ||
-                !'status' in state ||
-                !state.status ||
-                !'task' in state ||
-                !state.task
-            ) {
-                return null
+            if (!state || !('status' in state)) {
+                return <Maintenance trigger={trigger} state={state} />
             }
 
             switch (state.status) {

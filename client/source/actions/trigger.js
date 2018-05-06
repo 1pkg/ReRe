@@ -47,7 +47,11 @@ export default class Trigger {
 
     async call(name, ...params) {
         if (name in this.actions) {
-            return this.actions[name](this, ...params)
+            try {
+                return this.actions[name](this, ...params)
+            } catch (exception) {
+                this.push('reload', {})
+            }
         }
         return async () => {}
     }

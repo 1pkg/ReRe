@@ -3,7 +3,7 @@ import Trigger from './actions/trigger'
 
 export default async trigger => {
     let state = Store.state()
-    if (state == null || !'token' in state) {
+    if (state == null || !('token' in state)) {
         state = await trigger.call(Trigger.ACTION_HANDSHAKE)
     }
     if (!('settings' in state || 'shaders' in state)) {

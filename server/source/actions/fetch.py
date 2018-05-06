@@ -42,7 +42,7 @@ class Fetch(Access, Format):
             ).one()
         if task is not None:
             return task
-        raise errors.Request('label')
+        return self.__fetchNew(orientation)
 
     def __fetchByRandom(self, orientation):
         db = self._application.db

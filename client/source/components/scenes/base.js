@@ -1,6 +1,5 @@
 import Lodash from 'lodash'
 import React from 'react'
-import ReactDOM from 'react-dom'
 import Styled from 'styled-components'
 
 import { Device } from '~/helpers'
@@ -8,7 +7,7 @@ import { Device } from '~/helpers'
 import Side from './../blocks/toolbar/side'
 import Carousel from './../blocks/widgets/carousel'
 
-const MainContainer = Styled.div`
+const Container = Styled.div`
     flex: 1 1 0;
     display: flex;
     flex-direction: column;
@@ -55,7 +54,7 @@ export default class extends React.Component {
 
     mobile() {
         return (
-            <MainContainer>
+            <Container>
                 <SubjectContainer full={this.state.full}>
                     {this.props.subject}
                 </SubjectContainer>
@@ -73,13 +72,13 @@ export default class extends React.Component {
                         {this.props.options}
                     </Carousel>
                 </OptionContainer>
-            </MainContainer>
+            </Container>
         )
     }
 
     desktop() {
         return (
-            <MainContainer>
+            <Container>
                 <SubjectContainer full={this.state.full}>
                     {this.props.subject}
                 </SubjectContainer>
@@ -95,7 +94,7 @@ export default class extends React.Component {
                 <OptionContainer hidden={this.state.full}>
                     {this.props.options}
                 </OptionContainer>
-            </MainContainer>
+            </Container>
         )
     }
 

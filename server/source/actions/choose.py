@@ -13,7 +13,7 @@ class Choose(Identify):
 
         self.__option = self._get(request, 'option')
         if not validator.isNumeric(self.__option, False):
-            raise errors.Request('option')
+            raise errors.Request('option', self.__option)
 
         self.__option = int(self.__option)
         if self.__option == -1:
@@ -21,7 +21,7 @@ class Choose(Identify):
 
         if len(self._task.options) < self.__option \
                 or self.__option <= 0:
-            raise errors.Request('option')
+            raise errors.Request('option', self.__option)
 
     def _process(self, request):
         db = self._application.db

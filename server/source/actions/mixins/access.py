@@ -11,10 +11,10 @@ class Access(Action):
 
         token = str(self._get(request, 'token'))
         if len(token) != 64 or not validator.isHex(token):
-            raise errors.Token()
+            raise errors.Token(token)
 
         self._session = Session.query \
             .filter_by(token=token).one()
         if self._session is None \
                 or datetime.diff(self._session.time_stamp) > 21600:
-            raise errors.Token()
+            raise errors.Token(token)

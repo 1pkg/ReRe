@@ -7,6 +7,9 @@ import flask_cors
 import flask_mobility
 import flask_mail
 import functools
+import werkzeug
+import logging
+import logging.handlers
 
 import base
 import components
@@ -35,20 +38,18 @@ class Application:
     def action(self, action, instance):
         try:
             return flask.jsonify(action(flask.request))
-        except base.Error as error:
-            return flask.jsonify({'error': str(error)})
         except Exception as exception:
             if instance.debug:
                 raise exception
             else:
-                instance.logger.error(str(exception))
-                return flask.jsonify({'error': ''})
+                if not instance.debug and not isinstance(exception, base.Error):
+                    instance.logger.log(100, str(exception))
+                return flask.jsonify({})
 
     def before(self):
         pass
 
     def after(self, response):
-        # response.cache_control.max_age = 21600
         return response
 
     def __setup(self, instance):
@@ -65,6 +66,19 @@ class Application:
             flask_mobility.Mobility(instance)
             flask_migrate.Migrate(instance, base.Alchemy)
 
+            handler = logging.handlers.RotatingFileHandler(
+                os.path.join(
+                    os.path.dirname(__file__),
+                    '..',
+                    'logs',
+                    'wit.log',
+                ),
+                maxBytes=100000000,
+                backupCount=10,
+            )
+            handler.setLevel(100)
+            instance.logger.addHandler(handler)
+
             self.extensions['mail'] = flask_mail.Mail()
             self.extensions['mail'].init_app(instance)
 
@@ -76,10 +90,13 @@ class Application:
             self.extensions['cache'].init_app(instance)
 
             if not instance.debug:
-                instance.register_error_handler(
-                    Exception,
-                    lambda exception: flask.jsonify({'error': ''}),
-                )
+                for name, exception in werkzeug.exceptions.__dict__.items():
+                    if isinstance(exception, type):
+                        if issubclass(exception, Exception):
+                            instance.register_error_handler(
+                                exception,
+                                lambda exception: flask.jsonify({}),
+                            )
 
     def __init(self, instance):
         for name, component in components.__dict__.items():
@@ -99,7 +116,11 @@ class Application:
         instance.add_url_rule(
             view_func=lambda:
             flask.send_from_directory(
-                os.path.join(os.path.dirname(__file__), '..', 'static'),
+                os.path.join(
+                    os.path.dirname(__file__),
+                    '..',
+                    'static',
+                ),
                 'favicon.ico',
             ),
             rule='/favicon.ico',

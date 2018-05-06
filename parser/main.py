@@ -50,7 +50,7 @@ def initialize(session, clear):
 
     if not os.path.exists(CURRENT_DUMP_PATH):
         os.makedirs(CURRENT_DUMP_PATH)
-        os.makedirs(CURREN_IMAGES_PATH)
+        os.makedirs(CURRENT_IMAGES_PATH)
 
     if not os.path.exists(CURRENT_LOG_PATH):
         os.makedirs(CURRENT_LOG_PATH)
@@ -76,7 +76,7 @@ def run(session, name, target, offest, limit):
     logger.addHandler(handler)
 
     target = target(
-        IMediator(logger, CURREN_IMAGES_PATH),
+        IMediator(logger, CURRENT_IMAGES_PATH),
         Wiki(logger),
         logger,
         [sqliteKeeper, jsonKeeper]
@@ -92,7 +92,7 @@ arguments = argparser.parse_args()
 
 DUMP_PATH = os.path.abspath(os.path.join(__file__, '..', 'dump'))
 CURRENT_DUMP_PATH = os.path.join(DUMP_PATH, arguments.session)
-CURREN_IMAGES_PATH = os.path.join(CURRENT_DUMP_PATH, 'images')
+CURRENT_IMAGES_PATH = os.path.join(CURRENT_DUMP_PATH, 'images')
 
 LOG_PATH = os.path.abspath(os.path.join(__file__, '..', 'log'))
 CURRENT_LOG_PATH = os.path.join(LOG_PATH, arguments.session)
