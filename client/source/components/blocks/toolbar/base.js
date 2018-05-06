@@ -3,20 +3,11 @@ import React from 'react'
 import Styled from 'styled-components'
 
 const Container = Styled.div`
-    flex: 1 1 0;
+    flex: 3 1 0;
     display: flex;
     align-items: center;
-    @media (max-width: 480px) {
-        flex: 5 1 0;
-    }
-`
-
-const FullContainer = Container.extend`
-    justify-content: space-between;
-`
-
-const ShortContainer = Container.extend`
-    justify-content: flex-end;
+    justify-content: ${props =>
+        props.full ? 'space-between' : 'space-around'};
 `
 
 export default class extends React.Component {
@@ -41,7 +32,6 @@ export default class extends React.Component {
     }
 
     render() {
-        const Container = this.props.full ? FullContainer : ShortContainer
-        return <Container>{this.actions()}</Container>
+        return <Container full={this.props.full}>{this.actions()}</Container>
     }
 }

@@ -8,7 +8,7 @@ import Styled from 'styled-components'
 import Effect from './../widgets/effect'
 
 const Container = Styled.div`
-    flex: 1;
+    flex: 1 1 0;
     max-width: 100vw;
     max-height: 100vh;
     overflow: hidden;

@@ -4,37 +4,14 @@ import Styled from 'styled-components'
 
 import { Device } from '~/helpers'
 
-const BaseWrapper = Styled.div`
+const Container = Styled.div`
     flex: 1 1 0;
     margin: 0.5rem;
     padding: 0.5rem;
-    overflow: hidden;
     border: 0.01rem solid rgba(0, 0, 0, 0.5);
     box-shadow: 0.1rem 0.1rem 0.1rem 0.1rem rgba(0, 0, 0, 0.3);
-`
-
-const MobileBaseWrapper = BaseWrapper.extend`
-    overflow: scroll;
-`
-
-const DesktopBaseWrapper = BaseWrapper.extend`
-    @media (max-width: 480px), (max-height: 270px) {
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-    }
-`
-
-const MobileChooseWrapper = MobileBaseWrapper.extend``
-
-const MobileDisabledWrapper = MobileBaseWrapper.extend`
-    opacity: 0.5;
-`
-
-const DesktopChooseWrapper = DesktopBaseWrapper.extend``
-
-const DesktopDisabledWrapper = DesktopBaseWrapper.extend`
-    opacity: 0.5;
+    overflow: ${props => (props.mobile ? 'scroll' : 'hidden')};
+    opacity: ${props => (props.disabled ? 0.5 : 1.0)};
 `
 
 const TitleBlock = Styled.div`
@@ -43,7 +20,7 @@ const TitleBlock = Styled.div`
     &:active {
         color: transparent;
     }
-    ${DesktopChooseWrapper}:hover & {
+    ${Container}:hover & {
         cursor: pointer;
     }
 `
@@ -60,34 +37,17 @@ const SubTitle = Styled.div`
     text-transform: lowercase;
 `
 
-const BaseText = Styled.div`
+const Text = Styled.div`
     font-size: 0.8rem;
     overflow: hidden;
     text-align: justify;
+    height: ${props => (props.mobile ? 'auto' : '50%')};
 `
 
-const MobileText = BaseText.extend``
-
-const DesktopText = BaseText.extend`
-    height: 50%;
-    overflow-y: scroll;
-    @media (max-width: 480px), (max-height: 270px) {
-        display: none;
-    }
-`
-
-const BaseSource = Styled.div`
+const Source = Styled.div`
     margin-top: 0.5rem;
     font-size: 0.7rem;
     text-align: right;
-`
-
-const MobileSource = BaseSource.extend``
-
-const DesktopSource = BaseSource.extend`
-    @media (max-width: 480px), (max-height: 270px) {
-        text-align: center;
-    }
 `
 
 export default class extends React.Component {
@@ -125,52 +85,16 @@ export default class extends React.Component {
         )
     }
 
-    wrapper() {
-        switch (this.props.wrapper) {
-            case 'choose':
-                return Device.mobile()
-                    ? MobileChooseWrapper
-                    : DesktopChooseWrapper
-
-            case 'disabled':
-                return Device.mobile()
-                    ? MobileDisabledWrapper
-                    : DesktopDisabledWrapper
-
-            default:
-                return Device.mobile() ? MobileBaseWrapper : DesktopBaseWrapper
-        }
-    }
-
-    mobile() {
-        const Wrapper = this.wrapper()
-        return (
-            <Wrapper>
-                <TitleBlock onClick={this.props.action}>
-                    <MainTitle>{this.title()}</MainTitle>
-                    <SubTitle>{this.subtile()}</SubTitle>
-                </TitleBlock>
-                <MobileText>{this.text()}</MobileText>
-                <MobileSource>{this.source()}</MobileSource>
-            </Wrapper>
-        )
-    }
-
-    desktop() {
-        const Wrapper = this.wrapper()
-        return (
-            <Wrapper>
-                <TitleBlock onClick={this.props.action}>
-                    <MainTitle>{this.title()}</MainTitle>
-                    <SubTitle>{this.subtile()}</SubTitle>
-                </TitleBlock>
-                <DesktopText>{this.text()}</DesktopText>
-                <DesktopSource>{this.source()}</DesktopSource>
-            </Wrapper>
-        )
-    }
-
     render() {
-        return Device.mobile() ? this.mobile() : this.desktop()
+        return (
+            <Container mobile={Device.mobile()} disabled={this.props.disabled}>
+                <TitleBlock onClick={this.props.action}>
+                    <MainTitle>{this.title()}</MainTitle>
+                    <SubTitle>{this.subtile()}</SubTitle>
+                </TitleBlock>
+                <Text mobile={Device.mobile()}>{this.text()}</Text>
+                <Source>{this.source()}</Source>
+            </Container>
+        )
     }
 }

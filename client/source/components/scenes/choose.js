@@ -44,6 +44,7 @@ export default class extends React.Component {
     render() {
         return (
             <Base
+                state={this.props.state}
                 settings={this.props.state.settings}
                 subject={this.subject()}
                 options={this.options()}

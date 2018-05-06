@@ -48,6 +48,7 @@ class Application:
         pass
 
     def after(self, response):
+        # response.cache_control.max_age = 21600
         return response
 
     def __setup(self, instance):

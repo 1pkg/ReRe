@@ -1,6 +1,7 @@
 import Lodash from 'lodash'
 import React from 'react'
 import Flag from 'react-icons/lib/fa/flag-o'
+import Check from 'react-icons/lib/fa/check'
 import Styled from 'styled-components'
 
 import Trigger from '~/actions/trigger'
@@ -15,6 +16,7 @@ const Form = Styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center;
 `
 
 const Textarea = Styled.textarea`
@@ -63,7 +65,7 @@ export default class extends React.Component {
         return (
             <Form>
                 <Textarea defaultValue={message} />
-                <Button glyph="report" action={this.report} />
+                <Button glyph={<Check />} action={this.report} />
             </Form>
         )
     }

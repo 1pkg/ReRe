@@ -9,42 +9,28 @@ import Side from './../blocks/toolbar/side'
 import Carousel from './../blocks/widgets/carousel'
 
 const MainContainer = Styled.div`
-    flex: 1;
+    flex: 1 1 0;
     display: flex;
     flex-direction: column;
 `
 
 const SubjectContainer = Styled.div`
     flex: 3 1 0;
+    max-height: ${props => (props.full ? '100vh' : '70vh')};
     display: flex;
 `
 
-const MobileSubjectContainer = SubjectContainer.extend``
-
-const DesktopSubjectContainer = SubjectContainer.extend`
-    @media (max-width: 480px) {
-        flex: 5 1 0;
-    }
-    @media (max-height: 270px) {
-        flex: 1 1 0;
-    }
-`
-
-const OptionContainer = Styled.div``
-
-const FullOptionContainer = OptionContainer.extend`
+const OptionContainer = Styled.div`
+    max-height: 25vh;
+    display: ${props => (props.hidden ? 'none' : 'flex')};
     flex: 1 1 0;
-    display: flex;
-`
-
-const NoneOptionContainer = OptionContainer.extend`
-    display: none;
 `
 
 const ToolbarContainer = Styled.div`
     display: flex;
     align-items: center;
     margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
 `
 
 export default class extends React.Component {
@@ -57,7 +43,7 @@ export default class extends React.Component {
 
     constructor(props) {
         super(props)
-        this.state = { full: true }
+        this.state = { full: false }
     }
 
     toggle = () => {
@@ -68,23 +54,21 @@ export default class extends React.Component {
     }
 
     mobile() {
-        const OptionContainer = this.state.full
-            ? FullOptionContainer
-            : NoneOptionContainer
         return (
             <MainContainer>
-                <MobileSubjectContainer>
+                <SubjectContainer full={this.state.full}>
                     {this.props.subject}
-                </MobileSubjectContainer>
+                </SubjectContainer>
                 <ToolbarContainer>
                     <Side
                         disclaimer={this.props.settings['disclaimer-message']}
+                        options={this.props.state.task.options}
                         full={this.state.full}
                         toggle={this.toggle}
                     />
                     {this.props.toolbar}
                 </ToolbarContainer>
-                <OptionContainer>
+                <OptionContainer hidden={this.state.full}>
                     <Carousel option={this.props.option}>
                         {this.props.options}
                     </Carousel>
@@ -94,23 +78,23 @@ export default class extends React.Component {
     }
 
     desktop() {
-        const OptionContainer = this.state.full
-            ? FullOptionContainer
-            : NoneOptionContainer
         return (
             <MainContainer>
-                <DesktopSubjectContainer>
+                <SubjectContainer full={this.state.full}>
                     {this.props.subject}
-                </DesktopSubjectContainer>
+                </SubjectContainer>
                 <ToolbarContainer>
                     <Side
                         disclaimer={this.props.settings['disclaimer-message']}
+                        options={this.props.state.task.options}
                         full={this.state.full}
                         toggle={this.toggle}
                     />
                     {this.props.toolbar}
                 </ToolbarContainer>
-                <OptionContainer>{this.props.options}</OptionContainer>
+                <OptionContainer hidden={this.state.full}>
+                    {this.props.options}
+                </OptionContainer>
             </MainContainer>
         )
     }

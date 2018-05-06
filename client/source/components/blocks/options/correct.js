@@ -4,6 +4,6 @@ import Option from './base'
 
 export default class extends React.Component {
     render() {
-        return <Option option={this.props.option} wrapper="correct" />
+        return <Option option={this.props.option} />
     }
 }

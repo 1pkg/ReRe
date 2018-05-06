@@ -26,20 +26,13 @@ const DotContainer = Styled.div`
     display: flex;
 `
 
-const BaseDot = Styled.div`
+const Dot = Styled.div`
     width: 0.5rem;
     height: 0.5rem;
     border-radius: 0.5rem;
     margin: 0.2rem;
     background-color: black;
-`
-
-const ActiveDot = BaseDot.extend`
-    opacity: 0.8;
-`
-
-const DisabledDot = BaseDot.extend`
-    opacity: 0.4;
+    opacity: ${props => (props.active ? '0.8' : '0.4')};
 `
 
 export default class extends React.Component {
@@ -104,11 +97,12 @@ export default class extends React.Component {
                 </SwipeableContainer>
                 <DotContainer>
                     {Lodash.map(this.props.children, (child, index) => {
-                        if (index === this.state.index) {
-                            return <ActiveDot key={index} />
-                        } else {
-                            return <DisabledDot key={index} />
-                        }
+                        return (
+                            <Dot
+                                key={index}
+                                active={index === this.state.index}
+                            />
+                        )
                     })}
                 </DotContainer>
             </Container>

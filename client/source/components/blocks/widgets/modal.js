@@ -11,30 +11,22 @@ const Container = Styled.div`
     position: fixed;
     left: 0rem;
     top: 0rem;
-    width: 100%;
-    height: 100%;
-    overflow-y: auto;
+    width: 100vw;
+    height: 100vh;
     background-color: rgba(0, 0, 0, 0.9);
-`
-
-const ActiveContainer = Container.extend`
-    display: block;
-`
-
-const DisabledContainer = Container.extend`
-    display: none;
+    display: ${props => (props.active ? 'flex' : 'none')};
+    flex-direction: column;
+    justify-content: center;
 `
 
 const InnerContainer = Styled.div`
+    flex: ${props => (props.mobile ? '1 1 0' : 'auto')};
     padding: 2.5rem;
+    margin: ${props => (props.mobile ? '0rem' : '2.5rem')};
     background-color: white;
+    display: flex;
+    flex-direction: column;
 `
-
-const DesktopInnerContainer = InnerContainer.extend`
-    margin: 5rem 5rem 0rem 5rem;
-`
-
-const MobileInnerContainer = InnerContainer.extend``
 
 const TitleContainer = Styled.div`
     display: flex;
@@ -42,6 +34,7 @@ const TitleContainer = Styled.div`
     align-items: center;
     margin-bottom: 1.5rem;
 `
+
 const Title = Styled.div`
     flex: 1 0 0;
     font-size: 1.5rem;
@@ -51,9 +44,11 @@ const Title = Styled.div`
 `
 
 const Content = Styled.div`
+    flex: 1 0 0;
     font-size: 1rem;
     text-align: justify;
     white-space: pre-wrap;
+    display: flex;
 `
 
 class Close extends React.Component {
@@ -85,15 +80,9 @@ export default class extends React.Component {
     }
 
     render() {
-        const Container = this.props.active
-            ? ActiveContainer
-            : DisabledContainer
-        const InnerContainer = Device.mobile()
-            ? MobileInnerContainer
-            : DesktopInnerContainer
         return (
-            <Container onClick={this.hide}>
-                <InnerContainer>
+            <Container active={this.props.active} onClick={this.hide}>
+                <InnerContainer mobile={Device.mobile()}>
                     <TitleContainer>
                         <Title>{this.props.title}</Title>
                         <Close action={this.props.hide} />
