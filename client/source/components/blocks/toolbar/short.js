@@ -1,8 +1,7 @@
 import React from 'react'
 
+import { Fetch, Report } from './../widgets'
 import Toolbar from './base'
-import Fetch from './../widgets/fetch'
-import Report from './../widgets/report'
 
 export default class extends React.Component {
     render() {

@@ -1,17 +1,13 @@
 import Axios from 'axios'
-import Qs from 'qs'
 
 import { Crypto, History, Json, Timestamp } from '~/helpers'
 import Trigger from './trigger'
 
 export default async (trigger, label = '', push = true) => {
-    let response = await Axios.post(
-        'fetch',
-        Qs.stringify({
-            token: trigger.state().token,
-            label: label,
-        }),
-    )
+    let response = await Axios.post('fetch', {
+        token: trigger.state().token,
+        label: label,
+    })
     let state = trigger.state()
     state.task = response.data
     state.task.subject = Crypto.decrypt(state.token, state.task.subject)

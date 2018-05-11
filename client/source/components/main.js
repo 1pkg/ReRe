@@ -3,9 +3,7 @@ import { connect } from 'react-redux'
 import Styled from 'styled-components'
 
 import Trigger from '~/actions/trigger'
-import Maintenance from './scenes/maintenance'
-import Choose from './scenes/choose'
-import Result from './scenes/result'
+import { Choose, Maintenance, Result } from './scenes'
 
 const Container = Styled.div`
     display: flex;
@@ -18,7 +16,7 @@ export default connect(state => {
 })(
     class extends React.Component {
         componentDidCatch(error, info) {
-            this.props.trigger.push('reload', {})
+            this.props.trigger.push(Trigger.ACTION_RELOAD, {})
         }
 
         scene(trigger, state) {

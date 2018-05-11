@@ -12,7 +12,7 @@ export default async trigger => {
 
     let query = Url.parse().query
     if (state.status != null) {
-        trigger.push('store', state)
+        trigger.push(Trigger.ACTION_STORE, state)
     } else if ('label' in query) {
         await trigger.call(Trigger.ACTION_FETCH, query.label)
     } else {

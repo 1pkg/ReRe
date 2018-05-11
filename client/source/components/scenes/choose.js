@@ -1,10 +1,10 @@
 import Lodash from 'lodash'
 import React from 'react'
 
+import { Full as Toolbar } from './../blocks/toolbar'
+import { Effect as Subject } from './../blocks/subject'
+import { Choose } from './../blocks/option'
 import Base from './base'
-import Subject from './../blocks/subject/effect'
-import Choose from './../blocks/options/choose'
-import Toolbar from './../blocks/toolbar/full'
 
 export default class extends React.Component {
     subject() {

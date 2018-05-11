@@ -35,9 +35,13 @@ class Application:
             return self.__actions[action](request)
         return None
 
-    def action(self, action, instance):
+    def action(self, action, instance, cache_expire):
         try:
-            return flask.jsonify(action(flask.request))
+            response = flask.jsonify(action(flask.request))
+            if cache_expire is not None:
+                response.cache_control.public = True
+                response.cache_control.max_age = cache_expire
+            return response
         except Exception as exception:
             if instance.debug:
                 raise exception
@@ -126,11 +130,13 @@ class Application:
             rule='/favicon.ico',
         )
         for alias, action in self.__actions.items():
+            cache_expire = action.CACHE_EXPIRE if not instance.debug else None
             bound = functools.partial(
                 Application.action,
                 self,
                 action,
                 instance,
+                cache_expire,
             )
             bound.__name__ = alias
             bound.__module__ = action.__module__
@@ -142,10 +148,8 @@ class Application:
                     cache = self.extensions['cache']
                     bound = cache.cached(action.CACHE_EXPIRE)(bound)
             rule = f'/{alias}'
-            req = ['GET', 'POST', 'OPTIONS'] \
-                if instance.debug \
-                else ['POST', 'OPTIONS']
-            instance.add_url_rule(view_func=bound, rule=rule, methods=req)
+            method = ['GET', 'POST'] if instance.debug else ['POST']
+            instance.add_url_rule(view_func=bound, rule=rule, methods=method)
 
 
 instance = flask.Flask(__name__)

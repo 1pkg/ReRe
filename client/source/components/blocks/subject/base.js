@@ -5,7 +5,7 @@ import GLReactImage from 'gl-react-image'
 import { Surface } from 'gl-react-dom'
 import Styled from 'styled-components'
 
-import Effect from './../widgets/effect'
+import { Effect } from './../widgets'
 
 const Container = Styled.div`
     flex: 1 1 0;

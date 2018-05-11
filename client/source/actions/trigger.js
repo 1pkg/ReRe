@@ -1,13 +1,15 @@
 import Lodash from 'lodash'
 import Axios from 'axios'
 
-import Choose from './choose'
-import Devote from './devote'
-import Fetch from './fetch'
-import Handshake from './handshake'
-import Land from './land'
-import Remake from './remake'
-import Report from './report'
+import {
+    Choose,
+    Devote,
+    Fetch,
+    Handshake,
+    Land,
+    Remake,
+    Report,
+} from '~/actions'
 
 export default class Trigger {
     static STATUS_ACTIVE = 'status-active'
@@ -22,6 +24,9 @@ export default class Trigger {
     static ACTION_REMAKE = 'action-remake'
     static ACTION_REPORT = 'action-report'
 
+    static ACTION_STORE = 'action-store'
+    static ACTION_RELOAD = 'action-reload'
+
     constructor(store) {
         this.store = store
         this.actions = {
@@ -34,7 +39,7 @@ export default class Trigger {
             [Trigger.ACTION_REPORT]: Report,
         }
         Axios.defaults.baseURL = API
-        Axios.defaults.headers.post['Content-Type'] = POST_CONTENT_TYPE
+        Axios.defaults.headers.post['Cache-Control'] = CACHE_CONTROL
     }
 
     state() {
@@ -50,7 +55,7 @@ export default class Trigger {
             try {
                 return this.actions[name](this, ...params)
             } catch (exception) {
-                this.push('reload', {})
+                this.push(Trigger.ACTION_RELOAD, {})
             }
         }
         return async () => {}

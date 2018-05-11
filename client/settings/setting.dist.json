@@ -1,4 +1,4 @@
 {
     "API": "'http://localhost/'",
-    "POST_CONTENT_TYPE": "'application/x-www-form-urlencoded'"
+    "CACHE_CONTROL": "'no-cache'"
 }

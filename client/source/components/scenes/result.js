@@ -1,11 +1,10 @@
 import Lodash from 'lodash'
 import React from 'react'
 
+import { Short as Toolbar } from './../blocks/toolbar'
+import { Source as Subject } from './../blocks/subject'
+import { Correct, Wrong } from './../blocks/option'
 import Base from './base'
-import Subject from './../blocks/subject/source'
-import Correct from './../blocks/options/correct'
-import Wrong from './../blocks/options/wrong'
-import Toolbar from './../blocks/toolbar/short'
 
 export default class extends React.Component {
     subject() {

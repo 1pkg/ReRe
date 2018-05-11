@@ -4,8 +4,8 @@ import Styled from 'styled-components'
 
 import { Device } from '~/helpers'
 
-import Side from './../blocks/toolbar/side'
-import Carousel from './../blocks/widgets/carousel'
+import { Side } from './../blocks/toolbar'
+import { Carousel } from './../blocks/widgets'
 
 const Container = Styled.div`
     flex: 1 1 0;

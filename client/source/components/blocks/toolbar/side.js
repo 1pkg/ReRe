@@ -1,9 +1,7 @@
 import React from 'react'
 import Styled from 'styled-components'
 
-import Toggle from './../widgets/toggle'
-import Share from './../widgets/share'
-import Disclaimer from './../widgets/disclaimer'
+import { Disclaimer, Share, Toggle } from './../widgets'
 
 const Container = Styled.div`
     flex: 4 1 0;

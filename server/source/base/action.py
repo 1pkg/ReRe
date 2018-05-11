@@ -13,6 +13,6 @@ class Action:
         return NotImplemented
 
     def _get(self, request, key, default=None):
-        if (key in request.values):
-            return request.values[key]
+        if (request.json is not None and key in request.json):
+            return request.json[key]
         return default
