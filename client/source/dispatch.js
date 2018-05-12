@@ -16,6 +16,6 @@ export default async trigger => {
     } else if ('label' in query) {
         await trigger.call(Trigger.ACTION_FETCH, query.label)
     } else {
-        await trigger.call(Trigger.ACTION_FETCH)
+        await trigger.call(Trigger.ACTION_LAND)
     }
 }

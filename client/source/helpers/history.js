@@ -8,7 +8,11 @@ export default class {
 
     static change(handler) {
         return history.listen((location, action) => {
-            if (action === 'POP' && 'label' in location.state) {
+            if (
+                action === 'POP' &&
+                location.state &&
+                'label' in location.state
+            ) {
                 handler(location.state.label)
             }
         })

@@ -1,9 +1,9 @@
-import json
+from json import dumps
 
 from base import Action
 
 
-class Format(Action):
+class Single(Action):
     def _format(self, task):
         datetime = self._application.datetime
         cache = self._application.cache
@@ -18,7 +18,7 @@ class Format(Action):
         cache.set(key, identity)
         subject = crypto.encrypt(
             self._session.token,
-            json.dumps({
+            dumps({
                 'link': task.subject.link,
                 'source': task.subject.source,
                 'orientation': str(task.subject.orientation),

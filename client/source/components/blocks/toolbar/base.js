@@ -6,8 +6,8 @@ const Container = Styled.div`
     flex: 3 1 0;
     display: flex;
     align-items: center;
-    justify-content: ${props =>
-        props.full ? 'space-between' : 'space-around'};
+    justify-content:
+        ${props => (props.full ? 'space-between' : 'space-around')};
 `
 
 export default class extends React.Component {

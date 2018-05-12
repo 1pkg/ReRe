@@ -60,6 +60,7 @@ export default class extends React.Component {
                 </SubjectContainer>
                 <ToolbarContainer>
                     <Side
+                        trigger={this.props.trigger}
                         disclaimer={this.props.settings['disclaimer-message']}
                         options={this.props.state.task.options}
                         full={this.state.full}
@@ -84,6 +85,7 @@ export default class extends React.Component {
                 </SubjectContainer>
                 <ToolbarContainer>
                     <Side
+                        trigger={this.props.trigger}
                         disclaimer={this.props.settings['disclaimer-message']}
                         options={this.props.state.task.options}
                         full={this.state.full}

@@ -1,3 +1,4 @@
+import Lodash from 'lodash'
 import React from 'react'
 import Styled from 'styled-components'
 
@@ -31,6 +32,13 @@ const MinorText = Styled.div`
 const RELOAD_INTERVAL = 60000
 
 export default class extends React.Component {
+    shouldComponentUpdate(props, state) {
+        return (
+            !Lodash.isEqual(props, this.props) ||
+            !Lodash.isEqual(state, this.state)
+        )
+    }
+
     componentDidMount() {
         this.interval = window.setInterval(this.reload, RELOAD_INTERVAL)
     }

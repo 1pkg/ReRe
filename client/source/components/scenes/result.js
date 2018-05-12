@@ -33,6 +33,7 @@ export default class extends React.Component {
     render() {
         return (
             <Base
+                trigger={this.props.trigger}
                 state={this.props.state}
                 settings={this.props.state.settings}
                 subject={this.subject()}

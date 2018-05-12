@@ -2,10 +2,10 @@ from random import shuffle
 
 import errors
 from models import Task, Orientation, Option, Subject, Effect, Setting
-from .mixins import Access, Format
+from .mixins import Access, Single
 
 
-class Fetch(Access, Format):
+class Fetch(Access, Single):
     CONNECTION_LIMIT = '1/second;100/minute;10000/hour'
     CACHE_EXPIRE = None
 
@@ -20,7 +20,13 @@ class Fetch(Access, Format):
                     device.orientation(request),
                 ),
             )
-        elif self._application.random.roll(0.0):
+        elif self._application.random.roll(0.5):
+            return self._format(
+                self.__fetchByRating(
+                    device.orientation(request),
+                ),
+            )
+        elif self._application.random.roll(0.5):
             return self._format(
                 self.__fetchByRandom(
                     device.orientation(request),
@@ -43,6 +49,9 @@ class Fetch(Access, Format):
         if task is not None:
             return task
         return self.__fetchNew(orientation)
+
+    def __fetchByRating(self, orientation):
+        return self.__fetchByRandom(orientation)
 
     def __fetchByRandom(self, orientation):
         db = self._application.db

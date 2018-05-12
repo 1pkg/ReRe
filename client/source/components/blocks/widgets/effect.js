@@ -1,7 +1,15 @@
+import Lodash from 'lodash'
 import React from 'react'
 import { Node } from 'gl-react'
 
 export default class extends React.Component {
+    shouldComponentUpdate(props, state) {
+        return (
+            !Lodash.isEqual(props, this.props) ||
+            !Lodash.isEqual(state, this.state)
+        )
+    }
+
     render() {
         return (
             <Node

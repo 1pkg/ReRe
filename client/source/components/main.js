@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import Styled from 'styled-components'
 
 import Trigger from '~/actions/trigger'
-import { Choose, Maintenance, Result } from './scenes'
+import { Choose, Landing, Maintenance, Result } from './scenes'
 
 const Container = Styled.div`
     display: flex;
@@ -25,6 +25,9 @@ export default connect(state => {
             }
 
             switch (state.status) {
+                case Trigger.STATUS_LAND:
+                    return <Landing trigger={trigger} state={state} />
+
                 case Trigger.STATUS_ACTIVE:
                     return <Choose trigger={trigger} state={state} />
 

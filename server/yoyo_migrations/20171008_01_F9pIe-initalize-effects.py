@@ -1,4 +1,4 @@
-import json
+from json import dumps
 from yoyo import step
 
 import sys
@@ -73,8 +73,8 @@ def steps(conn):
             ('{}', '{}', '{}')
         '''.format(
             shader['name'],
-            json.dumps(shader['shader']),
-            json.dumps(shader['uniform']),
+            dumps(shader['shader']),
+            dumps(shader['uniform']),
         ))
 
 

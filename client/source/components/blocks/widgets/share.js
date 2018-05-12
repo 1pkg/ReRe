@@ -21,6 +21,13 @@ const Container = Styled.div`
 `
 
 export default class extends React.Component {
+    shouldComponentUpdate(props, state) {
+        return (
+            !Lodash.isEqual(props, this.props) ||
+            !Lodash.isEqual(state, this.state)
+        )
+    }
+
     title() {
         if (this.props.options) {
             let names = Lodash.map(this.props.options, (option, index) => {

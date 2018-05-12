@@ -1,12 +1,12 @@
-import os
-import re
+from os import path
+from re import sub
 
 
 def __parse(shader):
-    path = os.path.join(os.path.dirname(__file__), '{}.frag'.format(shader))
+    path = path.join(path.dirname(__file__), f'{shader}.frag')
     with open(path, 'r') as frag:
         frag = frag.read().strip().replace('\n', ' ')
-        frag = re.sub('\s+', ' ', frag)
+        frag = sub('\s+', ' ', frag)
         return {'frag': frag}
 
 

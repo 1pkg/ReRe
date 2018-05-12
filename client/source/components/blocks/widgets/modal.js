@@ -1,3 +1,4 @@
+import Lodash from 'lodash'
 import React from 'react'
 import ReactDOM from 'react-dom'
 import Cross from 'react-icons/lib/fa/close'
@@ -26,6 +27,7 @@ const InnerContainer = Styled.div`
     background-color: white;
     display: flex;
     flex-direction: column;
+    overflow-y: auto;
 `
 
 const TitleContainer = Styled.div`
@@ -36,7 +38,7 @@ const TitleContainer = Styled.div`
 `
 
 const Title = Styled.div`
-    flex: 1 0 0;
+    flex: 1 1 0;
     font-size: 1.5rem;
     font-weight: bold;
     text-transform: uppercase;
@@ -44,7 +46,7 @@ const Title = Styled.div`
 `
 
 const Content = Styled.div`
-    flex: 1 0 0;
+    flex: 1 1 0;
     font-size: 1rem;
     text-align: justify;
     white-space: pre-wrap;
@@ -72,6 +74,13 @@ class Close extends React.Component {
 }
 
 export default class extends React.Component {
+    shouldComponentUpdate(props, state) {
+        return (
+            !Lodash.isEqual(props, this.props) ||
+            !Lodash.isEqual(state, this.state)
+        )
+    }
+
     hide = event => {
         let element = ReactDOM.findDOMNode(this)
         if (event.target === element) {

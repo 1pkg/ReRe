@@ -12,7 +12,7 @@ import Modal from './modal'
 const Container = Styled.div``
 
 const Form = Styled.div`
-    flex: 1 0 0;
+    flex: 1 1 0;
     display: flex;
     flex-direction: column;
     align-items: center;

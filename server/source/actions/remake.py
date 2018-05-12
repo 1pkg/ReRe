@@ -1,8 +1,8 @@
 from models import Task, Effect, Setting
-from .mixins import Identify, Format
+from .mixins import Identify, Single
 
 
-class Remake(Identify, Format):
+class Remake(Identify, Single):
     CONNECTION_LIMIT = '1/second;100/minute;10000/hour'
     CACHE_EXPIRE = None
 

@@ -15,6 +15,7 @@ export default class Trigger {
     static STATUS_ACTIVE = 'status-active'
     static STATUS_CORRECT = 'status-correct'
     static STATUS_WRONG = 'status-wrong'
+    static STATUS_LAND = 'status-land'
 
     static ACTION_CHOOSE = 'action-chose'
     static ACTION_DEVOTE = 'action-devote'

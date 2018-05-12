@@ -1,5 +1,5 @@
-import os
-import random
+from os import urandom
+from random import SystemRandom
 from binascii import hexlify
 
 from base import Component
@@ -7,10 +7,10 @@ from base import Component
 
 class Random(Component):
     def number(self, limit):
-        return random.SystemRandom().randint(0, limit - 1)
+        return SystemRandom().randint(0, limit - 1)
 
     def roll(self, percent):
-        return random.SystemRandom().random() < percent
+        return SystemRandom().random() < percent
 
     def salt(self):
-        return hexlify(os.urandom(32))
+        return hexlify(urandom(32))

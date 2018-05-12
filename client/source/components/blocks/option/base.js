@@ -10,7 +10,8 @@ const Container = Styled.div`
     padding: 0.5rem;
     border: 0.01rem solid rgba(0, 0, 0, 0.5);
     box-shadow: 0.1rem 0.1rem 0.1rem 0.1rem rgba(0, 0, 0, 0.3);
-    overflow: ${props => (props.mobile ? 'scroll' : 'hidden')};
+    overflow-x: hidden;
+    overflow-y: auto;
     opacity: ${props => (props.disabled ? 0.5 : 1.0)};
 `
 
@@ -41,7 +42,6 @@ const Text = Styled.div`
     font-size: 0.8rem;
     overflow: hidden;
     text-align: justify;
-    height: ${props => (props.mobile ? 'auto' : '50%')};
 `
 
 const Source = Styled.div`

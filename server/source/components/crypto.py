@@ -1,5 +1,5 @@
-import base64
-import binascii
+from base64 import b64encode, b64decode
+from binascii import a2b_hex
 from Crypto.Cipher import AES
 
 from base import Component
@@ -8,17 +8,17 @@ from base import Component
 class Crypto(Component):
     def encrypt(self, key, data):
         data = self.__pad(data)
-        iv = binascii.a2b_hex(self.__iv(key))
-        key = binascii.a2b_hex(key)
+        iv = a2b_hex(self.__iv(key))
+        key = a2b_hex(key)
         cipher = AES.new(key, AES.MODE_CBC, iv, segment_size=128)
         data = cipher.encrypt(data)
-        data = base64.b64encode(data)
+        data = b64encode(data)
         return data.decode('utf-8')
 
     def decrypt(self, key, data):
-        iv = binascii.a2b_hex(self.__iv(key))
-        key = binascii.a2b_hex(key)
-        data = base64.b64decode(data)
+        iv = a2b_hex(self.__iv(key))
+        key = a2b_hex(key)
+        data = b64decode(data)
         cipher = AES.new(key, AES.MODE_CBC, iv, segment_size=128)
         data = cipher.decrypt(data)
         return self.__unpad(data)
