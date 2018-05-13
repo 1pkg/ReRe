@@ -1,9 +1,6 @@
 import Store from 'store'
 import ExpireStorePlugin from 'store/plugins/expire'
 
-const STORE_STATE_KEY = 'wit-store-state'
-const STORE_STATE_EXPIRE = 21600
-
 Store.addPlugin(ExpireStorePlugin)
 export default class {
     static update(state) {

@@ -9,7 +9,6 @@
 /server/env/
 /server/**/__pycache__/
 /server/logs/
-/server/static/
 /server/migrations/
 /server/settings/*.cfg
 !/server/settings/*.dist.cfg

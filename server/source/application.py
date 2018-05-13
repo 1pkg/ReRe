@@ -117,18 +117,6 @@ class Application:
         after = functools.partial(Application.after, self)
         instance.before_request(before)
         instance.after_request(after)
-        instance.add_url_rule(
-            view_func=lambda:
-            flask.send_from_directory(
-                os.path.join(
-                    os.path.dirname(__file__),
-                    '..',
-                    'static',
-                ),
-                'favicon.ico',
-            ),
-            rule='/favicon.ico',
-        )
         for alias, action in self.__actions.items():
             cache_expire = action.CACHE_EXPIRE if not instance.debug else None
             bound = functools.partial(

@@ -18,8 +18,6 @@ const Period = Styled.div`
     margin-right: 0.1rem;
 `
 
-const TICK_INTERVAL = 1000
-
 export default class extends React.Component {
     constructor(props) {
         super(props)
@@ -35,7 +33,7 @@ export default class extends React.Component {
             }
         })
         setTimeout(() => {
-            this.interval = window.setInterval(this.tick, TICK_INTERVAL)
+            this.interval = window.setInterval(this.tick, TIMER_TICK_INTERVAL)
         })
     }
 
@@ -52,7 +50,7 @@ export default class extends React.Component {
         })
         window.clearInterval(this.interval)
         setTimeout(() => {
-            this.interval = window.setInterval(this.tick, TICK_INTERVAL)
+            this.interval = window.setInterval(this.tick, TIMER_TICK_INTERVAL)
         })
     }
 

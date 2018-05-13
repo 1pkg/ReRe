@@ -1,4 +1,13 @@
 {
-    "API": "'http://localhost/'",
-    "CACHE_CONTROL": "'no-cache'"
+    "API_URL": "'http://localhost/'",
+    "API_TIMEOUT": "10000",
+    "API_CONTENT_LENGTH": "10000",
+    "API_CACHE_CONTROL": "'no-cache'",
+
+    "STORE_STATE_KEY": "'key'",
+    "STORE_STATE_EXPIRE": "86400",
+
+    "TIMER_TICK_INTERVAL": "1000",
+
+    "MAINTENANCE_RELOAD_INTERVAL": "10000"
 }

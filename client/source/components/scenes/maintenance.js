@@ -29,8 +29,6 @@ const MinorText = Styled.div`
     text-transform: lowercase;
 `
 
-const RELOAD_INTERVAL = 60000
-
 export default class extends React.Component {
     shouldComponentUpdate(props, state) {
         return (
@@ -40,7 +38,10 @@ export default class extends React.Component {
     }
 
     componentDidMount() {
-        this.interval = window.setInterval(this.reload, RELOAD_INTERVAL)
+        this.interval = window.setInterval(
+            this.reload,
+            MAINTENANCE_RELOAD_INTERVAL,
+        )
     }
 
     componentWillUnmount() {
