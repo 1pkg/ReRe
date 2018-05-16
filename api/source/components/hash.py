@@ -4,8 +4,11 @@ from base import Component
 
 
 class Hash(Component):
-    def hex(self, *args):
-        hexHash = blake2b(digest_size=32)
+    LONG_DIGEST = 16
+    SHORT_DIGEST = 4
+
+    def hex(self, size, *args):
+        hexHash = blake2b(digest_size=size)
         for arg in args:
             hexHash.update(str(arg).encode('utf-8'))
         return hexHash.hexdigest()

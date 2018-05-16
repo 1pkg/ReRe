@@ -65,6 +65,7 @@ class Fetch(Access, Single):
 
     def __fetchNew(self, orientation):
         db = self._application.db
+        datetime = self._application.datetime
         c_hash = self._application.hash
         random = self._application.random
         sequence = self._application.sequence
@@ -82,6 +83,8 @@ class Fetch(Access, Single):
             .order_by(db.func.random()) \
             .limit(int(Setting.get('effect-count'))).all()
         label = c_hash.hex(
+            c_hash.SHORT_DIGEST,
+            datetime.timestamp(),
             random.salt(),
             subject.id,
             sequence.column(options, 'id'),

@@ -9,8 +9,8 @@ export default class extends React.Component {
             <Toolbar
                 actions={[Timer, Report, Remake, Fetch]}
                 trigger={this.props.trigger}
-                timestamp={this.props.timestamp}
                 settings={this.props.settings}
+                timestamp={this.props.timestamp}
                 full={true}
             />
         )

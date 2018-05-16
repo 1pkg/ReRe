@@ -10,7 +10,7 @@ class Access(Action):
         datetime = self._application.datetime
 
         token = str(self._get(request, 'token'))
-        if len(token) != 64 or not validator.isHex(token):
+        if len(token) != 32 or not validator.isHex(token):
             raise errors.Token(token)
 
         self._session = Session.query \

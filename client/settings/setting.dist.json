@@ -1,4 +1,6 @@
 {
+    "IMAGE_CDN_URL": "'http://localhost/'",
+
     "API_URL": "'http://localhost/'",
     "API_TIMEOUT": "10000",
     "API_CONTENT_LENGTH": "10000",

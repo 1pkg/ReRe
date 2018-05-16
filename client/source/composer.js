@@ -4,8 +4,17 @@ import ReduxThunk from 'redux-thunk'
 import { Store, History } from './helpers'
 import Trigger from './actions/trigger'
 
+let trigger
+
+History.change(label => {
+    if (label) {
+        trigger.call(Trigger.ACTION_FETCH, label, false)
+    } else {
+        trigger.call(Trigger.ACTION_LAND)
+    }
+})
+
 export default compose => {
-    History.change(label => trigger.call(Trigger.ACTION_FETCH, label, false))
     let store = createStore((state = {}, action) => {
         if ('data' in action && action.data) {
             trigger.call(action.name, ...Object.values(action.data))
@@ -19,6 +28,6 @@ export default compose => {
 
         return state
     }, compose(applyMiddleware(ReduxThunk)))
-    let trigger = new Trigger(store)
+    trigger = new Trigger(store)
     return { store, trigger }
 }

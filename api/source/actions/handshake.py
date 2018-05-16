@@ -27,11 +27,14 @@ class Handshake(Action):
     def _process(self, request):
         db = self._application.db
         device = self._application.device
+        datetime = self._application.datetime
         c_hash = self._application.hash
         random = self._application.random
 
         orientation = str(device.orientation(request))
         token = c_hash.hex(
+            c_hash.LONG_DIGEST,
+            datetime.timestamp(),
             random.salt(),
             self.__userHost,
             self.__userAgent,

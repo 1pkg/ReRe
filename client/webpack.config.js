@@ -65,6 +65,7 @@ module.exports = env => {
             port: 8080,
             inline: true,
             contentBase: './build',
+            historyApiFallback: true,
         }
         webpack.plugins.push(
             new HtmlPlugin({

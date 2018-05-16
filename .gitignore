@@ -6,13 +6,13 @@
 !/client/settings/*.dist.json
 /client/npm-debug.log
 
-/server/env/
-/server/**/__pycache__/
-/server/logs/
-/server/migrations/
-/server/settings/*.cfg
-!/server/settings/*.dist.cfg
-/server/yoyo.ini
+/api/env/
+/api/**/__pycache__/
+/api/logs/
+/api/migrations/
+/api/settings/*.cfg
+!/api/settings/*.dist.cfg
+/api/yoyo.ini
 
 /parser/env/
 /parser/**/__pycache__/

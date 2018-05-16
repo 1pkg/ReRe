@@ -4,18 +4,19 @@ from base import Action
 
 
 class Single(Action):
-    def _format(self, task):
+    def _format(self, task, ident=True):
         datetime = self._application.datetime
         cache = self._application.cache
         crypto = self._application.crypto
 
-        identity = {
-            'task_id': task.id,
-            'token': self._session.token,
-            'timestamp': datetime.timestamp(),
-        }
-        key = f'token-{self._session.token}'
-        cache.set(key, identity)
+        if (ident):
+            identity = {
+                'task_id': task.id,
+                'token': self._session.token,
+                'timestamp': datetime.timestamp(),
+            }
+            key = f'token-{self._session.token}'
+            cache.set(key, identity)
         subject = crypto.encrypt(
             self._session.token,
             dumps({

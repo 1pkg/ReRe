@@ -59,9 +59,7 @@ export default class extends React.Component {
     }
 
     content() {
-        let message = `I want report current task\n${
-            Url.parse().query.label
-        }\nfor next reason`
+        let message = `I want report current task\n${Url.current()}\nfor next reason`
         return (
             <Form>
                 <Textarea defaultValue={message} />
