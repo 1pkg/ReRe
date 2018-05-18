@@ -31,7 +31,7 @@ class Handshake(Action):
         c_hash = self._application.hash
         random = self._application.random
 
-        orientation = str(device.orientation(request))
+        orientation = str(device.orientation())
         token = c_hash.hex(
             c_hash.LONG_DIGEST,
             datetime.timestamp(),
@@ -49,6 +49,6 @@ class Handshake(Action):
         db.session.add(session)
         db.session.commit()
         return {
-            'token': token,
             'orientation': orientation,
+            'token': token,
         }

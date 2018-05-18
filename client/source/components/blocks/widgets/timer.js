@@ -19,6 +19,17 @@ const Period = Styled.div`
 `
 
 export default class extends React.Component {
+    tick = async () => {
+        this.setState(state => {
+            let timestamp = Timestamp.current()
+            let period = state.period - (timestamp - state.timestamp)
+            if (period <= 0) {
+                this.props.trigger.call(Trigger.ACTION_CHOOSE, -1)
+            }
+            return { timestamp, period }
+        })
+    }
+
     constructor(props) {
         super(props)
         this.interval = null
@@ -51,17 +62,6 @@ export default class extends React.Component {
         window.clearInterval(this.interval)
         setTimeout(() => {
             this.interval = window.setInterval(this.tick, TIMER_TICK_INTERVAL)
-        })
-    }
-
-    tick = () => {
-        this.setState(state => {
-            let timestamp = Timestamp.current()
-            let period = state.period - (timestamp - state.timestamp)
-            if (period <= 0) {
-                this.props.trigger.call(Trigger.ACTION_CHOOSE, -1)
-            }
-            return { timestamp, period }
         })
     }
 

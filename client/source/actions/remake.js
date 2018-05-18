@@ -12,6 +12,7 @@ export default async trigger => {
         state.task = response.data
         state.task.subject = Crypto.decrypt(state.token, state.task.subject)
         state.task.subject = Json.decode(state.task.subject)
+        state.task.handled = {}
         History.push(state.task.label)
         trigger.push(Trigger.ACTION_REMAKE, state)
         return state

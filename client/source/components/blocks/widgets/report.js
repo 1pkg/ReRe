@@ -28,18 +28,6 @@ const Textarea = Styled.textarea`
 `
 
 export default class extends React.Component {
-    constructor(props) {
-        super(props)
-        this.state = { modal: false }
-    }
-
-    shouldComponentUpdate(props, state) {
-        return (
-            !Lodash.isEqual(props, this.props) ||
-            !Lodash.isEqual(state, this.state)
-        )
-    }
-
     show = () => {
         this.setState(state => {
             return { modal: true }
@@ -52,10 +40,22 @@ export default class extends React.Component {
         })
     }
 
-    report = event => {
-        let textarea = event.target.previousSibling
+    report = async event => {
+        let textarea = event.currentTarget.previousSibling
         this.props.trigger.call(Trigger.ACTION_REPORT, textarea.value)
         this.hide()
+    }
+
+    constructor(props) {
+        super(props)
+        this.state = { modal: false }
+    }
+
+    shouldComponentUpdate(props, state) {
+        return (
+            !Lodash.isEqual(props, this.props) ||
+            !Lodash.isEqual(state, this.state)
+        )
     }
 
     content() {

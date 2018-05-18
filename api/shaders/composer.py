@@ -3,8 +3,8 @@ from re import sub
 
 
 def __parse(shader):
-    path = path.join(path.dirname(__file__), f'{shader}.frag')
-    with open(path, 'r') as frag:
+    filename = path.join(path.dirname(__file__), f'{shader}.frag')
+    with open(filename, 'r') as frag:
         frag = frag.read().strip().replace('\n', ' ')
         frag = sub('\s+', ' ', frag)
         return {'frag': frag}

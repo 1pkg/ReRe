@@ -5,7 +5,7 @@ import Trigger from '~/actions/trigger'
 import Button from './button'
 
 export default class extends React.Component {
-    land = () => {
+    land = async () => {
         this.props.trigger.call(Trigger.ACTION_LAND)
     }
 

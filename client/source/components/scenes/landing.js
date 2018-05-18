@@ -12,6 +12,11 @@ const Container = Styled.div`
     flex-direction: column;
 `
 
+const Text = Styled.div`
+    text-align: center;
+    margin-top: 0.5rem;
+`
+
 const InnerContainer = Styled.div`
     flex: 1 1 0;
     display: flex;
@@ -38,18 +43,25 @@ export default class extends React.Component {
     render() {
         return (
             <Container>
+                <Text>popular</Text>
                 <InnerContainer mobile={Device.mobile()}>
                     <Tape
-                        title={'Recent'}
+                        title={'Daily'}
                         trigger={this.props.trigger}
                         shaders={this.props.state.shaders}
-                        list={this.props.state.lists.recent}
+                        list={this.props.state.lists.daily}
                     />
                     <Tape
-                        title={'Popular'}
+                        title={'Weekly'}
                         trigger={this.props.trigger}
                         shaders={this.props.state.shaders}
-                        list={this.props.state.lists.popular}
+                        list={this.props.state.lists.weekly}
+                    />
+                    <Tape
+                        title={'Monthly'}
+                        trigger={this.props.trigger}
+                        shaders={this.props.state.shaders}
+                        list={this.props.state.lists.monthly}
                     />
                 </InnerContainer>
                 <ToolbarContainer>

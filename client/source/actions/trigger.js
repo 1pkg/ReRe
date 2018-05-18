@@ -7,6 +7,7 @@ import {
     Fetch,
     Handshake,
     Land,
+    Mark,
     Remake,
     Report,
 } from '~/actions'
@@ -22,6 +23,7 @@ export default class Trigger {
     static ACTION_FETCH = 'action-fetch'
     static ACTION_HANDSHAKE = 'action-handshake'
     static ACTION_LAND = 'action-land'
+    static ACTION_MARK = 'action-mark'
     static ACTION_REMAKE = 'action-remake'
     static ACTION_REPORT = 'action-report'
 
@@ -36,6 +38,7 @@ export default class Trigger {
             [Trigger.ACTION_FETCH]: Fetch,
             [Trigger.ACTION_HANDSHAKE]: Handshake,
             [Trigger.ACTION_LAND]: Land,
+            [Trigger.ACTION_MARK]: Mark,
             [Trigger.ACTION_REMAKE]: Remake,
             [Trigger.ACTION_REPORT]: Report,
         }

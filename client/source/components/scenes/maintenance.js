@@ -30,6 +30,10 @@ const MinorText = Styled.div`
 `
 
 export default class extends React.Component {
+    reload = () => {
+        dispatch(this.props.trigger)
+    }
+
     shouldComponentUpdate(props, state) {
         return (
             !Lodash.isEqual(props, this.props) ||
@@ -46,10 +50,6 @@ export default class extends React.Component {
 
     componentWillUnmount() {
         window.clearInterval(this.interval)
-    }
-
-    reload = () => {
-        dispatch(this.props.trigger)
     }
 
     render() {

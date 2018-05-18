@@ -19,4 +19,6 @@ class Report(Identify):
 
         subject = f'Report from {self._session.token} about task #{self._task.id}'
         result = mail.send(subject, self.__message)
-        return {'result': result}
+        return {
+            'result': result,
+        }

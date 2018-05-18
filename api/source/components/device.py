@@ -1,10 +1,12 @@
-from base import Component
+from flask import request
 
+from base import Component
 from models import Orientation
 
 
 class Device(Component):
-    def orientation(self, request):
-        return Orientation.portrait \
-            if request.MOBILE else \
-            Orientation.landscape
+    def orientation(self):
+        if request.MOBILE:
+            return Orientation.portrait
+        else:
+            return Orientation.landscape

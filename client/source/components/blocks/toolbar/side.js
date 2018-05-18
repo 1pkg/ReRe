@@ -34,7 +34,12 @@ export default class extends React.Component {
             <Container>
                 <InnerContainer>
                     <Toggle full={this.props.full} toggle={this.props.toggle} />
-                    <Share options={this.props.options} />
+                    <Share
+                        options={this.props.options}
+                        trigger={this.props.trigger}
+                        handled={this.props.handled}
+                        star
+                    />
                     <Disclaimer disclaimer={this.props.disclaimer} />
                 </InnerContainer>
                 <LandContainer>

@@ -6,7 +6,6 @@ from .hash import Hash
 from .http import Http
 from .mail import Mail
 from .random import Random
-from .sequence import Sequence
 from .validator import Validator
 
 __all__ = [
@@ -18,6 +17,5 @@ __all__ = [
     'Http',
     'Mail',
     'Random',
-    'Sequence',
     'Validator',
 ]

@@ -7,7 +7,7 @@ export default async (trigger, option) => {
         let state = trigger.state()
         let response = await Axios.post('choose', {
             token: state.token,
-            option: option,
+            option,
         })
         state.option = response.data.option
         state.timestamp = null

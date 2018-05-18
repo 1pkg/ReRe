@@ -40,6 +40,10 @@ const Snippet = Styled.div`
 `
 
 export default class extends React.Component {
+    fetch = async label => {
+        this.props.trigger.call(Trigger.ACTION_FETCH, label)
+    }
+
     shouldComponentUpdate(props, state) {
         return (
             !Lodash.isEqual(props, this.props) ||
@@ -47,22 +51,17 @@ export default class extends React.Component {
         )
     }
 
-    fetch(label) {
-        this.props.trigger.call(Trigger.ACTION_FETCH, label)
-    }
-
     snippets() {
         return Lodash.map(this.props.list, (task, index) => {
             return (
                 <Snippet
                     key={index}
-                    onClick={this.fetch.bind(this, task.label)}
+                    onClick={Lodash.bind(this.fetch, null, task.label)}
                 >
                     <Subject
                         subject={task.subject}
                         effects={task.effects}
                         shaders={this.props.shaders}
-                        onClick={this.fetch.bind(this, task.label)}
                     />
                 </Snippet>
             )

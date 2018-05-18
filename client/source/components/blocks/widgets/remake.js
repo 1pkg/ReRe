@@ -5,11 +5,11 @@ import Trigger from '~/actions/trigger'
 import Button from './button'
 
 export default class extends React.Component {
-    redo = () => {
+    remake = async () => {
         this.props.trigger.call(Trigger.ACTION_REMAKE)
     }
 
     render() {
-        return <Button glyph={<Refresh />} action={this.redo} />
+        return <Button glyph={<Refresh />} action={this.remake} />
     }
 }

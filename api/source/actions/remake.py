@@ -1,8 +1,8 @@
 from models import Task, Effect, Setting
-from .mixins import Identify, Single
+from .mixins import FSingleID, Identify
 
 
-class Remake(Identify, Single):
+class Remake(Identify, FSingleID):
     CONNECTION_LIMIT = '1/second;100/minute;10000/hour'
     CACHE_EXPIRE = None
 
@@ -11,7 +11,6 @@ class Remake(Identify, Single):
         datetime = self._application.datetime
         c_hash = self._application.hash
         random = self._application.random
-        sequence = self._application.sequence
 
         effects = Effect.query \
             .order_by(db.func.random()) \
@@ -21,10 +20,13 @@ class Remake(Identify, Single):
             datetime.timestamp(),
             random.salt(),
             self._task.subject.id,
-            sequence.column(self._task.options, 'id'),
-            sequence.column(effects, 'id'),
+            (option.id for option in self._task.options),
+            (effect.id for effect in effects),
         )
-        task = Task(label=label, subject_id=self._task.subject_id)
+        task = Task(
+            label=label,
+            subject_id=self._task.subject_id,
+        )
         task.options = self._task.options
         task.effects = effects
         db.session.add(task)

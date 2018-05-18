@@ -75,7 +75,7 @@ class Application:
                     os.path.dirname(__file__),
                     '..',
                     'logs',
-                    'wit.log',
+                    'rect.log',
                 ),
                 maxBytes=100000000,
                 backupCount=10,

@@ -36,6 +36,7 @@ export default class extends React.Component {
             <Toolbar
                 trigger={this.props.trigger}
                 settings={this.props.state.settings}
+                handled={this.props.state.task.handled}
                 timestamp={this.props.state.timestamp}
             />
         )
@@ -44,8 +45,8 @@ export default class extends React.Component {
     render() {
         return (
             <Base
-                trigger={this.props.trigger}
                 state={this.props.state}
+                trigger={this.props.trigger}
                 settings={this.props.state.settings}
                 subject={this.subject()}
                 options={this.options()}

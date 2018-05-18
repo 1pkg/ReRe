@@ -54,6 +54,12 @@ const Content = Styled.div`
 `
 
 class Close extends React.Component {
+    hotkey = event => {
+        if (event.keyCode === 27) {
+            this.props.action()
+        }
+    }
+
     componentDidMount() {
         document.addEventListener('keydown', this.hotkey, false)
     }
@@ -62,30 +68,24 @@ class Close extends React.Component {
         document.removeEventListener('keydown', this.hotkey, false)
     }
 
-    hotkey = event => {
-        if (event.keyCode === 27) {
-            this.props.action()
-        }
-    }
-
     render() {
         return <Button glyph={<Cross />} action={this.props.action} />
     }
 }
 
 export default class extends React.Component {
+    hide = event => {
+        let element = ReactDOM.findDOMNode(this)
+        if (event.currentTarget === element) {
+            this.props.hide()
+        }
+    }
+
     shouldComponentUpdate(props, state) {
         return (
             !Lodash.isEqual(props, this.props) ||
             !Lodash.isEqual(state, this.state)
         )
-    }
-
-    hide = event => {
-        let element = ReactDOM.findDOMNode(this)
-        if (event.target === element) {
-            this.props.hide()
-        }
     }
 
     render() {

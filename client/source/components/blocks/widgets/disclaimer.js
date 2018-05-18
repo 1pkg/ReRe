@@ -9,18 +9,6 @@ import Modal from './modal'
 const Container = Styled.div``
 
 export default class extends React.Component {
-    constructor(props) {
-        super(props)
-        this.state = { modal: false }
-    }
-
-    shouldComponentUpdate(props, state) {
-        return (
-            !Lodash.isEqual(props, this.props) ||
-            !Lodash.isEqual(state, this.state)
-        )
-    }
-
     show = () => {
         this.setState(state => {
             return { modal: true }
@@ -31,6 +19,18 @@ export default class extends React.Component {
         this.setState(state => {
             return { modal: false }
         })
+    }
+
+    constructor(props) {
+        super(props)
+        this.state = { modal: false }
+    }
+
+    shouldComponentUpdate(props, state) {
+        return (
+            !Lodash.isEqual(props, this.props) ||
+            !Lodash.isEqual(state, this.state)
+        )
     }
 
     render() {

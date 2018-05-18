@@ -40,3 +40,8 @@ class Session(Alchemy.Model):
         backref='session',
         passive_deletes=True,
     )
+    marks = Alchemy.relationship(
+        'Mark',
+        backref='session',
+        passive_deletes=True,
+    )

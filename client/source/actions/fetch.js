@@ -8,11 +8,12 @@ export default async (trigger, label = '', history = true) => {
         let state = trigger.state()
         let response = await Axios.post('fetch', {
             token: state.token,
-            label: label,
+            label,
         })
         state.task = response.data
         state.task.subject = Crypto.decrypt(state.token, state.task.subject)
         state.task.subject = Json.decode(state.task.subject)
+        state.task.handled = {}
         state.option = null
         state.timestamp = Timestamp.current()
         state.status = Trigger.STATUS_ACTIVE

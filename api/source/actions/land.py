@@ -1,8 +1,8 @@
 from models import Task, Subject, Setting
-from .mixins import Access, List
+from .mixins import Access, FList
 
 
-class Land(Access, List):
+class Land(Access, FList):
     CONNECTION_LIMIT = '1/minute;10/hour;100/day'
     CACHE_EXPIRE = 86400
 
@@ -10,34 +10,49 @@ class Land(Access, List):
         device = self._application.device
 
         return self._format({
-            'recent': self.__recent(
-                device.orientation(request),
-            ),
-            'popular': self.__popular(
-                device.orientation(request),
-            ),
+            'daily': self.__daily(),
+            'weekly': self.__weekly(),
+            'monthly': self.__monthly(),
         })
 
-    def __recent(self, orientation):
+    def __daily(self):
         db = self._application.db
+        device = self._application.device
         datetime = self._application.datetime
 
         return Task.query \
             .filter(
                 Task.active == True,
-                Subject.orientation == orientation,
-                Task.time_stamp >= datetime.date(-1)
+                Subject.orientation == device.orientation(),
+                Task.time_stamp >= datetime.date(-1),
             ) \
             .order_by(db.func.random()) \
             .limit(int(Setting.get('land-count'))).all()
 
-    def __popular(self, orientation):
+    def __weekly(self):
         db = self._application.db
+        device = self._application.device
+        datetime = self._application.datetime
 
         return Task.query \
             .filter(
                 Task.active == True,
-                Subject.orientation == orientation
+                Subject.orientation == device.orientation(),
+                Task.time_stamp >= datetime.date(-7),
+            ) \
+            .order_by(db.func.random()) \
+            .limit(int(Setting.get('land-count'))).all()
+
+    def __monthly(self):
+        db = self._application.db
+        device = self._application.device
+        datetime = self._application.datetime
+
+        return Task.query \
+            .filter(
+                Task.active == True,
+                Subject.orientation == device.orientation(),
+                Task.time_stamp >= datetime.date(-30),
             ) \
             .order_by(db.func.random()) \
             .limit(int(Setting.get('land-count'))).all()

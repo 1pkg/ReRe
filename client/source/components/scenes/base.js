@@ -33,6 +33,13 @@ const ToolbarContainer = Styled.div`
 `
 
 export default class extends React.Component {
+    toggle = () => {
+        this.setState(state => {
+            setTimeout(() => window.dispatchEvent(new Event('resize')))
+            return { full: !state.full }
+        })
+    }
+
     shouldComponentUpdate(props, state) {
         return (
             !Lodash.isEqual(props, this.props) ||
@@ -43,13 +50,6 @@ export default class extends React.Component {
     constructor(props) {
         super(props)
         this.state = { full: false }
-    }
-
-    toggle = () => {
-        this.setState(state => {
-            setTimeout(() => window.dispatchEvent(new Event('resize')))
-            return { full: !state.full }
-        })
     }
 
     mobile() {
@@ -63,6 +63,7 @@ export default class extends React.Component {
                         trigger={this.props.trigger}
                         disclaimer={this.props.settings['disclaimer-message']}
                         options={this.props.state.task.options}
+                        handled={this.props.state.task.handled}
                         full={this.state.full}
                         toggle={this.toggle}
                     />
@@ -88,6 +89,7 @@ export default class extends React.Component {
                         trigger={this.props.trigger}
                         disclaimer={this.props.settings['disclaimer-message']}
                         options={this.props.state.task.options}
+                        handled={this.props.state.task.handled}
                         full={this.state.full}
                         toggle={this.toggle}
                     />

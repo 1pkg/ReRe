@@ -49,6 +49,11 @@ class Task(Alchemy.Model):
         backref='task',
         passive_deletes=True,
     )
+    marks = Alchemy.relationship(
+        'Mark',
+        backref='task',
+        passive_deletes=True,
+    )
 
 
 Alchemy.Table(

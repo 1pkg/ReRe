@@ -21,13 +21,6 @@ const Image = Styled.img`
 `
 
 export default class extends React.Component {
-    shouldComponentUpdate(props, state) {
-        return (
-            !Lodash.isEqual(props, this.props) ||
-            !Lodash.isEqual(state, this.state)
-        )
-    }
-
     fit = () => {
         this.setState(state => {
             setTimeout(() => this.forceUpdate())
@@ -42,6 +35,13 @@ export default class extends React.Component {
     constructor(props) {
         super(props)
         this.state = { width: 0, height: 0 }
+    }
+
+    shouldComponentUpdate(props, state) {
+        return (
+            !Lodash.isEqual(props, this.props) ||
+            !Lodash.isEqual(state, this.state)
+        )
     }
 
     componentDidMount() {

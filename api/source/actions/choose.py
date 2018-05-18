@@ -12,39 +12,37 @@ class Choose(Identify):
         validator = self._application.validator
 
         self.__option = self._get(request, 'option')
-        if not validator.isNumeric(self.__option, False):
+        if not validator.isNumeric(self.__option, positive=False):
             raise errors.Request('option', self.__option)
 
         self.__option = int(self.__option)
         if self.__option == -1:
             return
 
-        if len(self._task.options) < self.__option \
-                or self.__option <= 0:
+        if len(self._task.options) < self.__option or self.__option <= 0:
             raise errors.Request('option', self.__option)
 
     def _process(self, request):
         db = self._application.db
         datetime = self._application.datetime
-        sequence = self._application.sequence
 
-        expire = int(Setting.get('choose-period'))
-        correctOption = self._task.subject.option
         if self.__option != -1:
-            choosenOption = self._task.options[self.__option - 1]
+            choosen = self._task.options[self.__option - 1]
             result = \
-                datetime.timestamp() - self._timestamp < expire \
-                and correctOption.id == choosenOption.id
+                datetime.timestamp() - self._timestamp \
+                < int(Setting.get('choose-period')) \
+                and self._task.subject.option.id == choosen.id
         else:
-            choosenOption = None
+            choosen = None
             result = False
-        option = sequence.index(
+        option = self.__index(
             self._task.options,
-            lambda option: option.id == correctOption.id
+            lambda option:
+            option.id == self._task.subject.option.id,
         ) + 1
         answer = Answer(
             task_id=self._task.id,
-            option_id=None if choosenOption is None else choosenOption.id,
+            option_id=None if choosen is None else choosen.id,
             session_id=self._session.id,
         )
         db.session.add(answer)
@@ -53,3 +51,9 @@ class Choose(Identify):
             'result': result,
             'option': option,
         }
+
+    def __index(self, sequence, callback):
+        for index, item in enumerate(sequence):
+            if callback(item):
+                return index
+        return -1
