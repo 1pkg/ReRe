@@ -8,9 +8,11 @@ steps = [
           INSERT INTO setting (name, value) VALUES
           ('option-count', '3'),
           ('effect-count', '2'),
-          ('choose-period', '30'),
-          ('land-count', '7'),
-          ('disclaimer-message', '
+          ('choose-period', '60'),
+          ('land-count', '5'),
+          ('share-title', 'Fun quiz-game: reveal TRUE essence of image past various effects, filters and deformations.'),
+          ('copyright-text', 'rect.io © 2018 all rights reserved'),
+          ('disclaimer-text', '
 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus id nulla leo. Sed et viverra erat. Cras feugiat enim a sem mollis dignissim. Proin ac congue mi, placerat convallis metus. Morbi euismod ac ipsum id sodales. Vestibulum quis orci cursus lacus faucibus cursus vitae eget nunc. Sed ac cursus nisl. Suspendisse potenti. Aenean et justo dolor. Duis magna orci, rutrum sit amet nisl sit amet, viverra volutpat est. In ornare est et dapibus tincidunt. Donec dictum urna at dictum placerat.
 Sed iaculis consequat turpis, non tristique lorem convallis nec. Etiam vehicula id elit vitae pellentesque. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Morbi laoreet ex a sem pharetra, in blandit lacus rhoncus. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Curabitur malesuada, urna eu tempus tempus, ligula tortor pharetra diam, ac tincidunt lacus purus id arcu. Sed eros justo, tincidunt nec dictum sit amet, mattis ac ligula. Fusce in faucibus odio, id facilisis mauris. Nulla lectus orci, pharetra non tristique et, ornare a sem. Proin faucibus porttitor mi, sodales malesuada leo bibendum quis. Aliquam malesuada purus a pharetra placerat. Praesent condimentum ut ligula non fringilla. Quisque urna velit, dictum in risus non, vehicula pharetra velit. Duis et ultricies tortor, vel ullamcorper augue.
 Etiam non lectus nec dui bibendum placerat vel eget ligula. Donec eu eleifend nisi, at hendrerit lectus. Donec vel massa semper, porttitor quam id, gravida arcu. Phasellus facilisis viverra tortor, nec luctus magna tincidunt eu. Maecenas sit amet nisl id quam lacinia congue. Morbi fermentum viverra orci, a imperdiet est faucibus ac. Proin auctor, dolor quis interdum eleifend, nulla mi ultricies ipsum, ac dignissim urna velit at diam.

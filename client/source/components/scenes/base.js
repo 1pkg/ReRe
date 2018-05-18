@@ -1,10 +1,7 @@
-import Lodash from 'lodash'
 import React from 'react'
 import Styled from 'styled-components'
 
 import { Device } from '~/helpers'
-
-import { Side } from './../blocks/toolbar'
 import { Carousel } from './../blocks/widgets'
 
 const Container = Styled.div`
@@ -40,34 +37,27 @@ export default class extends React.Component {
         })
     }
 
-    shouldComponentUpdate(props, state) {
-        return (
-            !Lodash.isEqual(props, this.props) ||
-            !Lodash.isEqual(state, this.state)
-        )
-    }
-
     constructor(props) {
         super(props)
         this.state = { full: false }
     }
 
     mobile() {
+        const Toolbar = this.props.toolbar
         return (
             <Container>
                 <SubjectContainer full={this.state.full}>
                     {this.props.subject}
                 </SubjectContainer>
                 <ToolbarContainer>
-                    <Side
+                    <Toolbar
                         trigger={this.props.trigger}
-                        disclaimer={this.props.settings['disclaimer-message']}
-                        options={this.props.state.task.options}
+                        settings={this.props.state.settings}
                         handled={this.props.state.task.handled}
+                        timestamp={this.props.state.timestamp}
                         full={this.state.full}
                         toggle={this.toggle}
                     />
-                    {this.props.toolbar}
                 </ToolbarContainer>
                 <OptionContainer hidden={this.state.full}>
                     <Carousel option={this.props.option}>
@@ -79,21 +69,21 @@ export default class extends React.Component {
     }
 
     desktop() {
+        const Toolbar = this.props.toolbar
         return (
             <Container>
                 <SubjectContainer full={this.state.full}>
                     {this.props.subject}
                 </SubjectContainer>
                 <ToolbarContainer>
-                    <Side
+                    <Toolbar
                         trigger={this.props.trigger}
-                        disclaimer={this.props.settings['disclaimer-message']}
-                        options={this.props.state.task.options}
+                        settings={this.props.state.settings}
                         handled={this.props.state.task.handled}
+                        timestamp={this.props.state.timestamp}
                         full={this.state.full}
                         toggle={this.toggle}
                     />
-                    {this.props.toolbar}
                 </ToolbarContainer>
                 <OptionContainer hidden={this.state.full}>
                     {this.props.options}

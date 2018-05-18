@@ -1,4 +1,3 @@
-import Lodash from 'lodash'
 import React from 'react'
 import Styled from 'styled-components'
 
@@ -34,13 +33,6 @@ export default class extends React.Component {
         dispatch(this.props.trigger)
     }
 
-    shouldComponentUpdate(props, state) {
-        return (
-            !Lodash.isEqual(props, this.props) ||
-            !Lodash.isEqual(state, this.state)
-        )
-    }
-
     componentDidMount() {
         this.interval = window.setInterval(
             this.reload,
@@ -56,7 +48,7 @@ export default class extends React.Component {
         return (
             <Container>
                 <SubContainer>
-                    <MainText mobile={Device.mobile()}>Yikes ...</MainText>
+                    <MainText mobile={Device.mobile()}>Yikes</MainText>
                     <MainText mobile={Device.mobile()}>it seems</MainText>
                     <MainText mobile={Device.mobile()}>we are doing</MainText>
                     <MainText mobile={Device.mobile()}>maintenance</MainText>

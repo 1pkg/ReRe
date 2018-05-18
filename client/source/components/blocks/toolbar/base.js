@@ -3,35 +3,32 @@ import React from 'react'
 import Styled from 'styled-components'
 
 const Container = Styled.div`
-    flex: 3 1 0;
+    flex: 1 1 0;
     display: flex;
     align-items: center;
-    justify-content:
-        ${props => (props.full ? 'space-between' : 'space-around')};
+    justify-content: space-between;
 `
 
 export default class extends React.Component {
-    shouldComponentUpdate(props, state) {
-        return (
-            !Lodash.isEqual(props, this.props) ||
-            !Lodash.isEqual(state, this.state)
-        )
-    }
-
     actions() {
-        return Lodash.map(this.props.actions, (Action, index) => {
+        let actions = Lodash.filter(this.props.actions, (action, name) => {
+            return !this.props.handled[name.toLocaleLowerCase()]
+        })
+        return Lodash.map(actions, (Action, index) => {
             return (
                 <Action
                     key={index}
                     trigger={this.props.trigger}
                     settings={this.props.settings}
                     timestamp={this.props.timestamp}
+                    full={this.props.full}
+                    toggle={this.props.toggle}
                 />
             )
         })
     }
 
     render() {
-        return <Container full={this.props.full}>{this.actions()}</Container>
+        return <Container>{this.actions()}</Container>
     }
 }

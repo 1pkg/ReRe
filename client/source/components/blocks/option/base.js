@@ -1,4 +1,3 @@
-import Lodash from 'lodash'
 import React from 'react'
 import Styled from 'styled-components'
 
@@ -51,13 +50,6 @@ const Source = Styled.div`
 `
 
 export default class extends React.Component {
-    shouldComponentUpdate(props, state) {
-        return (
-            !Lodash.isEqual(props, this.props) ||
-            !Lodash.isEqual(state, this.state)
-        )
-    }
-
     title() {
         let parts = this.props.option.name.match(/(.*) \((.*)\)/)
         return parts[1]

@@ -37,13 +37,6 @@ export default class extends React.Component {
         this.state = { width: 0, height: 0 }
     }
 
-    shouldComponentUpdate(props, state) {
-        return (
-            !Lodash.isEqual(props, this.props) ||
-            !Lodash.isEqual(state, this.state)
-        )
-    }
-
     componentDidMount() {
         window.addEventListener('resize', this.fit)
     }

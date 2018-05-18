@@ -17,7 +17,9 @@ class Devote(Access):
             })
         setting = {
             'choose-period': int(Setting.get('choose-period')),
-            'disclaimer-message': str(Setting.get('disclaimer-message')),
+            'share-title': str(Setting.get('share-title')),
+            'copyright-text': str(Setting.get('copyright-text')),
+            'disclaimer-text': str(Setting.get('disclaimer-text')),
         }
         return {
             'shaders': shaders,

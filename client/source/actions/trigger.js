@@ -15,8 +15,9 @@ import {
 export default class Trigger {
     static STATUS_ACTIVE = 'status-active'
     static STATUS_CORRECT = 'status-correct'
-    static STATUS_WRONG = 'status-wrong'
     static STATUS_LAND = 'status-land'
+    static STATUS_WAIT = 'status-wait'
+    static STATUS_WRONG = 'status-wrong'
 
     static ACTION_CHOOSE = 'action-chose'
     static ACTION_DEVOTE = 'action-devote'
@@ -29,6 +30,7 @@ export default class Trigger {
 
     static ACTION_STORE = 'action-store'
     static ACTION_RELOAD = 'action-reload'
+    static ACTION_WAIT = 'action-wait'
 
     constructor(store) {
         this.store = store

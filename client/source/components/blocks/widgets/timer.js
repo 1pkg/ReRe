@@ -22,18 +22,22 @@ export default class extends React.Component {
     tick = async () => {
         this.setState(state => {
             let timestamp = Timestamp.current()
-            let period = state.period - (timestamp - state.timestamp)
-            if (period <= 0) {
+            let current = state.period - (timestamp - state.timestamp)
+            if (current <= 0) {
                 this.props.trigger.call(Trigger.ACTION_CHOOSE, -1)
             }
-            return { timestamp, period }
+            return { ...state, current }
         })
     }
 
     constructor(props) {
         super(props)
         this.interval = null
-        this.state = { timestamp: null, period: null }
+        this.state = {
+            timestamp: null,
+            period: null,
+            current: null,
+        }
     }
 
     componentDidMount() {
@@ -41,34 +45,20 @@ export default class extends React.Component {
             return {
                 timestamp: this.props.timestamp,
                 period: this.props.settings['choose-period'],
+                current: null,
             }
         })
-        setTimeout(() => {
-            this.interval = window.setInterval(this.tick, TIMER_TICK_INTERVAL)
-        })
+        this.interval = window.setInterval(this.tick, TIMER_TICK_INTERVAL)
     }
 
     componentWillUnmount() {
         window.clearInterval(this.interval)
     }
 
-    componentWillReceiveProps(props) {
-        this.setState(state => {
-            return {
-                timestamp: props.timestamp,
-                period: props.settings['choose-period'],
-            }
-        })
-        window.clearInterval(this.interval)
-        setTimeout(() => {
-            this.interval = window.setInterval(this.tick, TIMER_TICK_INTERVAL)
-        })
-    }
-
     glyph() {
         return (
             <Container>
-                <Period>{this.state.period}</Period>
+                <Period>{this.state.current}</Period>
                 <Clock />
             </Container>
         )

@@ -13,7 +13,7 @@ export default async trigger => {
         trigger.push(Trigger.ACTION_DEVOTE, state)
         return state
     } catch (exception) {
-        trigger.push(Trigger.ACTION_RELOAD, {})
+        trigger.push(Trigger.ACTION_RELOAD, { status: null })
         throw exception
     }
 }

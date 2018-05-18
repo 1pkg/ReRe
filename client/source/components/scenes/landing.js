@@ -1,20 +1,14 @@
-import Lodash from 'lodash'
 import React from 'react'
 import Styled from 'styled-components'
 
 import { Device } from '~/helpers'
-import { Plain as Toolbar } from './../blocks/toolbar'
-import { Tape } from './../blocks/widgets'
+import { Cut as Toolbar } from './../blocks/toolbar'
+import { Copyright, Tape } from './../blocks/widgets'
 
 const Container = Styled.div`
     flex: 1 1 0;
     display: flex;
     flex-direction: column;
-`
-
-const Text = Styled.div`
-    text-align: center;
-    margin-top: 0.5rem;
 `
 
 const InnerContainer = Styled.div`
@@ -33,32 +27,25 @@ const ToolbarContainer = Styled.div`
 `
 
 export default class extends React.Component {
-    shouldComponentUpdate(props, state) {
-        return (
-            !Lodash.isEqual(props, this.props) ||
-            !Lodash.isEqual(state, this.state)
-        )
-    }
-
     render() {
         return (
             <Container>
-                <Text>popular</Text>
+                <Copyright settings={this.props.state.settings} />
                 <InnerContainer mobile={Device.mobile()}>
                     <Tape
-                        title={'Daily'}
+                        title={'Daily Popular'}
                         trigger={this.props.trigger}
                         shaders={this.props.state.shaders}
                         list={this.props.state.lists.daily}
                     />
                     <Tape
-                        title={'Weekly'}
+                        title={'Weekly Popular'}
                         trigger={this.props.trigger}
                         shaders={this.props.state.shaders}
                         list={this.props.state.lists.weekly}
                     />
                     <Tape
-                        title={'Monthly'}
+                        title={'Monthly Popular'}
                         trigger={this.props.trigger}
                         shaders={this.props.state.shaders}
                         list={this.props.state.lists.monthly}
@@ -67,9 +54,7 @@ export default class extends React.Component {
                 <ToolbarContainer>
                     <Toolbar
                         trigger={this.props.trigger}
-                        disclaimer={
-                            this.props.state.settings['disclaimer-message']
-                        }
+                        settings={this.props.state.settings}
                     />
                 </ToolbarContainer>
             </Container>

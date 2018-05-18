@@ -1,4 +1,3 @@
-import Lodash from 'lodash'
 import React from 'react'
 import File from 'react-icons/lib/fa/file-o'
 import Styled from 'styled-components'
@@ -26,20 +25,13 @@ export default class extends React.Component {
         this.state = { modal: false }
     }
 
-    shouldComponentUpdate(props, state) {
-        return (
-            !Lodash.isEqual(props, this.props) ||
-            !Lodash.isEqual(state, this.state)
-        )
-    }
-
     render() {
         return (
             <Container>
                 <Button glyph={<File />} action={this.show} />
                 <Modal
                     title={'Disclaimer'}
-                    content={this.props.disclaimer}
+                    content={this.props.settings['disclaimer-text']}
                     active={this.state.modal}
                     hide={this.hide}
                 />

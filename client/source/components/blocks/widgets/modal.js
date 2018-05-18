@@ -1,4 +1,3 @@
-import Lodash from 'lodash'
 import React from 'react'
 import ReactDOM from 'react-dom'
 import Cross from 'react-icons/lib/fa/close'
@@ -79,13 +78,6 @@ export default class extends React.Component {
         if (event.currentTarget === element) {
             this.props.hide()
         }
-    }
-
-    shouldComponentUpdate(props, state) {
-        return (
-            !Lodash.isEqual(props, this.props) ||
-            !Lodash.isEqual(state, this.state)
-        )
     }
 
     render() {

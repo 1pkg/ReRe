@@ -62,13 +62,6 @@ export default class extends React.Component {
         })
     }
 
-    shouldComponentUpdate(props, state) {
-        return (
-            !Lodash.isEqual(props, this.props) ||
-            !Lodash.isEqual(state, this.state)
-        )
-    }
-
     componentDidMount() {
         let size = this.props.children.length - 1
         let index = this.props.option ? this.props.option - 1 : 0

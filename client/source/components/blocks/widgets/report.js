@@ -1,4 +1,3 @@
-import Lodash from 'lodash'
 import React from 'react'
 import Flag from 'react-icons/lib/fa/flag-o'
 import Check from 'react-icons/lib/fa/check'
@@ -49,13 +48,6 @@ export default class extends React.Component {
     constructor(props) {
         super(props)
         this.state = { modal: false }
-    }
-
-    shouldComponentUpdate(props, state) {
-        return (
-            !Lodash.isEqual(props, this.props) ||
-            !Lodash.isEqual(state, this.state)
-        )
     }
 
     content() {

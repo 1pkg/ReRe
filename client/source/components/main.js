@@ -1,9 +1,10 @@
+import Lodash from 'lodash'
 import React from 'react'
 import { connect } from 'react-redux'
 import Styled from 'styled-components'
 
 import Trigger from '~/actions/trigger'
-import { Choose, Landing, Maintenance, Result } from './scenes'
+import { Choose, Landing, Maintenance, Result, Wait } from './scenes'
 
 const Container = Styled.div`
     display: flex;
@@ -16,14 +17,10 @@ export default connect(state => {
 })(
     class extends React.Component {
         componentDidCatch(error, info) {
-            this.props.trigger.push(Trigger.ACTION_RELOAD, {})
+            this.props.trigger.push(Trigger.ACTION_RELOAD, { status: null })
         }
 
         scene(trigger, state) {
-            if (!state || !('status' in state)) {
-                return <Maintenance trigger={trigger} state={state} />
-            }
-
             switch (state.status) {
                 case Trigger.STATUS_LAND:
                     return <Landing trigger={trigger} state={state} />
@@ -35,17 +32,23 @@ export default connect(state => {
                 case Trigger.STATUS_WRONG:
                     return <Result trigger={trigger} state={state} />
 
+                case Trigger.STATUS_WAIT:
+                    return <Wait trigger={trigger} state={state} />
+
                 default:
-                    return null
+                    return <Maintenance trigger={trigger} state={state} />
             }
         }
 
         render() {
-            return (
-                <Container>
-                    {this.scene(this.props.trigger, this.props.state)}
-                </Container>
-            )
+            if (!Lodash.isEmpty(this.props.state)) {
+                return (
+                    <Container>
+                        {this.scene(this.props.trigger, this.props.state)}
+                    </Container>
+                )
+            }
+            return null
         }
     },
 )

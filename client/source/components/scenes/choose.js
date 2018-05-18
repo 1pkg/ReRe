@@ -31,26 +31,14 @@ export default class extends React.Component {
         })
     }
 
-    toolbar() {
-        return (
-            <Toolbar
-                trigger={this.props.trigger}
-                settings={this.props.state.settings}
-                handled={this.props.state.task.handled}
-                timestamp={this.props.state.timestamp}
-            />
-        )
-    }
-
     render() {
         return (
             <Base
                 state={this.props.state}
                 trigger={this.props.trigger}
-                settings={this.props.state.settings}
                 subject={this.subject()}
                 options={this.options()}
-                toolbar={this.toolbar()}
+                toolbar={Toolbar}
             />
         )
     }

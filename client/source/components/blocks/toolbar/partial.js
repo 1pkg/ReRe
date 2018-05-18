@@ -6,10 +6,8 @@ import {
     Fetch,
     Land,
     Reddit,
-    Remake,
     Report,
     Star,
-    Timer,
     Toggle,
     Twitter,
 } from './../widgets'
@@ -27,9 +25,7 @@ export default class extends React.Component {
                     Star,
                     Disclaimer,
                     Land,
-                    Timer,
                     Report,
-                    Remake,
                     Fetch,
                 }}
                 trigger={this.props.trigger}

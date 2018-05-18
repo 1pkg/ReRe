@@ -1,7 +1,7 @@
 import Lodash from 'lodash'
 import React from 'react'
 
-import { Short as Toolbar } from './../blocks/toolbar'
+import { Partial as Toolbar } from './../blocks/toolbar'
 import { Source as Subject } from './../blocks/subject'
 import { Correct, Wrong } from './../blocks/option'
 import Base from './base'
@@ -19,27 +19,14 @@ export default class extends React.Component {
         })
     }
 
-    toolbar() {
-        return (
-            <Toolbar
-                trigger={this.props.trigger}
-                settings={this.props.state.settings}
-                handled={this.props.state.task.handled}
-                timestamp={this.props.state.timestamp}
-            />
-        )
-    }
-
     render() {
         return (
             <Base
                 state={this.props.state}
                 trigger={this.props.trigger}
-                settings={this.props.state.settings}
                 subject={this.subject()}
                 options={this.options()}
-                toolbar={this.toolbar()}
-                option={this.props.state.option}
+                toolbar={Toolbar}
             />
         )
     }

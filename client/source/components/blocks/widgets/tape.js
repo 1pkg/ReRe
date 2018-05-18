@@ -44,13 +44,6 @@ export default class extends React.Component {
         this.props.trigger.call(Trigger.ACTION_FETCH, label)
     }
 
-    shouldComponentUpdate(props, state) {
-        return (
-            !Lodash.isEqual(props, this.props) ||
-            !Lodash.isEqual(state, this.state)
-        )
-    }
-
     snippets() {
         return Lodash.map(this.props.list, (task, index) => {
             return (

@@ -6,6 +6,10 @@ import Trigger from './trigger'
 export default async (trigger, label = '', history = true) => {
     try {
         let state = trigger.state()
+        state.status = Trigger.STATUS_WAIT
+        trigger.push(Trigger.ACTION_WAIT, state)
+
+        state = trigger.state()
         let response = await Axios.post('fetch', {
             token: state.token,
             label,
@@ -21,7 +25,7 @@ export default async (trigger, label = '', history = true) => {
         trigger.push(Trigger.ACTION_FETCH, state)
         return state
     } catch (exception) {
-        trigger.push(Trigger.ACTION_RELOAD, {})
+        trigger.push(Trigger.ACTION_RELOAD, { status: null })
         throw exception
     }
 }
