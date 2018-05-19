@@ -17,7 +17,9 @@ export default connect(state => {
 })(
     class extends React.Component {
         componentDidCatch(error, info) {
-            this.props.trigger.push(Trigger.ACTION_RELOAD, { status: null })
+            this.props.trigger.push(Trigger.ACTION_RELOAD, {
+                status: Trigger.STATUS_ERROR,
+            })
         }
 
         scene(trigger, state) {

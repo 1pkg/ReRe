@@ -30,7 +30,7 @@ class Choose(Identify):
             choosen = self._task.options[self.__option - 1]
             result = \
                 datetime.timestamp() - self._timestamp \
-                < int(Setting.get('choose-period')) \
+                < Setting.get(Setting.NAME_CHOSE_PERIOD) \
                 and self._task.subject.option.id == choosen.id
         else:
             choosen = None

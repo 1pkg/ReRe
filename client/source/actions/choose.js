@@ -21,7 +21,7 @@ export default async (trigger, option) => {
         trigger.push(Trigger.ACTION_CHOOSE, state)
         return state
     } catch (exception) {
-        trigger.push(Trigger.ACTION_RELOAD, { status: null })
+        trigger.push(Trigger.ACTION_RELOAD, { status: Trigger.STATUS_ERROR })
         throw exception
     }
 }

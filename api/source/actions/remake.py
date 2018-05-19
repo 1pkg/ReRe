@@ -14,7 +14,7 @@ class Remake(Identify, FSingleID):
 
         effects = Effect.query \
             .order_by(db.func.random()) \
-            .limit(int(Setting.get('effect-count'))).all()
+            .limit(Setting.get(Setting.NAME_EFFECT_COUNT)).all()
         label = c_hash.hex(
             c_hash.SHORT_DIGEST,
             datetime.timestamp(),

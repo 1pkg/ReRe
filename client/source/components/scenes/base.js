@@ -60,7 +60,7 @@ export default class extends React.Component {
                     />
                 </ToolbarContainer>
                 <OptionContainer hidden={this.state.full}>
-                    <Carousel option={this.props.option}>
+                    <Carousel option={this.props.state.option}>
                         {this.props.options}
                     </Carousel>
                 </OptionContainer>

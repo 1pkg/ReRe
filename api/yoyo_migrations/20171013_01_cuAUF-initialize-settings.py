@@ -10,6 +10,8 @@ steps = [
           ('effect-count', '2'),
           ('choose-period', '60'),
           ('land-count', '5'),
+          ('task-rating-offset', '1000'),
+          ('task-novelty-period', '-3'),
           ('share-title', 'Fun quiz-game: reveal TRUE essence of image past various effects, filters and deformations.'),
           ('copyright-text', 'rect.io © 2018 all rights reserved'),
           ('disclaimer-text', '

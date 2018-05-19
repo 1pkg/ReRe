@@ -7,6 +7,7 @@ import Trigger from '~/actions/trigger'
 const Container = Styled.div`
     flex: 1 1 0;
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
 `
@@ -25,9 +26,18 @@ const Spinner = Styled.div`
     animation: ${Rotate} 1s linear infinite;
 `
 
+const Text = Styled.div`
+    font-size: 0.5rem;
+    font-style: italic;
+    text-transform: lowercase;
+    margin-top: 3rem;
+`
+
 export default class extends React.Component {
     reload = () => {
-        this.props.trigger.push(Trigger.ACTION_RELOAD, { status: null })
+        this.props.trigger.push(Trigger.ACTION_RELOAD, {
+            status: Trigger.STATUS_ERROR,
+        })
     }
 
     componentDidMount() {
@@ -42,6 +52,7 @@ export default class extends React.Component {
         return (
             <Container>
                 <Spinner />
+                <Text>loading</Text>
             </Container>
         )
     }

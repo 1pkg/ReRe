@@ -7,19 +7,16 @@ class Devote(Access):
     CACHE_EXPIRE = 86400
 
     def _process(self, request):
-        shaders = []
-        effects = Effect.query.all()
-        for effect in effects:
-            shaders.append({
-                'name': effect.name,
-                'shader': effect.shader,
-                'uniform': effect.uniform,
-            })
+        shaders = [{
+            'name': effect.name,
+            'shader': effect.shader,
+            'uniform': effect.uniform,
+        } for effect in Effect.query]
         setting = {
-            'choose-period': int(Setting.get('choose-period')),
-            'share-title': str(Setting.get('share-title')),
-            'copyright-text': str(Setting.get('copyright-text')),
-            'disclaimer-text': str(Setting.get('disclaimer-text')),
+            Setting.NAME_CHOSE_PERIOD: Setting.get(Setting.NAME_CHOSE_PERIOD),
+            Setting.NAME_SHARE_TITLE: Setting.get(Setting.NAME_SHARE_TITLE),
+            Setting.NAME_COPYRIGHT_TEXT: Setting.get(Setting.NAME_COPYRIGHT_TEXT),
+            Setting.NAME_DISCLAIMER_TEXT: Setting.get(Setting.NAME_DISCLAIMER_TEXT),
         }
         return {
             'shaders': shaders,

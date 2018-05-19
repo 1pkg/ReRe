@@ -25,7 +25,7 @@ export default async (trigger, label = '', history = true) => {
         trigger.push(Trigger.ACTION_FETCH, state)
         return state
     } catch (exception) {
-        trigger.push(Trigger.ACTION_RELOAD, { status: null })
+        trigger.push(Trigger.ACTION_RELOAD, { status: Trigger.STATUS_ERROR })
         throw exception
     }
 }

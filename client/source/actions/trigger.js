@@ -18,6 +18,7 @@ export default class Trigger {
     static STATUS_LAND = 'status-land'
     static STATUS_WAIT = 'status-wait'
     static STATUS_WRONG = 'status-wrong'
+    static STATUS_ERROR = 'status-error'
 
     static ACTION_CHOOSE = 'action-chose'
     static ACTION_DEVOTE = 'action-devote'

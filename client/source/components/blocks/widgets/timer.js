@@ -8,14 +8,15 @@ import Button from './button'
 
 const Container = Styled.div`
     display: flex;
+    flex-direction: column;
     align-items: center;
+    justify-content: center;
 `
 
 const Period = Styled.div`
-    font-size: 0.7rem;
+    font-size: 0.5rem;
     font-style: italic;
     text-transform: lowercase;
-    margin-right: 0.1rem;
 `
 
 export default class extends React.Component {
@@ -58,8 +59,8 @@ export default class extends React.Component {
     glyph() {
         return (
             <Container>
-                <Period>{this.state.current}</Period>
                 <Clock />
+                <Period>{this.state.current}</Period>
             </Container>
         )
     }

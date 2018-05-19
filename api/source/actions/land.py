@@ -1,4 +1,4 @@
-from models import Task, Subject, Setting
+from models import Mark, Setting, Subject, Task
 from .mixins import Access, FList
 
 
@@ -21,13 +21,19 @@ class Land(Access, FList):
         datetime = self._application.datetime
 
         return Task.query \
+            .join(Mark) \
             .filter(
-                Task.active == True,
-                Subject.orientation == device.orientation(),
-                Task.time_stamp >= datetime.date(-1),
+                db.and_(
+                    Task.active == True,
+                    Subject.orientation == device.orientation(),
+                    Task.time_stamp >= datetime.date(-1),
+                ),
             ) \
-            .order_by(db.func.random()) \
-            .limit(int(Setting.get('land-count'))).all()
+            .group_by(Task.id) \
+            .order_by(
+                db.func.count(Mark.id),
+                db.func.random(),
+            ).limit(Setting.get(Setting.NAME_LAND_COUNT)).all()
 
     def __weekly(self):
         db = self._application.db
@@ -35,13 +41,19 @@ class Land(Access, FList):
         datetime = self._application.datetime
 
         return Task.query \
+            .join(Mark) \
             .filter(
-                Task.active == True,
-                Subject.orientation == device.orientation(),
-                Task.time_stamp >= datetime.date(-7),
+                db.and_(
+                    Task.active == True,
+                    Subject.orientation == device.orientation(),
+                    Task.time_stamp >= datetime.date(-7),
+                ),
             ) \
-            .order_by(db.func.random()) \
-            .limit(int(Setting.get('land-count'))).all()
+            .group_by(Task.id) \
+            .order_by(
+                db.func.count(Mark.id),
+                db.func.random(),
+            ).limit(Setting.get(Setting.NAME_LAND_COUNT)).all()
 
     def __monthly(self):
         db = self._application.db
@@ -49,10 +61,16 @@ class Land(Access, FList):
         datetime = self._application.datetime
 
         return Task.query \
+            .join(Mark) \
             .filter(
-                Task.active == True,
-                Subject.orientation == device.orientation(),
-                Task.time_stamp >= datetime.date(-30),
+                db.and_(
+                    Task.active == True,
+                    Subject.orientation == device.orientation(),
+                    Task.time_stamp >= datetime.date(-30),
+                ),
             ) \
-            .order_by(db.func.random()) \
-            .limit(int(Setting.get('land-count'))).all()
+            .group_by(Task.id) \
+            .order_by(
+                db.func.count(Mark.id),
+                db.func.random(),
+            ).limit(Setting.get(Setting.NAME_LAND_COUNT)).all()

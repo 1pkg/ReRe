@@ -9,6 +9,7 @@ class Mark(Identify):
 
     def _validate(self, request):
         super()._validate(request)
+        db = self._application.db
         validator = self._application.validator
 
         self.__type = str(self._get(request, 'type', ''))
@@ -17,10 +18,12 @@ class Mark(Identify):
         self.__type = Type[self.__type]
 
         mark = MarkModel.query \
-            .filter_by(
-                type=self.__type,
-                task_id=self._task.id,
-                session_id=self._session.id,
+            .filter(
+                db.and_(
+                    MarkModel.type == self.__type,
+                    MarkModel.task_id == self._task.id,
+                    MarkModel.session_id == self._session.id,
+                ),
             ).first()
         if mark is not None:
             raise errors.Request('type', str(self.__type))

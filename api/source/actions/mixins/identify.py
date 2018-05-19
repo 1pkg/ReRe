@@ -21,7 +21,6 @@ class Identify(Access):
             raise errors.Identity()
 
         self._timestamp = int(identity['timestamp'])
-        self._task = Task.query \
-            .get(int(identity['task_id']))
+        self._task = Task.query.get(int(identity['task_id']))
         if self._task is None:
             raise errors.Identity()

@@ -12,7 +12,7 @@ export default async trigger => {
         trigger.push(Trigger.ACTION_HANDSHAKE, state)
         return state
     } catch (exception) {
-        trigger.push(Trigger.ACTION_RELOAD, { status: null })
+        trigger.push(Trigger.ACTION_RELOAD, { status: Trigger.STATUS_ERROR })
         throw exception
     }
 }

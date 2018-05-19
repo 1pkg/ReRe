@@ -42,9 +42,7 @@
         "webpack-dev-server": "^3.1.4"
     },
     "scripts": {
-        "development":
-            "webpack-dev-server --mode development --debug --display-error-details --hot --watch-poll --env.mode development --env.debug",
-        "build":
-            "webpack --mode production --optimize-minimize --profile --colors --verbose --env.mode production"
+        "development": "webpack-dev-server --mode development --debug --display-error-details --hot --watch-poll --env.mode development --env.debug",
+        "build": "webpack --mode production --optimize-minimize --profile --colors --verbose --env.mode production"
     }
 }

@@ -14,7 +14,8 @@ class Access(Action):
             raise errors.Token(token)
 
         self._session = Session.query \
-            .filter_by(token=token).first()
+            .filter(Session.token == token) \
+            .first()
         if self._session is None \
                 or datetime.diff(self._session.time_stamp) > 21600:
             raise errors.Token(token)
