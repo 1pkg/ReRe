@@ -50,12 +50,6 @@ module.exports = env => {
             new Webpack.DefinePlugin(
                 JSON.parse(Fs.readFileSync(`./settings/${env.mode}.json`)),
             ),
-            new CopyPlugin([
-                { from: 'static/fonts/', to: 'fonts/' },
-                { from: 'static/icons/', to: 'icons/' },
-                { from: 'static/icons/favicon.ico', to: 'favicon.ico' },
-                { from: 'static/manifest.json', to: 'manifest.json' },
-            ]),
         ],
     }
     if (env.debug) {
@@ -74,6 +68,12 @@ module.exports = env => {
         )
     } else {
         webpack.plugins.push(
+            new CopyPlugin([
+                { from: 'static/fonts/', to: 'fonts/' },
+                { from: 'static/icons/', to: 'icons/' },
+                { from: 'static/icons/favicon.ico', to: 'favicon.ico' },
+                { from: 'static/manifest.json', to: 'manifest.json' },
+            ]),
             new HtmlPlugin({
                 template: 'static/main.html',
                 inlineSource: /\.jsx?$/,
@@ -101,9 +101,9 @@ module.exports = env => {
                 parallel: true,
                 sourceMap: false,
             }),
-            // new OnBuildPlugin(function() {
-            //    Fs.unlink(Path.join(__dirname, 'build', 'bundle.js'))
-            // }),
+            new OnBuildPlugin(function() {
+                Fs.unlink(Path.join(__dirname, 'build', 'bundle.js'))
+            }),
             // new CleanPlugin('build'),
         )
     }

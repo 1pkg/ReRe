@@ -9,7 +9,6 @@ class Mail(Component):
         message = Message(
             subject=subject,
             body=body,
-            sender=settings['TECHNICAL_EMAIL'],
-            recipients=[settings['TECHNICAL_EMAIL']],
+            recipients=[settings['MAIL_DEFAULT_SENDER']],
         )
         self._application.extensions['mail'].send(message)

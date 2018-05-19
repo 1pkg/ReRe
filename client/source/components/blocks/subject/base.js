@@ -65,7 +65,7 @@ export default class extends React.Component {
                     <Effect
                         width={this.state.width}
                         height={this.state.height}
-                        shader={shader.shader}
+                        shader={shader.compiled.self}
                         uniform={shader.uniform}
                     >
                         <GLReactImage
@@ -81,7 +81,7 @@ export default class extends React.Component {
                     <Effect
                         width={this.state.width}
                         height={this.state.height}
-                        shader={shader.shader}
+                        shader={shader.compiled.self}
                         uniform={shader.uniform}
                     >
                         {Subject}

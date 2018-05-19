@@ -20,12 +20,13 @@ const Container = Styled.div`
 `
 
 const InnerContainer = Styled.div`
-    flex: ${props => (props.mobile ? '1 1 0' : 'auto')};
+    flex: ${props => (props.mobile ? '1 1 0' : '0 0 auto')};
     padding: 2.5rem;
-    margin: ${props => (props.mobile ? '0rem' : '2.5rem')};
+    margin: ${props => (props.mobile ? '0rem' : 'auto')};
     background-color: white;
     display: flex;
     flex-direction: column;
+    justify-content: center;
     overflow-y: auto;
 `
 
@@ -33,7 +34,7 @@ const TitleContainer = Styled.div`
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 1.5rem;
+    margin-bottom: 1rem;
 `
 
 const Title = Styled.div`
@@ -45,7 +46,6 @@ const Title = Styled.div`
 `
 
 const Content = Styled.div`
-    flex: 1 1 0;
     font-size: 1rem;
     text-align: justify;
     white-space: pre-wrap;
@@ -75,7 +75,7 @@ class Close extends React.Component {
 export default class extends React.Component {
     hide = event => {
         let element = ReactDOM.findDOMNode(this)
-        if (event.currentTarget === element) {
+        if (event.target === element) {
             this.props.hide()
         }
     }
@@ -88,7 +88,9 @@ export default class extends React.Component {
                         <Title>{this.props.title}</Title>
                         <Close action={this.props.hide} />
                     </TitleContainer>
-                    <Content>{this.props.content}</Content>
+                    <Content mobile={Device.mobile()}>
+                        {this.props.content}
+                    </Content>
                 </InnerContainer>
             </Container>
         )

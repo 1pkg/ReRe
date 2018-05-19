@@ -1,6 +1,5 @@
 import os
 import flask
-import flask_migrate
 import flask_limiter
 import flask_cache
 import flask_cors
@@ -14,6 +13,7 @@ import logging.handlers
 import base
 import components
 import actions
+import models
 
 
 class Application:
@@ -65,10 +65,10 @@ class Application:
             self.db = base.Alchemy
             self.db.init_app(instance)
             self.db.create_all()
+            self.db.session.commit()
 
             flask_cors.CORS(instance)
             flask_mobility.Mobility(instance)
-            flask_migrate.Migrate(instance, base.Alchemy)
 
             handler = logging.handlers.RotatingFileHandler(
                 os.path.join(

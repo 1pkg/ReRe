@@ -9,7 +9,7 @@ class Devote(Access):
     def _process(self, request):
         shaders = [{
             'name': effect.name,
-            'shader': effect.shader,
+            'code': effect.shader,
             'uniform': effect.uniform,
         } for effect in Effect.query]
         setting = {

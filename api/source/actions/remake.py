@@ -1,4 +1,4 @@
-from models import Task, Effect, Setting
+from models import Effect, Setting, Task
 from .mixins import FSingleID, Identify
 
 

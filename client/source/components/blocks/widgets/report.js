@@ -4,7 +4,7 @@ import Check from 'react-icons/lib/fa/check'
 import Styled from 'styled-components'
 
 import Trigger from '~/actions/trigger'
-import { Url } from '~/helpers'
+import { Url, Device } from '~/helpers'
 import Button from './button'
 import Modal from './modal'
 
@@ -19,11 +19,9 @@ const Form = Styled.div`
 `
 
 const Textarea = Styled.textarea`
-    width: 100%;
-    height: 100%;
+    min-width: ${props => (props.mobile ? '18rem' : '36rem')};
     min-height: 12rem;
-    margin-top: 1rem;
-    margin-bottom: 1rem;
+    margin: 1rem;
 `
 
 export default class extends React.Component {
@@ -54,7 +52,7 @@ export default class extends React.Component {
         let message = `I want report current task\n${Url.current()}\nfor next reason`
         return (
             <Form>
-                <Textarea defaultValue={message} />
+                <Textarea defaultValue={message} mobile={Device.mobile()} />
                 <Button glyph={<Check />} action={this.report} />
             </Form>
         )
@@ -65,6 +63,7 @@ export default class extends React.Component {
             <Container>
                 <Button glyph={<Flag />} action={this.show} />
                 <Modal
+                    title={'Report'}
                     content={this.content()}
                     active={this.state.modal}
                     hide={this.hide}

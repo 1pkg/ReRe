@@ -9,7 +9,6 @@
 /api/env/
 /api/**/__pycache__/
 /api/logs/
-/api/migrations/
 /api/settings/*.cfg
 !/api/settings/*.dist.cfg
 /api/yoyo.ini
