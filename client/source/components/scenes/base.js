@@ -1,10 +1,17 @@
 import React from 'react'
+import Swipeable from 'react-swipeable'
 import Styled from 'styled-components'
 
 import { Device } from '~/helpers'
 import { Carousel } from './../blocks/widgets'
 
 const Container = Styled.div`
+    flex: 1 1 0;
+    display: flex;
+    flex-direction: column;
+`
+
+const SwipeableContainer = Styled(Swipeable)`
     flex: 1 1 0;
     display: flex;
     flex-direction: column;
@@ -30,6 +37,20 @@ const ToolbarContainer = Styled.div`
 `
 
 export default class extends React.Component {
+    expand = () => {
+        this.setState(state => {
+            setTimeout(() => window.dispatchEvent(new Event('resize')))
+            return { full: true }
+        })
+    }
+
+    colapse = () => {
+        this.setState(state => {
+            setTimeout(() => window.dispatchEvent(new Event('resize')))
+            return { full: false }
+        })
+    }
+
     toggle = () => {
         this.setState(state => {
             setTimeout(() => window.dispatchEvent(new Event('resize')))
@@ -45,7 +66,10 @@ export default class extends React.Component {
     mobile() {
         const Toolbar = this.props.toolbar
         return (
-            <Container>
+            <SwipeableContainer
+                onSwipedDown={this.expand}
+                onSwipedUp={this.colapse}
+            >
                 <SubjectContainer full={this.state.full}>
                     {this.props.subject}
                 </SubjectContainer>
@@ -60,11 +84,11 @@ export default class extends React.Component {
                     />
                 </ToolbarContainer>
                 <OptionContainer hidden={this.state.full}>
-                    <Carousel option={this.props.state.option}>
+                    <Carousel active={this.props.state.option}>
                         {this.props.options}
                     </Carousel>
                 </OptionContainer>
-            </Container>
+            </SwipeableContainer>
         )
     }
 

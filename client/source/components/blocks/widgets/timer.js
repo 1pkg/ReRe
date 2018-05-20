@@ -46,7 +46,7 @@ export default class extends React.Component {
             return {
                 timestamp: this.props.timestamp,
                 period: this.props.settings['choose-period'],
-                current: null,
+                current: '∞',
             }
         })
         this.interval = window.setInterval(this.tick, TIMER_TICK_INTERVAL)

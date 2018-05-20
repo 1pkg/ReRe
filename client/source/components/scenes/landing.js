@@ -3,7 +3,7 @@ import Styled from 'styled-components'
 
 import { Device } from '~/helpers'
 import { Cut as Toolbar } from './../blocks/toolbar'
-import { Copyright, Tape } from './../blocks/widgets'
+import { Carousel, Copyright, Tape } from './../blocks/widgets'
 
 const Container = Styled.div`
     flex: 1 1 0;
@@ -14,9 +14,7 @@ const Container = Styled.div`
 const InnerContainer = Styled.div`
     flex: 1 1 0;
     display: flex;
-    flex-direction: ${props => (props.mobile ? 'column' : 'row')};
     justify-content: space-between;
-    overflow-y: hidden;
 `
 
 const ToolbarContainer = Styled.div`
@@ -27,29 +25,58 @@ const ToolbarContainer = Styled.div`
 `
 
 export default class extends React.Component {
-    render() {
+    daily() {
+        if (this.props.state.lists.daily.length >= 3) {
+            return (
+                <Tape
+                    title={'Daily Popular'}
+                    trigger={this.props.trigger}
+                    shaders={this.props.state.shaders}
+                    list={this.props.state.lists.daily}
+                />
+            )
+        }
+        return null
+    }
+
+    weekly() {
+        if (this.props.state.lists.weekly.length >= 3) {
+            return (
+                <Tape
+                    title={'Weekly Popular'}
+                    trigger={this.props.trigger}
+                    shaders={this.props.state.shaders}
+                    list={this.props.state.lists.weekly}
+                />
+            )
+        }
+        return null
+    }
+
+    monthly() {
+        if (this.props.state.lists.monthly.length >= 3) {
+            return (
+                <Tape
+                    title={'Monthly Popular'}
+                    trigger={this.props.trigger}
+                    shaders={this.props.state.shaders}
+                    list={this.props.state.lists.monthly}
+                />
+            )
+        }
+        return null
+    }
+
+    mobile() {
         return (
             <Container>
                 <Copyright settings={this.props.state.settings} />
                 <InnerContainer mobile={Device.mobile()}>
-                    <Tape
-                        title={'Daily Popular'}
-                        trigger={this.props.trigger}
-                        shaders={this.props.state.shaders}
-                        list={this.props.state.lists.daily}
-                    />
-                    <Tape
-                        title={'Weekly Popular'}
-                        trigger={this.props.trigger}
-                        shaders={this.props.state.shaders}
-                        list={this.props.state.lists.weekly}
-                    />
-                    <Tape
-                        title={'Monthly Popular'}
-                        trigger={this.props.trigger}
-                        shaders={this.props.state.shaders}
-                        list={this.props.state.lists.monthly}
-                    />
+                    <Carousel>
+                        {this.daily()}
+                        {this.weekly()}
+                        {this.monthly()}
+                    </Carousel>
                 </InnerContainer>
                 <ToolbarContainer>
                     <Toolbar
@@ -59,5 +86,28 @@ export default class extends React.Component {
                 </ToolbarContainer>
             </Container>
         )
+    }
+
+    desktop() {
+        return (
+            <Container>
+                <Copyright settings={this.props.state.settings} />
+                <InnerContainer>
+                    {this.daily()}
+                    {this.weekly()}
+                    {this.monthly()}
+                </InnerContainer>
+                <ToolbarContainer>
+                    <Toolbar
+                        trigger={this.props.trigger}
+                        settings={this.props.state.settings}
+                    />
+                </ToolbarContainer>
+            </Container>
+        )
+    }
+
+    render() {
+        return Device.mobile() ? this.mobile() : this.desktop()
     }
 }

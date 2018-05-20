@@ -7,6 +7,8 @@ const Container = Styled.div`
     flex: 1 1 0;
     display: flex;
     flex-direction: column;
+    max-width: 100vw;
+    max-height: 100vh;
 `
 
 const SwipeableContainer = Styled(Swipeable)`
@@ -63,42 +65,49 @@ export default class extends React.Component {
     }
 
     componentDidMount() {
-        let size = this.props.children.length - 1
-        let index = this.props.option ? this.props.option - 1 : 0
+        let size = this.props.children.filter(child => child).length - 1
+        let index = this.props.active ? this.props.active - 1 : 0
         this.setState(state => {
             return { size, index }
         })
     }
 
     render() {
-        if (!this.state) return null
-
-        return (
-            <Container>
-                <SwipeableContainer
-                    onSwipedRight={this.previous}
-                    onSwipedLeft={this.next}
-                >
-                    {Lodash.map(this.props.children, (child, index) => {
-                        let order = index === this.state.index ? 0 : 1
-                        return (
-                            <SwipeableWrapper key={index} order={order}>
-                                {child}
-                            </SwipeableWrapper>
-                        )
-                    })}
-                </SwipeableContainer>
-                <DotContainer>
-                    {Lodash.map(this.props.children, (child, index) => {
-                        return (
-                            <Dot
-                                key={index}
-                                active={index === this.state.index}
-                            />
-                        )
-                    })}
-                </DotContainer>
-            </Container>
-        )
+        if (this.state) {
+            return (
+                <Container>
+                    <SwipeableContainer
+                        onSwipedRight={this.previous}
+                        onSwipedLeft={this.next}
+                    >
+                        {Lodash.map(
+                            this.props.children.filter(child => child),
+                            (child, index) => {
+                                let order = index === this.state.index ? 0 : 1
+                                return (
+                                    <SwipeableWrapper key={index} order={order}>
+                                        {child}
+                                    </SwipeableWrapper>
+                                )
+                            },
+                        )}
+                    </SwipeableContainer>
+                    <DotContainer>
+                        {Lodash.map(
+                            this.props.children.filter(child => child),
+                            (child, index) => {
+                                return (
+                                    <Dot
+                                        key={index}
+                                        active={index === this.state.index}
+                                    />
+                                )
+                            },
+                        )}
+                    </DotContainer>
+                </Container>
+            )
+        }
+        return null
     }
 }

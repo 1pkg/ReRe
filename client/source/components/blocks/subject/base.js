@@ -26,6 +26,7 @@ export default class extends React.Component {
             setTimeout(() => this.forceUpdate())
             let element = ReactDOM.findDOMNode(this)
             return {
+                ...state,
                 width: Math.floor(element.getBoundingClientRect().width),
                 height: Math.floor(element.getBoundingClientRect().height),
             }
@@ -50,39 +51,25 @@ export default class extends React.Component {
     }
 
     effect() {
-        let Subject = null
+        let Subject = (
+            <GLReactImage
+                source={this.link()}
+                width={this.state.width}
+                height={this.state.height}
+                resizeMode="cover"
+            />
+        )
         Lodash.each(this.props.effects, effect => {
             let shader = Lodash.find(
                 this.props.shaders,
                 shader => shader.name === effect.name,
             )
-            if (shader === undefined) {
-                return
-            }
-
-            if (Subject === null) {
+            if (Subject && shader) {
                 Subject = (
                     <Effect
                         width={this.state.width}
                         height={this.state.height}
-                        shader={shader.compiled.self}
-                        uniform={shader.uniform}
-                    >
-                        <GLReactImage
-                            source={this.link()}
-                            width={this.state.width}
-                            height={this.state.height}
-                            resizeMode="cover"
-                        />
-                    </Effect>
-                )
-            } else {
-                Subject = (
-                    <Effect
-                        width={this.state.width}
-                        height={this.state.height}
-                        shader={shader.compiled.self}
-                        uniform={shader.uniform}
+                        shader={shader}
                     >
                         {Subject}
                     </Effect>
