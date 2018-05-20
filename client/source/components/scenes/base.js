@@ -5,7 +5,7 @@ import Styled from 'styled-components'
 import { Device } from '~/helpers'
 import { Carousel } from './../blocks/widgets'
 
-const Container = Styled.div`
+const MainContainer = Styled.div`
     flex: 1 1 0;
     display: flex;
     flex-direction: column;
@@ -95,7 +95,7 @@ export default class extends React.Component {
     desktop() {
         const Toolbar = this.props.toolbar
         return (
-            <Container>
+            <MainContainer>
                 <SubjectContainer full={this.state.full}>
                     {this.props.subject}
                 </SubjectContainer>
@@ -112,7 +112,7 @@ export default class extends React.Component {
                 <OptionContainer hidden={this.state.full}>
                     {this.props.options}
                 </OptionContainer>
-            </Container>
+            </MainContainer>
         )
     }
 

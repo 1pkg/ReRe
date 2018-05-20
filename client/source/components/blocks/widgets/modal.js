@@ -6,24 +6,24 @@ import Styled from 'styled-components'
 import { Device } from '~/helpers'
 import Button from './button'
 
-const Container = Styled.div`
+const MainContainer = Styled.div`
     z-index: 1;
     position: fixed;
     left: 0rem;
     top: 0rem;
     width: 100vw;
     height: 100vh;
-    background-color: rgba(0, 0, 0, 0.9);
+    background-color: ${props => props.theme.threeQuartersMainColor};
     display: ${props => (props.active ? 'flex' : 'none')};
     flex-direction: column;
     justify-content: center;
 `
 
-const InnerContainer = Styled.div`
+const SubContainer = Styled.div`
     flex: ${props => (props.mobile ? '1 1 0' : '0 0 auto')};
     padding: 2.5rem;
     margin: ${props => (props.mobile ? '0rem' : 'auto')};
-    background-color: white;
+    background-color: ${props => props.theme.subColor};
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -82,8 +82,8 @@ export default class extends React.Component {
 
     render() {
         return (
-            <Container active={this.props.active} onClick={this.hide}>
-                <InnerContainer mobile={Device.mobile()}>
+            <MainContainer active={this.props.active} onClick={this.hide}>
+                <SubContainer mobile={Device.mobile()}>
                     <TitleContainer>
                         <Title>{this.props.title}</Title>
                         <Close action={this.props.hide} />
@@ -91,8 +91,8 @@ export default class extends React.Component {
                     <Content mobile={Device.mobile()}>
                         {this.props.content}
                     </Content>
-                </InnerContainer>
-            </Container>
+                </SubContainer>
+            </MainContainer>
         )
     }
 }

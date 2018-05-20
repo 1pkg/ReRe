@@ -5,13 +5,13 @@ import { Device } from '~/helpers'
 import { Cut as Toolbar } from './../blocks/toolbar'
 import { Carousel, Copyright, Tape } from './../blocks/widgets'
 
-const Container = Styled.div`
+const MainContainer = Styled.div`
     flex: 1 1 0;
     display: flex;
     flex-direction: column;
 `
 
-const InnerContainer = Styled.div`
+const SubContainer = Styled.div`
     flex: 1 1 0;
     display: flex;
     justify-content: space-between;
@@ -69,41 +69,41 @@ export default class extends React.Component {
 
     mobile() {
         return (
-            <Container>
+            <MainContainer>
                 <Copyright settings={this.props.state.settings} />
-                <InnerContainer mobile={Device.mobile()}>
+                <SubContainer mobile={Device.mobile()}>
                     <Carousel>
                         {this.daily()}
                         {this.weekly()}
                         {this.monthly()}
                     </Carousel>
-                </InnerContainer>
+                </SubContainer>
                 <ToolbarContainer>
                     <Toolbar
                         trigger={this.props.trigger}
                         settings={this.props.state.settings}
                     />
                 </ToolbarContainer>
-            </Container>
+            </MainContainer>
         )
     }
 
     desktop() {
         return (
-            <Container>
+            <MainContainer>
                 <Copyright settings={this.props.state.settings} />
-                <InnerContainer>
+                <SubContainer>
                     {this.daily()}
                     {this.weekly()}
                     {this.monthly()}
-                </InnerContainer>
+                </SubContainer>
                 <ToolbarContainer>
                     <Toolbar
                         trigger={this.props.trigger}
                         settings={this.props.state.settings}
                     />
                 </ToolbarContainer>
-            </Container>
+            </MainContainer>
         )
     }
 

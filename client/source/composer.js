@@ -1,7 +1,7 @@
-import { createStore, applyMiddleware } from 'redux'
+import { applyMiddleware, createStore } from 'redux'
 import ReduxThunk from 'redux-thunk'
 
-import { Store, History } from './helpers'
+import { History, Store } from './helpers'
 import Trigger from './actions/trigger'
 
 let trigger

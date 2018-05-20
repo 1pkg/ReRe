@@ -1,15 +1,17 @@
 import Lodash from 'lodash'
 import React from 'react'
 import { connect } from 'react-redux'
-import Styled from 'styled-components'
+import Styled, { ThemeProvider } from 'styled-components'
 
 import Trigger from '~/actions/trigger'
 import { Choose, Landing, Maintenance, Result, Wait } from './scenes'
+import Theme from './theme'
 
 const Container = Styled.div`
-    display: flex;
     width: 100vw;
     height: 100vh;
+    display: flex;
+    cursor: default;
 `
 
 export default connect(state => {
@@ -45,9 +47,11 @@ export default connect(state => {
         render() {
             if (!Lodash.isEmpty(this.props.state)) {
                 return (
-                    <Container>
-                        {this.scene(this.props.trigger, this.props.state)}
-                    </Container>
+                    <ThemeProvider theme={Theme}>
+                        <Container>
+                            {this.scene(this.props.trigger, this.props.state)}
+                        </Container>
+                    </ThemeProvider>
                 )
             }
             return null

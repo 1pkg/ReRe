@@ -13,7 +13,7 @@ const Container = Styled.div`
     justify-content: center;
 `
 
-const Period = Styled.div`
+const Text = Styled.div`
     font-size: 0.5rem;
     font-style: italic;
     text-transform: lowercase;
@@ -60,7 +60,7 @@ export default class extends React.Component {
         return (
             <Container>
                 <Clock />
-                <Period>{this.state.current}</Period>
+                <Text>{this.state.current}</Text>
             </Container>
         )
     }

@@ -3,7 +3,7 @@ import React from 'react'
 import Swipeable from 'react-swipeable'
 import Styled from 'styled-components'
 
-const Container = Styled.div`
+const MainContainer = Styled.div`
     flex: 1 1 0;
     display: flex;
     flex-direction: column;
@@ -28,13 +28,15 @@ const DotContainer = Styled.div`
     display: flex;
 `
 
-const Dot = Styled.div`
+const DotElement = Styled.div`
     width: 0.5rem;
     height: 0.5rem;
     border-radius: 0.5rem;
     margin: 0.2rem;
-    background-color: black;
-    opacity: ${props => (props.active ? '0.8' : '0.4')};
+    background-color: ${props =>
+        props.active
+            ? props.theme.threeQuartersMainColor
+            : props.theme.fourthMainColor};
 `
 
 export default class extends React.Component {
@@ -75,7 +77,7 @@ export default class extends React.Component {
     render() {
         if (this.state) {
             return (
-                <Container>
+                <MainContainer>
                     <SwipeableContainer
                         onSwipedRight={this.previous}
                         onSwipedLeft={this.next}
@@ -97,7 +99,7 @@ export default class extends React.Component {
                             this.props.children.filter(child => child),
                             (child, index) => {
                                 return (
-                                    <Dot
+                                    <DotElement
                                         key={index}
                                         active={index === this.state.index}
                                     />
@@ -105,7 +107,7 @@ export default class extends React.Component {
                             },
                         )}
                     </DotContainer>
-                </Container>
+                </MainContainer>
             )
         }
         return null

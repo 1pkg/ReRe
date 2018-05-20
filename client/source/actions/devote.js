@@ -1,4 +1,3 @@
-import Lodash from 'lodash'
 import Axios from 'axios'
 
 import Trigger from './trigger'

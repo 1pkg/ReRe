@@ -5,19 +5,20 @@ import Styled from 'styled-components'
 import Trigger from '~/actions/trigger'
 import { Effect as Subject } from './../subject'
 
-const Container = Styled.div`
+const MainContainer = Styled.div`
     flex: 1 1 0;
     display: flex;
     flex-direction: column;
     margin: 1rem;
 `
 
-const Wrapper = Styled.div`
+const SubContainer = Styled.div`
     flex: 1 1 0;
     display: flex;
     flex-direction: column;
-    border: 0.01rem solid rgba(0, 0, 0, 0.5);
-    box-shadow: 0.1rem 0.1rem 0.1rem 0.1rem rgba(0, 0, 0, 0.3);
+    border: 0.01rem solid ${props => props.theme.halfMainColor};
+    box-shadow:
+        0.1rem 0.1rem 0.1rem 0.1rem ${props => props.theme.fourthMainColor};
     overflow-y: scroll;
 `
 
@@ -63,10 +64,10 @@ export default class extends React.Component {
 
     render() {
         return (
-            <Container>
+            <MainContainer>
                 <Title>{this.props.title}</Title>
-                <Wrapper>{this.snippets()}</Wrapper>
-            </Container>
+                <SubContainer>{this.snippets()}</SubContainer>
+            </MainContainer>
         )
     }
 }

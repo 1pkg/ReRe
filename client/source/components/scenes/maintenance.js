@@ -4,7 +4,7 @@ import Styled from 'styled-components'
 import { Device } from '~/helpers'
 import dispatch from '~/dispatch'
 
-const Container = Styled.div`
+const MainContainer = Styled.div`
     flex: 1 1 0;
     display: flex;
     flex-direction: column;
@@ -46,7 +46,7 @@ export default class extends React.Component {
 
     render() {
         return (
-            <Container>
+            <MainContainer>
                 <SubContainer>
                     <MainText mobile={Device.mobile()}>Yikes</MainText>
                     <MainText mobile={Device.mobile()}>it seems</MainText>
@@ -60,7 +60,7 @@ export default class extends React.Component {
                     <MinorText>or</MinorText>
                     <MinorText>keep tab open for auto refresh</MinorText>
                 </SubContainer>
-            </Container>
+            </MainContainer>
         )
     }
 }

@@ -7,18 +7,19 @@ const Container = Styled.div`
     flex: 1 1 0;
     margin: 0.5rem;
     padding: 0.5rem;
-    border: 0.01rem solid rgba(0, 0, 0, 0.5);
-    box-shadow: 0.1rem 0.1rem 0.1rem 0.1rem rgba(0, 0, 0, 0.3);
+    border: 0.01rem solid ${props => props.theme.halfMainColor};
+    box-shadow:
+        0.1rem 0.1rem 0.1rem 0.1rem ${props => props.theme.fourthMainColor};
     overflow-x: hidden;
     overflow-y: auto;
     opacity: ${props => (props.disabled ? 0.5 : 1.0)};
 `
 
-const TitleBlock = Styled.div`
+const TitleContainer = Styled.div`
     margin-bottom: 0.5rem;
     text-align: center;
     &:active {
-        color: transparent;
+        color: ${props => props.theme.activeColor};
     }
     ${Container}:hover & {
         cursor: pointer;
@@ -80,10 +81,10 @@ export default class extends React.Component {
     render() {
         return (
             <Container mobile={Device.mobile()} disabled={this.props.disabled}>
-                <TitleBlock onClick={this.props.action}>
+                <TitleContainer onClick={this.props.action}>
                     <MainTitle>{this.title()}</MainTitle>
                     <SubTitle>{this.subtile()}</SubTitle>
-                </TitleBlock>
+                </TitleContainer>
                 <Text mobile={Device.mobile()}>{this.text()}</Text>
                 <Source>{this.source()}</Source>
             </Container>

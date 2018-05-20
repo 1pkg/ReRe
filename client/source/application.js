@@ -2,7 +2,6 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import { compose as reduxCompose } from 'redux'
 import { Provider } from 'react-redux'
-import ReduxThunk from 'redux-thunk'
 
 import composer from './composer'
 import dispatch from './dispatch'
