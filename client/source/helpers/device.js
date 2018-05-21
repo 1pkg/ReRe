@@ -1,8 +1,9 @@
 import MobileDetect from 'mobile-detect'
 
-let detect = new MobileDetect(window.navigator.userAgent)
-export default class {
+export default class self {
+    static detect = new MobileDetect(window.navigator.userAgent)
+
     static mobile() {
-        return detect.mobile()
+        return self.detect.mobile()
     }
 }

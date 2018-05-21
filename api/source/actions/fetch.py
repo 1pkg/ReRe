@@ -1,32 +1,40 @@
 from random import shuffle
 
 import errors
-from models import Effect, Mark, Option, Orientation, Subject, Setting, Task
-from .mixins import Access, FSingleID
+from models import \
+    Effect, \
+    Mark, \
+    Option, \
+    Orientation, \
+    Subject, \
+    Setting, \
+    Task, \
+    Type
+from .mixins import Access, FSingleIdent
 
 
-class Fetch(Access, FSingleID):
+class Fetch(Access, FSingleIdent):
     CONNECTION_LIMIT = '1/second;100/minute;10000/hour'
     CACHE_EXPIRE = None
 
     def _process(self, request):
         random = self._application.random
 
-        label = str(self._get(request, 'label', ''))
+        label = self._get(request, 'label', '')
         if label is not '':
-            task = self.__fetchByLabel(label)
+            task = self.__bylabel(label)
         elif random.roll(0.2):   # 20%
-            task = self.__fetchByRating()
+            task = self.__byrating()
         elif random.roll(0.5):   # 40%
-            task = self.__fetchByRandom()
+            task = self.__byrandom()
         elif random.roll(0.25):  # 10%
-            task = self.__fetchByNovelty()
+            task = self.__bynovelty()
         else:                    # 30%
-            task = self.__fetchNew()
-        task = self.__fetchNew() if task is None else task
+            task = self.__bynew()
+        task = self.__bynew() if task is None else task
         return self._format(task)
 
-    def __fetchByLabel(self, label):
+    def __bylabel(self, label):
         db = self._application.db
         device = self._application.device
 
@@ -39,7 +47,7 @@ class Fetch(Access, FSingleID):
                 ),
             ).first()
 
-    def __fetchByRating(self):
+    def __byrating(self):
         db = self._application.db
         device = self._application.device
         random = self._application.random
@@ -54,13 +62,14 @@ class Fetch(Access, FSingleID):
             ) \
             .group_by(Task.id) \
             .order_by(
-                db.func.count(Mark.id),
+                db.func.count(Mark.type != Type.report) -
+                db.func.count(Mark.type == Type.report),
                 db.func.random(),
             ).offset(random.number(
                 Setting.get(Setting.NAME_TASK_RATING_OFFSET),
             )).first()
 
-    def __fetchByRandom(self):
+    def __byrandom(self):
         db = self._application.db
         device = self._application.device
 
@@ -74,7 +83,7 @@ class Fetch(Access, FSingleID):
             .order_by(db.func.random())\
             .first()
 
-    def __fetchByNovelty(self):
+    def __bynovelty(self):
         db = self._application.db
         device = self._application.device
         datetime = self._application.datetime
@@ -92,7 +101,7 @@ class Fetch(Access, FSingleID):
             .order_by(db.func.random())\
             .first()
 
-    def __fetchNew(self):
+    def __bynew(self):
         db = self._application.db
         device = self._application.device
         datetime = self._application.datetime

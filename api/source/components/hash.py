@@ -8,7 +8,7 @@ class Hash(Component):
     SHORT_DIGEST = 4
 
     def hex(self, size, *args):
-        hexHash = blake2b(digest_size=size)
+        hexhash = blake2b(digest_size=size)
         for arg in args:
-            hexHash.update(str(arg).encode('utf-8'))
-        return hexHash.hexdigest()
+            hexhash.update(str(arg).encode('utf-8'))
+        return hexhash.hexdigest()

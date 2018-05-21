@@ -26,7 +26,9 @@ const ToolbarContainer = Styled.div`
 
 export default class extends React.Component {
     daily() {
-        if (this.props.state.lists.daily.length >= 3) {
+        if (
+            this.props.state.lists.daily.length >= MINIMAL_LANDING_TAPE_LENGTH
+        ) {
             return (
                 <Tape
                     title={'Daily Popular'}
@@ -40,7 +42,9 @@ export default class extends React.Component {
     }
 
     weekly() {
-        if (this.props.state.lists.weekly.length >= 3) {
+        if (
+            this.props.state.lists.weekly.length >= MINIMAL_LANDING_TAPE_LENGTH
+        ) {
             return (
                 <Tape
                     title={'Weekly Popular'}
@@ -54,7 +58,9 @@ export default class extends React.Component {
     }
 
     monthly() {
-        if (this.props.state.lists.monthly.length >= 3) {
+        if (
+            this.props.state.lists.monthly.length >= MINIMAL_LANDING_TAPE_LENGTH
+        ) {
             return (
                 <Tape
                     title={'Monthly Popular'}

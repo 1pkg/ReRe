@@ -13,7 +13,7 @@ const MainContainer = Styled.div`
     top: 0rem;
     width: 100vw;
     height: 100vh;
-    background-color: ${props => props.theme.threeQuartersMainColor};
+    background-color: ${props => props.theme['three-quarters-main-color']};
     display: ${props => (props.active ? 'flex' : 'none')};
     flex-direction: column;
     justify-content: center;
@@ -23,7 +23,7 @@ const SubContainer = Styled.div`
     flex: ${props => (props.mobile ? '1 1 0' : '0 0 auto')};
     padding: 2.5rem;
     margin: ${props => (props.mobile ? '0rem' : 'auto')};
-    background-color: ${props => props.theme.subColor};
+    background-color: ${props => props.theme['sub-color']};
     display: flex;
     flex-direction: column;
     justify-content: center;

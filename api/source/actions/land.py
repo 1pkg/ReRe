@@ -1,4 +1,4 @@
-from models import Mark, Setting, Subject, Task
+from models import Mark, Setting, Subject, Task, Type
 from .mixins import Access, FList
 
 
@@ -31,7 +31,8 @@ class Land(Access, FList):
             ) \
             .group_by(Task.id) \
             .order_by(
-                db.func.count(Mark.id),
+                db.func.count(Mark.type != Type.report) -
+                db.func.count(Mark.type == Type.report),
                 db.func.random(),
             ).limit(Setting.get(Setting.NAME_LAND_COUNT)).all()
 
@@ -51,7 +52,8 @@ class Land(Access, FList):
             ) \
             .group_by(Task.id) \
             .order_by(
-                db.func.count(Mark.id),
+                db.func.count(Mark.type != Type.report) -
+                db.func.count(Mark.type == Type.report),
                 db.func.random(),
             ).limit(Setting.get(Setting.NAME_LAND_COUNT)).all()
 
@@ -71,6 +73,7 @@ class Land(Access, FList):
             ) \
             .group_by(Task.id) \
             .order_by(
-                db.func.count(Mark.id),
+                db.func.count(Mark.type != Type.report) -
+                db.func.count(Mark.type == Type.report),
                 db.func.random(),
             ).limit(Setting.get(Setting.NAME_LAND_COUNT)).all()

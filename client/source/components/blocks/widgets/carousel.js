@@ -28,15 +28,15 @@ const DotContainer = Styled.div`
     display: flex;
 `
 
+const tqmc = 'three-quarters-main-color'
+const fmc = 'fourth-main-color'
 const DotElement = Styled.div`
     width: 0.5rem;
     height: 0.5rem;
     border-radius: 0.5rem;
     margin: 0.2rem;
-    background-color: ${props =>
-        props.active
-            ? props.theme.threeQuartersMainColor
-            : props.theme.fourthMainColor};
+    background-color:
+        ${props => (props.active ? props.theme[tqmc] : props.theme[fmc])};
 `
 
 export default class extends React.Component {
@@ -67,7 +67,7 @@ export default class extends React.Component {
     }
 
     componentDidMount() {
-        let size = this.props.children.filter(child => child).length - 1
+        let size = Lodash.filter(this.props.children, child => child).length - 1
         let index = this.props.active ? this.props.active - 1 : 0
         this.setState(state => {
             return { size, index }
@@ -83,11 +83,15 @@ export default class extends React.Component {
                         onSwipedLeft={this.next}
                     >
                         {Lodash.map(
-                            this.props.children.filter(child => child),
+                            Lodash.filter(this.props.children, child => child),
                             (child, index) => {
-                                let order = index === this.state.index ? 0 : 1
                                 return (
-                                    <SwipeableWrapper key={index} order={order}>
+                                    <SwipeableWrapper
+                                        key={index}
+                                        order={Number(
+                                            index !== this.state.index,
+                                        )}
+                                    >
                                         {child}
                                     </SwipeableWrapper>
                                 )
@@ -96,7 +100,7 @@ export default class extends React.Component {
                     </SwipeableContainer>
                     <DotContainer>
                         {Lodash.map(
-                            this.props.children.filter(child => child),
+                            Lodash.filter(this.props.children, child => child),
                             (child, index) => {
                                 return (
                                     <DotElement

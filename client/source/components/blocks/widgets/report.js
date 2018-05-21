@@ -40,6 +40,7 @@ export default class extends React.Component {
     report = async event => {
         let textarea = event.currentTarget.previousSibling
         this.props.trigger.call(Trigger.ACTION_REPORT, textarea.value)
+        this.props.trigger.call(Trigger.ACTION_MARK, 'report')
         this.hide()
     }
 

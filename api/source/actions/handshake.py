@@ -11,44 +11,41 @@ class Handshake(Action):
         super()._validate(request)
         validator = self._application.validator
         http = self._application.http
-        self.__userHost = str(http.userHost(request))
-        self.__userAgent = str(http.userAgent(request))
-        self.__userIp = str(http.userIp(request))
+        self.__user_host = http.userhost(request)
+        self.__user_agent = http.useragent(request)
+        self.__user_ip = http.userip(request)
 
-        if validator.isEmpty(self.__userHost):
-            raise errors.Request('user_host', self.__userHost)
+        if validator.isempty(self.__user_host):
+            raise errors.Request('user_host', self.__user_host)
 
-        if validator.isEmpty(self.__userAgent):
-            raise errors.Request('user_agent', self.__userAgent)
+        if validator.isempty(self.__user_agent):
+            raise errors.Request('user_agent', self.__user_agent)
 
-        if validator.isEmpty(self.__userIp):
-            raise errors.Request('user_ip', self.__userIp)
+        if validator.isempty(self.__user_ip):
+            raise errors.Request('user_ip', self.__user_ip)
 
     def _process(self, request):
         db = self._application.db
-        device = self._application.device
         datetime = self._application.datetime
         c_hash = self._application.hash
         random = self._application.random
 
-        orientation = str(device.orientation())
         token = c_hash.hex(
             c_hash.LONG_DIGEST,
             datetime.timestamp(),
             random.salt(),
-            self.__userHost,
-            self.__userAgent,
-            self.__userIp,
+            self.__user_host,
+            self.__user_agent,
+            self.__user_ip,
         )
         session = Session(
-            user_host=self.__userHost,
-            user_agent=self.__userAgent,
-            user_ip=self.__userIp,
+            user_host=self.__user_host,
+            user_agent=self.__user_agent,
+            user_ip=self.__user_ip,
             token=token,
         )
         db.session.add(session)
         db.session.commit()
         return {
-            'orientation': orientation,
             'token': token,
         }

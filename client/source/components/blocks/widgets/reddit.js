@@ -8,7 +8,12 @@ import Button from './button'
 
 export default class extends React.Component {
     mark = async () => {
-        if ('l' in Url.parse().query) {
+        let state = this.props.trigger.state()
+        if (
+            state.status === Trigger.STATUS_ACTIVE ||
+            state.status === Trigger.STATUS_CORRECT ||
+            state.status === Trigger.STATUS_WRONG
+        ) {
             this.props.trigger.call(Trigger.ACTION_MARK, 'reddit')
         }
     }

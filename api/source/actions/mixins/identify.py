@@ -13,9 +13,9 @@ class Identify(Access):
         identity = cache.get(key)
         if identity is None \
                 or 'timestamp' not in identity \
-                or not validator.isNumeric(identity['timestamp']) \
+                or not validator.isnumeric(identity['timestamp']) \
                 or 'task_id' not in identity \
-                or not validator.isNumeric(identity['task_id']) \
+                or not validator.isnumeric(identity['task_id']) \
                 or 'token' not in identity \
                 or self._session.token != identity['token']:
             raise errors.Identity()

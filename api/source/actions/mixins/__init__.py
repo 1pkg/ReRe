@@ -1,13 +1,13 @@
 from .access import Access
 from .flist import FList
 from .fsingle import FSingle
-from .fsingleid import FSingleID
+from .fsingleident import FSingleIdent
 from .identify import Identify
 
 __all__ = [
     'Access',
     'FList',
     'FSingle',
-    'FSingleID',
+    'FSingleIdent',
     'Identify',
 ]

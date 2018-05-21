@@ -1,7 +1,6 @@
 import React from 'react'
 import Styled from 'styled-components'
 
-import { Device } from '~/helpers'
 import dispatch from '~/dispatch'
 
 const MainContainer = Styled.div`
@@ -15,7 +14,7 @@ const MainContainer = Styled.div`
 const SubContainer = Styled.div``
 
 const MainText = Styled.div`
-    font-size: ${props => (props.mobile ? '3rem' : '5rem')};
+    font-size: 4rem;
     font-weight: bold;
     text-align: center;
     text-transform: uppercase;
@@ -48,11 +47,11 @@ export default class extends React.Component {
         return (
             <MainContainer>
                 <SubContainer>
-                    <MainText mobile={Device.mobile()}>Yikes</MainText>
-                    <MainText mobile={Device.mobile()}>it seems</MainText>
-                    <MainText mobile={Device.mobile()}>we are doing</MainText>
-                    <MainText mobile={Device.mobile()}>maintenance</MainText>
-                    <MainText mobile={Device.mobile()}>right now</MainText>
+                    <MainText>Yikes</MainText>
+                    <MainText>it seems</MainText>
+                    <MainText>we are doing</MainText>
+                    <MainText>maintenance</MainText>
+                    <MainText>right now</MainText>
                 </SubContainer>
                 <SubContainer>
                     <MinorText>it should take few minutes</MinorText>

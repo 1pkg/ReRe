@@ -35,20 +35,19 @@ class Application:
             return self.__actions[action](request)
         return None
 
-    def action(self, action, instance, cache_expire):
+    def action(self, action, instance, expire):
         try:
             response = flask.jsonify(action(flask.request))
-            if cache_expire is not None:
+            if expire is not None:
                 response.cache_control.public = True
-                response.cache_control.max_age = cache_expire
+                response.cache_control.max_age = expire
             return response
         except Exception as exception:
             if instance.debug:
                 raise exception
-            else:
-                if not instance.debug and not isinstance(exception, base.Error):
-                    instance.logger.log(100, str(exception))
-                return flask.jsonify({})
+            elif isinstance(exception, base.Error):
+                instance.logger.critical(str(exception))
+            return flask.jsonify({})
 
     def before(self):
         pass
@@ -69,19 +68,18 @@ class Application:
 
             flask_cors.CORS(instance)
             flask_mobility.Mobility(instance)
-
-            handler = logging.handlers.RotatingFileHandler(
-                os.path.join(
-                    os.path.dirname(__file__),
-                    '..',
-                    'logs',
-                    'rect.log',
+            instance.logger.addHandler(
+                logging.handlers.RotatingFileHandler(
+                    os.path.join(
+                        os.path.dirname(__file__),
+                        '..',
+                        'logs',
+                        'rect.log',
+                    ),
+                    maxBytes=100000000,
+                    backupCount=10,
                 ),
-                maxBytes=100000000,
-                backupCount=10,
             )
-            handler.setLevel(100)
-            instance.logger.addHandler(handler)
 
             self.extensions['mail'] = flask_mail.Mail()
             self.extensions['mail'].init_app(instance)
@@ -118,13 +116,13 @@ class Application:
         instance.before_request(before)
         instance.after_request(after)
         for alias, action in self.__actions.items():
-            cache_expire = action.CACHE_EXPIRE if not instance.debug else None
+            expire = action.CACHE_EXPIRE if not instance.debug else None
             bound = functools.partial(
                 Application.action,
                 self,
                 action,
                 instance,
-                cache_expire,
+                expire,
             )
             bound.__name__ = alias
             bound.__module__ = action.__module__

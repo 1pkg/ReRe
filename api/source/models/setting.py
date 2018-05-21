@@ -34,7 +34,10 @@ class Setting(Alchemy.Model):
     @staticmethod
     @lru_cache(maxsize=None)
     def get(name):
-        TYPE_MAP = {
+        value = Setting.query \
+            .filter(Setting.name == name) \
+            .one().value
+        return {
             Setting.NAME_OPTION_COUNT: int,
             Setting.NAME_EFFECT_COUNT: int,
             Setting.NAME_LAND_COUNT: int,
@@ -44,9 +47,4 @@ class Setting(Alchemy.Model):
             Setting.NAME_SHARE_TITLE: str,
             Setting.NAME_COPYRIGHT_TEXT: str,
             Setting.NAME_DISCLAIMER_TEXT: str,
-        }
-
-        value = Setting.query \
-            .filter(Setting.name == name) \
-            .one().value
-        return TYPE_MAP[name](value)
+        }[name](value)

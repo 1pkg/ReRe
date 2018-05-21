@@ -7,7 +7,7 @@ const Container = Styled.div`
     user-select: none;
     display: contents;
     &:active {
-        color: ${props => props.theme.activeColor};
+        color: ${props => props.theme['active-color']};
     }
     &:hover {
         cursor: pointer;

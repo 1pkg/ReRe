@@ -1,17 +1,18 @@
 import History from 'history/createBrowserHistory'
 
-let history = History()
-export default class {
+export default class self {
+    static history = History()
+
     static push(label) {
         if (label) {
-            history.push(`/rect/?l=${label}`, { label })
+            self.history.push(`/rect/?l=${label}`, { label })
         } else {
-            history.push(`/home`, {})
+            self.history.push(`/home`, {})
         }
     }
 
     static change(handler) {
-        return history.listen((location, action) => {
+        return self.history.listen((location, action) => {
             if (action !== 'POP') {
                 return
             }

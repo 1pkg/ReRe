@@ -1,5 +1,5 @@
 import errors
-from models import Mark as MarkModel, Type
+import models
 from .mixins import Identify
 
 
@@ -12,17 +12,17 @@ class Mark(Identify):
         db = self._application.db
         validator = self._application.validator
 
-        self.__type = str(self._get(request, 'type', ''))
-        if not self.__type in Type.__members__:
+        self.__type = self._get(request, 'type', '')
+        if not self.__type in models.Type.__members__:
             raise errors.Request('type', self.__type)
-        self.__type = Type[self.__type]
+        self.__type = models.Type[self.__type]
 
-        mark = MarkModel.query \
+        mark = models.Mark.query \
             .filter(
                 db.and_(
-                    MarkModel.type == self.__type,
-                    MarkModel.task_id == self._task.id,
-                    MarkModel.session_id == self._session.id,
+                    models.Mark.type == self.__type,
+                    models.Mark.task_id == self._task.id,
+                    models.Mark.session_id == self._session.id,
                 ),
             ).first()
         if mark is not None:
@@ -31,7 +31,7 @@ class Mark(Identify):
     def _process(self, request):
         db = self._application.db
 
-        mark = MarkModel(
+        mark = models.Mark(
             type=self.__type,
             task_id=self._task.id,
             session_id=self._session.id,

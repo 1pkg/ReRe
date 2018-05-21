@@ -5,6 +5,7 @@ import Trigger from './trigger'
 export default async (trigger, message) => {
     try {
         let state = trigger.state()
+        let oldstatus = state.status
         state.status = Trigger.STATUS_WAIT
         trigger.push(Trigger.ACTION_WAIT, state)
 
@@ -13,8 +14,7 @@ export default async (trigger, message) => {
             token: state.token,
             message,
         })
-        state.task.handled['report'] = true
-        state.status = Trigger.STATUS_ACTIVE
+        state.status = oldstatus
         trigger.push(Trigger.ACTION_REPORT, state)
         return state
     } catch (exception) {

@@ -16,9 +16,10 @@ const SubContainer = Styled.div`
     flex: 1 1 0;
     display: flex;
     flex-direction: column;
-    border: 0.01rem solid ${props => props.theme.halfMainColor};
+    border: 0.01rem solid ${props => props.theme['half-main-color']};
     box-shadow:
-        0.1rem 0.1rem 0.1rem 0.1rem ${props => props.theme.fourthMainColor};
+        0.1rem 0.1rem 0.1rem 0.1rem
+        ${props => props.theme['fourth-main-color']};
     overflow-y: scroll;
 `
 

@@ -14,5 +14,5 @@ class Action:
 
     def _get(self, request, key, default=None):
         if (request.json is not None and key in request.json):
-            return request.json[key]
+            return str(request.json[key])
         return default

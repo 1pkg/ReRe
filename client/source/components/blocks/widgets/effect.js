@@ -1,15 +1,16 @@
 import React from 'react'
 import { GLSL, Node, Shaders } from 'gl-react'
 
-let shaders = {}
-export default class extends React.Component {
+export default class self extends React.Component {
+    static shaders = {}
+
     get(name, code) {
-        if (!(name in shaders)) {
-            shaders[name] = Shaders.create({
+        if (!(name in self.shaders)) {
+            self.shaders[name] = Shaders.create({
                 self: { frag: GLSL`${code.frag}` },
             })
         }
-        return shaders[name].self
+        return self.shaders[name].self
     }
 
     render() {

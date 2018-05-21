@@ -7,9 +7,10 @@ const Container = Styled.div`
     flex: 1 1 0;
     margin: 0.5rem;
     padding: 0.5rem;
-    border: 0.01rem solid ${props => props.theme.halfMainColor};
+    border: 0.01rem solid ${props => props.theme['half-main-color']};
     box-shadow:
-        0.1rem 0.1rem 0.1rem 0.1rem ${props => props.theme.fourthMainColor};
+        0.1rem 0.1rem 0.1rem 0.1rem
+        ${props => props.theme['fourth-main-color']};
     overflow-x: hidden;
     overflow-y: auto;
     opacity: ${props => (props.disabled ? 0.5 : 1.0)};
@@ -19,7 +20,7 @@ const TitleContainer = Styled.div`
     margin-bottom: 0.5rem;
     text-align: center;
     &:active {
-        color: ${props => props.theme.activeColor};
+        color: ${props => props.theme['active-color']};
     }
     ${Container}:hover & {
         cursor: pointer;

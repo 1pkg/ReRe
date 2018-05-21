@@ -2,14 +2,14 @@ from base import Component
 
 
 class Validator(Component):
-    def isHex(self, value):
+    def ishex(self, value):
         try:
             int(value, 16)
             return True
         except Exception:
             return False
 
-    def isNumeric(self, value, positive=True):
+    def isnumeric(self, value, positive=True):
         try:
             value = int(value)
             if positive:
@@ -18,5 +18,5 @@ class Validator(Component):
         except Exception:
             return False
 
-    def isEmpty(self, value):
+    def isempty(self, value):
         return value is None or value == '' or value == 'None'

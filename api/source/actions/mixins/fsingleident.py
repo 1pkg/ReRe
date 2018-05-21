@@ -1,7 +1,7 @@
 from .fsingle import FSingle
 
 
-class FSingleID(FSingle):
+class FSingleIdent(FSingle):
     def _format(self, task):
         datetime = self._application.datetime
         cache = self._application.cache

@@ -47,10 +47,10 @@ injectGlobal`
 `
 
 export default {
-    mainColor: 'rgba(0, 0, 0, 1)',
-    threeQuartersMainColor: 'rgba(0, 0, 0, 0.75)',
-    halfMainColor: 'rgba(0, 0, 0, 0.5)',
-    fourthMainColor: 'rgba(0, 0, 0, 0.25)',
-    subColor: 'rgba(255, 255, 255, 1)',
-    activeColor: 'rgba(240, 128, 128, 0.75)',
+    'main-color': 'rgba(0, 0, 0, 1)',
+    'three-quarters-main-color': 'rgba(0, 0, 0, 0.75)',
+    'half-main-color': 'rgba(0, 0, 0, 0.5)',
+    'fourth-main-color': 'rgba(0, 0, 0, 0.25)',
+    'sub-color': 'rgba(255, 255, 255, 1)',
+    'active-color': 'rgba(240, 128, 128, 0.75)',
 }

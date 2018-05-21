@@ -19,12 +19,11 @@ export default class extends React.Component {
 
     options() {
         return Lodash.map(this.props.state.task.options, (option, index) => {
-            ++index
             return (
                 <Choose
                     key={index}
                     trigger={this.props.trigger}
-                    index={index}
+                    index={index + 1}
                     option={option}
                 />
             )

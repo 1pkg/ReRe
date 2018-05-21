@@ -12,7 +12,7 @@ class Choose(Identify):
         validator = self._application.validator
 
         self.__option = self._get(request, 'option')
-        if not validator.isNumeric(self.__option, positive=False):
+        if not validator.isnumeric(self.__option, positive=False):
             raise errors.Request('option', self.__option)
 
         self.__option = int(self.__option)

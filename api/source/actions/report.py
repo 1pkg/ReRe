@@ -9,15 +9,17 @@ class Report(Identify):
     def _validate(self, request):
         super()._validate(request)
         validator = self._application.validator
-        self.__message = str(self._get(request, 'message')).strip()
+        self.__message = self._get(request, 'message', '').strip()
 
-        if validator.isEmpty(self.__message):
+        if validator.isempty(self.__message):
             raise errors.Request('message', self.__message)
 
     def _process(self, request):
         mail = self._application.mail
 
-        subject = f'Report from {self._session.token} about task #{self._task.id}'
+        token = self._session.token
+        task_id = self._task.id
+        subject = f'Report from {token} about task #{task_id}'
         result = mail.send(subject, self.__message)
         return {
             'result': result,

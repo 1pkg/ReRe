@@ -10,8 +10,8 @@ const Rotate = Keyframes`
 `
 
 const Spinner = Styled.div`
-    border-top: 0.3rem solid ${props => props.theme.activeColor};
-    border-bottom: 0.3rem solid ${props => props.theme.activeColor};
+    border-top: 0.3rem solid ${props => props.theme['active-color']};
+    border-bottom: 0.3rem solid ${props => props.theme['active-color']};
     border-radius: 100%;
     width: 15rem;
     height: 15rem;
