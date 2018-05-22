@@ -13,5 +13,5 @@ vec4 fisheye(vec2 coords) {
 }
 
 void main() {
-    gl_FragColor = fishEye(gl_FragCoord.xy / size);
+    gl_FragColor = fisheye(gl_FragCoord.xy / size);
 }

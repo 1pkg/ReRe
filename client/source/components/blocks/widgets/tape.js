@@ -9,36 +9,42 @@ const MainContainer = Styled.div`
     flex: 1 1 0;
     display: flex;
     flex-direction: column;
-    margin: 1rem;
+    margin: ${props => props.theme['normal-unit']};
 `
 
 const SubContainer = Styled.div`
     flex: 1 1 0;
     display: flex;
     flex-direction: column;
-    border: 0.01rem solid ${props => props.theme['half-main-color']};
+    border:
+        ${props => props.theme['minimal-unit']}
+        solid
+        ${props => props.theme['half-main-color']};
     box-shadow:
-        0.1rem 0.1rem 0.1rem 0.1rem
-        ${props => props.theme['fourth-main-color']};
+        ${props => props.theme['min-small-unit']}
+        ${props => props.theme['min-small-unit']}
+        ${props => props.theme['min-small-unit']}
+        ${props => props.theme['min-small-unit']}
+        ${props => props.theme['quarter-main-color']};
     overflow-y: scroll;
 `
 
 const Title = Styled.div`
-    text-align: center;
-    font-size: 1.5rem;
+    font-size: ${props => props.theme['sub-big-unit']};
     font-weight: bold;
+    text-align: center;
     text-transform: capitalize;
 `
 
 const Snippet = Styled.div`
     flex: 0 0 30%;
     display: flex;
-    margin: 0.5rem;
-    border-radius: 0.5rem;
     overflow: hidden;
+    border-radius: ${props => props.theme['half-small-unit']};
+    margin: ${props => props.theme['half-small-unit']};
     &:hover {
         cursor: pointer;
-    }
+    };
 `
 
 export default class extends React.Component {

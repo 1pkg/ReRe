@@ -8,9 +8,9 @@ steps = [
           INSERT INTO setting (name, value) VALUES
           ('option-count', '3'),
           ('effect-count', '2'),
-          ('land-count', '6'),
+          ('land-count', '7'),
           ('choose-period', '60'),
-          ('task-rating-offset', '300'),
+          ('task-rating-offset', '100'),
           ('task-novelty-period', '-3'),
           ('share-title', 'Fun quiz-game: reveal TRUE essence of image past various effects, filters and deformations.'),
           ('copyright-text', 'rect.io © 2018 all rights reserved'),

@@ -14,14 +14,13 @@ const MainContainer = Styled.div`
 const SubContainer = Styled.div``
 
 const MainText = Styled.div`
-    font-size: 4rem;
+    font-size: ${props => props.theme['sub-big-unit']};
     font-weight: bold;
     text-align: center;
     text-transform: uppercase;
 `
 
 const MinorText = Styled.div`
-    font-size: 1rem;
     font-style: italic;
     text-align: center;
     text-transform: lowercase;

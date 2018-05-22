@@ -2,9 +2,9 @@ import React from 'react'
 import Styled from 'styled-components'
 
 const Text = Styled.div`
-    font-size: 0.7rem;
+    font-size: ${props => props.theme['sub-normal-unit']};
     font-style: italic;
-    text-align: right;
+    text-align: center;
     text-transform: lowercase;
 `
 

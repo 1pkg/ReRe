@@ -17,6 +17,9 @@ class Mark(Identify):
             raise errors.Request('type', self.__type)
         self.__type = models.Type[self.__type]
 
+    def _process(self, request):
+        db = self._application.db
+
         mark = models.Mark.query \
             .filter(
                 db.and_(
@@ -25,16 +28,11 @@ class Mark(Identify):
                     models.Mark.session_id == self._session.id,
                 ),
             ).first()
-        if mark is not None:
-            raise errors.Request('type', str(self.__type))
-
-    def _process(self, request):
-        db = self._application.db
-
-        mark = models.Mark(
-            type=self.__type,
-            task_id=self._task.id,
-            session_id=self._session.id,
-        )
-        db.session.add(mark)
-        db.session.commit()
+        if mark is None:
+            mark = models.Mark(
+                type=self.__type,
+                task_id=self._task.id,
+                session_id=self._session.id,
+            )
+            db.session.add(mark)
+            db.session.commit()

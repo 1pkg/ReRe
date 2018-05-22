@@ -20,8 +20,8 @@ const SubContainer = Styled.div`
 const ToolbarContainer = Styled.div`
     display: flex;
     align-items: center;
-    margin-top: 0.5rem;
-    margin-bottom: 0.5rem;
+    margin-top: ${props => props.theme['half-small-unit']};
+    margin-bottom: ${props => props.theme['half-small-unit']};
 `
 
 export default class extends React.Component {

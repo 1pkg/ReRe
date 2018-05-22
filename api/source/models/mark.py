@@ -7,9 +7,6 @@ from base import Alchemy
 class Type(Enum):
     star = 'star'
     report = 'report'
-    reddit = 'reddit'
-    twitter = 'twitter'
-    facebook = 'facebook'
 
     def __str__(self):
         return str(self.value)

@@ -10,11 +10,17 @@ const Rotate = Keyframes`
 `
 
 const Spinner = Styled.div`
-    border-top: 0.3rem solid ${props => props.theme['active-color']};
-    border-bottom: 0.3rem solid ${props => props.theme['active-color']};
+    width: ${props => props.theme['one-and-half-penta-big-unit']};
+    height: ${props => props.theme['one-and-half-penta-big-unit']};
+    border-top:
+        ${props => props.theme['min-small-unit']}
+        solid
+        ${props => props.theme['active-color']};
+    border-bottom:
+        ${props => props.theme['min-small-unit']}
+        solid
+        ${props => props.theme['active-color']};
     border-radius: 100%;
-    width: 15rem;
-    height: 15rem;
     animation: ${Rotate} 1s linear infinite;
 `
 export default Spinner

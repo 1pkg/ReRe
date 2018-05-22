@@ -4,15 +4,14 @@ import Styled from 'styled-components'
 import { Device } from '~/helpers'
 
 const Container = Styled.div`
-    user-select: none;
     display: contents;
+    user-select: none;
     &:active {
         color: ${props => props.theme['active-color']};
-    }
+    };
     &:hover {
         cursor: pointer;
-    }
-    font-size: 1.5rem;
+    };
 `
 
 export default class extends React.Component {

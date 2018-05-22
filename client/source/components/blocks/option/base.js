@@ -5,50 +5,57 @@ import { Device } from '~/helpers'
 
 const Container = Styled.div`
     flex: 1 1 0;
-    margin: 0.5rem;
-    padding: 0.5rem;
-    border: 0.01rem solid ${props => props.theme['half-main-color']};
-    box-shadow:
-        0.1rem 0.1rem 0.1rem 0.1rem
-        ${props => props.theme['fourth-main-color']};
-    overflow-x: hidden;
     overflow-y: auto;
+    padding: ${props => props.theme['half-small-unit']};
+    margin-bottom: ${props => props.theme['half-small-unit']};
+    margin-right: ${props => props.theme['half-small-unit']};
+    margin-left: ${props => props.theme['half-small-unit']};
+    border:
+        ${props => props.theme['minimal-unit']}
+        solid
+        ${props => props.theme['half-main-color']};
+    box-shadow:
+        ${props => props.theme['min-small-unit']}
+        ${props => props.theme['min-small-unit']}
+        ${props => props.theme['min-small-unit']}
+        ${props => props.theme['min-small-unit']}
+        ${props => props.theme['quarter-main-color']};
     opacity: ${props => (props.disabled ? 0.5 : 1.0)};
 `
 
 const TitleContainer = Styled.div`
-    margin-bottom: 0.5rem;
     text-align: center;
+    margin-bottom: ${props => props.theme['half-small-unit']};
     &:active {
         color: ${props => props.theme['active-color']};
-    }
+    };
     ${Container}:hover & {
         cursor: pointer;
-    }
+    };
 `
 
 const MainTitle = Styled.div`
-    font-size: 0.9rem;
+    font-size: ${props => props.theme['sub-normal-unit']};
     font-weight: bold;
     text-transform: capitalize;
 `
 
 const SubTitle = Styled.div`
-    font-size: 0.7rem;
+    font-size: ${props => props.theme['small-unit']};
     font-style: italic;
     text-transform: lowercase;
 `
 
 const Text = Styled.div`
-    font-size: 0.8rem;
-    overflow: hidden;
+    font-size: ${props => props.theme['sub-normal-unit']};
     text-align: justify;
+    overflow: hidden;
 `
 
 const Source = Styled.div`
-    margin-top: 0.5rem;
-    font-size: 0.7rem;
+    font-size: ${props => props.theme['small-unit']};
     text-align: right;
+    margin-top: ${props => props.theme['half-small-unit']};
 `
 
 export default class extends React.Component {
@@ -64,10 +71,10 @@ export default class extends React.Component {
 
     text() {
         let words = this.props.option.description.split(' ')
-        if (words.length <= 100) {
+        if (words.length <= MAX_OPTION_WORDS_SLICE_COUTN) {
             return this.props.option.description
         }
-        words = words.slice(0, 100)
+        words = words.slice(0, MAX_OPTION_WORDS_SLICE_COUTN)
         return `${words.join(' ')}  ...`
     }
 

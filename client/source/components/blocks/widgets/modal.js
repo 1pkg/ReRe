@@ -21,7 +21,7 @@ const MainContainer = Styled.div`
 
 const SubContainer = Styled.div`
     flex: ${props => (props.mobile ? '1 1 0' : '0 0 auto')};
-    padding: 2.5rem;
+    padding: ${props => props.theme['sub-big-unit']};
     margin: ${props => (props.mobile ? '0rem' : 'auto')};
     background-color: ${props => props.theme['sub-color']};
     display: flex;
@@ -34,22 +34,20 @@ const TitleContainer = Styled.div`
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 1rem;
 `
 
 const Title = Styled.div`
     flex: 1 1 0;
-    font-size: 1.5rem;
+    font-size: ${props => props.theme['sub-big-unit']};
     font-weight: bold;
     text-transform: uppercase;
     text-align: center;
 `
 
 const Content = Styled.div`
-    font-size: 1rem;
+    display: flex;
     text-align: justify;
     white-space: pre-wrap;
-    display: flex;
 `
 
 class Close extends React.Component {

@@ -14,7 +14,7 @@ const Container = Styled.div`
 `
 
 const Text = Styled.div`
-    font-size: 0.5rem;
+    font-size: ${props => props.theme['half-small-unit']};
     font-style: italic;
     text-transform: lowercase;
 `

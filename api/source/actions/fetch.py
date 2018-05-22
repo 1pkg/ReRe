@@ -62,7 +62,7 @@ class Fetch(Access, FSingleIdent):
             ) \
             .group_by(Task.id) \
             .order_by(
-                db.func.count(Mark.type != Type.report) -
+                db.func.count(Mark.type == Type.star) -
                 db.func.count(Mark.type == Type.report),
                 db.func.random(),
             ).offset(random.number(

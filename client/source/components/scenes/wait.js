@@ -7,16 +7,8 @@ import { Spinner } from './../blocks/widgets'
 const Container = Styled.div`
     flex: 1 1 0;
     display: flex;
-    flex-direction: column;
     align-items: center;
     justify-content: center;
-`
-
-const Text = Styled.div`
-    font-size: 0.5rem;
-    font-style: italic;
-    text-transform: lowercase;
-    margin-top: 3rem;
 `
 
 export default class extends React.Component {
@@ -38,7 +30,6 @@ export default class extends React.Component {
         return (
             <Container>
                 <Spinner />
-                <Text>loading</Text>
             </Container>
         )
     }

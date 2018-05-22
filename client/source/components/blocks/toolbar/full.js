@@ -2,16 +2,13 @@ import React from 'react'
 
 import {
     Disclaimer,
-    Facebook,
     Fetch,
     Land,
-    Reddit,
     Remake,
     Report,
     Star,
     Timer,
     Toggle,
-    Twitter,
 } from './../widgets'
 import Toolbar from './base'
 
@@ -21,9 +18,6 @@ export default class extends React.Component {
             <Toolbar
                 actions={{
                     Toggle,
-                    Reddit,
-                    Twitter,
-                    Facebook,
                     Star,
                     Disclaimer,
                     Land,

@@ -18,10 +18,14 @@ const Form = Styled.div`
     justify-content: center;
 `
 
+const pbu = 'penta-big-unit'
+const ohpbu = 'one-and-half-penta-big-unit'
 const Textarea = Styled.textarea`
-    min-width: ${props => (props.mobile ? '18rem' : '36rem')};
-    min-height: 12rem;
-    margin: 1rem;
+    min-width:
+        ${props => (props.mobile ? props.theme[pbu] : props.theme[ohpbu])};
+    min-height:
+        ${props => (props.mobile ? props.theme[ohpbu] : props.theme[pbu])};
+    margin: ${props => props.theme['normal-unit']};
 `
 
 export default class extends React.Component {

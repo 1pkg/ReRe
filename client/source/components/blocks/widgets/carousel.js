@@ -29,14 +29,14 @@ const DotContainer = Styled.div`
 `
 
 const tqmc = 'three-quarters-main-color'
-const fmc = 'fourth-main-color'
+const qmc = 'quarter-main-color'
 const DotElement = Styled.div`
-    width: 0.5rem;
-    height: 0.5rem;
-    border-radius: 0.5rem;
-    margin: 0.2rem;
+    width: ${props => props.theme['half-small-unit']};
+    height: ${props => props.theme['half-small-unit']};
+    border-radius: ${props => props.theme['half-small-unit']};
     background-color:
-        ${props => (props.active ? props.theme[tqmc] : props.theme[fmc])};
+        ${props => (props.active ? props.theme[tqmc] : props.theme[qmc])};
+    margin: ${props => props.theme['half-small-unit']};
 `
 
 export default class extends React.Component {
