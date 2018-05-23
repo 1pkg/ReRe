@@ -1,7 +1,7 @@
-import os
-import datetime
-import logging
-import shutil
+from logging import FileHandler, getLogger, DEBUG
+from os import path, makedirs
+from datetime import datetime
+from shutil import rmtree
 from argparse import ArgumentParser
 from threading import Thread
 
@@ -12,21 +12,16 @@ from fetchers import IMediator, Wiki
 
 argparser = ArgumentParser(description='Parser')
 argparser.add_argument(
-    '--session',
+    '--name',
     type=str,
-    default=str(datetime.datetime.today().timestamp()),
-    help='session name for folders structure',
+    default=str(datetime.today().timestamp()),
+    help='name for folders structure',
 )
 argparser.add_argument(
     '--targets',
     nargs='*',
     default=[],
-    help='max count of fetch try on various errors',
-)
-argparser.add_argument(
-    '--offset',
-    type=int,
-    help='start offset of items that will be fetched from each target',
+    help='target name list',
 )
 argparser.add_argument(
     '--limit',
@@ -37,75 +32,54 @@ argparser.add_argument(
     '--clear',
     type=bool,
     default=False,
-    help='should previous dump been clean',
+    help='should previous dump be clean',
 )
 
 
-def initialize(session, clear):
-    if clear:
-        if os.path.exists(DUMP_PATH):
-            shutil.rmtree(DUMP_PATH)
-        if os.path.exists(LOG_PATH):
-            shutil.rmtree(LOG_PATH)
+def run(name, target, limit):
+    sqlite_keeper = Sqlite(path.join(CURRENT_DUMP_PATH, 'targets.db'))
+    json_keeper = Json(path.join(CURRENT_DUMP_PATH, f'{name}.json'))
 
-    if not os.path.exists(CURRENT_DUMP_PATH):
-        os.makedirs(CURRENT_DUMP_PATH)
-        os.makedirs(CURRENT_IMAGES_PATH)
-
-    if not os.path.exists(CURRENT_LOG_PATH):
-        os.makedirs(CURRENT_LOG_PATH)
-
-
-def run(session, name, target, offest, limit):
-    sqliteKeeper = Sqlite(
-        session,
-        os.path.join(CURRENT_DUMP_PATH, 'targets.db'),
-    )
-    jsonKeeper = Json(
-        session,
-        os.path.join(CURRENT_DUMP_PATH, '{0}.json'.format(name)),
-    )
-
-    handler = logging.FileHandler(
-        os.path.join(CURRENT_LOG_PATH, '{0}.log'.format(name))
-    )
+    handler = FileHandler(path.join(CURRENT_LOG_PATH, f'{name}.log'))
     formatter = Formatter(Formatter.BASE_FORMAT, Formatter.TIME_FORMAT)
     handler.setFormatter(formatter)
-    logger = logging.getLogger(name)
-    logger.setLevel(logging.DEBUG)
+    logger = getLogger(name)
+    logger.setLevel(DEBUG)
     logger.addHandler(handler)
 
-    target = target(
+    target(
         IMediator(logger, CURRENT_IMAGES_PATH),
         Wiki(logger),
         logger,
-        [sqliteKeeper, jsonKeeper]
-    )
-    if offest is not None:
-        target.OFFSET = offest
-    if limit is not None:
-        target.LIMIT = limit
-    target.process()
+        [sqlite_keeper, json_keeper],
+        limit,
+    ).process()
 
 
 arguments = argparser.parse_args()
 
-DUMP_PATH = os.path.abspath(os.path.join(__file__, '..', 'dump'))
-CURRENT_DUMP_PATH = os.path.join(DUMP_PATH, arguments.session)
-CURRENT_IMAGES_PATH = os.path.join(CURRENT_DUMP_PATH, 'images')
+DUMP_PATH = path.abspath(path.join(__file__, '..', 'dump'))
+CURRENT_DUMP_PATH = path.join(DUMP_PATH, arguments.name)
+CURRENT_IMAGES_PATH = path.join(CURRENT_DUMP_PATH, 'images')
+LOG_PATH = path.abspath(path.join(__file__, '..', 'log'))
+CURRENT_LOG_PATH = path.join(LOG_PATH, arguments.name)
 
-LOG_PATH = os.path.abspath(os.path.join(__file__, '..', 'log'))
-CURRENT_LOG_PATH = os.path.join(LOG_PATH, arguments.session)
+if arguments.clear and path.exists(DUMP_PATH):
+    rmtree(DUMP_PATH)
+if arguments.clear and path.exists(LOG_PATH):
+    rmtree(LOG_PATH)
+if not path.exists(CURRENT_LOG_PATH):
+    makedirs(CURRENT_LOG_PATH)
+if not path.exists(CURRENT_DUMP_PATH):
+    makedirs(CURRENT_DUMP_PATH)
+    makedirs(CURRENT_IMAGES_PATH)
 
-initialize(arguments.session, bool(arguments.clear))
 for name, target in targets.__dict__.items():
     if len(arguments.targets) == 0 or name in arguments.targets:
         if isinstance(target, type):
             if issubclass(target, Target):
                 Thread(target=run, args=(
-                    arguments.session,
                     name,
                     target,
-                    arguments.offset,
                     arguments.limit,
                 )).start()

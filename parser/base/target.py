@@ -1,68 +1,63 @@
 from datetime import datetime, timedelta
+from re import sub
 
 
 class Target:
-    def __init__(self, image, wiki, logger, keepers):
+    MIN_DESCRIPTION_LENGTH = 50
+
+    def __init__(self, image, wiki, logger, keepers, limit):
+        limit = limit if limit is not None else self.DEFAULT_LIMIT
         self._image = image
         self._wiki = wiki
         self._logger = logger
         self._keepers = keepers
+        self._limit = limit
 
     def process(self):
-        items, processed, skipped, result = self._fetchItems(), [], [], None
-        totalCount, startTimestamp = len(items), datetime.today().timestamp()
+        items, processed, skipped, result = self._get_items(), [], [], None
+        total_count, start_timestamp = len(items), datetime.today().timestamp()
 
         self._logger.info('''
             ==================================================
                             PROCESSING START
             ==================================================
         ''')
-        for index in range(0, totalCount):
+        for index, item in enumerate(items):
             self._logger.info('''
                 ==================================================
                 ==================================================
                 ==================================================
             ''')
-            self._stats(
-                processed,
-                skipped,
-                totalCount,
-                startTimestamp,
-            )
+            self._stats(processed, skipped, total_count, start_timestamp)
             try:
-                item = items[index]
-                self._logger.info('''
-                    target processing item {0} {1} index {2}
-                '''.format(
-                    item['title'],
-                    item['url'],
-                    index,
-                ))
-                result = self._fetchFromWiki(item['title'])
+                self._logger.info(f'''
+                    target processing item {item['title']} {item['url']}
+                    on index {index}
+                ''')
+                result = self._from_wiki(item['title'])
                 if result is None:
-                    result = self._fetchFromTarget(item['url'], item['title'])
+                    result = self._from_target(
+                        item['url'],
+                        item['title'],
+                    )
+                result = self._fix_option(result)
+
                 if result is None:
                     skipped.append(item)
-                    self._logger.warning('''
-                        target skipped item has no result
-                    ''')
+                    self._logger.warning('target skipped item has no result')
                     continue
 
                 result['subjects'] = self._image.fetch(
                     self._image.TYPE_GET,
-                    result['name']
+                    result['name'],
                 )
                 if len(result['subjects']) == 0:
                     skipped.append(item)
-                    self._logger.warning('''
-                        target skipped item has no subjects
-                    ''')
+                    self._logger.warning('target skipped item has no subjects')
                     continue
 
                 processed.append(result)
-                self._logger.info('''
-                    target processed item {0}
-                '''.format(str(result)))
+                self._logger.info(f'target processed item {result}')
             except Exception as exception:
                 skipped.append(item)
                 self._logger.error(str(exception))
@@ -72,96 +67,95 @@ class Target:
                             PROCESSING FINISHED
             ==================================================
         ''')
-        self._stats(
-            processed,
-            skipped,
-            totalCount,
-            startTimestamp,
-        )
+        self._stats(processed, skipped, total_count, start_timestamp)
         self._keep(processed)
 
     def _keep(self, processed):
-        self._logger.info('''
-            start keeping
-        ''')
+        self._logger.info('start keeping')
         try:
             for keeper in self._keepers:
                 keeper.write(processed)
-            self._logger.info('''
-                keep done successfully
-            ''')
+            self._logger.info('keep done successfully')
         except Exception as exception:
             self._logger.error(str(exception))
 
-    def _stats(
-        self,
-        processed,
-        skipped,
-        totalCount,
-        startTimestamp,
-    ):
-        processedCount, skippedCount = len(processed), len(skipped)
-        timeDelta = datetime.today().timestamp() - startTimestamp
-        totalRatio = 0.0 if totalCount == 0 \
-            else (processedCount + skippedCount) / totalCount
-        remainingTime = 0.0 if totalRatio == 0.0 \
-            else timeDelta / totalRatio - timeDelta
-        self._logger.info('''
-            total {0} processed {1} skipped {2}
-        '''.format(
-            totalCount,
-            processedCount,
-            skippedCount,
-        ))
-        self._logger.info('''
-            total percent {0:.2f}%
-            processed percent {1:.2f}%
-            skipped percent {2:.2f}%
-        '''.format(
-            totalRatio * 100,
-            0.0 if totalCount == 0 else processedCount / totalCount * 100,
-            0.0 if totalCount == 0 else skippedCount / totalCount * 100,
-        ))
-        self._logger.info('''
-            running time {0} approximately remaining time {1}
-        '''.format(
-            str(timedelta(seconds=int(timeDelta))),
-            str(timedelta(seconds=int(remainingTime))),
-        ))
+    def _stats(self, processed, skipped, total_count, start_timestamp):
+        processed_count, skipped_count = len(processed), len(skipped)
+        time_delta = datetime.today().timestamp() - start_timestamp
+        if (total_count != 0):
+            processed_ratio = processed_count / total_count
+            skipped_ratio = skipped_count / total_count
+            total_ratio = processed_ratio + skipped_ratio
+            remaining_time = 0.0 if total_ratio == 0.0 else time_delta / total_ratio
+        else:
+            processed_ratio = 0.0
+            skipped_ratio = 0.0
+            total_ratio = 0.0
+            remaining_time = 0.0
 
-    def _deadFetch(self, query, params={}):
-        tryCount, response = 1, None
-        while tryCount < 100 and \
-                (response is None or response.status_code != 200):
+        self._logger.info(f'''
+            total {total_count}
+            processed {processed_count}
+            skipped {skipped_count}
+        ''')
+        self._logger.info(f'''
+            total percent {total_ratio * 100:.2f}%
+            processed percent {processed_ratio * 100:.2f}%
+            skipped percent {skipped_ratio * 100:.2f}%
+        ''')
+        self._logger.info(f'''
+            running time {str(timedelta(seconds=int(time_delta)))}
+            remaining time {str(timedelta(seconds=int(remaining_time)))}
+        ''')
+
+    def _dead_fetch(self, query, params={}):
+        try_count, response, status = 0, None, False
+        while try_count < 100 and not status:
             try:
-                tryCount += 1
+                try_count += 1
                 response = self._fetcher.fetch(
                     self._fetcher.TYPE_GET,
                     query,
                     params,
                 )
+                status = response is not None and response.status_code == 200
             except Exception as exception:
                 self._logger.error(str(exception))
             finally:
-                if response is None or response.status_code != 200 and \
-                        callable(getattr(self._fetcher, 'rotate', None)):
+                rotate = getattr(self._fetcher, 'rotate', None)
+                if not status and callable(rotate):
                     self._fetcher.rotate()
         return response
 
-    def _fetchItems(self):
+    def _get_items(self):
         return NotImplemented
 
-    def _fetchFromTarget(self, url, title):
+    def _from_target(self, url, title):
         return NotImplemented
 
-    def _fetchFromWiki(self, title):
-        response = self._wiki.fetch(self._wiki.TYPE_WIKI, title)
-        if response is None:
+    def _from_wiki(self, title):
+        response = self._wiki.fetch(None, title)
+        if response is not None:
+            return {
+                'name': title,
+                'description': response.summary,
+                'link': response.url,
+                'source': 'wiki',
+            }
+        return None
+
+    def _fix_option(self, option):
+        if option is None or \
+                option['name'] is None or \
+                option['name'] is '' or \
+                option['description'] is None or \
+                option['description'] is '':
             return None
 
-        return {
-            'name': title,
-            'description': response.summary,
-            'link': response.url,
-            'source': 'wiki',
-        }
+        option['name'] = sub('\s+', ' ', option['name']).strip()
+        option['description'] = sub('\(.*\)[,.]?', '', option['description'])
+        option['description'] = sub('\s+', ' ', option['description']).strip()
+
+        if len(option['description']) >= self.MIN_DESCRIPTION_LENGTH:
+            return option
+        return None

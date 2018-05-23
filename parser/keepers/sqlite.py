@@ -4,39 +4,31 @@ from base import Keeper
 
 
 class Sqlite(Keeper):
-    def __init__(self, session, fileName):
-        super().__init__(session)
-        self.__connection = sqlite3.connect(fileName)
+    def __init__(self, file_name):
+        self.__connection = sqlite3.connect(file_name)
         self.__cursor = None
         self.__schema()
 
     def write(self, items):
         self.__open()
-        data = super().write(items)
-        self.__pushSession(data['session'])
-        for item in data['items']:
-            optionId = self.__pushOption(
+        for item in super()._prepare(items):
+            option_id = self.__option(
                 item['name'],
                 item['description'],
                 item['source'],
-                item['link']
+                item['link'],
             )
             for subject in item['subjects']:
-                self.__pushSubject(
+                self.__subject(
                     subject['link'],
                     subject['source'],
                     subject['orientation'],
-                    optionId
+                    option_id,
                 )
         self.__close()
 
     def __schema(self):
         self.__open()
-        self.__cursor.execute('''
-          CREATE TABLE IF NOT EXISTS session (
-            guid TEXT NOT NULL UNIQUE PRIMARY KEY
-          );
-        ''')
         self.__cursor.execute('''
             CREATE TABLE IF NOT EXISTS option (
               id INTEGER NOT NULL UNIQUE PRIMARY KEY AUTOINCREMENT,
@@ -52,20 +44,12 @@ class Sqlite(Keeper):
             link TEXT NOT NULL UNIQUE,
             source TEXT NOT NULL,
             orientation TEXT NOT NULL,
-            option_id INT NOT NULL
-                REFERENCES option (id) ON DELETE CASCADE
+            option_id INT NOT NULL REFERENCES option (id) ON DELETE CASCADE
           );
         ''')
         self.__close()
 
-    def __pushSession(self, session):
-        self.__cursor.execute('''
-            INSERT OR IGNORE INTO session (guid)
-            VALUES (?);
-        ''', (session,))
-        self.__commit()
-
-    def __pushOption(self, name, description, source, link):
+    def __option(self, name, description, source, link):
         self.__cursor.execute('''
             INSERT OR IGNORE INTO option (
                 name,
@@ -81,7 +65,7 @@ class Sqlite(Keeper):
         ''', (name, link))
         return self.__cursor.fetchone()[0]
 
-    def __pushSubject(self, link, source, orientation, optionId):
+    def __subject(self, link, source, orientation, option_id):
         self.__cursor.execute('''
             INSERT OR IGNORE INTO subject (
                 link,
@@ -89,7 +73,7 @@ class Sqlite(Keeper):
                 orientation,
                 option_id
             ) VALUES (?, ?, ?, ?);
-        ''', (link, source, orientation, optionId))
+        ''', (link, source, orientation, option_id))
         self.__commit()
 
         self.__cursor.execute('''

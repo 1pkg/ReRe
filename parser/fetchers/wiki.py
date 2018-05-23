@@ -1,6 +1,6 @@
-import re
-import warnings
-import wikipedia
+from re import sub, IGNORECASE
+from warnings import catch_warnings, filterwarnings
+from wikipedia import page, search, DisambiguationError
 from fuzzywuzzy import fuzz
 
 from base import Fetcher
@@ -14,98 +14,70 @@ class Wiki(Fetcher):
         super().__init__(logger)
 
     def fetch(self, htype, query, params={}):
-        if htype != self.TYPE_WIKI:
-            self._logger.error('''
-                wiki doesn\'t supply htype {0}
-            '''.format(htype))
+        search_result = self.__search(query)
+        if len(search_result) == 0:
+            self._logger.warning('wiki search has no result')
             return None
 
-        searchResult = self.__search(query)
-        if len(searchResult) == 0:
-            self._logger.warning('''
-                wiki search has no result
-            ''')
-            return None
-
-        chooseResult = self.__choose(query, searchResult)
-        if chooseResult is None:
-            self._logger.warning('''
-                wiki search has no result
-            ''')
+        choose_result = self.__choose(query, search_result)
+        if choose_result is None:
+            self._logger.warning('wiki search has no result')
             return None
 
         try:
-            self._logger.info('''
-                wiki start fetching from {0}
-            '''.format(chooseResult))
-            with warnings.catch_warnings():
-                warnings.filterwarnings('ignore')
-                response = wikipedia.page(chooseResult)
-            self._logger.info('''
-                fetching done successfully
-            ''')
+            self._logger.info(f'wiki start fetching from {choose_result}')
+            with catch_warnings():
+                filterwarnings('ignore')
+                response = page(choose_result)
+            self._logger.info('fetching done successfully')
             return response
-        except wikipedia.DisambiguationError as disambiguation:
-            try:
-                chooseResult = disambiguation.options[0]
-                ratio = fuzz.token_sort_ratio(query, chooseResult)
-                self._logger.warning('''
-                    wiki fallback search {0} ratio {1}
-                '''.format(chooseResult, ratio))
-                if ratio >= self.MINIMAL_RATIO:
-                    self._logger.info('''
-                        wiki start fetching from {0}
-                    '''.format(chooseResult))
-                    with warnings.catch_warnings():
-                        warnings.filterwarnings('ignore')
-                        response = wikipedia.page(chooseResult)
-                    self._logger.info('''
-                        fetching done successfully
-                    ''')
-                    return response
-                else:
-                    return None
-            except Exception as exception:
-                self._logger.error(str(exception))
-                return None
+        except DisambiguationError as disambiguation:
+            return self.__disambiguation(query, disambiguation.options[0])
         except Exception as exception:
             self._logger.error(str(exception))
             return None
 
     def __search(self, query):
-        self._logger.info('''
-            wiki start searching on {0}
-        '''.format(query))
-        searchResult = wikipedia.search(
-            query,
-            self.SEARCH_PAGE_COUNT
-        )
-        self._logger.info('''
-            searching done successfully
-        ''')
-        return searchResult
+        self._logger.info(f'wiki start searching on {query}')
+        result = search(query, self.SEARCH_PAGE_COUNT)
+        self._logger.info('searching done successfully')
+        return result
 
-    def __choose(self, query, searchResult):
-        choosedResults = []
-        simpleQuery = re.sub(
-            '\s\(.*\)',
-            '',
-            query,
-            flags=re.IGNORECASE
-        )
-        for index in range(0, len(searchResult)):
-            searchPage = searchResult[index]
+    def __choose(self, query, search_result):
+        result = []
+        simple_query = sub('\s\(.*\)', '', query, flags=IGNORECASE)
+        for index, search_page in enumerate(search_result):
             ratio = (
-                fuzz.token_sort_ratio(query, searchPage) +
-                fuzz.token_sort_ratio(simpleQuery, searchPage)
+                fuzz.token_sort_ratio(query, search_page) +
+                fuzz.token_sort_ratio(simple_query, search_page)
             ) / 2 - index * 5
-            self._logger.info('''
-                wiki filter search result {0} ratio {1}
-            '''.format(searchPage, ratio))
+            self._logger.info(
+                f'wiki filter search result {search_page} ratio {ratio}',
+            )
             if ratio >= self.MINIMAL_RATIO:
-                choosedResults.append((searchPage, ratio))
-        if len(choosedResults) > 0:
-            choosedResults.sort(key=lambda result: result[1], reverse=True)
-            return choosedResults[0][0]
-        else:
+                result.append((search_page, ratio))
+
+        if len(result) > 0:
+            result.sort(key=lambda result: result[1], reverse=True)
+            return result[0][0]
+        return None
+
+    def __disambiguation(self, query, choose_result):
+        try:
+            ratio = fuzz.token_sort_ratio(query, choose_result)
+            self._logger.warning(
+                f'wiki fallback search {choose_result} ratio {ratio}',
+            )
+            if ratio >= self.MINIMAL_RATIO:
+                self._logger.info(
+                    f'wiki start fetching from {choose_result}',
+                )
+                with catch_warnings():
+                    filterwarnings('ignore')
+                    response = page(choose_result)
+                self._logger.info('fetching done successfully')
+                return response
+            return None
+        except Exception as exception:
+            self._logger.error(str(exception))
             return None

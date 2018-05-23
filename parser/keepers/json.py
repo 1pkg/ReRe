@@ -1,14 +1,12 @@
-import json
+from json import dump
 
 from base import Keeper
 
 
 class Json(Keeper):
-    def __init__(self, session, fileName):
-        super().__init__(session)
-        self.__fileName = fileName
+    def __init__(self, file_name):
+        self.__file_name = file_name
 
     def write(self, items):
-        data = super().write(items)
-        with open(self.__fileName, 'w') as file:
-            json.dump(data, file, indent=4)
+        with open(self.__file_name, 'w') as file:
+            dump(super()._prepare(items), file, indent=4)
