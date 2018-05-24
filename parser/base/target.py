@@ -3,7 +3,7 @@ from re import sub
 
 
 class Target:
-    MIN_DESCRIPTION_LENGTH = 50
+    MIN_DESCRIPTION_LENGTH = 75
 
     def __init__(self, image, wiki, logger, keepers, limit):
         limit = limit if limit is not None else self.DEFAULT_LIMIT
@@ -86,7 +86,9 @@ class Target:
             processed_ratio = processed_count / total_count
             skipped_ratio = skipped_count / total_count
             total_ratio = processed_ratio + skipped_ratio
-            remaining_time = 0.0 if total_ratio == 0.0 else time_delta / total_ratio
+            remaining_time = \
+                0.0 if total_ratio == 0.0 \
+                else time_delta / total_ratio - time_delta
         else:
             processed_ratio = 0.0
             skipped_ratio = 0.0
@@ -152,9 +154,20 @@ class Target:
                 option['description'] is '':
             return None
 
-        option['name'] = sub('\s+', ' ', option['name']).strip()
-        option['description'] = sub('\(.*\)[,.]?', '', option['description'])
+        option['name'] = sub('\s+', ' ', option['name'])
+        option['name'] = option['name'].strip()
+        option['description'] = sub('\(.*?\)', '', option['description'])
+        option['description'] = sub('\[.*?\]', '', option['description'])
+        option['description'] = sub(
+            '\s([:;,.!?])',
+            '\\1',
+            option['description'],
+        )
         option['description'] = sub('\s+', ' ', option['description']).strip()
+        option['description'] = \
+            option['description'][:1].upper() + option['description'][1:]
+        if not option['description'].endswith('.'):
+            option['description'] += '.'
 
         if len(option['description']) >= self.MIN_DESCRIPTION_LENGTH:
             return option

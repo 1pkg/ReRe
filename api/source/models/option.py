@@ -12,6 +12,7 @@ class Option(Alchemy.Model):
     name = Alchemy.Column(
         Alchemy.String,
         nullable=False,
+        unique=True,
     )
     description = Alchemy.Column(
         Alchemy.String,

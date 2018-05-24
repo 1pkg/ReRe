@@ -16,7 +16,6 @@
 /parser/env/
 /parser/**/__pycache__/
 /parser/dump/
-/parser/log/
 /parser/targets/
 /parser/fetchers/proxy.py
 /parser/fetchers/imediator.py

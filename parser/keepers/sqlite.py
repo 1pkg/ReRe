@@ -32,7 +32,7 @@ class Sqlite(Keeper):
         self.__cursor.execute('''
             CREATE TABLE IF NOT EXISTS option (
               id INTEGER NOT NULL UNIQUE PRIMARY KEY AUTOINCREMENT,
-              name TEXT NOT NULL,
+              name TEXT NOT NULL UNIQUE,
               description TEXT NOT NULL,
               source TEXT NOT NULL,
               link TEXT NOT NULL

@@ -37,8 +37,8 @@ argparser.add_argument(
 
 
 def run(name, target, limit):
-    sqlite_keeper = Sqlite(path.join(CURRENT_DUMP_PATH, 'targets.db'))
-    json_keeper = Json(path.join(CURRENT_DUMP_PATH, f'{name}.json'))
+    sqlite_keeper = Sqlite(path.join(CURRENT_DUMP_PATH, 'target.db'))
+    json_keeper = Json(path.join(CURRENT_JSON_PATH, f'{name}.json'))
 
     handler = FileHandler(path.join(CURRENT_LOG_PATH, f'{name}.log'))
     formatter = Formatter(Formatter.BASE_FORMAT, Formatter.TIME_FORMAT)
@@ -48,7 +48,7 @@ def run(name, target, limit):
     logger.addHandler(handler)
 
     target(
-        IMediator(logger, CURRENT_IMAGES_PATH),
+        IMediator(logger, CURRENT_IMAGE_PATH),
         Wiki(logger),
         logger,
         [sqlite_keeper, json_keeper],
@@ -60,22 +60,20 @@ arguments = argparser.parse_args()
 
 DUMP_PATH = path.abspath(path.join(__file__, '..', 'dump'))
 CURRENT_DUMP_PATH = path.join(DUMP_PATH, arguments.name)
-CURRENT_IMAGES_PATH = path.join(CURRENT_DUMP_PATH, 'images')
-LOG_PATH = path.abspath(path.join(__file__, '..', 'log'))
-CURRENT_LOG_PATH = path.join(LOG_PATH, arguments.name)
+CURRENT_IMAGE_PATH = path.join(CURRENT_DUMP_PATH, 'image')
+CURRENT_JSON_PATH = path.join(CURRENT_DUMP_PATH, 'json')
+CURRENT_LOG_PATH = path.abspath(path.join(CURRENT_DUMP_PATH, 'log'))
 
-if arguments.clear and path.exists(DUMP_PATH):
-    rmtree(DUMP_PATH)
-if arguments.clear and path.exists(LOG_PATH):
-    rmtree(LOG_PATH)
-if not path.exists(CURRENT_LOG_PATH):
-    makedirs(CURRENT_LOG_PATH)
+if arguments.clear and path.exists(CURRENT_DUMP_PATH):
+    rmtree(CURRENT_DUMP_PATH)
 if not path.exists(CURRENT_DUMP_PATH):
     makedirs(CURRENT_DUMP_PATH)
-    makedirs(CURRENT_IMAGES_PATH)
+    makedirs(CURRENT_IMAGE_PATH)
+    makedirs(CURRENT_JSON_PATH)
+    makedirs(CURRENT_LOG_PATH)
 
 for name, target in targets.__dict__.items():
-    if len(arguments.targets) == 0 or name in arguments.targets:
+    if len(arguments.targets) == 0 or name.lower() in arguments.targets:
         if isinstance(target, type):
             if issubclass(target, Target):
                 Thread(target=run, args=(
