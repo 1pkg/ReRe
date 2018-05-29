@@ -1,7 +1,9 @@
 {
-    "IMAGE_CDN_URL": "'https://img.rect.io/'",
+    "SCHEMA": "'http'",
 
-    "API_URL": "'https://api.rect.io/'",
+    "IMAGE_CDN_URL": "'img.rect.io'",
+
+    "API_URL": "'api.rect.io'",
     "API_TIMEOUT": "10000",
     "API_CONTENT_LENGTH": "10000",
     "API_CACHE_CONTROL": "'no-cache'",

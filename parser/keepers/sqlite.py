@@ -1,30 +1,32 @@
-import sqlite3
+from sqlite3 import connect
 
 from base import Keeper
 
 
 class Sqlite(Keeper):
     def __init__(self, file_name):
-        self.__connection = sqlite3.connect(file_name)
+        self.__connection = connect(file_name)
         self.__cursor = None
         self.__schema()
 
     def write(self, items):
         self.__open()
         for item in super()._prepare(items):
-            option_id = self.__option(
-                item['name'],
-                item['description'],
-                item['source'],
-                item['link'],
-            )
-            for subject in item['subjects']:
-                self.__subject(
-                    subject['link'],
-                    subject['source'],
-                    subject['orientation'],
-                    option_id,
+            if item is not None:
+                option_id = self.__option(
+                    item['name'],
+                    item['description'],
+                    item['source'],
+                    item['link'],
                 )
+                if option_id is not None:
+                    for subject in item['subjects']:
+                        self.__subject(
+                            subject['link'],
+                            subject['source'],
+                            subject['orientation'],
+                            option_id,
+                        )
         self.__close()
 
     def __schema(self):
@@ -63,7 +65,10 @@ class Sqlite(Keeper):
         self.__cursor.execute('''
             SELECT id FROM option WHERE name = ? AND link = ?;
         ''', (name, link))
-        return self.__cursor.fetchone()[0]
+        option = self.__cursor.fetchone()
+        if option is not None:
+            return option[0]
+        return None
 
     def __subject(self, link, source, orientation, option_id):
         self.__cursor.execute('''
@@ -79,7 +84,10 @@ class Sqlite(Keeper):
         self.__cursor.execute('''
             SELECT id FROM subject WHERE link = ?
         ''', (link,))
-        return self.__cursor.fetchone()[0]
+        subject = self.__cursor.fetchone()
+        if subject is not None:
+            return subject[0]
+        return None
 
     def __open(self):
         if self.__cursor is None:

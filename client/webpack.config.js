@@ -44,8 +44,8 @@ module.exports = env => {
         },
         plugins: [
             new Webpack.EnvironmentPlugin({
-                NODE_ENV: JSON.stringify(env.mode),
-                DEBUG: JSON.stringify(env.debug || false),
+                NODE_ENV: env.mode,
+                DEBUG: env.debug || false,
             }),
             new Webpack.DefinePlugin(
                 JSON.parse(Fs.readFileSync(`./settings/${env.mode}.json`)),
@@ -71,8 +71,10 @@ module.exports = env => {
             new CopyPlugin([
                 { from: 'static/fonts/', to: 'fonts/' },
                 { from: 'static/icons/', to: 'icons/' },
-                { from: 'static/icons/favicon.ico', to: 'favicon.ico' },
+                { from: 'static/logo.png', to: 'logo.png' },
                 { from: 'static/manifest.json', to: 'manifest.json' },
+                { from: 'static/site.webmanifest', to: 'site.webmanifest' },
+                { from: 'static/browserconfig.xml', to: 'browserconfig.xml' },
             ]),
             new HtmlPlugin({
                 template: 'static/main.html',

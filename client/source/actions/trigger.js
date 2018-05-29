@@ -45,7 +45,7 @@ export default class Trigger {
             [Trigger.ACTION_REMAKE]: Remake,
             [Trigger.ACTION_REPORT]: Report,
         }
-        Axios.defaults.baseURL = API_URL
+        Axios.defaults.baseURL = `${SCHEMA}://${API_URL}`
         Axios.defaults.timeout = API_TIMEOUT
         Axios.defaults.maxContentLength = API_CONTENT_LENGTH
         Axios.defaults.headers.post['Cache-Control'] = API_CACHE_CONTROL

@@ -47,7 +47,7 @@ export default class extends React.Component {
     }
 
     link() {
-        return IMAGE_CDN_URL + '/images/' + this.props.subject.link
+        return `${SCHEMA}://${IMAGE_CDN_URL}/${this.props.subject.link}`
     }
 
     effect() {

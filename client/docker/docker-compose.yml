@@ -1,0 +1,9 @@
+version: '3'
+services:
+    rectio:
+        restart: on-failure
+        build: ./nginx
+        volumes:
+            - ./../build/:/var/www/rectio
+        ports:
+            - 80:80
