@@ -14,7 +14,7 @@ module.exports = env => {
         entry: ['babel-polyfill', './source/application.js'],
         output: {
             publicPath: '/',
-            path: Path.join(__dirname, 'build'),
+            path: Path.join(__dirname, 'dump', 'build'),
             filename: 'bundle.js',
         },
         module: {
@@ -31,7 +31,7 @@ module.exports = env => {
                                     'babel-plugin-root-import',
                                     {
                                         rootPathPrefix: '~',
-                                        rootPathSuffix: 'source/',
+                                        rootPathSuffix: './source/',
                                     },
                                 ],
                                 'transform-class-properties',
@@ -58,26 +58,29 @@ module.exports = env => {
             host: 'localhost',
             port: 8080,
             inline: true,
-            contentBase: './build',
+            contentBase: './dump/build',
             historyApiFallback: true,
         }
         webpack.plugins.push(
             new HtmlPlugin({
-                template: 'static/main.html',
+                template: './static/main.html',
             }),
         )
     } else {
         webpack.plugins.push(
             new CopyPlugin([
-                { from: 'static/fonts/', to: 'fonts/' },
-                { from: 'static/icons/', to: 'icons/' },
-                { from: 'static/logo.png', to: 'logo.png' },
-                { from: 'static/manifest.json', to: 'manifest.json' },
-                { from: 'static/site.webmanifest', to: 'site.webmanifest' },
-                { from: 'static/browserconfig.xml', to: 'browserconfig.xml' },
+                { from: './static/fonts/', to: './fonts/' },
+                { from: './static/icons/', to: './icons/' },
+                { from: './static/logo.png', to: './logo.png' },
+                { from: './static/manifest.json', to: './manifest.json' },
+                { from: './static/site.webmanifest', to: './site.webmanifest' },
+                {
+                    from: './static/browserconfig.xml',
+                    to: './browserconfig.xml',
+                },
             ]),
             new HtmlPlugin({
-                template: 'static/main.html',
+                template: './static/main.html',
                 inlineSource: /\.jsx?$/,
                 minify: {
                     html5: true,
@@ -104,9 +107,9 @@ module.exports = env => {
                 sourceMap: false,
             }),
             new OnBuildPlugin(function() {
-                Fs.unlink(Path.join(__dirname, 'build', 'bundle.js'))
+                Fs.unlink(Path.join(__dirname, 'dump', 'build', 'bundle.js'))
             }),
-            // new CleanPlugin('build'),
+            new CleanPlugin('./dump/build'),
         )
     }
     return webpack

@@ -1,4 +1,5 @@
 import os
+import time
 import flask
 import flask_limiter
 import flask_cache
@@ -18,9 +19,6 @@ import models
 
 class Application:
     def __init__(self, instance):
-        self.__components = {}
-        self.__actions = {}
-        self.__setup(instance)
         self.__init(instance)
         self.__bind(instance)
         self.instance = instance
@@ -35,17 +33,13 @@ class Application:
             return self.__actions[action](request)
         return None
 
-    def action(self, action, instance, expire):
+    def action(self, action, instance):
         try:
-            response = flask.jsonify(action(flask.request))
-            if expire is not None:
-                response.cache_control.public = True
-                response.cache_control.max_age = expire
-            return response
+            return flask.jsonify(action(flask.request))
         except Exception as exception:
             if instance.debug:
                 raise exception
-            elif isinstance(exception, base.Error):
+            elif not isinstance(exception, base.Error):
                 instance.logger.critical(str(exception))
             return flask.jsonify({})
 
@@ -55,66 +49,69 @@ class Application:
     def after(self, response):
         return response
 
-    def __setup(self, instance):
+    def __init(self, instance):
         instance.config.from_envvar('FLASK_SETTING')
-        with instance.app_context():
-            self.settings = instance.config
-            self.extensions = {}
+        self.settings = instance.config
 
-            self.db = base.Alchemy
-            self.db.init_app(instance)
-            self.db.create_all()
-            self.db.session.commit()
+        with instance.app_context():
+            for _ in range(0, self.settings['MAX_RECONNECTION_TRY']):
+                try:
+                    self.db = base.Alchemy
+                    self.db.init_app(instance)
+                    self.db.create_all()
+                    self.db.session.commit()
+                    break
+                except Exception as exception:
+                    time.sleep(self.settings['DEFAULT_SLEEP_TIME'])
 
             flask_cors.CORS(instance)
             flask_mobility.Mobility(instance)
-            instance.logger.addHandler(
-                logging.handlers.RotatingFileHandler(
-                    os.path.join(
-                        os.path.dirname(__file__),
-                        '..',
-                        'logs',
-                        'rect.log',
-                    ),
-                    maxBytes=100000000,
-                    backupCount=10,
-                ),
-            )
 
+            self.extensions = {}
             self.extensions['mail'] = flask_mail.Mail()
             self.extensions['mail'].init_app(instance)
-
             remote = flask_limiter.util.get_remote_address
             self.extensions['limiter'] = flask_limiter.Limiter(key_func=remote)
             self.extensions['limiter'].init_app(instance)
-
             self.extensions['cache'] = flask_cache.Cache(with_jinja2_ext=False)
             self.extensions['cache'].init_app(instance)
 
-            if not instance.debug:
-                for name, exception in werkzeug.exceptions.__dict__.items():
-                    if isinstance(exception, type):
-                        if issubclass(exception, Exception):
-                            instance.register_error_handler(
-                                exception,
-                                lambda exception: flask.jsonify({}),
-                            )
+        if not instance.debug:
+            for name, exception in werkzeug.exceptions.__dict__.items():
+                if isinstance(exception, type):
+                    if issubclass(exception, Exception):
+                        instance.register_error_handler(
+                            exception,
+                            lambda exception: flask.jsonify({}),
+                        )
 
-    def __init(self, instance):
+        self.__components = {}
         for name, component in components.__dict__.items():
             if isinstance(component, type):
                 if issubclass(component, base.Component):
                     self.__components[name.lower()] = component(self)
+
+        self.__actions = {}
         for name, action in actions.__dict__.items():
             if isinstance(action, type):
                 if issubclass(action, base.Action):
                     self.__actions[name.lower()] = action(self)
+
+        if not instance.debug:
+            instance.logger.addHandler(
+                logging.handlers.RotatingFileHandler(
+                    '/var/logs/rectio.log',
+                    maxBytes=100000000,
+                    backupCount=10,
+                ),
+            )
 
     def __bind(self, instance):
         before = functools.partial(Application.before, self)
         after = functools.partial(Application.after, self)
         instance.before_request(before)
         instance.after_request(after)
+
         for alias, action in self.__actions.items():
             expire = action.CACHE_EXPIRE if not instance.debug else None
             bound = functools.partial(
@@ -122,7 +119,6 @@ class Application:
                 self,
                 action,
                 instance,
-                expire,
             )
             bound.__name__ = alias
             bound.__module__ = action.__module__
@@ -138,5 +134,4 @@ class Application:
             instance.add_url_rule(view_func=bound, rule=rule, methods=method)
 
 
-instance = flask.Flask(__name__)
-Application(instance)
+_ = Application(flask.Flask(__name__)).instance

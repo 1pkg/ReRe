@@ -1,9 +1,12 @@
 version: '3'
 services:
-    rectio:
+    client:
+        build:
+            context: ./../
+            dockerfile: docker/client/Dockerfile
         restart: on-failure
-        build: ./nginx
         volumes:
-            - ./../build/:/var/www/rectio
+            - ./../dump/images/:/var/images
+            - ./../dump/logs:/var/logs
         ports:
             - 80:80
