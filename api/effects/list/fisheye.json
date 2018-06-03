@@ -1,0 +1,5 @@
+{
+    "name": "fisheye",
+    "shader": "fisheye",
+    "uniform": { "scale": 0.25 }
+}

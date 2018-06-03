@@ -8,13 +8,15 @@ import flask_mobility
 import flask_mail
 import functools
 import werkzeug
+import click
 import logging
 import logging.handlers
 
 import base
-import components
-import actions
 import models
+import actions
+import components
+import commands
 
 
 class Application:
@@ -40,7 +42,7 @@ class Application:
             if instance.debug:
                 raise exception
             elif not isinstance(exception, base.Error):
-                instance.logger.critical(str(exception))
+                instance.logger.exception(exception)
             return flask.jsonify({})
 
     def before(self):
@@ -97,13 +99,18 @@ class Application:
                 if issubclass(action, base.Action):
                     self.__actions[name.lower()] = action(self)
 
+        for name, command in commands.__dict__.items():
+            if isinstance(command, type):
+                if issubclass(command, base.Command):
+                    cmd = functools.partial(command.execute, command(self))
+                    cmd.__name__ = command.NAME
+                    cmd = click.command()(cmd)
+                    cmd.short_help = command.DESCRIPTION
+                    instance.cli.add_command(cmd)
+
         if not instance.debug:
             instance.logger.addHandler(
-                logging.handlers.RotatingFileHandler(
-                    '/var/logs/rectio.log',
-                    maxBytes=100000000,
-                    backupCount=10,
-                ),
+                logging.handlers.RotatingFileHandler('/var/logs/rectio.log'),
             )
 
     def __bind(self, instance):

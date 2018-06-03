@@ -1,0 +1,5 @@
+{
+    "name": "sepia",
+    "shader": "sepia",
+    "uniform": {}
+}

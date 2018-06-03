@@ -1,0 +1,5 @@
+{
+    "name": "inverse",
+    "shader": "inverse",
+    "uniform": {}
+}

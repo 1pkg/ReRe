@@ -1,0 +1,5 @@
+{
+    "name": "blur-vertical",
+    "shader": "blur",
+    "uniform": { "orientation": false, "iterations": 50.0, "sigma": 10.0 }
+}

@@ -1,0 +1,5 @@
+{
+    "name": "blur-horizontal",
+    "shader": "blur",
+    "uniform": { "orientation": true, "iterations": 50.0, "sigma": 10.0 }
+}

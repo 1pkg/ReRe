@@ -1,0 +1,5 @@
+{
+    "name": "brighter",
+    "shader": "brightness",
+    "uniform": { "scale": 0.5 }
+}

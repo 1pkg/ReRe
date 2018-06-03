@@ -1,0 +1,5 @@
+{
+    "name": "wave-vertical",
+    "shader": "wave",
+    "uniform": { "orientation": false, "frequency": 50, "amplitude": 0.25 }
+}

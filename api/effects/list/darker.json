@@ -1,0 +1,5 @@
+{
+    "name": "darker",
+    "shader": "brightness",
+    "uniform": { "scale": -0.5 }
+}

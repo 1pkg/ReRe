@@ -1,0 +1,5 @@
+{
+    "name": "ripple",
+    "shader": "ripple",
+    "uniform": { "frequency": 25, "amplitude": 0.1 }
+}

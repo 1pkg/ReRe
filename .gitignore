@@ -11,7 +11,6 @@
 /api/dump/
 /api/settings/*.cfg
 !/api/settings/*.dist.cfg
-/api/yoyo.ini
 
 /parser/env/
 /parser/**/__pycache__/
