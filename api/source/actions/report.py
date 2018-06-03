@@ -3,7 +3,7 @@ from .mixins import Identify
 
 
 class Report(Identify):
-    CONNECTION_LIMIT = '1/minute;10/hour;100/day'
+    CONNECTION_LIMIT = '1/second;10/minute;100/hour;1000/day'
     CACHE_EXPIRE = None
 
     def _validate(self, request):

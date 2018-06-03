@@ -1,14 +1,10 @@
 version: '3'
 services:
     database:
-        image: postgres
-        # most retarted image ever
-        # command: postgres -c config_file=/etc/pgsql.conf
+        build: ./database
+        command: postgres -c config_file=/etc/pgsql.conf
         restart: on-failure
-        networks: 
-            - net
         volumes:
-            - ./database/pgsql.conf:/etc/pgsql.conf
             - ./../dump/pgdata:/var/lib/postgresql/data
             - ./../dump/logs:/var/logs
         environment:
@@ -17,9 +13,8 @@ services:
             POSTGRES_DB: rectio
     cache:
         build: ./cache
+        command: redis-server /usr/local/etc/redis/redis.conf
         restart: on-failure
-        networks: 
-            - net
         volumes:
             - ./../dump/logs:/var/logs
     api:
@@ -27,24 +22,8 @@ services:
             context: ./../
             dockerfile: docker/api/Dockerfile
         restart: on-failure
-        networks:
-            - net
         volumes:
             - ./../dump/logs:/var/logs
         depends_on:
             - database
             - cache
-    proxy:
-        build: ./proxy
-        restart: on-failure
-        networks:
-            - net
-        ports:
-            - 80:80
-        volumes:
-            - ./../dump/logs:/var/logs
-        depends_on:
-            - api
-networks:
-    net:
-        driver: bridge

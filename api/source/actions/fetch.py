@@ -14,7 +14,7 @@ from .mixins import Access, FSingleIdent
 
 
 class Fetch(Access, FSingleIdent):
-    CONNECTION_LIMIT = '1/second;100/minute;10000/hour'
+    CONNECTION_LIMIT = '1/second;100/minute;10000/hour;1000000/day'
     CACHE_EXPIRE = None
 
     def _process(self, request):
