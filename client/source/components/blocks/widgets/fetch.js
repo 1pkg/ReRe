@@ -5,11 +5,11 @@ import Trigger from '~/actions/trigger'
 import Button from './button'
 
 export default class extends React.Component {
-    choose = async () => {
+    fetch = async () => {
         this.props.trigger.call(Trigger.ACTION_FETCH)
     }
 
     render() {
-        return <Button glyph={<DoubleRight />} action={this.choose} />
+        return <Button glyph={<DoubleRight />} action={this.fetch} />
     }
 }

@@ -2,6 +2,7 @@ import React from 'react'
 import Swipeable from 'react-swipeable'
 import Styled from 'styled-components'
 
+import Trigger from '~/actions/trigger'
 import { Device } from '~/helpers'
 import { Carousel } from './../blocks/widgets'
 
@@ -11,13 +12,19 @@ const MainContainer = Styled.div`
     flex-direction: column;
 `
 
-const SwipeableContainer = Styled(Swipeable)`
+const SwipeableMainContainer = Styled(Swipeable)`
     flex: 1 1 0;
     display: flex;
     flex-direction: column;
 `
 
 const SubjectContainer = Styled.div`
+    flex: 3 1 0;
+    max-height: ${props => (props.full ? '100vh' : '70vh')};
+    display: flex;
+`
+
+const SwipeableSubjectContainer = Styled(Swipeable)`
     flex: 3 1 0;
     max-height: ${props => (props.full ? '100vh' : '70vh')};
     display: flex;
@@ -37,6 +44,10 @@ const ToolbarContainer = Styled.div`
 `
 
 export default class extends React.Component {
+    fetch = async () => {
+        this.props.trigger.call(Trigger.ACTION_FETCH)
+    }
+
     expand = () => {
         this.setState(state => {
             setTimeout(() => window.dispatchEvent(new Event('resize')))
@@ -66,13 +77,16 @@ export default class extends React.Component {
     mobile() {
         const Toolbar = this.props.toolbar
         return (
-            <SwipeableContainer
+            <SwipeableMainContainer
                 onSwipedDown={this.expand}
                 onSwipedUp={this.colapse}
             >
-                <SubjectContainer full={this.state.full}>
+                <SwipeableSubjectContainer
+                    full={+this.state.full}
+                    onSwipedLeft={this.fetch}
+                >
                     {this.props.subject}
-                </SubjectContainer>
+                </SwipeableSubjectContainer>
                 <ToolbarContainer>
                     <Toolbar
                         trigger={this.props.trigger}
@@ -88,7 +102,7 @@ export default class extends React.Component {
                         {this.props.options}
                     </Carousel>
                 </OptionContainer>
-            </SwipeableContainer>
+            </SwipeableMainContainer>
         )
     }
 

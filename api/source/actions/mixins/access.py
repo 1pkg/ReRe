@@ -16,6 +16,7 @@ class Access(Action):
         self._session = Session.query \
             .filter(Session.token == token) \
             .first()
+        timeout = self._application.settings['TOKEN_TIMEOUT']
         if self._session is None \
-                or datetime.diff(self._session.time_stamp) > 21600:
+                or datetime.diff(self._session.time_stamp) > timeout:
             raise errors.Token(token)

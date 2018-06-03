@@ -21,6 +21,7 @@ class Option(Alchemy.Model):
     link = Alchemy.Column(
         Alchemy.String,
         nullable=False,
+        unique=True,
     )
     source = Alchemy.Column(
         Alchemy.String,

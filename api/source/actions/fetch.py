@@ -20,16 +20,19 @@ class Fetch(Access, FSingleIdent):
     def _process(self, request):
         random = self._application.random
 
+        roll_byrating = self._application.settings['ROLL_BY_RATING']
+        roll_byrandom = self._application.settings['ROLL_BY_RANDOM']
+        roll_bynovelty = self._application.settings['ROLL_BY_NOVELTY']
         label = self._get(request, 'label', '')
         if label is not '':
             task = self.__bylabel(label)
-        elif random.roll(0.2):   # 20%
+        elif random.roll(roll_byrating):
             task = self.__byrating()
-        elif random.roll(0.5):   # 40%
+        elif random.roll(roll_byrandom):
             task = self.__byrandom()
-        elif random.roll(0.25):  # 10%
+        elif random.roll(roll_bynovelty):
             task = self.__bynovelty()
-        else:                    # 30%
+        else:
             task = self.__bynew()
         task = self.__bynew() if task is None else task
         return self._format(task)

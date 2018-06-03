@@ -71,7 +71,6 @@ module.exports = env => {
             new CopyPlugin([
                 { from: './static/fonts/', to: './fonts/' },
                 { from: './static/icons/', to: './icons/' },
-                { from: './static/logo.png', to: './logo.png' },
                 { from: './static/manifest.json', to: './manifest.json' },
                 { from: './static/site.webmanifest', to: './site.webmanifest' },
                 {
