@@ -9,4 +9,4 @@ class Json(Keeper):
 
     def write(self, items):
         with open(self.__file_name, 'w') as file:
-            dump(super()._prepare(items), file, indent=4)
+            dump(items, file, indent=4)

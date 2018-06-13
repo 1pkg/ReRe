@@ -31,7 +31,11 @@ class Tor(Fetcher):
                 on ip {self.__tor.ip}
             ''')
             if htype == self.TYPE_GET:
-                query += f'?{parse.urlencode(params)}'
+                if params:
+                    if '?' in query:
+                        query += f'&{parse.urlencode(params)}'
+                    else:
+                        query += f'?{parse.urlencode(params)}'
                 response = self.__tor.get(
                     query,
                     headers=self._headers,

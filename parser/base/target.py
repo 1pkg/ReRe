@@ -3,7 +3,13 @@ from re import sub
 
 
 class Target:
-    MIN_DESCRIPTION_LENGTH = 75
+    MIN_DESCRIPTION_LENGTH = 100
+    MIN_DESCRIPTION_WORDS = 10
+
+    IMAGE_QUERY_TYPE = 'name'
+    IMAGE_QUERY_WORDS_COUNT = 7
+
+    DEAD_FETCH_TRY_COUNT = 10
 
     def __init__(self, image, wiki, logger, keepers, limit):
         limit = limit if limit is not None else self.DEFAULT_LIMIT
@@ -14,7 +20,7 @@ class Target:
         self._limit = limit
 
     def process(self):
-        items, processed, skipped, result = self._get_items(), [], [], None
+        items, processed, skipped, result = self._get_items(), {}, [], None
         total_count, start_timestamp = len(items), datetime.today().timestamp()
 
         self._logger.info('''
@@ -31,14 +37,20 @@ class Target:
             self._stats(processed, skipped, total_count, start_timestamp)
             try:
                 self._logger.info(f'''
-                    target processing item {item['title']} {item['url']}
+                    target processing item
+                    {item['title']} {item['url']} {item['category']}
                     on index {index}
                 ''')
-                result = self._from_wiki(item['title'])
+
+                item['title'] = f'{item["title"]} ({item["category"]})' \
+                    if '(' not in item['title'] else item['title']
+
+                result = self._from_wiki(item['title'], item['category'])
                 if result is None:
                     result = self._from_target(
                         item['url'],
                         item['title'],
+                        item['category'],
                     )
                 result = self._fix_option(result)
 
@@ -47,16 +59,33 @@ class Target:
                     self._logger.warning('target skipped item has no result')
                     continue
 
+                if result['name'] in processed:
+                    skipped.append(item)
+                    self._logger.warning(
+                        f'target skipped item dublicated {result["name"]}',
+                    )
+                    continue
+
+                if self.IMAGE_QUERY_TYPE == 'description':
+                    image_query = ' '.join(
+                        result['description']
+                        .split(' ')[:self.IMAGE_QUERY_WORDS_COUNT],
+                    )
+                elif self.IMAGE_QUERY_TYPE == 'word':
+                    image_query = item['word']
+                else:
+                    image_query = result['name']
+
                 result['subjects'] = self._image.fetch(
                     self._image.TYPE_GET,
-                    result['name'],
+                    image_query,
                 )
                 if len(result['subjects']) == 0:
                     skipped.append(item)
                     self._logger.warning('target skipped item has no subjects')
                     continue
 
-                processed.append(result)
+                processed[result['name']] = result
                 self._logger.info(f'target processed item {result}')
             except Exception as exception:
                 skipped.append(item)
@@ -71,10 +100,10 @@ class Target:
         self._keep(processed)
 
     def _keep(self, processed):
-        self._logger.info('start keeping')
+        self._logger.info('target start keeping')
         try:
             for keeper in self._keepers:
-                keeper.write(processed)
+                keeper.write(list(processed.values()))
             self._logger.info('keep done successfully')
         except Exception as exception:
             self._logger.error(str(exception))
@@ -112,7 +141,7 @@ class Target:
 
     def _dead_fetch(self, query, params={}):
         try_count, response, status = 0, None, False
-        while try_count < 100 and not status:
+        while try_count < self.DEAD_FETCH_TRY_COUNT and not status:
             try:
                 try_count += 1
                 response = self._fetcher.fetch(
@@ -132,10 +161,10 @@ class Target:
     def _get_items(self):
         return NotImplemented
 
-    def _from_target(self, url, title):
+    def _from_target(self, url, title, category):
         return NotImplemented
 
-    def _from_wiki(self, title):
+    def _from_wiki(self, title, category):
         response = self._wiki.fetch(None, title)
         if response is not None:
             return {
@@ -143,6 +172,7 @@ class Target:
                 'description': response.summary,
                 'link': response.url,
                 'source': 'wiki',
+                'category': category,
             }
         return None
 
@@ -154,7 +184,13 @@ class Target:
                 option['description'] is '':
             return None
 
+        self._logger.info('target start fixing option')
         option['name'] = sub('\s+', ' ', option['name'])
+        option['name'] = sub(
+            '(.*?)\s*\(.*?\)\s*(\(.*?\))',
+            '\\1 \\2',
+            option['name'],
+        )
         option['name'] = option['name'].strip()
         option['description'] = sub('\(.*?\)', '', option['description'])
         option['description'] = sub('\[.*?\]', '', option['description'])
@@ -169,6 +205,7 @@ class Target:
         if not option['description'].endswith('.'):
             option['description'] += '.'
 
-        if len(option['description']) >= self.MIN_DESCRIPTION_LENGTH:
+        if len(option['description']) >= self.MIN_DESCRIPTION_LENGTH and \
+                len(option['description'].split(' ')) >= self.MIN_DESCRIPTION_WORDS:
             return option
         return None

@@ -5,28 +5,28 @@ from base import Keeper
 
 class Sqlite(Keeper):
     def __init__(self, file_name):
-        self.__connection = connect(file_name)
+        self.__connection = connect(file_name, timeout=30)
         self.__cursor = None
         self.__schema()
 
     def write(self, items):
         self.__open()
-        for item in super()._prepare(items):
-            if item is not None:
-                option_id = self.__option(
-                    item['name'],
-                    item['description'],
-                    item['source'],
-                    item['link'],
-                )
-                if option_id is not None:
-                    for subject in item['subjects']:
-                        self.__subject(
-                            subject['link'],
-                            subject['source'],
-                            subject['orientation'],
-                            option_id,
-                        )
+        for item in items:
+            option_id = self.__option(
+                item['name'],
+                item['description'],
+                item['link'],
+                item['source'],
+                item['category'],
+            )
+            if option_id is not None:
+                for subject in item['subjects']:
+                    self.__subject(
+                        subject['link'],
+                        subject['source'],
+                        subject['orientation'],
+                        option_id,
+                    )
         self.__close()
 
     def __schema(self):
@@ -36,8 +36,9 @@ class Sqlite(Keeper):
               id INTEGER NOT NULL UNIQUE PRIMARY KEY AUTOINCREMENT,
               name TEXT NOT NULL UNIQUE,
               description TEXT NOT NULL,
+              link TEXT NOT NULL UNIQUE,
               source TEXT NOT NULL,
-              link TEXT NOT NULL
+              category TEXT NOT NULL
             );
         ''')
         self.__cursor.execute('''
@@ -51,20 +52,21 @@ class Sqlite(Keeper):
         ''')
         self.__close()
 
-    def __option(self, name, description, source, link):
+    def __option(self, name, description, link, source, category):
         self.__cursor.execute('''
             INSERT OR IGNORE INTO option (
                 name,
                 description,
+                link,
                 source,
-                link
-            ) VALUES (?, ?, ?, ?);
-        ''', (name, description, source, link))
+                category
+            ) VALUES (?, ?, ?, ?, ?);
+        ''', (name, description, link, source, category))
         self.__commit()
 
         self.__cursor.execute('''
-            SELECT id FROM option WHERE name = ? AND link = ?;
-        ''', (name, link))
+            SELECT id FROM option WHERE link = ?;
+        ''', (link,))
         option = self.__cursor.fetchone()
         if option is not None:
             return option[0]

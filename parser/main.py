@@ -77,7 +77,7 @@ for name, target in targets.__dict__.items():
         if isinstance(target, type):
             if issubclass(target, Target):
                 Thread(target=run, args=(
-                    name,
+                    name.lower(),
                     target,
                     arguments.limit,
                 )).start()

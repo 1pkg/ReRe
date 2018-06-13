@@ -42,17 +42,16 @@ class SyncEffects(Command):
             'effects',
             'list',
         )
-        for effect_file in listdir(directory):
-            with open(path.join(directory, effect_file)) as effect:
+        for file in listdir(directory):
+            with open(path.join(directory, file)) as effect:
                 effect = load(effect)
-                shader_name = effect['shader']
-                shader_file = path.join(
+                shader = path.join(
                     directory,
                     '..',
                     'shaders',
-                    f'{shader_name}.frag',
+                    f'{effect["shader"]}.frag',
                 )
-                with open(shader_file, 'r') as frag:
+                with open(shader, 'r') as frag:
                     frag = frag.read().strip().replace('\n', ' ')
                     frag = sub('\s+', ' ', frag)
                     effects[effect['name']] = {

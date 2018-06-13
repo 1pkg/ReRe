@@ -32,17 +32,17 @@ class SyncSettings(Command):
 
     def __sync(self):
         settings = {}
-        setting_file = path.join(
+        file = path.join(
             path.dirname(__file__),
             '..',
             '..',
             'settings',
             'setting.json',
         )
-        with open(setting_file) as setting_data:
-            for setting_item in load(setting_data):
-                settings[setting_item['name']] = {
-                    'name': setting_item['name'],
-                    'value': str(setting_item['value']),
+        with open(file) as data:
+            for setting in load(data):
+                settings[setting['name']] = {
+                    'name': setting['name'],
+                    'value': str(setting['value']),
                 }
         return settings
