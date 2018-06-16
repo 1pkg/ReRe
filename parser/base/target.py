@@ -71,8 +71,12 @@ class Target:
                         result['description']
                         .split(' ')[:self.IMAGE_QUERY_WORDS_COUNT],
                     )
-                elif self.IMAGE_QUERY_TYPE == 'word':
-                    image_query = item['word']
+                elif self.IMAGE_QUERY_TYPE == 'clean-name':
+                    image_query = sub(
+                        '(.*?)\s*\(.*?\)',
+                        '\\1',
+                        result['name'],
+                    )
                 else:
                     image_query = result['name']
 
