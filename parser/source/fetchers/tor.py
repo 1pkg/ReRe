@@ -19,7 +19,7 @@ class TorHelper:
         enforce_rotate=True,
         n_requests=25,
         socks_port=9050,
-        socks_host="localhost",
+        socks_host='localhost',
         test_rotate=False,
     ):
         # Number of requests that have been made since last ip change
@@ -55,7 +55,7 @@ class TorHelper:
     def __check_ip(self):
         proxy = f'socks5h://{self.tor_host}:{self.tor_port}'
         response = self._session.get(
-            "https://api.ipify.org/?format=json",
+            'https://api.ipify.org/?format=json',
             proxies={
                 'http': proxy,
                 'https': proxy,
@@ -70,7 +70,7 @@ class TorHelper:
             self.req_i = 0
 
     def __connect(self):
-        """
+        '''
         Attempt to rotate the IP by sending tor client signal NEWNYM.
 
         Note: this does NOT automatically change the ip. It simply
@@ -80,7 +80,7 @@ class TorHelper:
 
         Also note that the default control port is 9051, which is different
         from the SOCKS5 port. This port is used to receive signals.
-        """
+        '''
         if self.ctrl_pass:
             authenticate_password(self.tor_controller, self.ctrl_pass)
         else:

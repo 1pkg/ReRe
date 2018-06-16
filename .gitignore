@@ -15,7 +15,7 @@
 /parser/env/
 /parser/**/__pycache__/
 /parser/dump/
-/parser/targets/
-/parser/fetchers/proxy.py
-/parser/fetchers/imediator.py
+/parser/source/targets/
+/parser/source/fetchers/proxy.py
+/parser/source/fetchers/imediator.py
 /parser/*.tar.gz*
