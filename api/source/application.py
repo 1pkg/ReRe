@@ -139,6 +139,10 @@ class Application:
             rule = f'/{alias}'
             method = ['GET', 'POST'] if instance.debug else ['POST']
             instance.add_url_rule(view_func=bound, rule=rule, methods=method)
+        instance.add_url_rule(
+            view_func=lambda: flask.jsonify({}),
+            rule='/favicon.ico',
+        )
 
 
 _ = Application(flask.Flask(__name__)).instance

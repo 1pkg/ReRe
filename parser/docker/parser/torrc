@@ -1,0 +1,5 @@
+ControlSocket /run/tor/control
+ControlSocketsGroupWritable 1
+
+ControlPort 9051
+HashedControlPassword 16:618FE21F455DB68F6004F8068461740FC2C4EF0BBFB8501B904B1A3C94

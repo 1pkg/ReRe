@@ -3,7 +3,7 @@ from .mixins import Access, FList
 
 
 class Land(Access, FList):
-    CONNECTION_LIMIT = '1/second;10/minute;100/hour;1000/day'
+    CONNECTION_LIMIT = '3/second;10/minute;100/hour;1000/day'
     CACHE_EXPIRE = 86400
 
     def _process(self, request):

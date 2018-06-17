@@ -1,0 +1,9 @@
+version: '3'
+services:
+    parser:
+        build:
+            context: ./../
+            dockerfile: docker/parser/Dockerfile
+        restart: on-failure
+        volumes:
+            - ./../dump:/var/dump

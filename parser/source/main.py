@@ -58,11 +58,10 @@ def run(name, target, limit):
 
 arguments = argparser.parse_args()
 
-DUMP_PATH = path.abspath(path.join(__file__, '..', '..', 'dump'))
-CURRENT_DUMP_PATH = path.join(DUMP_PATH, arguments.name)
-CURRENT_IMAGE_PATH = path.join(CURRENT_DUMP_PATH, 'image')
-CURRENT_JSON_PATH = path.join(CURRENT_DUMP_PATH, 'json')
-CURRENT_LOG_PATH = path.join(CURRENT_DUMP_PATH, 'log')
+CURRENT_DUMP_PATH = path.join('/', 'var', 'dump', arguments.name)
+CURRENT_IMAGE_PATH = path.join(CURRENT_DUMP_PATH, 'images')
+CURRENT_JSON_PATH = path.join(CURRENT_DUMP_PATH, 'targets')
+CURRENT_LOG_PATH = path.join(CURRENT_DUMP_PATH, 'logs')
 
 if arguments.clear and path.exists(CURRENT_DUMP_PATH):
     rmtree(CURRENT_DUMP_PATH)

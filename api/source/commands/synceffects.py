@@ -11,7 +11,7 @@ class SyncEffects(Command):
     DESCRIPTION = 'Sync vcs effects with database.'
 
     def execute(self):
-        vsc_effects = self.__sync()
+        vsc_effects = self.__readsync()
         with self._application.instance.app_context():
             for effect in Effect.query:
                 if effect.name not in vsc_effects:
@@ -23,8 +23,7 @@ class SyncEffects(Command):
             for name, vsc_effect in vsc_effects.items():
                 if Effect.query \
                     .filter(Effect.name == vsc_effect['name'])\
-                    .first() \
-                        is None:
+                        .first() is None:
                     effect = Effect(
                         name=vsc_effect['name'],
                         shader=vsc_effect['shader'],
@@ -33,7 +32,7 @@ class SyncEffects(Command):
                     self._application.db.session.add(effect)
             self._application.db.session.commit()
 
-    def __sync(self):
+    def __readsync(self):
         effects = {}
         directory = path.join(
             path.dirname(__file__),

@@ -7,7 +7,6 @@ services:
         volumes:
             - ./../dump/pgdata:/var/lib/postgresql/data
             - ./../dump/logs:/var/logs
-            - ./../dump/sql:/docker-entrypoint-initdb.d
         environment:
             POSTGRES_USER: default
             POSTGRES_PASSWORD: password
@@ -25,6 +24,7 @@ services:
         restart: on-failure
         volumes:
             - ./../dump/logs:/var/logs
+            - ./../dump/targets:/var/targets
         depends_on:
             - database
             - cache

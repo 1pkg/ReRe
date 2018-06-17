@@ -18,4 +18,5 @@
 /parser/source/targets/
 /parser/source/fetchers/proxy.py
 /parser/source/fetchers/imediator.py
-/parser/*.tar.gz*
+
+*.tar.gz*
