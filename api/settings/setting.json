@@ -1,7 +1,7 @@
 [
     { "name": "option-count", "value": 3 },
-    { "name": "effect-count", "value": 3 },
-    { "name": "land-count", "value": 7 },
+    { "name": "effect-count", "value": 2 },
+    { "name": "land-count", "value": 5 },
     { "name": "choose-period", "value": 60 },
     { "name": "task-rating-offset", "value": 100 },
     { "name": "task-novelty-period", "value": -3 },

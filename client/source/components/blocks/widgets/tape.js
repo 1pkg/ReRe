@@ -37,7 +37,7 @@ const Title = Styled.div`
 `
 
 const Snippet = Styled.div`
-    flex: 0 0 30%;
+    flex: 0 0 75%;
     display: flex;
     overflow: hidden;
     border-radius: ${props => props.theme['half-small-unit']};

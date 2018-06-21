@@ -31,8 +31,10 @@ class Land(Access, FList):
             ) \
             .group_by(Task.id) \
             .order_by(
-                db.func.count(Mark.type == Type.star) -
-                db.func.count(Mark.type == Type.report),
+                db.desc(
+                    db.func.count(Mark.type == Type.star) -
+                    db.func.count(Mark.type == Type.report),
+                ),
                 db.func.random(),
             ).limit(Setting.get(Setting.NAME_LAND_COUNT)).all()
 
@@ -52,8 +54,10 @@ class Land(Access, FList):
             ) \
             .group_by(Task.id) \
             .order_by(
-                db.func.count(Mark.type == Type.star) -
-                db.func.count(Mark.type == Type.report),
+                db.desc(
+                    db.func.count(Mark.type == Type.star) -
+                    db.func.count(Mark.type == Type.report),
+                ),
                 db.func.random(),
             ).limit(Setting.get(Setting.NAME_LAND_COUNT)).all()
 
@@ -73,7 +77,9 @@ class Land(Access, FList):
             ) \
             .group_by(Task.id) \
             .order_by(
-                db.func.count(Mark.type == Type.star) -
-                db.func.count(Mark.type == Type.report),
+                db.desc(
+                    db.func.count(Mark.type == Type.star) -
+                    db.func.count(Mark.type == Type.report),
+                ),
                 db.func.random(),
             ).limit(Setting.get(Setting.NAME_LAND_COUNT)).all()

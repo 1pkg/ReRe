@@ -22,4 +22,4 @@ RUN groupadd -r parser-user
 RUN useradd -rmg parser-user parser-user
 RUN chown -R parser-user:parser-user ./
 
-CMD python3 ./source/main.py
+CMD python3 ./source/main.py --path /var/dump

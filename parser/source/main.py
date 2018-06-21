@@ -12,6 +12,12 @@ from fetchers import IMediator, Wiki
 
 argparser = ArgumentParser(description='Parser')
 argparser.add_argument(
+    '--path',
+    type=str,
+    default=path.join(__file__, '..', '..'),
+    help='inital dump path',
+)
+argparser.add_argument(
     '--name',
     type=str,
     default=str(datetime.today().timestamp()),
@@ -58,7 +64,7 @@ def run(name, target, limit):
 
 arguments = argparser.parse_args()
 
-CURRENT_DUMP_PATH = path.join('/', 'var', 'dump', arguments.name)
+CURRENT_DUMP_PATH = path.join(arguments.path, arguments.name)
 CURRENT_IMAGE_PATH = path.join(CURRENT_DUMP_PATH, 'images')
 CURRENT_JSON_PATH = path.join(CURRENT_DUMP_PATH, 'targets')
 CURRENT_LOG_PATH = path.join(CURRENT_DUMP_PATH, 'logs')
