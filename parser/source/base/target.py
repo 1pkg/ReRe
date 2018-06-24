@@ -46,13 +46,14 @@ class Target:
                     if '(' not in item['title'] else item['title']
 
                 result = self._from_wiki(item['title'], item['category'])
+                result = self._fix_option(result)
                 if result is None:
                     result = self._from_target(
                         item['url'],
                         item['title'],
                         item['category'],
                     )
-                result = self._fix_option(result)
+                    result = self._fix_option(result)
 
                 if result is None:
                     skipped.append(item)

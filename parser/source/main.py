@@ -14,7 +14,7 @@ argparser = ArgumentParser(description='Parser')
 argparser.add_argument(
     '--path',
     type=str,
-    default=path.join(__file__, '..', '..'),
+    default=path.join(path.dirname(__file__), '..', 'dump'),
     help='inital dump path',
 )
 argparser.add_argument(
