@@ -50,11 +50,12 @@ class SyncEffects(Command):
                     'shaders',
                     f'{effect["shader"]}.frag',
                 )
+                name = path.splitext(file)[0]
                 with open(shader, 'r') as frag:
                     frag = frag.read().strip().replace('\n', ' ')
                     frag = sub('\s+', ' ', frag)
-                    effects[effect['name']] = {
-                        'name': effect['name'],
+                    effects[name] = {
+                        'name': name,
                         'shader': {'frag': frag},
                         'uniform': effect['uniform'],
                     }

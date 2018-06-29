@@ -1,5 +1,4 @@
 {
-    "name": "posterize",
     "shader": "posterize",
     "uniform": {}
 }

@@ -1,0 +1,4 @@
+{
+    "shader": "crosshatch",
+    "uniform": {"hatch": [0.2706, 0.2627, 0.2627], "original": false}
+}

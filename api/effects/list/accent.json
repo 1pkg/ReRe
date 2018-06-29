@@ -1,0 +1,4 @@
+{
+    "shader": "accent",
+    "uniform": {"scale": 0.75}
+}

@@ -1,5 +1,4 @@
 {
-    "name": "twist",
     "shader": "twist",
     "uniform": { "rotation": 4.0 }
 }

@@ -1,5 +1,4 @@
 {
-    "name": "oversaturated",
     "shader": "saturation",
     "uniform": { "saturation": 25.0 }
 }

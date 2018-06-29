@@ -1,0 +1,4 @@
+{
+    "shader": "fog",
+    "uniform": {"scale": 1.5}
+}

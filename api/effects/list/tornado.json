@@ -1,5 +1,4 @@
 {
-    "name": "tornado",
     "shader": "twist",
     "uniform": { "rotation": 8.0 }
 }

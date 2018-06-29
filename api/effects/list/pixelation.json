@@ -1,5 +1,4 @@
 {
-    "name": "pixelation",
     "shader": "pixelation",
     "uniform": { "scale": 10.0 }
 }

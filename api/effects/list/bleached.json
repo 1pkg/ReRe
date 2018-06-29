@@ -1,5 +1,4 @@
 {
-    "name": "bleached",
     "shader": "saturation",
     "uniform": { "saturation": 0.0 }
 }

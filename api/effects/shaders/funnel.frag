@@ -6,9 +6,6 @@ uniform vec2 size;
 vec2 funnel(vec2 coords) {
     vec2 position = -1.0 + 2.0 * coords;
     float rad = dot(position, position);
-    if (rad < 0.5) {
-        return coords;
-    }
     float coef = 0.1 - rad / 5.0;
     return coords + (position / length(position)) * coef;
 }

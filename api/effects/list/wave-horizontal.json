@@ -1,5 +1,4 @@
 {
-    "name": "wave-horizontal",
     "shader": "wave",
     "uniform": { "orientation": true, "frequency": 50, "amplitude": 0.25 }
 }
