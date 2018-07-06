@@ -7,7 +7,7 @@ from base import Fetcher
 
 
 class Wiki(Fetcher):
-    MINIMAL_RATIO = 67
+    MINIMAL_RATIO = 70
     SEARCH_PAGE_COUNT = 7
 
     def __init__(self, logger):

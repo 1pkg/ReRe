@@ -13,7 +13,10 @@ class Image(Fetcher):
     DESIRE_LARGE_MEASURE = 1920
     DESIRE_SMALL_MEASURE = 1080
 
-    MAX_SIDE_DISPROPORTION = 2.75
+    MINIMAL_FILE_SIZE = 50000
+    MAXIMAL_FILE_SIZE = 1000000
+
+    MAX_SIDE_DISPROPORTION = 2.5
 
     RESULT_IMAGE_QUALITY = 75
 
@@ -51,7 +54,7 @@ class Image(Fetcher):
             return None
 
         if not self.__check(image):
-            self._logger.warning('image doesn\'t pass check')
+            self._logger.warning('image doesn\'t pass width height check')
             return None
 
         image = self.__crop(image)
@@ -122,7 +125,15 @@ class Image(Fetcher):
                     optimize=True,
                     progressive=True,
                 )
-                self._logger.info(f'image saved as {file_name}')
+                file_size = path.getsize(full_name)
+                if file_size > self.MAXIMAL_FILE_SIZE \
+                        or file_size < self.MINIMAL_FILE_SIZE:
+                    raise Exception(
+                        f'image doesn\'t pass size check {file_size}b',
+                    )
+                self._logger.info(
+                    f'image saved as {file_name} with size {file_size}b',
+                )
                 return file_name
             except Exception as exception:
                 if path.exists(full_name):

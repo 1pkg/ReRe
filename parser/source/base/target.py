@@ -11,6 +11,8 @@ class Target:
 
     DEAD_FETCH_TRY_COUNT = 10
 
+    USE_WIKI = True
+
     def __init__(self, image, wiki, logger, keepers, limit):
         limit = limit if limit is not None else self.DEFAULT_LIMIT
         self._image = image
@@ -45,8 +47,10 @@ class Target:
                 item['title'] = f'{item["title"]} ({item["category"]})' \
                     if '(' not in item['title'] else item['title']
 
-                result = self._from_wiki(item['title'], item['category'])
-                result = self._fix_option(result)
+                result = None
+                if self.USE_WIKI:
+                    result = self._from_wiki(item['title'], item['category'])
+                    result = self._fix_option(result)
                 if result is None:
                     result = self._from_target(
                         item['url'],
