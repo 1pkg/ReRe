@@ -3,10 +3,9 @@ from re import sub
 
 
 class Target:
-    MIN_DESCRIPTION_LENGTH = 100
-    MIN_DESCRIPTION_WORDS = 10
+    MIN_DESCRIPTION_LENGTH = 50
+    MIN_DESCRIPTION_WORDS = 7
 
-    IMAGE_QUERY_TYPE = 'name'
     IMAGE_QUERY_WORDS_COUNT = 7
 
     DEAD_FETCH_TRY_COUNT = 10
@@ -47,23 +46,17 @@ class Target:
                 item['title'] = f'{item["title"]} ({item["category"]})' \
                     if '(' not in item['title'] else item['title']
 
-                result = None
-                if self.USE_WIKI:
-                    result = self._from_wiki(item['title'], item['category'])
-                    result = self._fix_option(result)
+                result = self._from_target(item['url'], item['title'])
                 if result is None:
-                    result = self._from_target(
-                        item['url'],
-                        item['title'],
-                        item['category'],
-                    )
-                    result = self._fix_option(result)
+                    result = self._from_wiki(item['title'])
+                result = self._fix_option(result)
 
                 if result is None:
                     skipped.append(item)
                     self._logger.warning('target skipped item has no result')
                     continue
 
+                result['category'] = item['category']
                 if result['name'] in processed:
                     skipped.append(item)
                     self._logger.warning(
@@ -71,23 +64,9 @@ class Target:
                     )
                     continue
 
-                if self.IMAGE_QUERY_TYPE == 'description':
-                    image_query = ' '.join(
-                        result['description']
-                        .split(' ')[:self.IMAGE_QUERY_WORDS_COUNT],
-                    )
-                elif self.IMAGE_QUERY_TYPE == 'clean-name':
-                    image_query = sub(
-                        '(.*?)\s*\(.*?\)',
-                        '\\1',
-                        result['name'],
-                    )
-                else:
-                    image_query = result['name']
-
                 result['subjects'] = self._image.fetch(
                     self._image.TYPE_GET,
-                    image_query,
+                    sub('(.*?)\s*\(Other\)', '\\1', result['name']),
                 )
                 if len(result['subjects']) == 0:
                     skipped.append(item)
@@ -170,10 +149,10 @@ class Target:
     def _get_items(self):
         return NotImplemented
 
-    def _from_target(self, url, title, category):
+    def _from_target(self, url, title):
         return NotImplemented
 
-    def _from_wiki(self, title, category):
+    def _from_wiki(self, title):
         response = self._wiki.fetch(None, title)
         if response is not None:
             return {
@@ -181,7 +160,6 @@ class Target:
                 'description': response.summary,
                 'link': response.url,
                 'source': 'wiki',
-                'category': category,
             }
         return None
 
@@ -199,12 +177,10 @@ class Target:
             '(.*?)\s*\(.*?\)\s*(\(.*?\))',
             '\\1 \\2',
             option['name'],
-        )
-        option['name'] = option['name'].strip()
-        option['description'] = sub('\(.*?\)', '', option['description'])
+        ).strip()
         option['description'] = sub('\[.*?\]', '', option['description'])
         option['description'] = sub(
-            '\s([:;,.!?])',
+            '\s+([:;,.!?])',
             '\\1',
             option['description'],
         )
