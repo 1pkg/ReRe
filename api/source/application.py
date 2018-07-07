@@ -106,6 +106,13 @@ class Application:
                     cmd.__name__ = command.NAME
                     cmd = click.command()(cmd)
                     cmd.short_help = command.DESCRIPTION
+                    for argument in command.ARGUMENTS:
+                        cmd = click.option(
+                            '--' + argument['name'],
+                            type=argument['type'],
+                            default=argument['default'],
+                            help=argument['description'],
+                        )(cmd)
                     instance.cli.add_command(cmd)
 
         if not instance.debug:

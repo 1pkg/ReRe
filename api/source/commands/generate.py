@@ -13,7 +13,16 @@ class Generate(Command):
     NAME = 'generate'
     DESCRIPTION = 'Generate new n-tasks.'
 
-    def execute(self):
+    ARGUMENTS = [
+        {
+            'name': 'count',
+            'type': int,
+            'default': 100,
+            'description': 'n-tasks count'
+        },
+    ]
+
+    def execute(self, count):
         db = self._application.db
         device = self._application.device
         datetime = self._application.datetime
@@ -21,7 +30,7 @@ class Generate(Command):
         random = self._application.random
 
         with self._application.instance.app_context():
-            for _ in range(0, self._application.settings['GENERATE_TASK_COUNT']):
+            for _ in range(0, count):
                 subject = Subject.query \
                     .order_by(db.func.random()) \
                     .first()

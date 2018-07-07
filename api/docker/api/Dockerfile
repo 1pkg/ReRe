@@ -25,4 +25,4 @@ RUN useradd -rmg api-user api-user
 RUN chown -R api-user:api-user ./
 
 USER api-user
-ENTRYPOINT ./entry.sh
+CMD ./entry.sh

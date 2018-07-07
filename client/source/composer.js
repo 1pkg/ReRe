@@ -4,7 +4,7 @@ import ReduxThunk from 'redux-thunk'
 import { History, Store } from './helpers'
 import Trigger from './actions/trigger'
 
-const HISTORY = trigger => {
+const history = trigger => {
     History.change(label => {
         if (label) {
             trigger.call(Trigger.ACTION_FETCH, label, false)
@@ -29,6 +29,6 @@ export default compose => {
         return state
     }, compose(applyMiddleware(ReduxThunk)))
     let trigger = new Trigger(store)
-    HISTORY(trigger)
+    history(trigger)
     return { store, trigger }
 }
