@@ -42,7 +42,7 @@ export default class extends React.Component {
     }
 
     report = async event => {
-        let textarea = event.currentTarget.previousSibling
+        let textarea = document.querySelector('textarea')
         this.props.trigger.call(Trigger.ACTION_REPORT, textarea.value)
         this.props.trigger.call(Trigger.ACTION_MARK, 'report')
         this.hide()
@@ -54,11 +54,10 @@ export default class extends React.Component {
     }
 
     content() {
-        let message = `I want report current task\n${Url.current()}\nfor next reason`
+        let message = `I want report task\n${Url.current()}\nfor next reason`
         return (
             <Form>
                 <Textarea defaultValue={message} mobile={Device.mobile()} />
-                <Button glyph={<Check />} action={this.report} />
             </Form>
         )
     }
@@ -69,6 +68,7 @@ export default class extends React.Component {
                 <Button glyph={<Flag />} action={this.show} />
                 <Modal
                     title={'Report'}
+                    buttons={<Button glyph={<Check />} action={this.report} />}
                     content={this.content()}
                     active={this.state.modal}
                     hide={this.hide}

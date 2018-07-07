@@ -3,7 +3,7 @@ from .mixins import Access
 
 
 class Devote(Access):
-    CONNECTION_LIMIT = '3/second;10/minute;100/hour;1000/day'
+    CONNECTION_LIMIT = '3/second;30/minute;300/hour;3000/day'
     CACHE_EXPIRE = 86400
 
     def _process(self, request):

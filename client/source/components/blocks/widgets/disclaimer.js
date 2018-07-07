@@ -7,6 +7,10 @@ import Modal from './modal'
 
 const Container = Styled.div``
 
+const Text = Styled.div`
+    margin: ${props => props.theme['normal-unit']};
+`
+
 export default class extends React.Component {
     show = () => {
         this.setState(state => {
@@ -26,12 +30,13 @@ export default class extends React.Component {
     }
 
     render() {
+        let disclaimer = this.props.settings['disclaimer-text']
         return (
             <Container>
                 <Button glyph={<File />} action={this.show} />
                 <Modal
                     title={'Disclaimer'}
-                    content={this.props.settings['disclaimer-text']}
+                    content={<Text>{disclaimer}</Text>}
                     active={this.state.modal}
                     hide={this.hide}
                 />

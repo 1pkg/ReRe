@@ -2,6 +2,7 @@ from random import shuffle
 
 import errors
 from models import \
+    Answer, \
     Effect, \
     Mark, \
     Option, \
@@ -14,7 +15,7 @@ from .mixins import Access, FSingleIdent
 
 
 class Fetch(Access, FSingleIdent):
-    CONNECTION_LIMIT = '3/second;100/minute;10000/hour;1000000/day'
+    CONNECTION_LIMIT = '3/second;300/minute;30000/hour;3000000/day'
     CACHE_EXPIRE = None
 
     def _process(self, request):
@@ -55,8 +56,9 @@ class Fetch(Access, FSingleIdent):
         device = self._application.device
         random = self._application.random
 
-        return Task.query \
-            .join(Mark) \
+        query = Task.query \
+            .join(Answer) \
+            .outerjoin(Mark) \
             .filter(
                 db.and_(
                     Task.active == True,
@@ -66,11 +68,11 @@ class Fetch(Access, FSingleIdent):
             .group_by(Task.id) \
             .order_by(
                 db.func.count(Mark.type == Type.star) -
-                db.func.count(Mark.type == Type.report),
-                db.func.random(),
-            ).offset(random.number(
-                Setting.get(Setting.NAME_TASK_RATING_OFFSET),
-            )).first()
+                db.func.count(Mark.type == Type.report) +
+                (db.func.count(Answer.id) / 2),
+                db.desc(Task.id),
+            ).limit(10)
+        return query[random.number(query.count())]
 
     def __byrandom(self):
         db = self._application.db
@@ -96,9 +98,7 @@ class Fetch(Access, FSingleIdent):
                 db.and_(
                     Task.active == True,
                     Subject.orientation == device.orientation(),
-                    Task.time_stamp >= datetime.date(
-                        Setting.get(Setting.NAME_TASK_NOVELTY_PERIOD),
-                    ),
+                    Task.time_stamp >= datetime.date(-1),
                 ),
             ) \
             .order_by(db.func.random())\

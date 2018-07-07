@@ -38,7 +38,6 @@ const TitleContainer = Styled.div`
 
 const Title = Styled.div`
     flex: 1 1 0;
-    font-size: ${props => props.theme['sub-big-unit']};
     font-weight: bold;
     text-transform: uppercase;
     text-align: center;
@@ -49,6 +48,8 @@ const Content = Styled.div`
     text-align: justify;
     white-space: pre-wrap;
 `
+
+const ButtonContainer = Styled.div``
 
 class Close extends React.Component {
     hotkey = event => {
@@ -84,7 +85,10 @@ export default class extends React.Component {
                 <SubContainer mobile={Device.mobile()}>
                     <TitleContainer>
                         <Title>{this.props.title}</Title>
-                        <Close action={this.props.hide} />
+                        <ButtonContainer>
+                            {this.props.buttons}
+                            <Close action={this.props.hide} />
+                        </ButtonContainer>
                     </TitleContainer>
                     <Content mobile={Device.mobile()}>
                         {this.props.content}

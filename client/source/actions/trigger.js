@@ -48,7 +48,6 @@ export default class Trigger {
         Axios.defaults.baseURL = `${SCHEMA}://${API_URL}`
         Axios.defaults.timeout = API_TIMEOUT
         Axios.defaults.maxContentLength = API_CONTENT_LENGTH
-        Axios.defaults.headers.post['Cache-Control'] = API_CACHE_CONTROL
     }
 
     state() {

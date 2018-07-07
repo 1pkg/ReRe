@@ -30,7 +30,6 @@ const SubContainer = Styled.div`
 `
 
 const Title = Styled.div`
-    font-size: ${props => props.theme['sub-big-unit']};
     font-weight: bold;
     text-align: center;
     text-transform: capitalize;

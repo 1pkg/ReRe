@@ -1,9 +1,9 @@
-from models import Mark, Setting, Subject, Task, Type
+from models import Answer, Mark, Setting, Subject, Task, Type
 from .mixins import Access, FList
 
 
 class Land(Access, FList):
-    CONNECTION_LIMIT = '3/second;10/minute;100/hour;1000/day'
+    CONNECTION_LIMIT = '3/second;30/minute;300/hour;3000/day'
     CACHE_EXPIRE = 86400
 
     def _process(self, request):
@@ -21,21 +21,23 @@ class Land(Access, FList):
         datetime = self._application.datetime
 
         return Task.query \
-            .join(Mark) \
+            .join(Answer) \
+            .outerjoin(Mark) \
             .filter(
                 db.and_(
                     Task.active == True,
                     Subject.orientation == device.orientation(),
-                    Task.time_stamp >= datetime.date(-1),
+                    Answer.time_stamp >= datetime.date(-1),
                 ),
             ) \
             .group_by(Task.id) \
             .order_by(
                 db.desc(
                     db.func.count(Mark.type == Type.star) -
-                    db.func.count(Mark.type == Type.report),
+                    db.func.count(Mark.type == Type.report) +
+                    (db.func.count(Answer.id) / 2),
                 ),
-                db.func.random(),
+                db.desc(Task.id),
             ).limit(Setting.get(Setting.NAME_LAND_COUNT)).all()
 
     def __weekly(self):
@@ -44,21 +46,23 @@ class Land(Access, FList):
         datetime = self._application.datetime
 
         return Task.query \
-            .join(Mark) \
+            .join(Answer) \
+            .outerjoin(Mark) \
             .filter(
                 db.and_(
                     Task.active == True,
                     Subject.orientation == device.orientation(),
-                    Task.time_stamp >= datetime.date(-7),
+                    Answer.time_stamp >= datetime.date(-7),
                 ),
             ) \
             .group_by(Task.id) \
             .order_by(
                 db.desc(
                     db.func.count(Mark.type == Type.star) -
-                    db.func.count(Mark.type == Type.report),
+                    db.func.count(Mark.type == Type.report) +
+                    (db.func.count(Answer.id) / 2),
                 ),
-                db.func.random(),
+                db.desc(Task.id),
             ).limit(Setting.get(Setting.NAME_LAND_COUNT)).all()
 
     def __monthly(self):
@@ -67,19 +71,21 @@ class Land(Access, FList):
         datetime = self._application.datetime
 
         return Task.query \
-            .join(Mark) \
+            .join(Answer) \
+            .outerjoin(Mark) \
             .filter(
                 db.and_(
                     Task.active == True,
                     Subject.orientation == device.orientation(),
-                    Task.time_stamp >= datetime.date(-30),
+                    Answer.time_stamp >= datetime.date(-30),
                 ),
             ) \
             .group_by(Task.id) \
             .order_by(
                 db.desc(
                     db.func.count(Mark.type == Type.star) -
-                    db.func.count(Mark.type == Type.report),
+                    db.func.count(Mark.type == Type.report) +
+                    (db.func.count(Answer.id) / 2),
                 ),
-                db.func.random(),
+                db.desc(Task.id),
             ).limit(Setting.get(Setting.NAME_LAND_COUNT)).all()

@@ -9,8 +9,6 @@ import flask_mail
 import functools
 import werkzeug
 import click
-import logging
-import logging.handlers
 
 import base
 import models
@@ -41,9 +39,8 @@ class Application:
         except Exception as exception:
             if instance.debug:
                 raise exception
-            elif not isinstance(exception, base.Error):
-                instance.logger.exception(exception)
-            return flask.jsonify({})
+            else:
+                return flask.jsonify({})
 
     def before(self):
         pass
@@ -114,11 +111,6 @@ class Application:
                             help=argument['description'],
                         )(cmd)
                     instance.cli.add_command(cmd)
-
-        if not instance.debug:
-            instance.logger.addHandler(
-                logging.handlers.RotatingFileHandler('/var/logs/rectio.log'),
-            )
 
     def __bind(self, instance):
         before = functools.partial(Application.before, self)

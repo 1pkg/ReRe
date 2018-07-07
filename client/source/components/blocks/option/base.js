@@ -23,9 +23,12 @@ const Container = Styled.div`
     opacity: ${props => (props.disabled ? 0.5 : 1.0)};
 `
 
-const TitleContainer = Styled.div`
+const DisabledTitleContainer = Styled.div`
     text-align: center;
     margin-bottom: ${props => props.theme['half-small-unit']};
+`
+
+const ActiveTitleContainer = Styled(DisabledTitleContainer)`
     &:active {
         color: ${props => props.theme['active-color']};
     };
@@ -70,12 +73,7 @@ export default class extends React.Component {
     }
 
     text() {
-        let words = this.props.option.description.split(' ')
-        if (words.length <= MAX_OPTION_WORDS_SLICE_COUTN) {
-            return this.props.option.description
-        }
-        words = words.slice(0, MAX_OPTION_WORDS_SLICE_COUTN)
-        return `${words.join(' ')}  ...`
+        return this.props.option.description
     }
 
     source() {
@@ -87,6 +85,9 @@ export default class extends React.Component {
     }
 
     render() {
+        const TitleContainer = this.props.disabled
+            ? DisabledTitleContainer
+            : ActiveTitleContainer
         return (
             <Container mobile={Device.mobile()} disabled={this.props.disabled}>
                 <TitleContainer onClick={this.props.action}>

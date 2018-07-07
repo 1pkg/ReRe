@@ -3,7 +3,7 @@ from .mixins import FSingleIdent, Identify
 
 
 class Remake(Identify, FSingleIdent):
-    CONNECTION_LIMIT = '3/second;100/minute;10000/hour;1000000/day'
+    CONNECTION_LIMIT = '3/second;300/minute;30000/hour;3000000/day'
     CACHE_EXPIRE = None
 
     def _process(self, request):
