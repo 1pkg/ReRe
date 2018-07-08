@@ -38,18 +38,19 @@ const DotElement = Styled.div`
         ${props => (props.active ? props.theme[tqmc] : props.theme[qmc])};
     margin: ${props => props.theme['half-small-unit']};
 `
+export default class self extends React.Component {
+    static size = 0
+    static index = 0
+    static label = null
 
-export default class extends React.Component {
     next = () => {
-        if (this.state.index >= this.state.size) {
+        if (this.state.index >= self.size) {
             return
         }
 
         this.setState(state => {
-            return {
-                size: this.state.size,
-                index: this.state.index + 1,
-            }
+            self.index = this.state.index + 1
+            return { index: self.index }
         })
     }
 
@@ -59,18 +60,19 @@ export default class extends React.Component {
         }
 
         this.setState(state => {
-            return {
-                size: this.state.size,
-                index: this.state.index - 1,
-            }
+            self.index = this.state.index - 1
+            return { index: self.index }
         })
     }
 
     componentDidMount() {
-        let size = Lodash.filter(this.props.children, child => child).length - 1
-        let index = this.props.active ? this.props.active - 1 : 0
+        self.index = this.props.label == self.label ? self.index : 0
+        self.label = this.props.label
+        self.size =
+            Lodash.filter(this.props.children, child => child).length - 1
         this.setState(state => {
-            return { size, index }
+            let index = this.props.active ? this.props.active - 1 : self.index
+            return { index }
         })
     }
 

@@ -19,10 +19,11 @@ const MainContainer = Styled.div`
     justify-content: center;
 `
 
+const ohpbu = 'one-and-half-penta-big-unit'
 const SubContainer = Styled.div`
     flex: ${props => (props.mobile ? '1 1 0' : '0 0 auto')};
-    padding: ${props => props.theme['sub-big-unit']};
-    margin: ${props => (props.mobile ? '0rem' : 'auto')};
+    padding: ${props => props.theme['small-unit']};
+    margin: ${props => (props.mobile ? '0rem' : props.theme[ohpbu])};
     background-color: ${props => props.theme['sub-color']};
     display: flex;
     flex-direction: column;
@@ -45,8 +46,7 @@ const Title = Styled.div`
 
 const Content = Styled.div`
     display: flex;
-    text-align: justify;
-    white-space: pre-wrap;
+    margin: ${props => props.theme['sub-normal-unit']};
 `
 
 const ButtonContainer = Styled.div``

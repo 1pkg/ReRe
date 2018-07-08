@@ -8,7 +8,8 @@ import Modal from './modal'
 const Container = Styled.div``
 
 const Text = Styled.div`
-    margin: ${props => props.theme['normal-unit']};
+    text-align: justify;
+    white-space: pre-wrap;
 `
 
 export default class extends React.Component {

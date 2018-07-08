@@ -19,6 +19,7 @@ class Fetch(Access, FSingleIdent):
     CACHE_EXPIRE = None
 
     def _process(self, request):
+        db = self._application.db
         random = self._application.random
 
         roll_byrating = self._application.settings['ROLL_BY_RATING']
@@ -35,6 +36,16 @@ class Fetch(Access, FSingleIdent):
             task = self.__bynovelty()
         else:
             task = self.__bynew()
+
+        if task is not None:
+            answer = Answer.query.filter(
+                db.and_(
+                    Answer.session_id == self._session.id,
+                    Answer.task_id == task.id,
+                ),
+            ).first()
+            task = task if answer is None else None
+
         task = self.__bynew() if task is None else task
         return self._format(task)
 

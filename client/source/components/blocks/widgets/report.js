@@ -19,13 +19,13 @@ const Form = Styled.div`
 `
 
 const pbu = 'penta-big-unit'
-const ohpbu = 'one-and-half-penta-big-unit'
+const dpbu = 'double-penta-big-unit'
 const Textarea = Styled.textarea`
+    resize: none;
     min-width:
-        ${props => (props.mobile ? props.theme[pbu] : props.theme[ohpbu])};
+        ${props => (props.mobile ? props.theme[pbu] : props.theme[dpbu])};
     min-height:
-        ${props => (props.mobile ? props.theme[ohpbu] : props.theme[pbu])};
-    margin: ${props => props.theme['normal-unit']};
+        ${props => (props.mobile ? props.theme[dpbu] : props.theme[pbu])};
 `
 
 export default class extends React.Component {

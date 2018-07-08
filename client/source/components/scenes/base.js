@@ -12,12 +12,6 @@ const MainContainer = Styled.div`
     flex-direction: column;
 `
 
-const SwipeableMainContainer = Styled(Swipeable)`
-    flex: 1 1 0;
-    display: flex;
-    flex-direction: column;
-`
-
 const SubjectContainer = Styled.div`
     flex: 3 1 0;
     max-height: ${props => (props.full ? '100vh' : '70vh')};
@@ -43,7 +37,9 @@ const ToolbarContainer = Styled.div`
     margin-bottom: ${props => props.theme['half-small-unit']};
 `
 
-export default class extends React.Component {
+export default class self extends React.Component {
+    static full = false
+
     fetch = async () => {
         this.props.trigger.call(Trigger.ACTION_FETCH)
     }
@@ -51,39 +47,41 @@ export default class extends React.Component {
     expand = () => {
         this.setState(state => {
             setTimeout(() => window.dispatchEvent(new Event('resize')))
-            return { full: true }
+            self.full = true
+            return { full: self.full }
         })
     }
 
     colapse = () => {
         this.setState(state => {
             setTimeout(() => window.dispatchEvent(new Event('resize')))
-            return { full: false }
+            self.full = false
+            return { full: self.full }
         })
     }
 
     toggle = () => {
         this.setState(state => {
             setTimeout(() => window.dispatchEvent(new Event('resize')))
-            return { full: !state.full }
+            self.full = !state.full
+            return { full: self.full }
         })
     }
 
     constructor(props) {
         super(props)
-        this.state = { full: false }
+        this.state = { full: self.full }
     }
 
     mobile() {
         const Toolbar = this.props.toolbar
         return (
-            <SwipeableMainContainer
-                onSwipedDown={this.expand}
-                onSwipedUp={this.colapse}
-            >
+            <MainContainer>
                 <SwipeableSubjectContainer
                     full={+this.state.full}
                     onSwipedLeft={this.fetch}
+                    onSwipedDown={this.expand}
+                    onSwipedUp={this.colapse}
                 >
                     {this.props.subject}
                 </SwipeableSubjectContainer>
@@ -98,11 +96,14 @@ export default class extends React.Component {
                     />
                 </ToolbarContainer>
                 <OptionContainer hidden={this.state.full}>
-                    <Carousel active={this.props.state.option}>
+                    <Carousel
+                        active={this.props.state.option}
+                        label={this.props.state.task.label}
+                    >
                         {this.props.options}
                     </Carousel>
                 </OptionContainer>
-            </SwipeableMainContainer>
+            </MainContainer>
         )
     }
 
