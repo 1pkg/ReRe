@@ -2,6 +2,7 @@
 
 /client/node_modules/
 /client/dump/
+/client/docker/client/ssl/
 /client/settings/*.json
 !/client/settings/*.dist.json
 /client/npm-debug.log
