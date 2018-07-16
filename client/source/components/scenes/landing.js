@@ -77,7 +77,7 @@ export default class extends React.Component {
         return (
             <MainContainer>
                 <Copyright settings={this.props.state.settings} />
-                <SubContainer mobile={Device.mobile()}>
+                <SubContainer>
                     <Carousel>
                         {this.daily()}
                         {this.weekly()}

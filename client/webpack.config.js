@@ -40,7 +40,15 @@ module.exports = env => {
                         },
                     },
                 },
+                {
+                    test: /\.modernizr$/,
+                    use: ['modernizr-loader', 'json-loader'],
+                },
+                { test: /\.modernizrrc.js$/, use: ['modernizr-loader'] },
             ],
+        },
+        resolve: {
+            alias: { modernizr$: Path.join(__dirname, '.modernizr') },
         },
         plugins: [
             new Webpack.EnvironmentPlugin({

@@ -16,11 +16,9 @@ let { store, trigger } = composer(compose)
 dispatch(trigger)
 
 let main = document.getElementById('main')
-if (main instanceof Element) {
-    ReactDOM.render(
-        <Provider store={store}>
-            <Main trigger={trigger} />
-        </Provider>,
-        main,
-    )
-}
+ReactDOM.render(
+    <Provider store={store}>
+        <Main trigger={trigger} />
+    </Provider>,
+    main,
+)

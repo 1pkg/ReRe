@@ -67,23 +67,24 @@ class Fetch(Access, FSingleIdent):
         device = self._application.device
         random = self._application.random
 
-        query = Task.query \
-            .join(Answer) \
-            .outerjoin(Mark) \
+        return random.choose(
+            Task.query
+            .join(Answer)
+            .outerjoin(Mark)
             .filter(
                 db.and_(
                     Task.active == True,
                     Subject.orientation == device.orientation(),
                 ),
-            ) \
-            .group_by(Task.id) \
+            )
+            .group_by(Task.id)
             .order_by(
                 db.func.count(Mark.type == Type.star) -
                 db.func.count(Mark.type == Type.report) +
                 (db.func.count(Answer.id) / 2),
                 db.desc(Task.id),
             ).limit(10)
-        return query[random.number(query.count())]
+        )
 
     def __byrandom(self):
         db = self._application.db

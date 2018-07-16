@@ -3,38 +3,44 @@ import Styled from 'styled-components'
 
 import { Device } from '~/helpers'
 
+const hsu = 'half-small-unit'
+const msu = 'min-small-unit'
 const Container = Styled.div`
     flex: 1 1 0;
     overflow-y: auto;
-    padding: ${props => props.theme['half-small-unit']};
-    margin-bottom: ${props => props.theme['half-small-unit']};
-    margin-right: ${props => props.theme['half-small-unit']};
-    margin-left: ${props => props.theme['half-small-unit']};
+    padding: ${props => props.theme[hsu]};
+    margin-bottom: ${props => props.theme[hsu]};
+    margin-right: ${props => props.theme[hsu]};
+    margin-left: ${props => props.theme[hsu]};
     border:
         ${props => props.theme['minimal-unit']}
         solid
         ${props => props.theme['half-main-color']};
     box-shadow:
-        ${props => props.theme['min-small-unit']}
-        ${props => props.theme['min-small-unit']}
-        ${props => props.theme['min-small-unit']}
-        ${props => props.theme['min-small-unit']}
+        ${props => props.theme[msu]}
+        ${props => props.theme[msu]}
+        ${props => props.theme[msu]}
+        ${props => props.theme[msu]}
         ${props => props.theme['quarter-main-color']};
     opacity: ${props => (props.disabled ? 0.5 : 1.0)};
+    @media screen and (orientation:landscape) {
+        padding: ${props => (props.mobile ? '0rem' : props.theme[hsu])};
+    }
 `
 
-const DisabledTitleContainer = Styled.div`
+const TitleContainer = Styled.div`
     text-align: center;
-    margin-bottom: ${props => props.theme['half-small-unit']};
-`
-
-const ActiveTitleContainer = Styled(DisabledTitleContainer)`
+    margin-bottom: ${props => props.theme[hsu]};
     &:active {
-        color: ${props => props.theme['active-color']};
+        color:
+            ${props => (props.disabled ? 'auto' : props.theme['active-color'])};
     };
     ${Container}:hover & {
-        cursor: pointer;
+        cursor: ${props => (props.disabled ? 'auto' : 'pointer')};
     };
+    @media screen and (orientation:landscape) {
+        margin-bottom: ${props => (props.mobile ? '0rem' : props.theme[hsu])};
+    }
 `
 
 const MainTitle = Styled.div`
@@ -53,12 +59,19 @@ const Text = Styled.div`
     font-size: ${props => props.theme['sub-normal-unit']};
     text-align: justify;
     overflow: hidden;
+    @media screen and (orientation:landscape) {
+        display: ${props => (props.mobile ? 'none' : 'auto')};
+    }
 `
 
 const Source = Styled.div`
-    font-size: ${props => props.theme['small-unit']};
     text-align: right;
-    margin-top: ${props => props.theme['half-small-unit']};
+    font-size: ${props => props.theme['small-unit']};
+    margin-top: ${props => props.theme[hsu]};
+    @media screen and (orientation:landscape) {
+        text-align: ${props => (props.mobile ? 'center' : 'right')};
+        margin-top: ${props => (props.mobile ? '0rem' : props.theme[hsu])};
+    }
 `
 
 export default class extends React.Component {
@@ -85,17 +98,18 @@ export default class extends React.Component {
     }
 
     render() {
-        const TitleContainer = this.props.disabled
-            ? DisabledTitleContainer
-            : ActiveTitleContainer
         return (
             <Container mobile={Device.mobile()} disabled={this.props.disabled}>
-                <TitleContainer onClick={this.props.action}>
+                <TitleContainer
+                    mobile={Device.mobile()}
+                    disabled={this.props.disabled}
+                    onClick={this.props.action}
+                >
                     <MainTitle>{this.title()}</MainTitle>
                     <SubTitle>{this.subtile()}</SubTitle>
                 </TitleContainer>
                 <Text mobile={Device.mobile()}>{this.text()}</Text>
-                <Source>{this.source()}</Source>
+                <Source mobile={Device.mobile()}>{this.source()}</Source>
             </Container>
         )
     }

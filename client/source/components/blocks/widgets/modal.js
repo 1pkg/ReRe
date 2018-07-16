@@ -49,7 +49,10 @@ const Content = Styled.div`
     margin: ${props => props.theme['sub-normal-unit']};
 `
 
-const ButtonContainer = Styled.div``
+const ButtonContainer = Styled.div`
+    display: flex;
+    flex-direction: column;
+`
 
 class Close extends React.Component {
     hotkey = event => {
@@ -86,13 +89,11 @@ export default class extends React.Component {
                     <TitleContainer>
                         <Title>{this.props.title}</Title>
                         <ButtonContainer>
-                            {this.props.buttons}
                             <Close action={this.props.hide} />
+                            {this.props.buttons}
                         </ButtonContainer>
                     </TitleContainer>
-                    <Content mobile={Device.mobile()}>
-                        {this.props.content}
-                    </Content>
+                    <Content>{this.props.content}</Content>
                 </SubContainer>
             </MainContainer>
         )

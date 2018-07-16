@@ -1,0 +1,8 @@
+{
+    "minify": true,
+    "options": [],
+    "feature-detects": [
+        "css/flexbox",
+        "webgl"
+    ]
+}

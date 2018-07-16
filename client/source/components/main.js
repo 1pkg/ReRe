@@ -1,10 +1,11 @@
+import Modernizr from 'modernizr'
 import Lodash from 'lodash'
 import React from 'react'
 import { connect } from 'react-redux'
 import Styled, { ThemeProvider } from 'styled-components'
 
 import Trigger from '~/actions/trigger'
-import { Choose, Landing, Maintenance, Result, Wait } from './scenes'
+import { Choose, Landing, Maintenance, Result, Update, Wait } from './scenes'
 import Theme from './theme'
 
 const Container = Styled.div`
@@ -25,6 +26,10 @@ export default connect(state => {
         }
 
         scene(trigger, state) {
+            if (!Modernizr.flexbox || !Modernizr.webgl) {
+                return <Update />
+            }
+
             switch (state.status) {
                 case Trigger.STATUS_LAND:
                     return <Landing trigger={trigger} state={state} />
