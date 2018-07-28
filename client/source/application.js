@@ -3,6 +3,9 @@ import ReactDOM from 'react-dom'
 import { compose as reduxCompose } from 'redux'
 import { Provider } from 'react-redux'
 
+import coinimp from './thirdparty/coinimp'
+import statcounter from './thirdparty/statcounter'
+
 import composer from './composer'
 import dispatch from './dispatch'
 import Main from './components/main'
@@ -22,3 +25,8 @@ ReactDOM.render(
     </Provider>,
     main,
 )
+
+if (process.env.NODE_ENV === 'production') {
+    coinimp(COINIMP_KEY)
+    statcounter(STARCOUNTER_PROJECT, STARCOUNTER_SECURITY)
+}
