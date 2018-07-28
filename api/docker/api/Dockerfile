@@ -7,7 +7,7 @@ COPY ./settings ./settings
 COPY ./effects ./effects
 COPY ./requirements.txt ./
 
-RUN pip install virtualenv
+RUN pip install -p python3 virtualenv
 RUN virtualenv env
 RUN . ./env/bin/activate
 RUN pip install -r requirements.txt

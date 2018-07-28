@@ -10,6 +10,7 @@ class Mail(Component):
         message = Message(
             subject=subject,
             body=body,
-            recipients=[settings['MAIL_DEFAULT_SENDER']],
+            sender=settings['MAIL_USERNAME'],
+            recipients=[settings['MAIL_USERNAME']],
         )
         mail.send(message)

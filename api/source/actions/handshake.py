@@ -11,12 +11,8 @@ class Handshake(Action):
         super()._validate(request)
         validator = self._application.validator
         http = self._application.http
-        self.__user_host = http.userhost(request)
         self.__user_agent = http.useragent(request)
         self.__user_ip = http.userip(request)
-
-        if validator.isempty(self.__user_host):
-            raise errors.Request('user_host', self.__user_host)
 
         if validator.isempty(self.__user_agent):
             raise errors.Request('user_agent', self.__user_agent)
@@ -34,12 +30,10 @@ class Handshake(Action):
             c_hash.LONG_DIGEST,
             datetime.timestamp(),
             random.salt(),
-            self.__user_host,
             self.__user_agent,
             self.__user_ip,
         )
         session = Session(
-            user_host=self.__user_host,
             user_agent=self.__user_agent,
             user_ip=self.__user_ip,
             token=token,

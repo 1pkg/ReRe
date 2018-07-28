@@ -20,7 +20,7 @@ class SyncEffects(Command):
                     vsc_effect = vsc_effects[effect.name]
                     effect.shader = vsc_effect['shader']
                     effect.uniform = vsc_effect['uniform']
-            for name, vsc_effect in vsc_effects.items():
+            for _, vsc_effect in vsc_effects.items():
                 if Effect.query \
                     .filter(Effect.name == vsc_effect['name'])\
                         .first() is None:

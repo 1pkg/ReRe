@@ -8,7 +8,6 @@ from models import \
     Option, \
     Orientation, \
     Subject, \
-    Setting, \
     Task, \
     Type
 from .mixins import Access, FSingleIdent
@@ -54,6 +53,7 @@ class Fetch(Access, FSingleIdent):
         device = self._application.device
 
         return Task.query \
+            .join(Subject) \
             .filter(
                 db.and_(
                     Task.active == True,
@@ -67,30 +67,30 @@ class Fetch(Access, FSingleIdent):
         device = self._application.device
         random = self._application.random
 
-        return random.choose(
-            Task.query
-            .join(Answer)
-            .outerjoin(Mark)
+        query = Task.query \
+            .join(Subject, Answer) \
+            .outerjoin(Mark) \
             .filter(
                 db.and_(
                     Task.active == True,
                     Subject.orientation == device.orientation(),
                 ),
-            )
-            .group_by(Task.id)
+            ) \
+            .group_by(Task.id) \
             .order_by(
                 db.func.count(Mark.type == Type.star) -
                 db.func.count(Mark.type == Type.report) +
                 (db.func.count(Answer.id) / 2),
                 db.desc(Task.id),
             ).limit(10)
-        )
+        return random.choose(query, query.count())
 
     def __byrandom(self):
         db = self._application.db
         device = self._application.device
 
         return Task.query \
+            .join(Subject) \
             .filter(
                 db.and_(
                     Task.active == True,
@@ -106,6 +106,7 @@ class Fetch(Access, FSingleIdent):
         datetime = self._application.datetime
 
         return Task.query \
+            .join(Subject) \
             .filter(
                 db.and_(
                     Task.active == True,
@@ -122,6 +123,7 @@ class Fetch(Access, FSingleIdent):
         datetime = self._application.datetime
         c_hash = self._application.hash
         random = self._application.random
+        settings = self._application.settings
 
         subject = Subject.query \
             .filter(Subject.orientation == device.orientation()) \
@@ -130,12 +132,12 @@ class Fetch(Access, FSingleIdent):
         options = Option.query \
             .filter(Option.id != subject.option_id) \
             .order_by(db.func.random()) \
-            .limit(Setting.get(Setting.NAME_OPTION_COUNT) - 1).all() \
+            .limit(settings['OPTION_COUNT'] - 1).all() \
             + [subject.option]
         shuffle(options)
         effects = Effect.query \
             .order_by(db.func.random()) \
-            .limit(Setting.get(Setting.NAME_EFFECT_COUNT)).all()
+            .limit(settings['EFFECT_COUNT']).all()
         label = c_hash.hex(
             c_hash.SHORT_DIGEST,
             datetime.timestamp(),

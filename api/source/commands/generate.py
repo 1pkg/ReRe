@@ -5,7 +5,6 @@ from models import \
     Effect, \
     Option, \
     Subject, \
-    Setting, \
     Task
 
 
@@ -24,10 +23,10 @@ class Generate(Command):
 
     def execute(self, count):
         db = self._application.db
-        device = self._application.device
         datetime = self._application.datetime
         c_hash = self._application.hash
         random = self._application.random
+        settings = self._application.settings
 
         with self._application.instance.app_context():
             for _ in range(0, count):
@@ -37,12 +36,12 @@ class Generate(Command):
                 options = Option.query \
                     .filter(Option.id != subject.option_id) \
                     .order_by(db.func.random()) \
-                    .limit(Setting.get(Setting.NAME_OPTION_COUNT) - 1).all() \
+                    .limit(settings['OPTION_COUNT'] - 1).all() \
                     + [subject.option]
                 shuffle(options)
                 effects = Effect.query \
                     .order_by(db.func.random()) \
-                    .limit(Setting.get(Setting.NAME_EFFECT_COUNT)).all()
+                    .limit(settings['EFFECT_COUNT']).all()
                 label = c_hash.hex(
                     c_hash.SHORT_DIGEST,
                     datetime.timestamp(),

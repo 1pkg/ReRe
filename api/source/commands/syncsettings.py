@@ -18,7 +18,7 @@ class SyncSettings(Command):
                 else:
                     vsc_setting = vsc_settings[setting.name]
                     setting.value = vsc_setting['value']
-            for name, vsc_setting in vsc_settings.items():
+            for _, vsc_setting in vsc_settings.items():
                 if Setting.query \
                     .filter(Setting.name == vsc_setting['name'])\
                         .first() is None:

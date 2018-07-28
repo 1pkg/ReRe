@@ -16,6 +16,7 @@ class Answer(Alchemy.Model):
         nullable=False,
         default=datetime.utcnow,
         server_default=Alchemy.text('now()'),
+        index=True,
     )
     task_id = Alchemy.Column(
         Alchemy.Integer,

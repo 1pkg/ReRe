@@ -1,4 +1,4 @@
-from models import Effect, Setting, Task
+from models import Effect, Task
 from .mixins import FSingleIdent, Identify
 
 
@@ -11,10 +11,11 @@ class Remake(Identify, FSingleIdent):
         datetime = self._application.datetime
         c_hash = self._application.hash
         random = self._application.random
+        settings = self._application.settings
 
         effects = Effect.query \
             .order_by(db.func.random()) \
-            .limit(Setting.get(Setting.NAME_EFFECT_COUNT)).all()
+            .limit(settings['EFFECT_COUNT']).all()
         label = c_hash.hex(
             c_hash.SHORT_DIGEST,
             datetime.timestamp(),

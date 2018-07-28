@@ -4,9 +4,6 @@ from base import Alchemy
 
 
 class Setting(Alchemy.Model):
-    NAME_OPTION_COUNT = 'option-count'
-    NAME_EFFECT_COUNT = 'effect-count'
-    NAME_LAND_COUNT = 'land-count'
     NAME_CHOSE_PERIOD = 'choose-period'
     NAME_SHARE_TITLE = 'share-title'
     NAME_COPYRIGHT_TEXT = 'copyright-text'
@@ -36,9 +33,6 @@ class Setting(Alchemy.Model):
             .filter(Setting.name == name) \
             .one().value
         return {
-            Setting.NAME_OPTION_COUNT: int,
-            Setting.NAME_EFFECT_COUNT: int,
-            Setting.NAME_LAND_COUNT: int,
             Setting.NAME_CHOSE_PERIOD: int,
             Setting.NAME_SHARE_TITLE: str,
             Setting.NAME_COPYRIGHT_TEXT: str,

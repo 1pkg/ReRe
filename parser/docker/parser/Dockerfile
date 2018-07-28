@@ -14,7 +14,7 @@ COPY ./source ./source
 COPY ./requirements.txt ./
 
 RUN pip install virtualenv
-RUN virtualenv env
+RUN virtualenv -p python3 env
 RUN . ./env/bin/activate
 RUN pip install -r requirements.txt
 

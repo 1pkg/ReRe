@@ -1,4 +1,4 @@
-from models import Answer, Mark, Setting, Subject, Task, Type
+from models import Answer, Mark, Subject, Task, Type
 from .mixins import Access, FList
 
 
@@ -7,8 +7,6 @@ class Land(Access, FList):
     CACHE_EXPIRE = 86400
 
     def _process(self, request):
-        device = self._application.device
-
         return self._format({
             'daily': self.__daily(),
             'weekly': self.__weekly(),
@@ -19,9 +17,10 @@ class Land(Access, FList):
         db = self._application.db
         device = self._application.device
         datetime = self._application.datetime
+        settings = self._application.settings
 
         return Task.query \
-            .join(Answer) \
+            .join(Subject, Answer) \
             .outerjoin(Mark) \
             .filter(
                 db.and_(
@@ -38,15 +37,16 @@ class Land(Access, FList):
                     (db.func.count(Answer.id) / 2),
                 ),
                 db.desc(Task.id),
-            ).limit(Setting.get(Setting.NAME_LAND_COUNT)).all()
+            ).limit(settings['LAND_COUNT']).all()
 
     def __weekly(self):
         db = self._application.db
         device = self._application.device
         datetime = self._application.datetime
+        settings = self._application.settings
 
         return Task.query \
-            .join(Answer) \
+            .join(Subject, Answer) \
             .outerjoin(Mark) \
             .filter(
                 db.and_(
@@ -63,15 +63,16 @@ class Land(Access, FList):
                     (db.func.count(Answer.id) / 2),
                 ),
                 db.desc(Task.id),
-            ).limit(Setting.get(Setting.NAME_LAND_COUNT)).all()
+            ).limit(settings['LAND_COUNT']).all()
 
     def __monthly(self):
         db = self._application.db
         device = self._application.device
         datetime = self._application.datetime
+        settings = self._application.settings
 
         return Task.query \
-            .join(Answer) \
+            .join(Subject, Answer) \
             .outerjoin(Mark) \
             .filter(
                 db.and_(
@@ -88,4 +89,4 @@ class Land(Access, FList):
                     (db.func.count(Answer.id) / 2),
                 ),
                 db.desc(Task.id),
-            ).limit(Setting.get(Setting.NAME_LAND_COUNT)).all()
+            ).limit(settings['LAND_COUNT']).all()

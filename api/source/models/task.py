@@ -28,6 +28,7 @@ class Task(Alchemy.Model):
         nullable=False,
         default=datetime.utcnow,
         server_default=Alchemy.text('now()'),
+        index=True,
     )
     subject_id = Alchemy.Column(
         Alchemy.Integer,

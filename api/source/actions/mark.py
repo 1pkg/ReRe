@@ -9,8 +9,6 @@ class Mark(Identify):
 
     def _validate(self, request):
         super()._validate(request)
-        db = self._application.db
-        validator = self._application.validator
 
         self.__type = self._get(request, 'type', '')
         if not self.__type in models.Type.__members__:

@@ -11,10 +11,6 @@ class Session(Alchemy.Model):
         nullable=False,
         primary_key=True,
     )
-    user_host = Alchemy.Column(
-        Alchemy.String,
-        nullable=False,
-    )
     user_agent = Alchemy.Column(
         Alchemy.String,
         nullable=False,

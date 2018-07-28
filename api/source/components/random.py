@@ -6,9 +6,10 @@ from base import Component
 
 
 class Random(Component):
-    def choose(self, sequence):
-        if len(sequence):
-            return sequence[self.number(len(sequence))]
+    def choose(self, sequence, length=None):
+        length = len(sequence) if length is None else length
+        if length > 0:
+            return sequence[self.number(length)]
         return None
 
     def number(self, limit):

@@ -119,7 +119,6 @@ class Application:
         instance.after_request(after)
 
         for alias, action in self.__actions.items():
-            expire = action.CACHE_EXPIRE if not instance.debug else None
             bound = functools.partial(
                 Application.action,
                 self,

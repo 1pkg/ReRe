@@ -4,9 +4,6 @@ from base import Component
 
 
 class Http(Component):
-    def userhost(self, request):
-        return str(request.headers['HOST'])
-
     def useragent(self, request):
         return str(request.headers['USER-AGENT'])
 
