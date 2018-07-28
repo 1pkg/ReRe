@@ -11,8 +11,13 @@ class Handshake(Action):
         super()._validate(request)
         validator = self._application.validator
         http = self._application.http
+        settings = self._application.settings
         self.__user_agent = http.useragent(request)
         self.__user_ip = http.userip(request)
+        self.__integrity = str(self._get(request, 'integrity'))
+
+        if not self.__integrity == settings['INTEGRITY']:
+            raise errors.Integrity(self.__integrity)
 
         if validator.isempty(self.__user_agent):
             raise errors.Request('user_agent', self.__user_agent)
@@ -32,6 +37,7 @@ class Handshake(Action):
             random.salt(),
             self.__user_agent,
             self.__user_ip,
+            self.__integrity,
         )
         session = Session(
             user_agent=self.__user_agent,

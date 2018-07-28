@@ -5,7 +5,9 @@ import Trigger from './trigger'
 export default async trigger => {
     try {
         let state = trigger.state()
-        let response = await Axios.post('handshake')
+        let response = await Axios.post('handshake', {
+            integrity: INTEGRITY,
+        })
         state.token = response.data.token
         state.status = Trigger.STATUS_WAIT
         trigger.push(Trigger.ACTION_HANDSHAKE, state)
