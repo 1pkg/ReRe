@@ -1,5 +1,3 @@
-from random import shuffle
-
 import errors
 from models import \
     Answer, \
@@ -37,12 +35,10 @@ class Fetch(Access, FSingleIdent):
             task = self.__bynew()
 
         if task is not None:
-            answer = Answer.query.filter(
-                db.and_(
-                    Answer.session_id == self._session.id,
-                    Answer.task_id == task.id,
-                ),
-            ).first()
+            answer = Answer.query \
+                .filter(Answer.session_id == self._session.id) \
+                .filter(Answer.task_id == task.id) \
+                .first()
             task = task if answer is None else None
 
         task = self.__bynew() if task is None else task
@@ -53,14 +49,13 @@ class Fetch(Access, FSingleIdent):
         device = self._application.device
 
         return Task.query \
-            .join(Subject) \
-            .filter(
-                db.and_(
-                    Task.active == True,
-                    Task.label == label,
-                    Subject.orientation == device.orientation(),
-                ),
-            ).first()
+            .join(Subject, db.and_(
+                Subject.id == Task.subject_id,
+                Subject.orientation == device.orientation()
+            )) \
+            .filter(Task.label == label) \
+            .filter(Task.active == True) \
+            .first()
 
     def __byrating(self):
         db = self._application.db
@@ -68,21 +63,23 @@ class Fetch(Access, FSingleIdent):
         random = self._application.random
 
         query = Task.query \
-            .join(Subject, Answer) \
+            .join(Subject, db.and_(
+                Subject.id == Task.subject_id,
+                Subject.orientation == device.orientation()
+            )) \
+            .join(Answer) \
             .outerjoin(Mark) \
-            .filter(
-                db.and_(
-                    Task.active == True,
-                    Subject.orientation == device.orientation(),
-                ),
-            ) \
+            .filter(Task.active == True) \
             .group_by(Task.id) \
             .order_by(
-                db.func.count(Mark.type == Type.star) -
-                db.func.count(Mark.type == Type.report) +
-                (db.func.count(Answer.id) / 2),
+                db.desc(
+                    db.func.count(Mark.type == Type.star) -
+                    db.func.count(Mark.type == Type.report) +
+                    (db.func.count(Answer.option_id != None) / 2) -
+                    (db.func.count(Answer.option_id == None) * 2),
+                ),
                 db.desc(Task.id),
-            ).limit(10)
+            ).limit(100)
         return random.choose(query, query.count())
 
     def __byrandom(self):
@@ -90,13 +87,11 @@ class Fetch(Access, FSingleIdent):
         device = self._application.device
 
         return Task.query \
-            .join(Subject) \
-            .filter(
-                db.and_(
-                    Task.active == True,
-                    Subject.orientation == device.orientation(),
-                ),
-            ) \
+            .join(Subject, db.and_(
+                Subject.id == Task.subject_id,
+                Subject.orientation == device.orientation()
+            )) \
+            .filter(Task.active == True) \
             .order_by(db.func.random())\
             .first()
 
@@ -106,14 +101,12 @@ class Fetch(Access, FSingleIdent):
         datetime = self._application.datetime
 
         return Task.query \
-            .join(Subject) \
-            .filter(
-                db.and_(
-                    Task.active == True,
-                    Subject.orientation == device.orientation(),
-                    Task.time_stamp >= datetime.date(-1),
-                ),
-            ) \
+            .join(Subject, db.and_(
+                Subject.id == Task.subject_id,
+                Subject.orientation == device.orientation()
+            )) \
+            .filter(Task.active == True) \
+            .filter(Task.time_stamp >= datetime.date(-1)) \
             .order_by(db.func.random())\
             .first()
 
@@ -134,7 +127,7 @@ class Fetch(Access, FSingleIdent):
             .order_by(db.func.random()) \
             .limit(settings['OPTION_COUNT'] - 1).all() \
             + [subject.option]
-        shuffle(options)
+        options = random.shuffle(options)
         effects = Effect.query \
             .order_by(db.func.random()) \
             .limit(settings['EFFECT_COUNT']).all()

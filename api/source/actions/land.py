@@ -7,10 +7,12 @@ class Land(Access, FList):
     CACHE_EXPIRE = 86400
 
     def _process(self, request):
+        random = self._application.random
+
         return self._format({
-            'daily': self.__daily(),
-            'weekly': self.__weekly(),
-            'monthly': self.__monthly(),
+            'daily': random.shuffle(self.__daily()),
+            'weekly': random.shuffle(self.__weekly()),
+            'monthly': random.shuffle(self.__monthly()),
         })
 
     def __daily(self):
@@ -20,21 +22,26 @@ class Land(Access, FList):
         settings = self._application.settings
 
         return Task.query \
-            .join(Subject, Answer) \
-            .outerjoin(Mark) \
-            .filter(
-                db.and_(
-                    Task.active == True,
-                    Subject.orientation == device.orientation(),
-                    Answer.time_stamp >= datetime.date(-1),
-                ),
-            ) \
+            .join(Subject, db.and_(
+                Subject.id == Task.subject_id,
+                Subject.orientation == device.orientation()
+            )) \
+            .join(Answer, db.and_(
+                Answer.task_id == Task.id,
+                Answer.time_stamp >= datetime.date(-1),
+            )) \
+            .outerjoin(Mark, db.and_(
+                Mark.task_id == Task.id,
+                Mark.time_stamp >= datetime.date(-1),
+            )) \
+            .filter(Task.active == True) \
             .group_by(Task.id) \
             .order_by(
                 db.desc(
                     db.func.count(Mark.type == Type.star) -
                     db.func.count(Mark.type == Type.report) +
-                    (db.func.count(Answer.id) / 2),
+                    (db.func.count(Answer.option_id != None) / 2) -
+                    (db.func.count(Answer.option_id == None) * 2),
                 ),
                 db.desc(Task.id),
             ).limit(settings['LAND_COUNT']).all()
@@ -46,21 +53,26 @@ class Land(Access, FList):
         settings = self._application.settings
 
         return Task.query \
-            .join(Subject, Answer) \
-            .outerjoin(Mark) \
-            .filter(
-                db.and_(
-                    Task.active == True,
-                    Subject.orientation == device.orientation(),
-                    Answer.time_stamp >= datetime.date(-7),
-                ),
-            ) \
+            .join(Subject, db.and_(
+                Subject.id == Task.subject_id,
+                Subject.orientation == device.orientation()
+            )) \
+            .join(Answer, db.and_(
+                Answer.task_id == Task.id,
+                Answer.time_stamp >= datetime.date(-7),
+            )) \
+            .outerjoin(Mark, db.and_(
+                Mark.task_id == Task.id,
+                Mark.time_stamp >= datetime.date(-7),
+            )) \
+            .filter(Task.active == True) \
             .group_by(Task.id) \
             .order_by(
                 db.desc(
                     db.func.count(Mark.type == Type.star) -
                     db.func.count(Mark.type == Type.report) +
-                    (db.func.count(Answer.id) / 2),
+                    (db.func.count(Answer.option_id != None) / 2) -
+                    (db.func.count(Answer.option_id == None) * 2),
                 ),
                 db.desc(Task.id),
             ).limit(settings['LAND_COUNT']).all()
@@ -72,21 +84,26 @@ class Land(Access, FList):
         settings = self._application.settings
 
         return Task.query \
-            .join(Subject, Answer) \
-            .outerjoin(Mark) \
-            .filter(
-                db.and_(
-                    Task.active == True,
-                    Subject.orientation == device.orientation(),
-                    Answer.time_stamp >= datetime.date(-30),
-                ),
-            ) \
+            .join(Subject, db.and_(
+                Subject.id == Task.subject_id,
+                Subject.orientation == device.orientation()
+            )) \
+            .join(Answer, db.and_(
+                Answer.task_id == Task.id,
+                Answer.time_stamp >= datetime.date(-30),
+            )) \
+            .outerjoin(Mark, db.and_(
+                Mark.task_id == Task.id,
+                Mark.time_stamp >= datetime.date(-30),
+            )) \
+            .filter(Task.active == True) \
             .group_by(Task.id) \
             .order_by(
                 db.desc(
                     db.func.count(Mark.type == Type.star) -
                     db.func.count(Mark.type == Type.report) +
-                    (db.func.count(Answer.id) / 2),
+                    (db.func.count(Answer.option_id != None) / 2) -
+                    (db.func.count(Answer.option_id == None) * 2),
                 ),
                 db.desc(Task.id),
             ).limit(settings['LAND_COUNT']).all()

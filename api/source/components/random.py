@@ -1,6 +1,7 @@
 from os import urandom
 from random import SystemRandom
 from binascii import hexlify
+from random import shuffle
 
 from base import Component
 
@@ -17,6 +18,10 @@ class Random(Component):
 
     def roll(self, percent):
         return SystemRandom().random() < percent
+
+    def shuffle(self, sequence):
+        shuffle(sequence)
+        return sequence
 
     def salt(self):
         return hexlify(urandom(32))

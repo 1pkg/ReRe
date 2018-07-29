@@ -6,6 +6,9 @@ import Button from './button'
 
 export default class extends React.Component {
     fetch = async () => {
+        if ('timestamp' in this.props && this.props.timestamp) {
+            await this.props.trigger.call(Trigger.ACTION_CHOOSE, -1, true)
+        }
         this.props.trigger.call(Trigger.ACTION_FETCH)
     }
 

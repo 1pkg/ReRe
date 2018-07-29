@@ -19,13 +19,10 @@ class Mark(Identify):
         db = self._application.db
 
         mark = models.Mark.query \
-            .filter(
-                db.and_(
-                    models.Mark.type == self.__type,
-                    models.Mark.task_id == self._task.id,
-                    models.Mark.session_id == self._session.id,
-                ),
-            ).first()
+            .filter(models.Mark.type == self.__type) \
+            .filter(models.Mark.task_id == self._task.id) \
+            .filter(models.Mark.session_id == self._session.id) \
+            .first()
         if mark is None:
             mark = models.Mark(
                 type=self.__type,

@@ -6,6 +6,7 @@ import Button from './button'
 
 export default class extends React.Component {
     remake = async () => {
+        await this.props.trigger.call(Trigger.ACTION_CHOOSE, -1, true)
         this.props.trigger.call(Trigger.ACTION_REMAKE)
     }
 

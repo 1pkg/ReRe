@@ -55,12 +55,9 @@ class SyncTargets(Command):
                 self._application.db.session.delete(dbsubject)
         for subject in item['subjects']:
             dbsubject = Subject.query \
-                .filter(
-                    self._application.db.and_(
-                        Subject.link == subject['link'],
-                        Subject.option_id == option.id,
-                    ),
-                ).first()
+                .filter(Subject.link == subject['link']) \
+                .filter(Subject.option_id == option.id) \
+                .first()
             if dbsubject is not None:
                 dbsubject.source = subject['source']
                 dbsubject.orientation = Orientation[subject['orientation']]

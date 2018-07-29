@@ -1,5 +1,3 @@
-from random import shuffle
-
 from base import Command
 from models import \
     Effect, \
@@ -38,7 +36,7 @@ class Generate(Command):
                     .order_by(db.func.random()) \
                     .limit(settings['OPTION_COUNT'] - 1).all() \
                     + [subject.option]
-                shuffle(options)
+                options = random.shuffle(options)
                 effects = Effect.query \
                     .order_by(db.func.random()) \
                     .limit(settings['EFFECT_COUNT']).all()
