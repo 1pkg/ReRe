@@ -16,7 +16,6 @@ class Fetch(Access, FSingleIdent):
     CACHE_EXPIRE = None
 
     def _process(self, request):
-        db = self._application.db
         random = self._application.random
 
         roll_byrating = self._application.settings['ROLL_BY_RATING']
