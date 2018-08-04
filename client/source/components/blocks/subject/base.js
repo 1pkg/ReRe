@@ -1,6 +1,6 @@
-import Lodash from 'lodash'
+import { find } from 'lodash'
 import React from 'react'
-import ReactDOM from 'react-dom'
+import { findDOMNode } from 'react-dom'
 import GLReactImage from 'gl-react-image'
 import { Surface } from 'gl-react-dom'
 import Styled from 'styled-components'
@@ -24,7 +24,7 @@ export default class extends React.Component {
     fit = () => {
         this.setState(state => {
             setTimeout(() => this.forceUpdate())
-            let element = ReactDOM.findDOMNode(this)
+            let element = findDOMNode(this)
             return {
                 ...state,
                 width: Math.floor(element.getBoundingClientRect().width),
@@ -47,7 +47,7 @@ export default class extends React.Component {
     }
 
     link() {
-        return `${SCHEMA}://${IMAGE_CDN_URL}/${this.props.subject.link}`
+        return `${SCHEMA}://${IMAGE_URL}/${this.props.subject.link}`
     }
 
     effect() {
@@ -59,8 +59,8 @@ export default class extends React.Component {
                 resizeMode="cover"
             />
         )
-        Lodash.each(this.props.effects, effect => {
-            let shader = Lodash.find(
+        for (let effect of this.props.effects) {
+            let shader = find(
                 this.props.shaders,
                 shader => shader.name === effect.name,
             )
@@ -75,7 +75,7 @@ export default class extends React.Component {
                     </Effect>
                 )
             }
-        })
+        }
         return (
             <Surface
                 pixelRatio={1}

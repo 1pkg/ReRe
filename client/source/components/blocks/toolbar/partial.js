@@ -17,6 +17,7 @@ export default class extends React.Component {
                 }}
                 trigger={this.props.trigger}
                 settings={this.props.settings}
+                label={this.props.label}
                 handled={this.props.handled}
                 timestamp={this.props.timestamp}
                 full={this.props.full}

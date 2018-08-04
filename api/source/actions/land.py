@@ -44,7 +44,11 @@ class Land(Access, FList):
                     (db.func.count(Answer.option_id == None) * 2),
                 ),
                 db.desc(Task.id),
-            ).limit(settings['LAND_COUNT']).all()
+            ).limit(
+                settings['LAND_COUNT_MOBILE']
+                if device.mobile() else
+                settings['LAND_COUNT_DESKTOP']
+            ).all()
 
     def __weekly(self):
         db = self._application.db
@@ -75,7 +79,11 @@ class Land(Access, FList):
                     (db.func.count(Answer.option_id == None) * 2),
                 ),
                 db.desc(Task.id),
-            ).limit(settings['LAND_COUNT']).all()
+            ).limit(
+                settings['LAND_COUNT_MOBILE']
+                if device.mobile() else
+                settings['LAND_COUNT_DESKTOP']
+            ).all()
 
     def __monthly(self):
         db = self._application.db
@@ -106,4 +114,8 @@ class Land(Access, FList):
                     (db.func.count(Answer.option_id == None) * 2),
                 ),
                 db.desc(Task.id),
-            ).limit(settings['LAND_COUNT']).all()
+            ).limit(
+                settings['LAND_COUNT_MOBILE']
+                if device.mobile() else
+                settings['LAND_COUNT_DESKTOP']
+            ).all()

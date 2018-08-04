@@ -34,18 +34,17 @@
         "babel-preset-react": "^6.24.1",
         "clean-webpack-plugin": "^0.1.19",
         "copy-webpack-plugin": "^4.5.2",
-        "html-webpack-inline-source-plugin": "0.0.10",
         "html-webpack-plugin": "^3.2.0",
         "json-loader": "^0.5.7",
         "modernizr-loader": "^1.0.1",
-        "on-build-webpack": "^0.1.0",
         "uglifyjs-webpack-plugin": "^1.2.7",
         "webpack": "^4.16.3",
         "webpack-cli": "^3.1.0",
         "webpack-dev-server": "^3.1.5"
     },
     "scripts": {
-        "development": "webpack-dev-server --mode development --debug --display-error-details --hot --watch-poll --env.mode development --env.debug",
-        "build": "webpack --mode production --optimize-minimize --profile --colors --verbose --env.mode production"
+        "development": "webpack-dev-server --mode development --debug --display-error-details --hot --watch-poll --env.debug --env.mode development --host 0.0.0.0",
+        "production": "webpack --mode production --optimize-minimize --display-error-details --profile --colors --verbose --env.mode production",
+        "cordova": "webpack --mode production --optimize-minimize --display-error-details --profile --colors --verbose --env.mode cordova"
     }
 }

@@ -19,13 +19,10 @@ const Form = Styled.div`
 `
 
 const pbu = 'penta-big-unit'
-const dpbu = 'double-penta-big-unit'
 const Textarea = Styled.textarea`
     resize: none;
-    min-width:
-        ${props => (props.mobile ? props.theme[pbu] : props.theme[dpbu])};
-    min-height:
-        ${props => (props.mobile ? props.theme[dpbu] : props.theme[pbu])};
+    min-width: ${props => props.theme[pbu]};
+    min-height: ${props => props.theme[pbu]};
 `
 
 export default class extends React.Component {
@@ -54,10 +51,12 @@ export default class extends React.Component {
     }
 
     content() {
-        let message = `I want report task\n${Url.current()}\nfor next reason`
+        let message = `I want report task\n#l${
+            this.props.label
+        }\nfor next reason:\n`
         return (
             <Form>
-                <Textarea defaultValue={message} mobile={Device.mobile()} />
+                <Textarea defaultValue={message} />
             </Form>
         )
     }

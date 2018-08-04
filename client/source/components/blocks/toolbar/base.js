@@ -1,4 +1,4 @@
-import Lodash from 'lodash'
+import { filter, map } from 'lodash'
 import React from 'react'
 import Styled from 'styled-components'
 
@@ -11,15 +11,16 @@ const Container = Styled.div`
 
 export default class extends React.Component {
     actions() {
-        let actions = Lodash.filter(this.props.actions, (action, name) => {
+        let actions = filter(this.props.actions, (action, name) => {
             return !this.props.handled[name.toLocaleLowerCase()]
         })
-        return Lodash.map(actions, (Action, index) => {
+        return map(actions, (Action, index) => {
             return (
                 <Action
                     key={index}
                     trigger={this.props.trigger}
                     settings={this.props.settings}
+                    label={this.props.label}
                     timestamp={this.props.timestamp}
                     full={this.props.full}
                     toggle={this.props.toggle}

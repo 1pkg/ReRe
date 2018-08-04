@@ -10,3 +10,6 @@ class Device(Component):
             return Orientation.portrait
         else:
             return Orientation.landscape
+    
+    def mobile(self):
+        return request.MOBILE

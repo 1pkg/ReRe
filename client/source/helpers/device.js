@@ -2,12 +2,20 @@ import MobileDetect from 'mobile-detect'
 
 export default class self {
     static detect = new MobileDetect(window.navigator.userAgent)
-    static cached = null
+    static cachedm = null
+    static cachedt = null
 
     static mobile() {
-        if (self.cached === null) {
-            self.cached = self.detect.mobile()
+        if (self.cachedm === null) {
+            self.cachedm = !!self.detect.mobile()
         }
-        return self.cached
+        return self.cachedm
+    }
+
+    static tablet() {
+        if (self.cachedt === null) {
+            self.cachedt = !!self.detect.tablet()
+        }
+        return self.cachedt
     }
 }

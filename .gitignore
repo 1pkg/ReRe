@@ -16,4 +16,6 @@
 /parser/**/__pycache__/
 /parser/dump/
 
+/cordova
+
 *.tar.gz*

@@ -1,7 +1,10 @@
-import History from 'history/createBrowserHistory'
+import BrowserHistory from 'history/createBrowserHistory'
+import NativeHistory from 'history/createMemoryHistory'
+
+import Env from './env'
 
 export default class self {
-    static history = History()
+    static history = Env.cordova() ? new NativeHistory() : new BrowserHistory()
 
     static push(label) {
         if (label) {

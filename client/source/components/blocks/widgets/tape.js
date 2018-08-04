@@ -1,4 +1,4 @@
-import Lodash from 'lodash'
+import { bind, map } from 'lodash'
 import React from 'react'
 import Styled from 'styled-components'
 
@@ -52,11 +52,11 @@ export default class extends React.Component {
     }
 
     snippets() {
-        return Lodash.map(this.props.list, (task, index) => {
+        return map(this.props.list, (task, index) => {
             return (
                 <Snippet
                     key={index}
-                    onClick={Lodash.bind(this.fetch, null, task.label)}
+                    onClick={bind(this.fetch, null, task.label)}
                 >
                     <Subject
                         subject={task.subject}

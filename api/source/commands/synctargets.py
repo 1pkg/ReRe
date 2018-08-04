@@ -71,7 +71,16 @@ class SyncTargets(Command):
 
     def __readsync(self):
         targets = []
-        ipath = path.join('/', 'var', 'targets')
+        if self._application.instance.debug:
+            ipath = path.join(
+                path.dirname(__file__),
+                '..',
+                '..',
+                'dump',
+                'targets',
+            )
+        else:
+            ipath = path.join('/', 'var', 'targets')
         for fname in listdir(ipath):
             with open(path.join(ipath, fname)) as file:
                 targets += load(file)

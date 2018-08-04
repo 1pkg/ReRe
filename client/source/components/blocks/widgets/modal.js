@@ -1,5 +1,5 @@
 import React from 'react'
-import ReactDOM from 'react-dom'
+import { findDOMNode } from 'react-dom'
 import Cross from 'react-icons/lib/fa/close'
 import Styled from 'styled-components'
 
@@ -19,11 +19,10 @@ const MainContainer = Styled.div`
     justify-content: center;
 `
 
-const ohpbu = 'one-and-half-penta-big-unit'
 const SubContainer = Styled.div`
     flex: ${props => (props.mobile ? '1 1 0' : '0 0 auto')};
     padding: ${props => props.theme['small-unit']};
-    margin: ${props => (props.mobile ? '0rem' : props.theme[ohpbu])};
+    margin: ${props => (props.mobile ? '0rem' : props.theme['maximal-unit'])};
     background-color: ${props => props.theme['sub-color']};
     display: flex;
     flex-direction: column;
@@ -76,7 +75,7 @@ class Close extends React.Component {
 
 export default class extends React.Component {
     hide = event => {
-        let element = ReactDOM.findDOMNode(this)
+        let element = findDOMNode(this)
         if (event.target === element) {
             this.props.hide()
         }

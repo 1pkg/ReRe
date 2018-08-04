@@ -1,4 +1,4 @@
-import Lodash from 'lodash'
+import { clone } from 'lodash'
 import Axios from 'axios'
 
 import {
@@ -51,7 +51,7 @@ export default class Trigger {
     }
 
     state() {
-        return Lodash.clone(this.store.getState())
+        return clone(this.store.getState())
     }
 
     push(name, state) {

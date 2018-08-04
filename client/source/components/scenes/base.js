@@ -89,6 +89,7 @@ export default class self extends React.Component {
                     <Toolbar
                         trigger={this.props.trigger}
                         settings={this.props.state.settings}
+                        label={this.props.state.task.label}
                         handled={this.props.state.task.handled}
                         timestamp={this.props.state.timestamp}
                         full={this.state.full}
@@ -118,6 +119,7 @@ export default class self extends React.Component {
                     <Toolbar
                         trigger={this.props.trigger}
                         settings={this.props.state.settings}
+                        label={this.props.state.task.label}
                         handled={this.props.state.task.handled}
                         timestamp={this.props.state.timestamp}
                         full={this.state.full}

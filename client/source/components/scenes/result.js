@@ -1,4 +1,4 @@
-import Lodash from 'lodash'
+import { map } from 'lodash'
 import React from 'react'
 
 import { Partial as Toolbar } from './../blocks/toolbar'
@@ -12,7 +12,7 @@ export default class extends React.Component {
     }
 
     options() {
-        return Lodash.map(this.props.state.task.options, (option, index) => {
+        return map(this.props.state.task.options, (option, index) => {
             const Option =
                 this.props.state.option === index + 1 ? Correct : Wrong
             return <Option key={index + 1} option={option} />

@@ -99,17 +99,24 @@ export default class extends React.Component {
 
     render() {
         return (
-            <Container mobile={Device.mobile()} disabled={this.props.disabled}>
+            <Container
+                mobile={!Device.tablet() && Device.mobile()}
+                disabled={this.props.disabled}
+            >
                 <TitleContainer
-                    mobile={Device.mobile()}
+                    mobile={!Device.tablet() && Device.mobile()}
                     disabled={this.props.disabled}
                     onClick={this.props.action}
                 >
                     <MainTitle>{this.title()}</MainTitle>
                     <SubTitle>{this.subtile()}</SubTitle>
                 </TitleContainer>
-                <Text mobile={Device.mobile()}>{this.text()}</Text>
-                <Source mobile={Device.mobile()}>{this.source()}</Source>
+                <Text mobile={!Device.tablet() && Device.mobile()}>
+                    {this.text()}
+                </Text>
+                <Source mobile={!Device.tablet() && Device.mobile()}>
+                    {this.source()}
+                </Source>
             </Container>
         )
     }

@@ -1,5 +1,5 @@
 import Modernizr from 'modernizr'
-import Lodash from 'lodash'
+import { isEmpty } from 'lodash'
 import React from 'react'
 import { connect } from 'react-redux'
 import Styled, { ThemeProvider } from 'styled-components'
@@ -50,7 +50,7 @@ export default connect(state => {
         }
 
         render() {
-            if (!Lodash.isEmpty(this.props.state)) {
+            if (!isEmpty(this.props.state)) {
                 return (
                     <ThemeProvider theme={Theme}>
                         <Container>

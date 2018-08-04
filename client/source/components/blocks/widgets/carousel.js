@@ -1,4 +1,4 @@
-import Lodash from 'lodash'
+import { filter, map } from 'lodash'
 import React from 'react'
 import Swipeable from 'react-swipeable'
 import Styled from 'styled-components'
@@ -68,8 +68,7 @@ export default class self extends React.Component {
     componentDidMount() {
         self.index = this.props.label == self.label ? self.index : 0
         self.label = this.props.label
-        self.size =
-            Lodash.filter(this.props.children, child => child).length - 1
+        self.size = filter(this.props.children, child => child).length - 1
         this.setState(state => {
             let index = this.props.active ? this.props.active - 1 : self.index
             return { index }
@@ -84,8 +83,8 @@ export default class self extends React.Component {
                         onSwipedRight={this.previous}
                         onSwipedLeft={this.next}
                     >
-                        {Lodash.map(
-                            Lodash.filter(this.props.children, child => child),
+                        {map(
+                            filter(this.props.children, child => child),
                             (child, index) => {
                                 return (
                                     <SwipeableWrapper
@@ -101,8 +100,8 @@ export default class self extends React.Component {
                         )}
                     </SwipeableContainer>
                     <DotContainer>
-                        {Lodash.map(
-                            Lodash.filter(this.props.children, child => child),
+                        {map(
+                            filter(this.props.children, child => child),
                             (child, index) => {
                                 return (
                                     <DotElement

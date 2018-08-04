@@ -1,4 +1,4 @@
-import Lodash from 'lodash'
+import { map } from 'lodash'
 import React from 'react'
 
 import { Full as Toolbar } from './../blocks/toolbar'
@@ -18,7 +18,7 @@ export default class extends React.Component {
     }
 
     options() {
-        return Lodash.map(this.props.state.task.options, (option, index) => {
+        return map(this.props.state.task.options, (option, index) => {
             return (
                 <Choose
                     key={index}

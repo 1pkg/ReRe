@@ -2,16 +2,17 @@ const Path = require('path')
 const Fs = require('fs')
 const Webpack = require('webpack')
 const HtmlPlugin = require('html-webpack-plugin')
-const InlinePlugin = require('html-webpack-inline-source-plugin')
 const UglifyPlugin = require('uglifyjs-webpack-plugin')
 const CopyPlugin = require('copy-webpack-plugin')
-const OnBuildPlugin = require('on-build-webpack')
 const CleanPlugin = require('clean-webpack-plugin')
 
 module.exports = env => {
     let webpack = {
         target: 'web',
-        entry: ['babel-polyfill', './source/application.js'],
+        entry: [
+            'babel-polyfill',
+            `./source/${env.mode === 'cordova' ? 'cordova' : 'web'}.js`,
+        ],
         output: {
             publicPath: '/',
             path: Path.join(__dirname, 'dump', 'build'),
@@ -52,72 +53,127 @@ module.exports = env => {
         },
         plugins: [
             new Webpack.EnvironmentPlugin({
-                NODE_ENV: env.mode,
+                NODE_ENV: env.debug ? 'development' : 'production',
                 DEBUG: env.debug || false,
             }),
             new Webpack.DefinePlugin(
-                JSON.parse(Fs.readFileSync(`./settings/${env.mode}.json`)),
+                Object.assign(
+                    {
+                        ENV_MODE: `"${
+                            env.mode === 'cordova' ? 'cordova' : 'web'
+                        }"`,
+                    },
+                    JSON.parse(Fs.readFileSync(`./settings/${env.mode}.json`)),
+                ),
             ),
         ],
     }
-    if (env.debug) {
-        webpack.devtool = 'source-map'
-        webpack.devServer = {
-            host: 'localhost',
-            port: 8080,
-            inline: true,
-            contentBase: './dump/build',
-            historyApiFallback: true,
-        }
-        webpack.plugins.push(
-            new HtmlPlugin({
-                template: './static/main.html',
-            }),
-        )
-    } else {
-        webpack.plugins.push(
-            new CopyPlugin([
-                { from: './static/fonts/', to: './fonts/' },
-                { from: './static/icons/', to: './icons/' },
-                { from: './static/manifest.json', to: './manifest.json' },
-                { from: './static/site.webmanifest', to: './site.webmanifest' },
-                {
-                    from: './static/browserconfig.xml',
-                    to: './browserconfig.xml',
-                },
-            ]),
-            new HtmlPlugin({
-                template: './static/main.html',
-                inlineSource: /\.jsx?$/,
-                minify: {
-                    html5: true,
-                    collapseInlineTagWhitespace: true,
-                    collapseWhitespace: true,
-                    keepClosingSlash: true,
-                    minifyCSS: true,
-                    minifyJS: true,
-                    minifyURLs: true,
-                    quoteCharacter: '"',
-                    removeComments: true,
-                    removeEmptyAttributes: true,
-                    removeEmptyElements: false,
-                    removeOptionalTags: true,
-                    removeRedundantAttributes: true,
-                    sortAttributes: true,
-                    sortClassName: true,
-                    useShortDoctype: true,
-                },
-            }),
-            new InlinePlugin(),
-            new UglifyPlugin({
-                parallel: true,
-                sourceMap: false,
-            }),
-            new OnBuildPlugin(function() {
-                Fs.unlink(Path.join(__dirname, 'dump', 'build', 'bundle.js'))
-            }),
-            new CleanPlugin('./dump/build'),
-        )
+
+    switch (env.mode) {
+        case 'development':
+            webpack.devtool = 'source-map'
+            webpack.devServer = {
+                host: '0.0.0.0',
+                port: 8080,
+                inline: true,
+                contentBase: './dump/build',
+                historyApiFallback: true,
+            }
+            webpack.plugins.push(
+                new HtmlPlugin({
+                    template: './static/web.html',
+                }),
+            )
+            break
+
+        default:
+            webpack.plugins.push(
+                new HtmlPlugin({
+                    template: `./static/${
+                        env.mode === 'cordova' ? 'cordova' : 'web'
+                    }.html`,
+                    inlineSource: /\.jsx?$/,
+                    minify: {
+                        html5: true,
+                        collapseInlineTagWhitespace: true,
+                        collapseWhitespace: true,
+                        keepClosingSlash: true,
+                        minifyCSS: true,
+                        minifyJS: true,
+                        minifyURLs: true,
+                        quoteCharacter: '"',
+                        removeComments: true,
+                        removeEmptyAttributes: true,
+                        removeEmptyElements: false,
+                        removeOptionalTags: true,
+                        removeRedundantAttributes: true,
+                        sortAttributes: true,
+                        sortClassName: true,
+                        useShortDoctype: true,
+                    },
+                }),
+                new UglifyPlugin({
+                    parallel: true,
+                    sourceMap: false,
+                }),
+                new CleanPlugin('./dump/build'),
+            )
+
+            switch (env.mode) {
+                case 'production':
+                    webpack.plugins.push(
+                        new CopyPlugin([
+                            { from: './static/fonts/', to: './fonts/' },
+                            { from: './static/icons/web', to: './icons/' },
+                            {
+                                from: './static/manifest.json',
+                                to: './manifest.json',
+                            },
+                            {
+                                from: './static/site.webmanifest',
+                                to: './site.webmanifest',
+                            },
+                            {
+                                from: './static/browserconfig.xml',
+                                to: './browserconfig.xml',
+                            },
+                        ]),
+                    )
+                    break
+
+                case 'cordova':
+                    webpack.plugins.push(
+                        new CopyPlugin([
+                            { from: './static/fonts/', to: './fonts/' },
+                            { from: './static/icons/cordova', to: './icons/' },
+                            { from: './static/config.xml', to: './config.xml' },
+                            {
+                                from: './static/resource.xml',
+                                to: './resource.xml',
+                            },
+                        ]),
+                        {
+                            apply: compiler => {
+                                compiler.hooks.compilation.tap(
+                                    'after-build',
+                                    compilation => {
+                                        compilation.hooks.htmlWebpackPluginAfterHtmlProcessing.tapAsync(
+                                            'after-build',
+                                            (data, callback) => {
+                                                data.html = data.html.replace(
+                                                    /\"\//g,
+                                                    '"',
+                                                )
+                                                callback(null, data)
+                                            },
+                                        )
+                                    },
+                                )
+                            },
+                        },
+                    )
+                    break
+            }
     }
     return webpack
 }

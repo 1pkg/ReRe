@@ -45,7 +45,7 @@ injectGlobal`
       background-color: rgba(255, 255, 255, 1);
       font-family: 'Libre Franklin', sans-serif;
       font-size:
-        calc(${Device.mobile() ? '2 * (1vw + 1vh)' : '1.2 * (1vw + 1vh)'});
+        calc(${Device.mobile() ? '2.0 * (1vw + 1vh)' : '1.0 * (1vw + 1vh)'});
     }
 
     #main {
