@@ -50,6 +50,7 @@ export default class self extends React.Component {
 
         this.setState(state => {
             self.index = this.state.index + 1
+            this.props.activate ? this.props.activate(self.index) : void 0
             return { index: self.index }
         })
     }
@@ -61,6 +62,7 @@ export default class self extends React.Component {
 
         this.setState(state => {
             self.index = this.state.index - 1
+            this.props.activate ? this.props.activate(self.index) : void 0
             return { index: self.index }
         })
     }

@@ -69,11 +69,14 @@ export default class extends React.Component {
     }
 
     render() {
-        return (
-            <MainContainer>
-                <Title>{this.props.title}</Title>
-                <SubContainer>{this.snippets()}</SubContainer>
-            </MainContainer>
-        )
+        if (this.props.active) {
+            return (
+                <MainContainer>
+                    <Title>{this.props.title}</Title>
+                    <SubContainer>{this.snippets()}</SubContainer>
+                </MainContainer>
+            )
+        }
+        return <MainContainer />
     }
 }

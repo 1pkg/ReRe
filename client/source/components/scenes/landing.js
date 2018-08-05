@@ -24,8 +24,31 @@ const ToolbarContainer = Styled.div`
     margin-bottom: ${props => props.theme['half-small-unit']};
 `
 
-export default class extends React.Component {
-    daily() {
+export default class self extends React.Component {
+    static PERIOD_MAP = ['daily', 'weekly', 'monthly']
+
+    constructor(props) {
+        super(props)
+        this.state = {
+            daily: true,
+            weekly: false,
+            monthly: false,
+        }
+    }
+
+    activate = period => {
+        this.setState(prev => {
+            let next = {
+                daily: false,
+                weekly: false,
+                monthly: false,
+            }
+            next[self.PERIOD_MAP[period]] = true
+            return next
+        })
+    }
+
+    daily(active) {
         if (
             this.props.state.lists.daily.length >= MINIMAL_LANDING_TAPE_LENGTH
         ) {
@@ -35,13 +58,14 @@ export default class extends React.Component {
                     trigger={this.props.trigger}
                     shaders={this.props.state.shaders}
                     list={this.props.state.lists.daily}
+                    active={active}
                 />
             )
         }
         return null
     }
 
-    weekly() {
+    weekly(active) {
         if (
             this.props.state.lists.weekly.length >= MINIMAL_LANDING_TAPE_LENGTH
         ) {
@@ -51,13 +75,14 @@ export default class extends React.Component {
                     trigger={this.props.trigger}
                     shaders={this.props.state.shaders}
                     list={this.props.state.lists.weekly}
+                    active={active}
                 />
             )
         }
         return null
     }
 
-    monthly() {
+    monthly(active) {
         if (
             this.props.state.lists.monthly.length >= MINIMAL_LANDING_TAPE_LENGTH
         ) {
@@ -67,6 +92,7 @@ export default class extends React.Component {
                     trigger={this.props.trigger}
                     shaders={this.props.state.shaders}
                     list={this.props.state.lists.monthly}
+                    active={active}
                 />
             )
         }
@@ -78,10 +104,10 @@ export default class extends React.Component {
             <MainContainer>
                 <Copyright settings={this.props.state.settings} />
                 <SubContainer>
-                    <Carousel>
-                        {this.daily()}
-                        {this.weekly()}
-                        {this.monthly()}
+                    <Carousel activate={this.activate}>
+                        {this.daily(this.state.daily)}
+                        {this.weekly(this.state.weekly)}
+                        {this.monthly(this.state.monthly)}
                     </Carousel>
                 </SubContainer>
                 <ToolbarContainer>
@@ -99,9 +125,9 @@ export default class extends React.Component {
             <MainContainer>
                 <Copyright settings={this.props.state.settings} />
                 <SubContainer>
-                    {this.daily()}
-                    {this.weekly()}
-                    {this.monthly()}
+                    {this.daily(true)}
+                    {this.weekly(true)}
+                    {this.monthly(true)}
                 </SubContainer>
                 <ToolbarContainer>
                     <Toolbar
