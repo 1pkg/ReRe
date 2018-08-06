@@ -82,4 +82,11 @@
         <param name="android-package" value="org.apache.cordova.splashscreen.SplashScreen" />
         <param name="onload" value="true" />
     </feature>
+    <plugin name="cordova-admob-sdk">
+        <variable name="PLAY_SERVICES_VERSION" value="11.6.0" />
+    </plugin>
+    <plugin name="cordova-plugin-admob-free" />
+    <plugin name="cordova-plugin-google-analytics" >
+        <variable name="GMS_VERSION" value="11.6.0" />
+    </plugin>
 </widget>
