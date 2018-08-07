@@ -10,6 +10,6 @@ export default class extends React.Component {
     }
 
     render() {
-        return <Button glyph={<Home />} action={this.land} />
+        return <Button glyph={<Home />} action={this.land} hint={'home'} />
     }
 }

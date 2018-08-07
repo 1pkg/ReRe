@@ -12,7 +12,7 @@ export default class extends React.Component {
                 url={Url.current()}
                 quote={this.props.settings['share-title']}
             >
-                <Button glyph={<Facebook />} />
+                <Button glyph={<Facebook />} hint={'share'} />
             </FacebookShareButton>
         )
     }

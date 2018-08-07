@@ -34,7 +34,7 @@ export default class extends React.Component {
         let disclaimer = this.props.settings['disclaimer-text']
         return (
             <Container>
-                <Button glyph={<File />} action={this.show} />
+                <Button glyph={<File />} action={this.show} hint={'info'} />
                 <Modal
                     title={'Disclaimer'}
                     content={<Text>{disclaimer}</Text>}

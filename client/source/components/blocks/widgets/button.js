@@ -1,10 +1,10 @@
 import React from 'react'
 import Styled from 'styled-components'
 
-import { Device } from '~/helpers'
-
 const Container = Styled.div`
-    display: contents;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     user-select: none;
     &:active {
         color: ${props => props.theme['active-color']};
@@ -14,11 +14,19 @@ const Container = Styled.div`
     };
 `
 
+const Hint = Styled.div`
+    font-size: ${props => props.theme['half-small-unit']};
+    font-style: italic;
+    text-transform: lowercase;
+    text-align: center;
+`
+
 export default class extends React.Component {
     render() {
         return (
             <Container onClick={this.props.action}>
                 {this.props.glyph}
+                <Hint>{this.props.hint}</Hint>
             </Container>
         )
     }

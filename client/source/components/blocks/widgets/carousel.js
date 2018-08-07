@@ -2,6 +2,8 @@ import { filter, map } from 'lodash'
 import React from 'react'
 import Swipeable from 'react-swipeable'
 import Styled from 'styled-components'
+import AngelRight from 'react-icons/lib/fa/angle-right'
+import AngelLeft from 'react-icons/lib/fa/angle-left'
 
 const MainContainer = Styled.div`
     flex: 1 1 0;
@@ -26,6 +28,11 @@ const SwipeableWrapper = Styled.div`
 const DotContainer = Styled.div`
     align-self: center;
     display: flex;
+    align-items: center;
+`
+
+const HintWrapper = Styled.div`
+    font-size: ${props => props.theme['small-unit']};
 `
 
 const tqmc = 'three-quarters-main-color'
@@ -102,6 +109,9 @@ export default class self extends React.Component {
                         )}
                     </SwipeableContainer>
                     <DotContainer>
+                        <HintWrapper>
+                            <AngelLeft onClick={this.previous} />
+                        </HintWrapper>
                         {map(
                             filter(this.props.children, child => child),
                             (child, index) => {
@@ -113,6 +123,9 @@ export default class self extends React.Component {
                                 )
                             },
                         )}
+                        <HintWrapper>
+                            <AngelRight onClick={this.next} />
+                        </HintWrapper>
                     </DotContainer>
                 </MainContainer>
             )

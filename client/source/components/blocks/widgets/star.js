@@ -10,6 +10,6 @@ export default class extends React.Component {
     }
 
     render() {
-        return <Button glyph={<Star />} action={this.mark} />
+        return <Button glyph={<Star />} action={this.mark} hint={'upvote'} />
     }
 }

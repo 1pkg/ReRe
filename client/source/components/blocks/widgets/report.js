@@ -64,7 +64,7 @@ export default class extends React.Component {
     render() {
         return (
             <Container>
-                <Button glyph={<Flag />} action={this.show} />
+                <Button glyph={<Flag />} action={this.show} hint={'report'} />
                 <Modal
                     title={'Report'}
                     buttons={<Button glyph={<Check />} action={this.report} />}

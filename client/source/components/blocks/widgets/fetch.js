@@ -13,6 +13,8 @@ export default class extends React.Component {
     }
 
     render() {
-        return <Button glyph={<DoubleRight />} action={this.fetch} />
+        return (
+            <Button glyph={<DoubleRight />} action={this.fetch} hint={'next'} />
+        )
     }
 }

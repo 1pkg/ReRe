@@ -13,6 +13,12 @@ const Container = Styled.div`
     justify-content: center;
 `
 
+const ac = 'active-color'
+const mc = 'main-color'
+const Wrapper = Styled.div`
+    color: ${props => (props.critical ? props.theme[ac] : props.theme[mc])};
+`
+
 const Text = Styled.div`
     font-size: ${props => props.theme['half-small-unit']};
     font-style: italic;
@@ -59,7 +65,14 @@ export default class extends React.Component {
     glyph() {
         return (
             <Container>
-                <Clock />
+                <Wrapper
+                    critical={
+                        this.state.current <=
+                        this.props.settings['choose-period'] / 3
+                    }
+                >
+                    <Clock />
+                </Wrapper>
                 <Text>{this.state.current}</Text>
             </Container>
         )

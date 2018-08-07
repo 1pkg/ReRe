@@ -12,7 +12,7 @@ export default class extends React.Component {
                 url={Url.current()}
                 title={this.props.settings['share-title']}
             >
-                <Button glyph={<Reddit />} />
+                <Button glyph={<Reddit />} hint={'share'} />
             </RedditShareButton>
         )
     }

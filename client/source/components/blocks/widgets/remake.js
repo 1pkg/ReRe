@@ -11,6 +11,6 @@ export default class extends React.Component {
     }
 
     render() {
-        return <Button glyph={<Refresh />} action={this.remake} />
+        return <Button glyph={<Refresh />} action={this.remake} hint={'redo'} />
     }
 }
