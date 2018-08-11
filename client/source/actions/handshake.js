@@ -1,6 +1,7 @@
 import Axios from 'axios'
 
 import Trigger from './trigger'
+import { Analytic } from '~/helpers'
 
 export default async trigger => {
     try {
@@ -13,6 +14,7 @@ export default async trigger => {
         trigger.push(Trigger.ACTION_HANDSHAKE, state)
         return state
     } catch (exception) {
+        Analytic.event(Analytic.EVENT_ERROR, exception)
         trigger.push(Trigger.ACTION_RELOAD, { status: Trigger.STATUS_ERROR })
         throw exception
     }

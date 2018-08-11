@@ -5,6 +5,8 @@ import Styled from 'styled-components'
 import AngelRight from 'react-icons/lib/fa/angle-right'
 import AngelLeft from 'react-icons/lib/fa/angle-left'
 
+import { Analytic } from '~/helpers'
+
 const MainContainer = Styled.div`
     flex: 1 1 0;
     display: flex;
@@ -58,6 +60,7 @@ export default class self extends React.Component {
         this.setState(state => {
             self.index = this.state.index + 1
             this.props.activate ? this.props.activate(self.index) : void 0
+            Analytic.event(Analytic.EVENT_SWIPE, { direction: 'next' })
             return { index: self.index }
         })
     }
@@ -70,6 +73,7 @@ export default class self extends React.Component {
         this.setState(state => {
             self.index = this.state.index - 1
             this.props.activate ? this.props.activate(self.index) : void 0
+            Analytic.event(Analytic.EVENT_SWIPE, { direction: 'previous' })
             return { index: self.index }
         })
     }

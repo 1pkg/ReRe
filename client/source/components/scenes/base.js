@@ -3,7 +3,7 @@ import Swipeable from 'react-swipeable'
 import Styled from 'styled-components'
 
 import Trigger from '~/actions/trigger'
-import { Device } from '~/helpers'
+import { Analytic, Device } from '~/helpers'
 import { Carousel } from './../blocks/widgets'
 
 const MainContainer = Styled.div`
@@ -41,6 +41,7 @@ export default class self extends React.Component {
     static full = false
 
     fetch = async () => {
+        Analytic.event(Analytic.EVENT_SWIPE, { direction: 'fetch' })
         this.props.trigger.call(Trigger.ACTION_FETCH)
     }
 
@@ -48,6 +49,7 @@ export default class self extends React.Component {
         this.setState(state => {
             setTimeout(() => window.dispatchEvent(new Event('resize')))
             self.full = true
+            Analytic.event(Analytic.EVENT_SWIPE, { direction: 'expand' })
             return { full: self.full }
         })
     }
@@ -56,6 +58,7 @@ export default class self extends React.Component {
         this.setState(state => {
             setTimeout(() => window.dispatchEvent(new Event('resize')))
             self.full = false
+            Analytic.event(Analytic.EVENT_SWIPE, { direction: 'colapse' })
             return { full: self.full }
         })
     }

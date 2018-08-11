@@ -1,6 +1,6 @@
 import UrlParse from 'url-parse'
 
-import Env from './env'
+import { Env } from './'
 
 export default class {
     static current() {

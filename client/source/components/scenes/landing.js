@@ -1,7 +1,7 @@
 import React from 'react'
 import Styled from 'styled-components'
 
-import { Device } from '~/helpers'
+import { Analytic, Device } from '~/helpers'
 import { Cut as Toolbar } from './../blocks/toolbar'
 import { Carousel, Copyright, Tape } from './../blocks/widgets'
 
@@ -25,30 +25,44 @@ const ToolbarContainer = Styled.div`
 `
 
 export default class self extends React.Component {
-    static PERIOD_MAP = ['daily', 'weekly', 'monthly']
-
     constructor(props) {
         super(props)
-        this.state = {
-            daily: true,
-            weekly: false,
-            monthly: false,
-        }
+        this.state = {}
     }
 
-    activate = period => {
+    componentDidMount() {
         this.setState(prev => {
-            let next = {
-                daily: false,
-                weekly: false,
-                monthly: false,
+            let lists = this.props.state.lists
+            let d = lists.daily.length >= MINIMAL_LANDING_TAPE_LENGTH
+            let w = lists.weekly.length >= MINIMAL_LANDING_TAPE_LENGTH
+            let m = lists.monthly.length >= MINIMAL_LANDING_TAPE_LENGTH
+            let next = {}
+            if (d) {
+                next['daily'] = true
             }
-            next[self.PERIOD_MAP[period]] = true
+            if (w) {
+                next['weekly'] = !d
+            }
+            if (m) {
+                next['monthly'] = !d && !m
+            }
             return next
         })
     }
 
-    daily(active) {
+    activate = index => {
+        this.setState(prev => {
+            let indx = 0
+            let next = Object.assign({}, prev)
+            for (let period in next) {
+                next[period] = index == indx++
+            }
+            Analytic.event(Analytic.EVENT_SWIPE, { index })
+            return next
+        })
+    }
+
+    daily() {
         if (
             this.props.state.lists.daily.length >= MINIMAL_LANDING_TAPE_LENGTH
         ) {
@@ -58,14 +72,14 @@ export default class self extends React.Component {
                     trigger={this.props.trigger}
                     shaders={this.props.state.shaders}
                     list={this.props.state.lists.daily}
-                    active={active}
+                    active={!Device.mobile() || this.state.daily}
                 />
             )
         }
         return null
     }
 
-    weekly(active) {
+    weekly() {
         if (
             this.props.state.lists.weekly.length >= MINIMAL_LANDING_TAPE_LENGTH
         ) {
@@ -75,14 +89,14 @@ export default class self extends React.Component {
                     trigger={this.props.trigger}
                     shaders={this.props.state.shaders}
                     list={this.props.state.lists.weekly}
-                    active={active}
+                    active={!Device.mobile() || this.state.weekly}
                 />
             )
         }
         return null
     }
 
-    monthly(active) {
+    monthly() {
         if (
             this.props.state.lists.monthly.length >= MINIMAL_LANDING_TAPE_LENGTH
         ) {
@@ -92,7 +106,7 @@ export default class self extends React.Component {
                     trigger={this.props.trigger}
                     shaders={this.props.state.shaders}
                     list={this.props.state.lists.monthly}
-                    active={active}
+                    active={!Device.mobile() || this.state.monthly}
                 />
             )
         }
@@ -105,9 +119,9 @@ export default class self extends React.Component {
                 <Copyright settings={this.props.state.settings} />
                 <SubContainer>
                     <Carousel activate={this.activate}>
-                        {this.daily(this.state.daily)}
-                        {this.weekly(this.state.weekly)}
-                        {this.monthly(this.state.monthly)}
+                        {this.daily()}
+                        {this.weekly()}
+                        {this.monthly()}
                     </Carousel>
                 </SubContainer>
                 <ToolbarContainer>
@@ -125,9 +139,9 @@ export default class self extends React.Component {
             <MainContainer>
                 <Copyright settings={this.props.state.settings} />
                 <SubContainer>
-                    {this.daily(true)}
-                    {this.weekly(true)}
-                    {this.monthly(true)}
+                    {this.daily()}
+                    {this.weekly()}
+                    {this.monthly()}
                 </SubContainer>
                 <ToolbarContainer>
                     <Toolbar

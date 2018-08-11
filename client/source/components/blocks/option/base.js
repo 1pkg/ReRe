@@ -1,7 +1,7 @@
 import React from 'react'
 import Styled from 'styled-components'
 
-import { Device } from '~/helpers'
+import { Analytic, Device } from '~/helpers'
 
 const hsu = 'half-small-unit'
 const msu = 'min-small-unit'
@@ -75,6 +75,21 @@ const Source = Styled.div`
 `
 
 export default class extends React.Component {
+    eventchoose = () => {
+        Analytic.event(Analytic.EVENT_CLICK, {
+            action: 'choose',
+            name: this.props.option.name,
+        })
+        this.props.action()
+    }
+
+    eventlink = () => {
+        Analytic.event(Analytic.EVENT_CLICK, {
+            action: 'link',
+            source: this.props.option.link,
+        })
+    }
+
     title() {
         let parts = this.props.option.name.match(/(.*) \((.*)\)/)
         return parts[1]
@@ -91,7 +106,11 @@ export default class extends React.Component {
 
     source() {
         return (
-            <a href={this.props.option.link} target="_blank">
+            <a
+                href={this.props.option.link}
+                target="_blank"
+                onClick={this.eventlink}
+            >
                 {this.props.option.source}
             </a>
         )
@@ -106,7 +125,7 @@ export default class extends React.Component {
                 <TitleContainer
                     mobile={!Device.tablet() && Device.mobile()}
                     disabled={this.props.disabled}
-                    onClick={this.props.action}
+                    onClick={this.eventchoose}
                 >
                     <MainTitle>{this.title()}</MainTitle>
                     <SubTitle>{this.subtile()}</SubTitle>

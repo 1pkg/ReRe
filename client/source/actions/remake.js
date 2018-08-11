@@ -1,7 +1,7 @@
 import Axios from 'axios'
 
-import { Crypto, History, Json } from '~/helpers'
 import Trigger from './trigger'
+import { Analytic, Crypto, History, Json } from '~/helpers'
 
 export default async trigger => {
     try {
@@ -22,6 +22,7 @@ export default async trigger => {
         trigger.push(Trigger.ACTION_REMAKE, state)
         return state
     } catch (exception) {
+        Analytic.event(Analytic.EVENT_ERROR, exception)
         trigger.push(Trigger.ACTION_RELOAD, { status: Trigger.STATUS_ERROR })
         throw exception
     }

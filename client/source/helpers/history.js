@@ -1,7 +1,7 @@
 import BrowserHistory from 'history/createBrowserHistory'
 import NativeHistory from 'history/createMemoryHistory'
 
-import Env from './env'
+import { Env } from './'
 
 export default class self {
     static history = Env.cordova() ? new NativeHistory() : new BrowserHistory()

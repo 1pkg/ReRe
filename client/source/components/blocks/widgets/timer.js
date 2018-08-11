@@ -3,7 +3,7 @@ import Clock from 'react-icons/lib/fa/clock-o'
 import Styled from 'styled-components'
 
 import Trigger from '~/actions/trigger'
-import { Timestamp } from '~/helpers'
+import { Analytic, Timestamp } from '~/helpers'
 import Button from './button'
 
 const Container = Styled.div`
@@ -31,6 +31,7 @@ export default class extends React.Component {
             let timestamp = Timestamp.current()
             let current = state.period - (timestamp - state.timestamp)
             if (current <= 0) {
+                Analytic.event(Analytic.EVENT_TIMEOUT)
                 this.props.trigger.call(Trigger.ACTION_CHOOSE, -1)
             }
             return { ...state, current }

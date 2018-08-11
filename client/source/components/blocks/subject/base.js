@@ -5,6 +5,7 @@ import GLReactImage from 'gl-react-image'
 import { Surface } from 'gl-react-dom'
 import Styled from 'styled-components'
 
+import { Analytic } from '~/helpers'
 import { Effect } from './../widgets'
 
 const Container = Styled.div`
@@ -25,11 +26,11 @@ export default class extends React.Component {
         this.setState(state => {
             setTimeout(() => this.forceUpdate())
             let element = findDOMNode(this)
-            return {
-                ...state,
-                width: Math.floor(element.getBoundingClientRect().width),
-                height: Math.floor(element.getBoundingClientRect().height),
-            }
+            let rect = element.getBoundingClientRect()
+            let width = Math.floor(rect.width)
+            let height = Math.floor(rect.height)
+            Analytic.event(Analytic.EVENT_FIT, { width, height })
+            return { ...state, width, height }
         })
     }
 
