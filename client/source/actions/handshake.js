@@ -15,6 +15,7 @@ export default async trigger => {
         state.stat = {
             score: response.data.score,
             frebie: response.data.frebie,
+            factor: response.data.factor,
         }
         state.status = Trigger.STATUS_WAIT
         trigger.push(Trigger.ACTION_HANDSHAKE, state)

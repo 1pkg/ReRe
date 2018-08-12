@@ -26,6 +26,11 @@ class Account(Alchemy.Model):
         nullable=False,
         default=0,
     )
+    factor = Alchemy.Column(
+        Alchemy.Integer,
+        nullable=False,
+        default=1,
+    )
     time_stamp = Alchemy.Column(
         Alchemy.DateTime,
         nullable=False,

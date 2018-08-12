@@ -68,8 +68,10 @@ class Handshake(base.Action):
 
         score = account.score
         freebie = account.freebie
+        factor = account.factor
         return {
             'token': token,
             'score': score,
             'frebie': freebie,
+            'factor': factor,
         }

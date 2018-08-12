@@ -4,7 +4,6 @@ import flask
 import flask_limiter
 import flask_cache
 import flask_cors
-import flask_mobility
 import flask_mail
 import functools
 import werkzeug
@@ -65,7 +64,6 @@ class Application:
                     time.sleep(self.settings[const.SETTING_DEFAULT_SLEEP_TIME])
 
             flask_cors.CORS(instance)
-            flask_mobility.Mobility(instance)
 
             self.extensions = {}
             self.extensions['mail'] = flask_mail.Mail()

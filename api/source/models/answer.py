@@ -11,6 +11,11 @@ class Answer(Alchemy.Model):
         nullable=False,
         primary_key=True,
     )
+    result = Alchemy.Column(
+        Alchemy.Boolean,
+        nullable=False,
+        index=True,
+    )
     time_stamp = Alchemy.Column(
         Alchemy.DateTime,
         nullable=False,

@@ -40,6 +40,7 @@ class Remake(FSingleIdent, Identify, Score):
     def _calculate(self, unit):
         db = self._application.db
         answer = Answer(
+            result=False,
             task_id=self._task.id,
             option_id=None,
             session_id=self._session.id,

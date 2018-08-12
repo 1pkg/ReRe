@@ -16,6 +16,7 @@ export default async (trigger, option) => {
         })
         state.option = response.data.option
         state.stat.score = response.data.score
+        state.stat.factor = response.data.factor
         state.timestamp = null
         state.status = response.data.result
             ? Trigger.STATUS_CORRECT

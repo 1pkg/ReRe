@@ -9,8 +9,7 @@ class Identify(Access):
         validator = self._application.validator
         cache = self._application.cache
 
-        key = f'token-{self._session.token}'
-        identity = cache.get(key)
+        identity = cache.get(self._session.token)
         if identity is None \
                 or 'timestamp' not in identity \
                 or not validator.isnumeric(identity['timestamp']) \

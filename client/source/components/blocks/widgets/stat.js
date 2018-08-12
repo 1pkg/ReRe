@@ -20,10 +20,14 @@ const Container = Styled.div`
 
 export default class extends React.Component {
     render() {
+        let complexity = this.props.stat.complexity
+            ? `${this.props.stat.complexity}%`
+            : 'new task'
+        let factor = `x${this.props.stat.factor}`
         return (
             <Container mobile={Device.mobile()}>
-                <Badge text="42%" hint="percentage" />
-                <Badge text="x3" hint="factor" />
+                <Badge text={complexity} hint="complexity" />
+                <Badge text={factor} hint="factor" />
                 <Badge text={this.props.stat.freebie} hint="freebie" />
                 <Badge text={this.props.stat.score} hint="score" />
             </Container>

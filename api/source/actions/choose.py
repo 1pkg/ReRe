@@ -46,7 +46,8 @@ class Choose(Identify, Score):
             False
         )
         score = self._session.account.score
-        cache.delete(f'token-{self._session.token}')
+        factor = self._session.account.factor
+        cache.delete(self._session.token)
 
         option = self.__index(
             self._task.options,
@@ -54,6 +55,7 @@ class Choose(Identify, Score):
             option.id == self._task.subject.option.id,
         ) + 1
         answer = Answer(
+            result=result,
             task_id=self._task.id,
             option_id=None if choosen is None else choosen.id,
             session_id=self._session.id,
@@ -64,6 +66,7 @@ class Choose(Identify, Score):
             'result': result,
             'option': option,
             'score': score,
+            'factor': factor,
         }
 
     def __index(self, sequence, callback):

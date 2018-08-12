@@ -1,6 +1,7 @@
 from json import dumps
 
 from base import Action
+from models import Answer
 
 
 class FSingle(Action):
@@ -25,6 +26,7 @@ class FSingle(Action):
             'name': effect.name,
         } for effect in task.effects]
         label = task.label
+        task_model = task
         task = {
             'options': options,
             'subject': subject,
@@ -34,10 +36,36 @@ class FSingle(Action):
         if with_stat:
             score = self._session.account.score
             freebie = self._session.account.freebie
-            stat = { 'score': score, 'freebie': freebie }
+            factor = self._session.account.factor
+            complexity = self._complexity(task_model)
+            stat = {
+                'score': score,
+                'freebie': freebie,
+                'factor': factor,
+                'complexity': complexity,
+            }
             return {
                 'task': task,
                 'stat': stat,
             }
         else:
             return task
+    
+    def _complexity(self, task):
+        db = self._application.db
+        count = db.func.count
+        total_answer_count = Answer.query\
+            .filter(Answer.task_id == task.id)\
+            .count()
+        if total_answer_count > 0:
+            resulted_answer_count = Answer.query \
+                .filter(
+                    db.and_(
+                        Answer.task_id == task.id,
+                        Answer.result == True,
+                    ),
+                ) \
+                .count()
+            return int(resulted_answer_count / total_answer_count * 100)
+        else:
+            return 0
