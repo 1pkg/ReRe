@@ -8,9 +8,11 @@ export default async trigger => {
         let state = trigger.state()
         let response = await Axios.post('handshake', {
             integrity: INTEGRITY,
-            device: Device.name(),
+            alias: Uuid.alias(),
             uuid: Uuid.generate(),
+            device: Device.name(),
         })
+        state.alias = response.data.alias
         state.token = response.data.token
         state.stat = {
             score: response.data.score,

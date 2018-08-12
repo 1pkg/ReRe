@@ -58,55 +58,19 @@ export default class self extends React.Component {
                 next[period] = index == indx++
             }
             Analytic.event(Analytic.EVENT_SWIPE, { index })
-            return next
         })
     }
 
-    daily() {
-        if (
-            this.props.state.lists.daily.length >= MINIMAL_LANDING_TAPE_LENGTH
-        ) {
+    tape(period, title) {
+        let lists = this.props.state.lists
+        if (lists[period].length >= MINIMAL_LANDING_TAPE_LENGTH) {
             return (
                 <Tape
-                    title={'Daily Popular'}
+                    title={title}
                     trigger={this.props.trigger}
                     shaders={this.props.state.shaders}
-                    list={this.props.state.lists.daily}
-                    active={!Device.mobile() || this.state.daily}
-                />
-            )
-        }
-        return null
-    }
-
-    weekly() {
-        if (
-            this.props.state.lists.weekly.length >= MINIMAL_LANDING_TAPE_LENGTH
-        ) {
-            return (
-                <Tape
-                    title={'Weekly Popular'}
-                    trigger={this.props.trigger}
-                    shaders={this.props.state.shaders}
-                    list={this.props.state.lists.weekly}
-                    active={!Device.mobile() || this.state.weekly}
-                />
-            )
-        }
-        return null
-    }
-
-    monthly() {
-        if (
-            this.props.state.lists.monthly.length >= MINIMAL_LANDING_TAPE_LENGTH
-        ) {
-            return (
-                <Tape
-                    title={'Monthly Popular'}
-                    trigger={this.props.trigger}
-                    shaders={this.props.state.shaders}
-                    list={this.props.state.lists.monthly}
-                    active={!Device.mobile() || this.state.monthly}
+                    list={lists[period]}
+                    active={!Device.mobile() || this.state[period]}
                 />
             )
         }
@@ -119,9 +83,9 @@ export default class self extends React.Component {
                 <Copyright settings={this.props.state.settings} />
                 <SubContainer>
                     <Carousel activate={this.activate}>
-                        {this.daily()}
-                        {this.weekly()}
-                        {this.monthly()}
+                        {this.tape('daily', 'Daily Popular')}
+                        {this.tape('weekly', 'Weekly Popular')}
+                        {this.tape('monthly', 'Monthly Popular')}
                     </Carousel>
                 </SubContainer>
                 <ToolbarContainer>
@@ -139,9 +103,9 @@ export default class self extends React.Component {
             <MainContainer>
                 <Copyright settings={this.props.state.settings} />
                 <SubContainer>
-                    {this.daily()}
-                    {this.weekly()}
-                    {this.monthly()}
+                    {this.tape('daily', 'Daily Popular')}
+                    {this.tape('weekly', 'Weekly Popular')}
+                    {this.tape('monthly', 'Monthly Popular')}
                 </SubContainer>
                 <ToolbarContainer>
                     <Toolbar

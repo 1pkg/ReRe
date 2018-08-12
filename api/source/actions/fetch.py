@@ -56,8 +56,8 @@ class Fetch(Access, FSingleIdent, Score):
             pass
 
         db = self._application.db
-        cache = self._application.cache
-        identity = cache.get(self._session.token)
+        storage = self._application.storage
+        identity = storage.get(self._session.token)
         task = Task.query.get(int(identity['task_id']))
         answer = Answer(
             result=False,

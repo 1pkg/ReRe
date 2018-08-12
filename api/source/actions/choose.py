@@ -26,7 +26,7 @@ class Choose(Identify, Score):
     def _process(self, request):
         db = self._application.db
         datetime = self._application.datetime
-        cache = self._application.cache
+        storage = self._application.storage
         settings = self._application.settings
 
         if self.__option != -1:
@@ -47,7 +47,7 @@ class Choose(Identify, Score):
         )
         score = self._session.account.score
         factor = self._session.account.factor
-        cache.delete(self._session.token)
+        storage.delete(self._session.token)
 
         option = self.__index(
             self._task.options,

@@ -16,10 +16,16 @@ class Account(Alchemy.Model):
         nullable=False,
         unique=True,
     )
+    alias = Alchemy.Column(
+        Alchemy.String,
+        nullable=False,
+        index=True,
+    )
     score = Alchemy.Column(
         Alchemy.Integer,
         nullable=False,
         default=0,
+        index=True,
     )
     freebie = Alchemy.Column(
         Alchemy.Integer,

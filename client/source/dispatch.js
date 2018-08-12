@@ -18,9 +18,12 @@ export default async trigger => {
     ) {
         trigger.push(Trigger.ACTION_STORE, state)
         History.push(state.task.label)
-    } else if (state.status === Trigger.STATUS_LAND) {
+    } else if (
+        state.status === Trigger.STATUS_LAND ||
+        state.status === Trigger.STATUS_TABLE
+    ) {
         trigger.push(Trigger.ACTION_STORE, state)
-        History.push()
+        History.push(state.status)
     } else if (purl && purl.query && 'l' in purl.query) {
         trigger.call(Trigger.ACTION_FETCH, purl.query.l)
     } else {

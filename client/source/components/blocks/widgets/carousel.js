@@ -34,6 +34,7 @@ const DotContainer = Styled.div`
 `
 
 const HintWrapper = Styled.div`
+    display: ${props => (props.empty ? 'none' : 'block')};
     font-size: ${props => props.theme['small-unit']};
 `
 
@@ -90,44 +91,37 @@ export default class self extends React.Component {
 
     render() {
         if (this.state) {
+            let children = filter(this.props.children, child => child)
             return (
                 <MainContainer>
                     <SwipeableContainer
                         onSwipedRight={this.previous}
                         onSwipedLeft={this.next}
                     >
-                        {map(
-                            filter(this.props.children, child => child),
-                            (child, index) => {
-                                return (
-                                    <SwipeableWrapper
-                                        key={index}
-                                        order={Number(
-                                            index !== this.state.index,
-                                        )}
-                                    >
-                                        {child}
-                                    </SwipeableWrapper>
-                                )
-                            },
-                        )}
+                        {map(children, (child, index) => {
+                            return (
+                                <SwipeableWrapper
+                                    key={index}
+                                    order={Number(index !== this.state.index)}
+                                >
+                                    {child}
+                                </SwipeableWrapper>
+                            )
+                        })}
                     </SwipeableContainer>
                     <DotContainer>
-                        <HintWrapper>
+                        <HintWrapper empty={!children.length}>
                             <AngelLeft onClick={this.previous} />
                         </HintWrapper>
-                        {map(
-                            filter(this.props.children, child => child),
-                            (child, index) => {
-                                return (
-                                    <DotElement
-                                        key={index}
-                                        active={index === this.state.index}
-                                    />
-                                )
-                            },
-                        )}
-                        <HintWrapper>
+                        {map(children, (child, index) => {
+                            return (
+                                <DotElement
+                                    key={index}
+                                    active={index === this.state.index}
+                                />
+                            )
+                        })}
+                        <HintWrapper empty={!children.length}>
                             <AngelRight onClick={this.next} />
                         </HintWrapper>
                     </DotContainer>

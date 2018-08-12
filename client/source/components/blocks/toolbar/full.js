@@ -7,6 +7,7 @@ import {
     Remake,
     Report,
     Star,
+    Table,
     Timer,
     Toggle,
 } from './../widgets'
@@ -20,6 +21,7 @@ export default class extends React.Component {
                     Toggle,
                     Star,
                     Disclaimer,
+                    Table,
                     Land,
                     Timer,
                     Report,

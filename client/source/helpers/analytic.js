@@ -12,6 +12,7 @@ export default class self {
     static EVENT_ERROR = 'error'
 
     static VIEW_LAND = 'land'
+    static VIEW_TABLE = 'table'
     static VIEW_CHOOSE = 'choose'
     static VIEW_RESULT = 'result'
     static VIEW_MAINTENANCE = 'maintenance'

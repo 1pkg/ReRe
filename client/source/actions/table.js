@@ -2,7 +2,7 @@ import Lodash from 'lodash'
 import Axios from 'axios'
 
 import Trigger from './trigger'
-import { Analytic, Crypto, History, Json } from '~/helpers'
+import { Analytic, History } from '~/helpers'
 
 export default async (trigger, history = true) => {
     try {
@@ -11,26 +11,21 @@ export default async (trigger, history = true) => {
         trigger.push(Trigger.ACTION_WAIT, state)
 
         state = trigger.state()
-        if (!('lists' in state) || Lodash.isEmpty(state.lists)) {
-            let response = await Axios.post('land', {
+        if (!('table' in state) || Lodash.isEmpty(state.table)) {
+            let response = await Axios.post('table', {
                 token: state.token,
             })
-            state.lists = response.data
-            for (let land in state.lists) {
-                for (let task of state.lists[land]) {
-                    task.subject = Crypto.decrypt(state.token, task.subject)
-                    task.subject = Json.decode(task.subject)
-                }
-            }
+            state.table = response.data.table
+            state.table.total = response.data.total
         } else {
             await new Promise(resolve => {
                 setTimeout(resolve)
             })
         }
         state.task = null
-        state.status = Trigger.STATUS_LAND
-        history ? History.push(Trigger.STATUS_LAND) : void 0
-        trigger.push(Trigger.ACTION_LAND, state)
+        state.status = Trigger.STATUS_TABLE
+        history ? History.push(Trigger.STATUS_TABLE) : void 0
+        trigger.push(Trigger.STATUS_TABLE, state)
         return state
     } catch (exception) {
         Analytic.event(Analytic.EVENT_ERROR, exception)

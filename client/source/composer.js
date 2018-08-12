@@ -5,11 +5,13 @@ import { History, Store } from './helpers'
 import Trigger from './actions/trigger'
 
 const history = trigger => {
-    History.change(label => {
-        if (label) {
-            trigger.call(Trigger.ACTION_FETCH, label, false)
+    History.change(breadcrumb => {
+        if (breadcrumb == Trigger.STATUS_LAND) {
+            trigger.call(Trigger.ACTION_LAND, false)
+        } else if (breadcrumb == Trigger.STATUS_TABLE) {
+            trigger.call(Trigger.ACTION_TABLE, false)
         } else {
-            trigger.call(Trigger.ACTION_LAND)
+            trigger.call(Trigger.ACTION_FETCH, breadcrumb, false)
         }
     })
 }

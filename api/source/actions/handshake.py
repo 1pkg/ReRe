@@ -13,6 +13,7 @@ class Handshake(base.Action):
         http = self._application.http
         settings = self._application.settings
 
+        self.__account_alias = self._get(request, 'alias')
         self.__account_uuid = self._get(request, 'uuid', '')
         self.__user_device = self._get(request, 'device')
         self.__user_agent = http.useragent(request)
@@ -21,6 +22,9 @@ class Handshake(base.Action):
 
         if not self.__integrity == settings['INTEGRITY']:
             raise errors.Integrity(self.__integrity)
+
+        if validator.isempty(self.__account_alias):
+            raise errors.Request('alias', self.__account_alias)
 
         if len(self.__account_uuid) != 32 or \
             not validator.ishex(self.__account_uuid):
@@ -45,7 +49,10 @@ class Handshake(base.Action):
             .filter(Account.uuid == self.__account_uuid) \
             .first()
         if account is None:
-            account = Account(uuid = self.__account_uuid)
+            account = Account(
+                alias=self.__account_alias,
+                uuid=self.__account_uuid,
+            )
 
         token = c_hash.hex(
             c_hash.LONG_DIGEST,
@@ -66,10 +73,12 @@ class Handshake(base.Action):
         db.session.add(account)
         db.session.commit()
 
+        alias = account.alias
         score = account.score
         freebie = account.freebie
         factor = account.factor
         return {
+            'alias': alias,
             'token': token,
             'score': score,
             'frebie': freebie,

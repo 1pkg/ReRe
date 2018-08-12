@@ -11,7 +11,7 @@ class Access(Action):
 
         token = self._get(request, 'token', '')
         if len(token) != 32 or not validator.ishex(token):
-            raise errors.Token(token)
+            raise errors.Request('token', token)
 
         self._session = Session.query \
             .filter(Session.token == token) \

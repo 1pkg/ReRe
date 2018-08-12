@@ -1,11 +1,11 @@
 from base import Constant, Component
 
 
-class Cache(Component):
+class Storage(Component):
     def set(self, key, value, expire=None):
         settings = self._application.settings
-        i_expire = settings[Constant.SETTING_INNER_CACHE_TIMEOUT]
-        expire = expire if expire is not None else i_expire
+        default_expire = settings[Constant.SETTING_IDENTITY_TIMEOUT]
+        expire = expire if expire is not None else default_expire
         cache = self._application.extensions['cache']
         cache.set(key, value, expire)
 
