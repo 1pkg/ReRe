@@ -1,9 +1,10 @@
+import base
 import errors
 from .mixins import Identify
 
 
 class Report(Identify):
-    CONNECTION_LIMIT = '3/second;30/minute;300/hour;3000/day'
+    CONNECTION_LIMIT = base.Constant.RAREFIED_CONNECTION_LIMIT
     CACHE_EXPIRE = None
 
     def _validate(self, request):

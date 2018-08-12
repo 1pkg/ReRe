@@ -5,6 +5,10 @@ export default class self {
     static cachedm = null
     static cachedt = null
 
+    static NAME_DESKTOP = 'desktop'
+    static NAME_TABLET = 'tablet'
+    static NAME_MOBILE = 'mobile'
+
     static mobile() {
         if (self.cachedm === null) {
             self.cachedm = !!self.detect.mobile()
@@ -17,5 +21,15 @@ export default class self {
             self.cachedt = !!self.detect.tablet()
         }
         return self.cachedt
+    }
+
+    static name() {
+        if (self.tablet()) {
+            return self.NAME_TABLET
+        } else if (self.mobile()) {
+            return self.NAME_MOBILE
+        } else {
+            return self.NAME_DESKTOP
+        }
     }
 }

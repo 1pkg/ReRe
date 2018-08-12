@@ -4,7 +4,7 @@ from base import Action
 
 
 class FSingle(Action):
-    def _format(self, task):
+    def _format(self, task, with_stat):
         crypto = self._application.crypto
 
         subject = crypto.encrypt(
@@ -25,9 +25,19 @@ class FSingle(Action):
             'name': effect.name,
         } for effect in task.effects]
         label = task.label
-        return {
+        task = {
             'options': options,
             'subject': subject,
             'effects': effects,
             'label': label,
         }
+        if with_stat:
+            score = self._session.account.score
+            freebie = self._session.account.freebie
+            stat = { 'score': score, 'freebie': freebie }
+            return {
+                'task': task,
+                'stat': stat,
+            }
+        else:
+            return task

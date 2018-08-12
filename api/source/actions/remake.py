@@ -1,9 +1,10 @@
-from models import Effect, Task
-from .mixins import FSingleIdent, Identify
+import base
+from models import Answer, Effect, Task
+from .mixins import FSingleIdent, Identify, Score
 
 
-class Remake(Identify, FSingleIdent):
-    CONNECTION_LIMIT = '3/second;300/minute;30000/hour;3000000/day'
+class Remake(FSingleIdent, Identify, Score):
+    CONNECTION_LIMIT = base.Constant.RIGID_CONNECTION_LIMIT
     CACHE_EXPIRE = None
 
     def _process(self, request):
@@ -13,9 +14,11 @@ class Remake(Identify, FSingleIdent):
         random = self._application.random
         settings = self._application.settings
 
+        self._calculate(-settings[base.Constant.SETTING_SMALL_SCORE_UNIT])
+
         effects = Effect.query \
             .order_by(db.func.random()) \
-            .limit(settings['EFFECT_COUNT']).all()
+            .limit(settings[base.Constant.SETTING_EFFECT_COUNT]).all()
         label = c_hash.hex(
             c_hash.SHORT_DIGEST,
             datetime.timestamp(),
@@ -33,3 +36,14 @@ class Remake(Identify, FSingleIdent):
         db.session.add(task)
         db.session.commit()
         return self._format(task)
+
+    def _calculate(self, unit):
+        db = self._application.db
+        answer = Answer(
+            task_id=self._task.id,
+            option_id=None,
+            session_id=self._session.id,
+        )
+        db.session.add(answer)
+        db.session.commit()
+        super()._calculate(unit, True)

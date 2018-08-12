@@ -13,9 +13,10 @@ export default async trigger => {
         let response = await Axios.post('remake', {
             token: state.token,
         })
-        state.task = response.data
+        state.task = response.data.task
         state.task.subject = Crypto.decrypt(state.token, state.task.subject)
         state.task.subject = Json.decode(state.task.subject)
+        state.stat = response.data.stat
         state.task.handled = {}
         state.status = Trigger.STATUS_ACTIVE
         History.push(state.task.label)

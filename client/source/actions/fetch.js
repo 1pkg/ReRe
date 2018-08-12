@@ -14,9 +14,10 @@ export default async (trigger, label = '', history = true) => {
             token: state.token,
             label,
         })
-        state.task = response.data
+        state.task = response.data.task
         state.task.subject = Crypto.decrypt(state.token, state.task.subject)
         state.task.subject = Json.decode(state.task.subject)
+        state.stat = response.data.stat
         state.task.handled = {}
         state.option = null
         state.timestamp = Timestamp.current()

@@ -52,8 +52,9 @@ class Application:
         instance.config.from_envvar('FLASK_SETTING')
         self.settings = instance.config
 
+        const = base.Constant
         with instance.app_context():
-            for _ in range(0, self.settings['MAX_RECONNECTION_TRY']):
+            for _ in range(0, self.settings[const.SETTING_MAX_RECONNECTION_TRY]):
                 try:
                     self.db = base.Alchemy
                     self.db.init_app(instance)
@@ -61,7 +62,7 @@ class Application:
                     self.db.session.commit()
                     break
                 except Exception as exception:
-                    time.sleep(self.settings['DEFAULT_SLEEP_TIME'])
+                    time.sleep(self.settings[const.SETTING_DEFAULT_SLEEP_TIME])
 
             flask_cors.CORS(instance)
             flask_mobility.Mobility(instance)

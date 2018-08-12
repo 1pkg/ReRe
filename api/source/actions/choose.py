@@ -1,10 +1,11 @@
+import base
 import errors
 from models import Answer, Setting
-from .mixins import Identify
+from .mixins import Identify, Score
 
 
-class Choose(Identify):
-    CONNECTION_LIMIT = '3/second;300/minute;30000/hour;3000000/day'
+class Choose(Identify, Score):
+    CONNECTION_LIMIT = base.Constant.RIGID_CONNECTION_LIMIT
     CACHE_EXPIRE = None
 
     def _validate(self, request):
@@ -25,6 +26,8 @@ class Choose(Identify):
     def _process(self, request):
         db = self._application.db
         datetime = self._application.datetime
+        cache = self._application.cache
+        settings = self._application.settings
 
         if self.__option != -1:
             choosen = self._task.options[self.__option - 1]
@@ -35,6 +38,16 @@ class Choose(Identify):
         else:
             choosen = None
             result = False
+
+        self._calculate(
+            settings[base.Constant.SETTING_BIG_SCORE_UNIT]
+            if result else
+            -settings[base.Constant.SETTING_BIG_SCORE_UNIT],
+            False
+        )
+        score = self._session.account.score
+        cache.delete(f'token-{self._session.token}')
+
         option = self.__index(
             self._task.options,
             lambda option:
@@ -50,6 +63,7 @@ class Choose(Identify):
         return {
             'result': result,
             'option': option,
+            'score': score,
         }
 
     def __index(self, sequence, callback):

@@ -13,4 +13,4 @@ class FSingleIdent(FSingle):
         }
         key = f'token-{self._session.token}'
         cache.set(key, identity)
-        return super()._format(task)
+        return super()._format(task, True)

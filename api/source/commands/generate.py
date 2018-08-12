@@ -1,9 +1,5 @@
-from base import Command
-from models import \
-    Effect, \
-    Option, \
-    Subject, \
-    Task
+from base import Command, Constant
+from models import Effect, Option, Subject, Task
 
 
 class Generate(Command):
@@ -14,7 +10,7 @@ class Generate(Command):
         {
             'name': 'count',
             'type': int,
-            'default': 100,
+            'default': Constant.DEFAULT_GENERATE_COUNT,
             'description': 'n-tasks count'
         },
     ]
@@ -34,12 +30,12 @@ class Generate(Command):
                 options = Option.query \
                     .filter(Option.id != subject.option_id) \
                     .order_by(db.func.random()) \
-                    .limit(settings['OPTION_COUNT'] - 1).all() \
+                    .limit(settings[Constant.SETTING_OPTION_COUNT] - 1).all() \
                     + [subject.option]
                 options = random.shuffle(options)
                 effects = Effect.query \
                     .order_by(db.func.random()) \
-                    .limit(settings['EFFECT_COUNT']).all()
+                    .limit(settings[Constant.SETTING_EFFECT_COUNT]).all()
                 label = c_hash.hex(
                     c_hash.SHORT_DIGEST,
                     datetime.timestamp(),

@@ -4,7 +4,7 @@ import Styled from 'styled-components'
 
 import Trigger from '~/actions/trigger'
 import { Analytic, Device } from '~/helpers'
-import { Carousel } from './../blocks/widgets'
+import { Carousel, Stat } from './../blocks/widgets'
 
 const MainContainer = Styled.div`
     flex: 1 1 0;
@@ -33,8 +33,15 @@ const OptionContainer = Styled.div`
 const ToolbarContainer = Styled.div`
     display: flex;
     align-items: center;
-    margin-top: ${props => props.theme['half-small-unit']};
+    margin-top: ${props => '-' + props.theme['small-unit']};
     margin-bottom: ${props => props.theme['half-small-unit']};
+`
+
+const StatContainer = Styled.div`
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transform: translateY(-75%);
 `
 
 export default class self extends React.Component {
@@ -88,6 +95,9 @@ export default class self extends React.Component {
                 >
                     {this.props.subject}
                 </SwipeableSubjectContainer>
+                <StatContainer>
+                    <Stat stat={this.props.state.stat} />
+                </StatContainer>
                 <ToolbarContainer>
                     <Toolbar
                         trigger={this.props.trigger}
@@ -118,6 +128,9 @@ export default class self extends React.Component {
                 <SubjectContainer full={this.state.full}>
                     {this.props.subject}
                 </SubjectContainer>
+                <StatContainer>
+                    <Stat stat={this.props.state.stat} />
+                </StatContainer>
                 <ToolbarContainer>
                     <Toolbar
                         trigger={this.props.trigger}

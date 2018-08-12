@@ -1,5 +1,5 @@
 import errors
-from base import Action
+from base import Action, Constant
 from models import Session
 
 
@@ -16,7 +16,7 @@ class Access(Action):
         self._session = Session.query \
             .filter(Session.token == token) \
             .first()
-        timeout = self._application.settings['TOKEN_TIMEOUT']
+        timeout = self._application.settings[Constant.SETTING_TOKEN_TIMEOUT]
         if self._session is None \
                 or datetime.diff(self._session.time_stamp) > timeout:
             raise errors.Token(token)

@@ -3,6 +3,7 @@ from .flist import FList
 from .fsingle import FSingle
 from .fsingleident import FSingleIdent
 from .identify import Identify
+from .score import Score
 
 __all__ = [
     'Access',
@@ -10,4 +11,5 @@ __all__ = [
     'FSingle',
     'FSingleIdent',
     'Identify',
+    'Score',
 ]

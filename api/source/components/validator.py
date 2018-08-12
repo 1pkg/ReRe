@@ -18,5 +18,12 @@ class Validator(Component):
         except Exception:
             return False
 
+    def isboolean(self, value):
+        try:
+            value = int(value)
+            return value == 0 or value == 1
+        except Exception:
+            return False
+
     def isempty(self, value):
         return value is None or value == '' or value == 'None'

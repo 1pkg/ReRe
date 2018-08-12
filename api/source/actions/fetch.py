@@ -1,26 +1,29 @@
+import base
 import errors
 from models import \
     Answer, \
     Effect, \
     Mark, \
     Option, \
-    Orientation, \
     Subject, \
     Task, \
     Type
-from .mixins import Access, FSingleIdent
+from .mixins import Access, FSingleIdent, Identify, Score
 
 
-class Fetch(Access, FSingleIdent):
-    CONNECTION_LIMIT = '3/second;300/minute;30000/hour;3000000/day'
+class Fetch(Access, FSingleIdent, Score):
+    CONNECTION_LIMIT = base.Constant.RIGID_CONNECTION_LIMIT
     CACHE_EXPIRE = None
 
     def _process(self, request):
         random = self._application.random
+        settings = self._application.settings
 
-        roll_byrating = self._application.settings['ROLL_BY_RATING']
-        roll_byrandom = self._application.settings['ROLL_BY_RANDOM']
-        roll_bynovelty = self._application.settings['ROLL_BY_NOVELTY']
+        self._calculate(request, -settings[base.Constant.SETTING_BIG_SCORE_UNIT])
+
+        roll_byrating = settings[base.Constant.SETTING_ROLL_BY_RATING]
+        roll_byrandom = settings[base.Constant.SETTING_ROLL_BY_RANDOM]
+        roll_bynovelty = settings[base.Constant.SETTING_ROLL_BY_NOVELTY]
         label = self._get(request, 'label', '')
         if label is not '':
             task = self.__bylabel(label)
@@ -43,9 +46,31 @@ class Fetch(Access, FSingleIdent):
         task = self.__bynew() if task is None else task
         return self._format(task)
 
+    def _calculate(self, request, unit):
+        # super duper hack
+        try:
+            Identify(self._application)(request)
+        except errors.Identity:
+            return
+        except:
+            pass
+
+        db = self._application.db
+        cache = self._application.cache
+        identity = cache.get(f'token-{self._session.token}')
+        task = Task.query.get(int(identity['task_id']))
+        answer = Answer(
+            task_id=task.id,
+            option_id=None,
+            session_id=self._session.id,
+        )
+        db.session.add(answer)
+        db.session.commit()
+        super()._calculate(unit, True)
+
     def __bylabel(self, label):
         db = self._application.db
-        device = self._application.device
+        device = self._session.user_device
 
         return Task.query \
             .join(Subject, db.and_(
@@ -58,8 +83,8 @@ class Fetch(Access, FSingleIdent):
 
     def __byrating(self):
         db = self._application.db
-        device = self._application.device
         random = self._application.random
+        device = self._session.user_device
 
         query = Task.query \
             .join(Subject, db.and_(
@@ -83,7 +108,7 @@ class Fetch(Access, FSingleIdent):
 
     def __byrandom(self):
         db = self._application.db
-        device = self._application.device
+        device = self._session.user_device
 
         return Task.query \
             .join(Subject, db.and_(
@@ -96,8 +121,8 @@ class Fetch(Access, FSingleIdent):
 
     def __bynovelty(self):
         db = self._application.db
-        device = self._application.device
         datetime = self._application.datetime
+        device = self._session.user_device
 
         return Task.query \
             .join(Subject, db.and_(
@@ -111,11 +136,11 @@ class Fetch(Access, FSingleIdent):
 
     def __bynew(self):
         db = self._application.db
-        device = self._application.device
         datetime = self._application.datetime
         c_hash = self._application.hash
         random = self._application.random
         settings = self._application.settings
+        device = self._session.user_device
 
         subject = Subject.query \
             .filter(Subject.orientation == device.orientation()) \
@@ -124,12 +149,12 @@ class Fetch(Access, FSingleIdent):
         options = Option.query \
             .filter(Option.id != subject.option_id) \
             .order_by(db.func.random()) \
-            .limit(settings['OPTION_COUNT'] - 1).all() \
+            .limit(settings[base.Constant.SETTING_OPTION_COUNT] - 1).all() \
             + [subject.option]
         options = random.shuffle(options)
         effects = Effect.query \
             .order_by(db.func.random()) \
-            .limit(settings['EFFECT_COUNT']).all()
+            .limit(settings[base.Constant.SETTING_EFFECT_COUNT]).all()
         label = c_hash.hex(
             c_hash.SHORT_DIGEST,
             datetime.timestamp(),

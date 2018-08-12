@@ -3,7 +3,7 @@ import Axios from 'axios'
 import Trigger from './trigger'
 import { Analytic } from '~/helpers'
 
-export default async (trigger, option, statless = false) => {
+export default async (trigger, option) => {
     try {
         let state = trigger.state()
         state.status = Trigger.STATUS_WAIT
@@ -14,15 +14,13 @@ export default async (trigger, option, statless = false) => {
             token: state.token,
             option,
         })
-        if (!statless) {
-            state.option = response.data.option
-            state.timestamp = null
-            state.status = response.data.result
-                ? Trigger.STATUS_CORRECT
-                : Trigger.STATUS_WRONG
-            trigger.push(Trigger.ACTION_CHOOSE, state)
-            return state
-        }
+        state.option = response.data.option
+        state.stat.score = response.data.score
+        state.timestamp = null
+        state.status = response.data.result
+            ? Trigger.STATUS_CORRECT
+            : Trigger.STATUS_WRONG
+        trigger.push(Trigger.ACTION_CHOOSE, state)
         return state
     } catch (exception) {
         Analytic.event(Analytic.EVENT_ERROR, exception)

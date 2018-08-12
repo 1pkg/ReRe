@@ -1,30 +1,31 @@
+import base
 import errors
-import models
+from models import Mark as _Mark_, Type
 from .mixins import Identify
 
 
 class Mark(Identify):
-    CONNECTION_LIMIT = '3/second;300/minute;30000/hour;3000000/day'
+    CONNECTION_LIMIT = base.Constant.RIGID_CONNECTION_LIMIT
     CACHE_EXPIRE = None
 
     def _validate(self, request):
         super()._validate(request)
 
         self.__type = self._get(request, 'type', '')
-        if not self.__type in models.Type.__members__:
+        if not self.__type in Type.__members__:
             raise errors.Request('type', self.__type)
-        self.__type = models.Type[self.__type]
+        self.__type = Type[self.__type]
 
     def _process(self, request):
         db = self._application.db
 
-        mark = models.Mark.query \
-            .filter(models.Mark.type == self.__type) \
-            .filter(models.Mark.task_id == self._task.id) \
-            .filter(models.Mark.session_id == self._session.id) \
+        mark = _Mark_.query \
+            .filter(_Mark_.type == self.__type) \
+            .filter(_Mark_.task_id == self._task.id) \
+            .filter(_Mark_.session_id == self._session.id) \
             .first()
         if mark is None:
-            mark = models.Mark(
+            mark = _Mark_(
                 type=self.__type,
                 task_id=self._task.id,
                 session_id=self._session.id,

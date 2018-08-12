@@ -1,25 +1,26 @@
+import base
 from models import Answer, Mark, Subject, Task, Type
 from .mixins import Access, FList
 
 
 class Land(Access, FList):
-    CONNECTION_LIMIT = '3/second;30/minute;300/hour;3000/day'
-    CACHE_EXPIRE = 86400
+    CONNECTION_LIMIT = base.Constant.RAREFIED_CONNECTION_LIMIT
+    CACHE_EXPIRE = base.Constant.DEFAULT_CACHE_EXPIRE
 
     def _process(self, request):
         random = self._application.random
 
         return self._format({
-            'daily': random.shuffle(self.__daily()),
-            'weekly': random.shuffle(self.__weekly()),
-            'monthly': random.shuffle(self.__monthly()),
+            'daily': random.shuffle(self.__query(-1)),
+            'weekly': random.shuffle(self.__query(-7)),
+            'monthly': random.shuffle(self.__query(-30)),
         })
 
-    def __daily(self):
+    def __query(self, day_count):
         db = self._application.db
-        device = self._application.device
         datetime = self._application.datetime
         settings = self._application.settings
+        device = self._session.user_device
 
         return Task.query \
             .join(Subject, db.and_(
@@ -28,11 +29,11 @@ class Land(Access, FList):
             )) \
             .join(Answer, db.and_(
                 Answer.task_id == Task.id,
-                Answer.time_stamp >= datetime.date(-1),
+                Answer.time_stamp >= datetime.date(day_count),
             )) \
             .outerjoin(Mark, db.and_(
                 Mark.task_id == Task.id,
-                Mark.time_stamp >= datetime.date(-1),
+                Mark.time_stamp >= datetime.date(day_count),
             )) \
             .filter(Task.active == True) \
             .group_by(Task.id) \
@@ -44,66 +45,4 @@ class Land(Access, FList):
                     (db.func.count(Answer.option_id == None) * 2),
                 ),
                 db.desc(Task.id),
-            ).limit(settings['LAND_COUNT']).all()
-
-    def __weekly(self):
-        db = self._application.db
-        device = self._application.device
-        datetime = self._application.datetime
-        settings = self._application.settings
-
-        return Task.query \
-            .join(Subject, db.and_(
-                Subject.id == Task.subject_id,
-                Subject.orientation == device.orientation()
-            )) \
-            .join(Answer, db.and_(
-                Answer.task_id == Task.id,
-                Answer.time_stamp >= datetime.date(-7),
-            )) \
-            .outerjoin(Mark, db.and_(
-                Mark.task_id == Task.id,
-                Mark.time_stamp >= datetime.date(-7),
-            )) \
-            .filter(Task.active == True) \
-            .group_by(Task.id) \
-            .order_by(
-                db.desc(
-                    db.func.count(Mark.type == Type.star) -
-                    db.func.count(Mark.type == Type.report) +
-                    (db.func.count(Answer.option_id != None) / 2) -
-                    (db.func.count(Answer.option_id == None) * 2),
-                ),
-                db.desc(Task.id),
-            ).limit(settings['LAND_COUNT']).all()
-
-    def __monthly(self):
-        db = self._application.db
-        device = self._application.device
-        datetime = self._application.datetime
-        settings = self._application.settings
-
-        return Task.query \
-            .join(Subject, db.and_(
-                Subject.id == Task.subject_id,
-                Subject.orientation == device.orientation()
-            )) \
-            .join(Answer, db.and_(
-                Answer.task_id == Task.id,
-                Answer.time_stamp >= datetime.date(-30),
-            )) \
-            .outerjoin(Mark, db.and_(
-                Mark.task_id == Task.id,
-                Mark.time_stamp >= datetime.date(-30),
-            )) \
-            .filter(Task.active == True) \
-            .group_by(Task.id) \
-            .order_by(
-                db.desc(
-                    db.func.count(Mark.type == Type.star) -
-                    db.func.count(Mark.type == Type.report) +
-                    (db.func.count(Answer.option_id != None) / 2) -
-                    (db.func.count(Answer.option_id == None) * 2),
-                ),
-                db.desc(Task.id),
-            ).limit(settings['LAND_COUNT']).all()
+            ).limit(settings[base.Constant.SETTING_LAND_COUNT]).all()

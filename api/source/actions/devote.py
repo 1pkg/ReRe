@@ -1,10 +1,11 @@
+import base
 from models import Effect, Setting
 from .mixins import Access
 
 
 class Devote(Access):
-    CONNECTION_LIMIT = '3/second;30/minute;300/hour;3000/day'
-    CACHE_EXPIRE = 86400
+    CONNECTION_LIMIT = base.Constant.RAREFIED_CONNECTION_LIMIT
+    CACHE_EXPIRE = base.Constant.DEFAULT_CACHE_EXPIRE
 
     def _process(self, request):
         shaders = [{

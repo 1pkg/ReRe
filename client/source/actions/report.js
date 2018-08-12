@@ -11,7 +11,7 @@ export default async (trigger, message) => {
         trigger.push(Trigger.ACTION_WAIT, state)
 
         state = trigger.state()
-        let response = await Axios.post('report', {
+        await Axios.post('report', {
             token: state.token,
             message,
         })

@@ -1,6 +1,6 @@
 from flask_mail import Message
 
-from base import Component
+from base import Component, Constant
 
 
 class Mail(Component):
@@ -10,7 +10,7 @@ class Mail(Component):
         message = Message(
             subject=subject,
             body=body,
-            sender=settings['MAIL_USERNAME'],
-            recipients=[settings['MAIL_USERNAME']],
+            sender=settings[Constant.SETTING_MAIL_USERNAME],
+            recipients=[settings[Constant.SETTING_MAIL_USERNAME]],
         )
         mail.send(message)
