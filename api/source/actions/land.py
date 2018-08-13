@@ -10,11 +10,14 @@ class Land(Access, FList):
     def _process(self, request):
         random = self._application.random
 
-        return self._format({
-            'daily': random.shuffle(self.__query(-1)),
-            'weekly': random.shuffle(self.__query(-7)),
-            'monthly': random.shuffle(self.__query(-30)),
-        })
+        const = base.Constant
+        return {
+            'lists': self._format({
+                'daily': random.shuffle(self.__query(-const.DAY_COUNT_SINGLE)),
+                'weekly': random.shuffle(self.__query(-const.DAY_COUNT_WEEK)),
+                'monthly': random.shuffle(self.__query(-const.DAY_COUNT_MONTH)),
+            })
+        }
 
     def __query(self, day_count):
         db = self._application.db

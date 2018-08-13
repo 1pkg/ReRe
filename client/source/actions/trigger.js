@@ -10,6 +10,7 @@ import {
     Mark,
     Remake,
     Report,
+    Splash,
     Table,
 } from '~/actions'
 
@@ -17,6 +18,7 @@ export default class Trigger {
     static STATUS_ACTIVE = 'status-active'
     static STATUS_CORRECT = 'status-correct'
     static STATUS_LAND = 'status-land'
+    static STATUS_SPLASH = 'status-splash'
     static STATUS_TABLE = 'status-table'
     static STATUS_WAIT = 'status-wait'
     static STATUS_WRONG = 'status-wrong'
@@ -30,6 +32,7 @@ export default class Trigger {
     static ACTION_MARK = 'action-mark'
     static ACTION_REMAKE = 'action-remake'
     static ACTION_REPORT = 'action-report'
+    static ACTION_SPLASH = 'action-splash'
     static ACTION_TABLE = 'action-table'
 
     static ACTION_STORE = 'action-store'
@@ -47,6 +50,7 @@ export default class Trigger {
             [Trigger.ACTION_MARK]: Mark,
             [Trigger.ACTION_REMAKE]: Remake,
             [Trigger.ACTION_REPORT]: Report,
+            [Trigger.ACTION_SPLASH]: Splash,
             [Trigger.ACTION_TABLE]: Table,
         }
         Axios.defaults.baseURL = `${SCHEMA}://${API_URL}`

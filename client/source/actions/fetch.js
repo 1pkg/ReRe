@@ -1,9 +1,9 @@
 import Axios from 'axios'
 
 import Trigger from './trigger'
-import { Analytic, Crypto, History, Json, Timestamp } from '~/helpers'
+import { Analytic, Crypto, Json, Timestamp } from '~/helpers'
 
-export default async (trigger, label = '', history = true) => {
+export default async (trigger, label = '') => {
     try {
         let state = trigger.state()
         state.status = Trigger.STATUS_WAIT
@@ -22,7 +22,6 @@ export default async (trigger, label = '', history = true) => {
         state.option = null
         state.timestamp = Timestamp.current()
         state.status = Trigger.STATUS_ACTIVE
-        history ? History.push(state.task.label) : void 0
         trigger.push(Trigger.ACTION_FETCH, state)
         return state
     } catch (exception) {

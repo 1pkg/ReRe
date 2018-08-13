@@ -3,7 +3,7 @@ import Swipeable from 'react-swipeable'
 import Styled from 'styled-components'
 
 import Trigger from '~/actions/trigger'
-import { Analytic, Device } from '~/helpers'
+import { Analytic, Device, History } from '~/helpers'
 import { Carousel, Stat } from './../blocks/widgets'
 
 const MainContainer = Styled.div`
@@ -49,7 +49,8 @@ export default class self extends React.Component {
 
     fetch = async () => {
         Analytic.event(Analytic.EVENT_SWIPE, { direction: 'fetch' })
-        this.props.trigger.call(Trigger.ACTION_FETCH)
+        let state = await this.props.trigger.call(Trigger.ACTION_FETCH)
+        History.push(state.task.label)
     }
 
     expand = () => {

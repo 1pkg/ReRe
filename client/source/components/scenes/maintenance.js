@@ -27,7 +27,7 @@ const MinorText = Styled.div`
 `
 
 export default class extends React.Component {
-    reload = () => {
+    reload = async () => {
         dispatch(this.props.trigger)
     }
 

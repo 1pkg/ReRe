@@ -7,11 +7,11 @@ import Trigger from './actions/trigger'
 const history = trigger => {
     History.change(breadcrumb => {
         if (breadcrumb == Trigger.STATUS_LAND) {
-            trigger.call(Trigger.ACTION_LAND, false)
+            trigger.call(Trigger.ACTION_LAND)
         } else if (breadcrumb == Trigger.STATUS_TABLE) {
-            trigger.call(Trigger.ACTION_TABLE, false)
+            trigger.call(Trigger.ACTION_TABLE)
         } else {
-            trigger.call(Trigger.ACTION_FETCH, breadcrumb, false)
+            trigger.call(Trigger.ACTION_FETCH, breadcrumb)
         }
     })
 }

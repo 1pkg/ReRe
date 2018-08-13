@@ -2,9 +2,9 @@ import Lodash from 'lodash'
 import Axios from 'axios'
 
 import Trigger from './trigger'
-import { Analytic, Crypto, History, Json } from '~/helpers'
+import { Analytic, Crypto, Json } from '~/helpers'
 
-export default async (trigger, history = true) => {
+export default async trigger => {
     try {
         let state = trigger.state()
         state.status = Trigger.STATUS_WAIT
@@ -15,7 +15,7 @@ export default async (trigger, history = true) => {
             let response = await Axios.post('land', {
                 token: state.token,
             })
-            state.lists = response.data
+            state.lists = response.data.lists
             for (let land in state.lists) {
                 for (let task of state.lists[land]) {
                     task.subject = Crypto.decrypt(state.token, task.subject)
@@ -29,7 +29,6 @@ export default async (trigger, history = true) => {
         }
         state.task = null
         state.status = Trigger.STATUS_LAND
-        history ? History.push(Trigger.STATUS_LAND) : void 0
         trigger.push(Trigger.ACTION_LAND, state)
         return state
     } catch (exception) {

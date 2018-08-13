@@ -3,7 +3,7 @@ import React from 'react'
 import Styled from 'styled-components'
 
 import Trigger from '~/actions/trigger'
-import { Analytic } from '~/helpers'
+import { Analytic, History } from '~/helpers'
 import { Effect as Subject } from './../subject'
 
 const MainContainer = Styled.div`
@@ -50,7 +50,8 @@ const Snippet = Styled.div`
 export default class extends React.Component {
     fetch = async label => {
         Analytic.event(Analytic.EVENT_CLICK, { label })
-        this.props.trigger.call(Trigger.ACTION_FETCH, label)
+        let state = await this.props.trigger.call(Trigger.ACTION_FETCH, label)
+        History.push(state.task.label)
     }
 
     snippets() {

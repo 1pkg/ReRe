@@ -33,8 +33,10 @@ export default class self {
 
             if (location.state && 'label' in location.state) {
                 handler(location.state.label)
-            } else {
+            } else if (location.state && 'location' in location.state) {
                 handler(location.state.location)
+            } else {
+                handler(Trigger.STATUS_LAND)
             }
         })
     }

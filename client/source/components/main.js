@@ -11,6 +11,7 @@ import {
     Landing,
     Maintenance,
     Result,
+    Splash,
     Table,
     Update,
     Wait,
@@ -44,6 +45,9 @@ export default connect(state => {
             }
 
             switch (state.status) {
+                case Trigger.STATUS_SPLASH:
+                    return <Splash trigger={trigger} state={state} />
+
                 case Trigger.STATUS_LAND:
                     Revenue.pause()
                     Analytic.view(Analytic.VIEW_LAND)

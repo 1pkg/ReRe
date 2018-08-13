@@ -104,7 +104,7 @@ class Fetch(Access, FSingleIdent, Score):
                     (db.func.count(Answer.option_id == None) * 2),
                 ),
                 db.desc(Task.id),
-            ).limit(100)
+            ).limit(base.Constant.DEFAULT_GENERATE_COUNT)
         return random.choose(query, query.count())
 
     def __byrandom(self):
@@ -131,7 +131,11 @@ class Fetch(Access, FSingleIdent, Score):
                 Subject.orientation == device.orientation()
             )) \
             .filter(Task.active == True) \
-            .filter(Task.time_stamp >= datetime.date(-1)) \
+            .filter(
+                Task.time_stamp 
+                    >=
+                datetime.date(-base.Constant.DAY_COUNT_SINGLE)
+            ) \
             .order_by(db.func.random())\
             .first()
 

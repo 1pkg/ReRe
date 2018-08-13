@@ -10,16 +10,14 @@ export default async trigger => {
         trigger.push(Trigger.ACTION_WAIT, state)
 
         state = trigger.state()
-        let response = await Axios.post('remake', {
+        let response = await Axios.post('splash', {
             token: state.token,
         })
-        state.task = response.data.task
-        state.task.subject = Crypto.decrypt(state.token, state.task.subject)
-        state.task.subject = Json.decode(state.task.subject)
-        state.stat = response.data.stat
-        state.task.handled = {}
-        state.status = Trigger.STATUS_ACTIVE
-        trigger.push(Trigger.ACTION_REMAKE, state)
+        state.splash = response.data.splash
+        state.splash.subject = Crypto.decrypt(state.token, state.splash.subject)
+        state.splash.subject = Json.decode(state.splash.subject)
+        state.status = Trigger.STATUS_SPLASH
+        trigger.push(Trigger.ACTION_SPLASH, state)
         return state
     } catch (exception) {
         Analytic.event(Analytic.EVENT_ERROR, exception)

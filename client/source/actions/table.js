@@ -2,9 +2,9 @@ import Lodash from 'lodash'
 import Axios from 'axios'
 
 import Trigger from './trigger'
-import { Analytic, History } from '~/helpers'
+import { Analytic } from '~/helpers'
 
-export default async (trigger, history = true) => {
+export default async trigger => {
     try {
         let state = trigger.state()
         state.status = Trigger.STATUS_WAIT
@@ -24,7 +24,6 @@ export default async (trigger, history = true) => {
         }
         state.task = null
         state.status = Trigger.STATUS_TABLE
-        history ? History.push(Trigger.STATUS_TABLE) : void 0
         trigger.push(Trigger.STATUS_TABLE, state)
         return state
     } catch (exception) {

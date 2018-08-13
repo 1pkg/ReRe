@@ -103,17 +103,20 @@ export default class extends React.Component {
 
     render() {
         let rating = this.build(this.props.rating, this.props.rating.total)
-        return (
-            <Table>
-                <Header>
-                    <Row>
-                        <HeaderColumn>#</HeaderColumn>
-                        <HeaderColumn>Name</HeaderColumn>
-                        <HeaderColumn>Score</HeaderColumn>
-                    </Row>
-                </Header>
-                <Body>{this.body(rating)}</Body>
-            </Table>
-        )
+        if (rating.length >= MINIMAL_RATING_TABLE_LENGTH) {
+            return (
+                <Table>
+                    <Header>
+                        <Row>
+                            <HeaderColumn>#</HeaderColumn>
+                            <HeaderColumn>Name</HeaderColumn>
+                            <HeaderColumn>Score</HeaderColumn>
+                        </Row>
+                    </Header>
+                    <Body>{this.body(rating)}</Body>
+                </Table>
+            )
+        }
+        return null
     }
 }

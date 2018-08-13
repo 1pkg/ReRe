@@ -54,18 +54,14 @@ class FSingle(Action):
     def _complexity(self, task):
         db = self._application.db
         count = db.func.count
-        total_answer_count = Answer.query\
+        total_count = Answer.query\
             .filter(Answer.task_id == task.id)\
             .count()
-        if total_answer_count > 0:
-            resulted_answer_count = Answer.query \
-                .filter(
-                    db.and_(
-                        Answer.task_id == task.id,
-                        Answer.result == True,
-                    ),
-                ) \
+        if total_count > 0:
+            resulted_count = Answer.query \
+                .filter(Answer.task_id == task.id) \
+                .filter(Answer.result == True) \
                 .count()
-            return int(resulted_answer_count / total_answer_count * 100)
+            return int(resulted_count / total_count * 100.0)
         else:
             return 0

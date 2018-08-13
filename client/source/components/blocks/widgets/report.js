@@ -4,7 +4,6 @@ import Check from 'react-icons/lib/fa/check'
 import Styled from 'styled-components'
 
 import Trigger from '~/actions/trigger'
-import { Url, Device } from '~/helpers'
 import Button from './button'
 import Modal from './modal'
 
