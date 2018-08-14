@@ -33,6 +33,7 @@ class FSingle(Action):
             'effects': effects,
             'label': label,
         }
+        
         if with_stat:
             score = self._session.account.score
             freebie = self._session.account.freebie

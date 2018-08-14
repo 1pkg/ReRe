@@ -1,10 +1,10 @@
-import base
+from base import Constant
 from models import Answer, Effect, Task
 from .mixins import FSingleIdent, Identify, Score
 
 
 class Remake(FSingleIdent, Identify, Score):
-    CONNECTION_LIMIT = base.Constant.RIGID_CONNECTION_LIMIT
+    CONNECTION_LIMIT = Constant.RIGID_CONNECTION_LIMIT
     CACHE_EXPIRE = None
 
     def _process(self, request):
@@ -14,11 +14,11 @@ class Remake(FSingleIdent, Identify, Score):
         random = self._application.random
         settings = self._application.settings
 
-        self._calculate(-settings[base.Constant.SETTING_SMALL_SCORE_UNIT])
+        self._calculate(-settings[Constant.SETTING_SMALL_SCORE_UNIT])
 
         effects = Effect.query \
             .order_by(db.func.random()) \
-            .limit(settings[base.Constant.SETTING_EFFECT_COUNT]).all()
+            .limit(settings[Constant.SETTING_EFFECT_COUNT]).all()
         label = c_hash.hex(
             c_hash.SHORT_DIGEST,
             datetime.timestamp(),

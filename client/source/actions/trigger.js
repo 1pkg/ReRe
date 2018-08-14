@@ -10,6 +10,7 @@ import {
     Mark,
     Remake,
     Report,
+    Share,
     Splash,
     Table,
 } from '~/actions'
@@ -32,6 +33,7 @@ export default class Trigger {
     static ACTION_MARK = 'action-mark'
     static ACTION_REMAKE = 'action-remake'
     static ACTION_REPORT = 'action-report'
+    static ACTION_SHARE = 'action-share'
     static ACTION_SPLASH = 'action-splash'
     static ACTION_TABLE = 'action-table'
 
@@ -50,6 +52,7 @@ export default class Trigger {
             [Trigger.ACTION_MARK]: Mark,
             [Trigger.ACTION_REMAKE]: Remake,
             [Trigger.ACTION_REPORT]: Report,
+            [Trigger.ACTION_SHARE]: Share,
             [Trigger.ACTION_SPLASH]: Splash,
             [Trigger.ACTION_TABLE]: Table,
         }

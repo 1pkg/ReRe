@@ -1,5 +1,5 @@
-import base
-import errors
+from base import Constant
+from errors import Identity
 from models import \
     Answer, \
     Effect, \
@@ -12,18 +12,18 @@ from .mixins import Access, FSingleIdent, Identify, Score
 
 
 class Fetch(Access, FSingleIdent, Score):
-    CONNECTION_LIMIT = base.Constant.RIGID_CONNECTION_LIMIT
+    CONNECTION_LIMIT = Constant.RIGID_CONNECTION_LIMIT
     CACHE_EXPIRE = None
 
     def _process(self, request):
         random = self._application.random
         settings = self._application.settings
 
-        self._calculate(request, -settings[base.Constant.SETTING_BIG_SCORE_UNIT])
+        self._calculate(request, -settings[Constant.SETTING_BIG_SCORE_UNIT])
 
-        roll_byrating = settings[base.Constant.SETTING_ROLL_BY_RATING]
-        roll_byrandom = settings[base.Constant.SETTING_ROLL_BY_RANDOM]
-        roll_bynovelty = settings[base.Constant.SETTING_ROLL_BY_NOVELTY]
+        roll_byrating = settings[Constant.SETTING_ROLL_BY_RATING]
+        roll_byrandom = settings[Constant.SETTING_ROLL_BY_RANDOM]
+        roll_bynovelty = settings[Constant.SETTING_ROLL_BY_NOVELTY]
         label = self._get(request, 'label', '')
         if label is not '':
             task = self.__bylabel(label)
@@ -50,7 +50,7 @@ class Fetch(Access, FSingleIdent, Score):
         # super duper hack
         try:
             Identify(self._application)(request)
-        except errors.Identity:
+        except Identity:
             return
         except:
             pass
@@ -104,7 +104,7 @@ class Fetch(Access, FSingleIdent, Score):
                     (db.func.count(Answer.option_id == None) * 2),
                 ),
                 db.desc(Task.id),
-            ).limit(base.Constant.DEFAULT_GENERATE_COUNT)
+            ).limit(Constant.DEFAULT_GENERATE_COUNT)
         return random.choose(query, query.count())
 
     def __byrandom(self):
@@ -134,7 +134,7 @@ class Fetch(Access, FSingleIdent, Score):
             .filter(
                 Task.time_stamp 
                     >=
-                datetime.date(-base.Constant.DAY_COUNT_SINGLE)
+                datetime.date(-Constant.DAY_COUNT_SINGLE)
             ) \
             .order_by(db.func.random())\
             .first()
@@ -154,12 +154,12 @@ class Fetch(Access, FSingleIdent, Score):
         options = Option.query \
             .filter(Option.id != subject.option_id) \
             .order_by(db.func.random()) \
-            .limit(settings[base.Constant.SETTING_OPTION_COUNT] - 1).all() \
+            .limit(settings[Constant.SETTING_OPTION_COUNT] - 1).all() \
             + [subject.option]
         options = random.shuffle(options)
         effects = Effect.query \
             .order_by(db.func.random()) \
-            .limit(settings[base.Constant.SETTING_EFFECT_COUNT]).all()
+            .limit(settings[Constant.SETTING_EFFECT_COUNT]).all()
         label = c_hash.hex(
             c_hash.SHORT_DIGEST,
             datetime.timestamp(),

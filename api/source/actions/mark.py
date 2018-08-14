@@ -1,11 +1,11 @@
-import base
-import errors
+from base import Constant
+from errors import Request
 from models import Mark as _Mark_, Type
 from .mixins import Identify
 
 
 class Mark(Identify):
-    CONNECTION_LIMIT = base.Constant.RIGID_CONNECTION_LIMIT
+    CONNECTION_LIMIT = Constant.RIGID_CONNECTION_LIMIT
     CACHE_EXPIRE = None
 
     def _validate(self, request):
@@ -13,7 +13,7 @@ class Mark(Identify):
 
         self.__type = self._get(request, 'type', '')
         if not self.__type in Type.__members__:
-            raise errors.Request('type', self.__type)
+            raise Request('type', self.__type)
         self.__type = Type[self.__type]
 
     def _process(self, request):

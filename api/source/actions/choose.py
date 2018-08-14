@@ -1,11 +1,11 @@
-import base
-import errors
+from base import Constant
+from errors import Request
 from models import Answer, Setting
 from .mixins import Identify, Score
 
 
 class Choose(Identify, Score):
-    CONNECTION_LIMIT = base.Constant.RIGID_CONNECTION_LIMIT
+    CONNECTION_LIMIT = Constant.RIGID_CONNECTION_LIMIT
     CACHE_EXPIRE = None
 
     def _validate(self, request):
@@ -14,14 +14,14 @@ class Choose(Identify, Score):
 
         self.__option = self._get(request, 'option')
         if not validator.isnumeric(self.__option, positive=False):
-            raise errors.Request('option', self.__option)
+            raise Request('option', self.__option)
 
         self.__option = int(self.__option)
         if self.__option == -1:
             return
 
         if len(self._task.options) < self.__option or self.__option <= 0:
-            raise errors.Request('option', self.__option)
+            raise Request('option', self.__option)
 
     def _process(self, request):
         db = self._application.db
@@ -40,9 +40,9 @@ class Choose(Identify, Score):
             result = False
 
         self._calculate(
-            settings[base.Constant.SETTING_BIG_SCORE_UNIT]
+            settings[Constant.SETTING_BIG_SCORE_UNIT]
             if result else
-            -settings[base.Constant.SETTING_BIG_SCORE_UNIT],
+            -settings[Constant.SETTING_BIG_SCORE_UNIT],
             False
         )
         score = self._session.account.score

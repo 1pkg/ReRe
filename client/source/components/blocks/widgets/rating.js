@@ -41,6 +41,27 @@ const HeaderColumn = Styled.th`
         ${props => props.theme['active-color']};
 `
 
+const TextContainer = Styled.div`
+    flex: 1 1 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+`
+
+const MainText = Styled.div`
+    font-size: ${props => props.theme['sub-big-unit']};
+    font-weight: bold;
+    text-align: center;
+    text-transform: uppercase;
+`
+
+const MinorText = Styled.div`
+    font-style: italic;
+    text-align: center;
+    text-transform: lowercase;
+`
+
 export default class extends React.Component {
     build(rating, total) {
         rating = sortBy(rating, ['score']).reverse()
@@ -117,6 +138,14 @@ export default class extends React.Component {
                 </Table>
             )
         }
-        return null
+        return (
+            <TextContainer>
+                <MinorText>rating currently isn't available</MinorText>
+                <MinorText>
+                    we are working on data collecting and processing
+                </MinorText>
+                <MinorText>please wait a while ...</MinorText>
+            </TextContainer>
+        )
     }
 }

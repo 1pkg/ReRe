@@ -1,10 +1,10 @@
-import base
-import errors
+from base import Action, Constant
+from errors import Request
 from models import Account, Device, Session
 
 
-class Handshake(base.Action):
-    CONNECTION_LIMIT = base.Constant.RAREFIED_CONNECTION_LIMIT
+class Handshake(Action):
+    CONNECTION_LIMIT = Constant.RAREFIED_CONNECTION_LIMIT
     CACHE_EXPIRE = None
 
     def _validate(self, request):
@@ -24,20 +24,20 @@ class Handshake(base.Action):
             raise errors.Integrity(self.__integrity)
 
         if validator.isempty(self.__account_alias):
-            raise errors.Request('alias', self.__account_alias)
+            raise Request('alias', self.__account_alias)
 
         if len(self.__account_uuid) != 32 or \
             not validator.ishex(self.__account_uuid):
-            raise errors.Request('uuid', self.__account_uuid)
+            raise Request('uuid', self.__account_uuid)
 
         if not self.__user_device in Device.__members__:
-            raise errors.Request('device', self.__user_device)
+            raise Request('device', self.__user_device)
 
         if validator.isempty(self.__user_agent):
-            raise errors.Request('user_agent', self.__user_agent)
+            raise Request('user_agent', self.__user_agent)
 
         if validator.isempty(self.__user_ip):
-            raise errors.Request('user_ip', self.__user_ip)
+            raise Request('user_ip', self.__user_ip)
 
     def _process(self, request):
         db = self._application.db

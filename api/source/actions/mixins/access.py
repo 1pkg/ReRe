@@ -1,4 +1,4 @@
-import errors
+from errors import Token as _Token_, Request
 from base import Action, Constant
 from models import Session
 
@@ -11,7 +11,7 @@ class Access(Action):
 
         token = self._get(request, 'token', '')
         if len(token) != 32 or not validator.ishex(token):
-            raise errors.Request('token', token)
+            raise Request('token', token)
 
         self._session = Session.query \
             .filter(Session.token == token) \
@@ -19,4 +19,4 @@ class Access(Action):
         timeout = self._application.settings[Constant.SETTING_TOKEN_TIMEOUT]
         if self._session is None \
                 or datetime.diff(self._session.time_stamp) > timeout:
-            raise errors.Token(token)
+            raise _Token_(token)

@@ -46,7 +46,7 @@ export default class extends React.Component {
         return (
             <MainContainer>
                 <SubContainer>
-                    <MainText>Yikes</MainText>
+                    <MainText>yikes</MainText>
                     <MainText>it seems</MainText>
                     <MainText>we are doing</MainText>
                     <MainText>maintenance</MainText>

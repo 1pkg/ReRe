@@ -68,3 +68,8 @@ class Session(Alchemy.Model):
         backref='session',
         passive_deletes=True,
     )
+    shares = Alchemy.relationship(
+        'Share',
+        backref='session',
+        passive_deletes=True,
+    )

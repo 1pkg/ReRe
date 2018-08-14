@@ -1,10 +1,10 @@
-import base
-import errors
+from base import Constant
+from errors import Request
 from .mixins import Identify
 
 
 class Report(Identify):
-    CONNECTION_LIMIT = base.Constant.RAREFIED_CONNECTION_LIMIT
+    CONNECTION_LIMIT = Constant.RAREFIED_CONNECTION_LIMIT
     CACHE_EXPIRE = None
 
     def _validate(self, request):
@@ -13,7 +13,7 @@ class Report(Identify):
         self.__message = self._get(request, 'message', '').strip()
 
         if validator.isempty(self.__message):
-            raise errors.Request('message', self.__message)
+            raise Request('message', self.__message)
 
     def _process(self, request):
         mail = self._application.mail

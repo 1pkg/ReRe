@@ -1,21 +1,20 @@
-import base
+from base import Constant
 from models import Answer, Mark, Subject, Task, Type
 from .mixins import Access, FList
 
 
 class Land(Access, FList):
-    CONNECTION_LIMIT = base.Constant.RAREFIED_CONNECTION_LIMIT
-    CACHE_EXPIRE = base.Constant.DEFAULT_CACHE_EXPIRE
+    CONNECTION_LIMIT = Constant.RAREFIED_CONNECTION_LIMIT
+    CACHE_EXPIRE = Constant.DEFAULT_CACHE_EXPIRE
 
     def _process(self, request):
         random = self._application.random
 
-        const = base.Constant
         return {
             'lists': self._format({
-                'daily': random.shuffle(self.__query(-const.DAY_COUNT_SINGLE)),
-                'weekly': random.shuffle(self.__query(-const.DAY_COUNT_WEEK)),
-                'monthly': random.shuffle(self.__query(-const.DAY_COUNT_MONTH)),
+                'daily': random.shuffle(self.__query(-Constant.DAY_COUNT_SINGLE)),
+                'weekly': random.shuffle(self.__query(-Constant.DAY_COUNT_WEEK)),
+                'monthly': random.shuffle(self.__query(-Constant.DAY_COUNT_MONTH)),
             })
         }
 
@@ -48,4 +47,4 @@ class Land(Access, FList):
                     (db.func.count(Answer.option_id == None) * 2),
                 ),
                 db.desc(Task.id),
-            ).limit(settings[base.Constant.SETTING_LAND_COUNT]).all()
+            ).limit(settings[Constant.SETTING_LAND_COUNT]).all()

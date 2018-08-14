@@ -14,8 +14,13 @@ export default async trigger => {
             token: state.token,
         })
         state.splash = response.data.splash
-        state.splash.subject = Crypto.decrypt(state.token, state.splash.subject)
-        state.splash.subject = Json.decode(state.splash.subject)
+        if (state.splash) {
+            state.splash.subject = Crypto.decrypt(
+                state.token,
+                state.splash.subject,
+            )
+            state.splash.subject = Json.decode(state.splash.subject)
+        }
         state.status = Trigger.STATUS_SPLASH
         trigger.push(Trigger.ACTION_SPLASH, state)
         return state

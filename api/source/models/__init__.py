@@ -5,6 +5,7 @@ from .mark import Mark, Type
 from .option import Option
 from .session import Device, Session
 from .setting import Setting
+from .share import Media, Share
 from .subject import Orientation, Subject
 from .task import Task
 
@@ -14,10 +15,12 @@ __all__ = [
     'Device',
     'Effect',
     'Mark',
+    'Media',
     'Orientation',
     'Option',
     'Session',
     'Setting',
+    'Share',
     'Subject',
     'Task',
     'Type',

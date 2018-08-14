@@ -1,4 +1,4 @@
-import errors
+from errors import Identity as _Identity_
 from models import Task
 from .access import Access
 
@@ -17,9 +17,9 @@ class Identify(Access):
                 or not validator.isnumeric(identity['task_id']) \
                 or 'token' not in identity \
                 or self._session.token != identity['token']:
-            raise errors.Identity()
+            raise _Identity_()
 
         self._timestamp = int(identity['timestamp'])
         self._task = Task.query.get(int(identity['task_id']))
         if self._task is None:
-            raise errors.Identity()
+            raise _Identity_()
