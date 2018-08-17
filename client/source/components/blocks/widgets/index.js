@@ -1,3 +1,4 @@
+export { default as Apprate } from './apprate'
 export { default as Carousel } from './carousel'
 export { default as Copyright } from './copyright'
 export { default as Disclaimer } from './disclaimer'

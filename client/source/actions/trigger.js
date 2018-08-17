@@ -2,18 +2,20 @@ import { clone } from 'lodash'
 import Axios from 'axios'
 
 import {
-    Choose,
-    Devote,
-    Fetch,
-    Handshake,
-    Land,
-    Mark,
-    Remake,
-    Report,
-    Share,
-    Splash,
-    Table,
+    choose,
+    devote,
+    feedback,
+    fetch,
+    handshake,
+    land,
+    mark,
+    remake,
+    report,
+    share,
+    splash,
+    table,
 } from '~/actions'
+import { Analytic } from '~/helpers'
 
 export default class Trigger {
     static STATUS_ACTIVE = 'status-active'
@@ -27,6 +29,7 @@ export default class Trigger {
 
     static ACTION_CHOOSE = 'action-chose'
     static ACTION_DEVOTE = 'action-devote'
+    static ACTION_FEEDBACK = 'action-feedback'
     static ACTION_FETCH = 'action-fetch'
     static ACTION_HANDSHAKE = 'action-handshake'
     static ACTION_LAND = 'action-land'
@@ -44,17 +47,18 @@ export default class Trigger {
     constructor(store) {
         this.store = store
         this.actions = {
-            [Trigger.ACTION_CHOOSE]: Choose,
-            [Trigger.ACTION_DEVOTE]: Devote,
-            [Trigger.ACTION_FETCH]: Fetch,
-            [Trigger.ACTION_HANDSHAKE]: Handshake,
-            [Trigger.ACTION_LAND]: Land,
-            [Trigger.ACTION_MARK]: Mark,
-            [Trigger.ACTION_REMAKE]: Remake,
-            [Trigger.ACTION_REPORT]: Report,
-            [Trigger.ACTION_SHARE]: Share,
-            [Trigger.ACTION_SPLASH]: Splash,
-            [Trigger.ACTION_TABLE]: Table,
+            [Trigger.ACTION_CHOOSE]: choose,
+            [Trigger.ACTION_DEVOTE]: devote,
+            [Trigger.ACTION_FEEDBACK]: feedback,
+            [Trigger.ACTION_FETCH]: fetch,
+            [Trigger.ACTION_HANDSHAKE]: handshake,
+            [Trigger.ACTION_LAND]: land,
+            [Trigger.ACTION_MARK]: mark,
+            [Trigger.ACTION_REMAKE]: remake,
+            [Trigger.ACTION_REPORT]: report,
+            [Trigger.ACTION_SHARE]: share,
+            [Trigger.ACTION_SPLASH]: splash,
+            [Trigger.ACTION_TABLE]: table,
         }
         Axios.defaults.baseURL = `${SCHEMA}://${API_URL}`
         Axios.defaults.timeout = API_TIMEOUT
@@ -71,7 +75,16 @@ export default class Trigger {
 
     async call(name, ...params) {
         if (name in this.actions) {
-            return this.actions[name](this, ...params)
+            return (async () => {
+                try {
+                    return await this.actions[name](this, ...params)
+                } catch (exception) {
+                    Analytic.event(Analytic.EVENT_ERROR, exception)
+                    this.push(Trigger.ACTION_RELOAD, {
+                        status: Trigger.STATUS_ERROR,
+                    })
+                }
+            })()
         }
         return async () => {}
     }

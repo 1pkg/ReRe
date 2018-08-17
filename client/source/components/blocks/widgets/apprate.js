@@ -1,10 +1,11 @@
 import React from 'react'
 import { findDOMNode } from 'react-dom'
-import Flag from 'react-icons/lib/fa/flag-o'
 import Check from 'react-icons/lib/fa/check'
+import Star from 'react-icons/lib/fa/star-o'
 import Styled from 'styled-components'
 
 import Trigger from '~/actions/trigger'
+import { Rate } from '~/helpers'
 import Button from './button'
 import Modal from './modal'
 
@@ -38,12 +39,19 @@ export default class extends React.Component {
         })
     }
 
-    report = async event => {
+    feedback = async () => {
         let node = findDOMNode(this)
         let textarea = node.querySelector('textarea')
-        this.props.trigger.call(Trigger.ACTION_REPORT, textarea.value)
-        this.props.trigger.call(Trigger.ACTION_MARK, 'report')
+        this.props.trigger.call(Trigger.ACTION_FEEDBACK, textarea.value)
         this.hide()
+    }
+
+    result = async () => {
+        this.props.trigger.call(Trigger.ACTION_SHARE, 'market')
+    }
+
+    share = () => {
+        Rate.rateapp(this.result, this.show)
     }
 
     constructor(props) {
@@ -52,9 +60,7 @@ export default class extends React.Component {
     }
 
     content() {
-        let message = `I want report task\n#l${
-            this.props.label
-        }\nfor next reason:\n`
+        let message = 'I want leave feedback for next reason:\n'
         return (
             <Form>
                 <Textarea defaultValue={message} />
@@ -65,10 +71,12 @@ export default class extends React.Component {
     render() {
         return (
             <Container>
-                <Button glyph={<Flag />} action={this.show} hint={'report'} />
+                <Button glyph={<Star />} action={this.share} hint={'rate'} />
                 <Modal
-                    title={'Report'}
-                    buttons={<Button glyph={<Check />} action={this.report} />}
+                    title={'Feedback'}
+                    buttons={
+                        <Button glyph={<Check />} action={this.feedback} />
+                    }
                     content={this.content()}
                     active={this.state.modal}
                     hide={this.hide}

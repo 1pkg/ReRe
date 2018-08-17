@@ -45,8 +45,11 @@ class Choose(Identify, Score):
             -settings[Constant.SETTING_BIG_SCORE_UNIT],
             False
         )
-        score = self._session.account.score
-        factor = self._session.account.factor
+        stat = {
+            'score': self._session.account.score,
+            'freebie': self._session.account.freebie,
+            'factor': self._session.account.factor,
+        }
         storage.delete(self._session.token)
 
         option = self.__index(
@@ -65,8 +68,7 @@ class Choose(Identify, Score):
         return {
             'result': result,
             'option': option,
-            'score': score,
-            'factor': factor,
+            'stat': stat,
         }
 
     def __index(self, sequence, callback):

@@ -56,7 +56,7 @@ export default class extends React.Component {
                     <MinorText>it should take few minutes</MinorText>
                     <MinorText>comeback few minutes later</MinorText>
                     <MinorText>or</MinorText>
-                    <MinorText>keep tab open for auto refresh</MinorText>
+                    <MinorText>wait for auto refresh</MinorText>
                 </SubContainer>
             </MainContainer>
         )

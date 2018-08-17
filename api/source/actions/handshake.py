@@ -74,13 +74,13 @@ class Handshake(Action):
         db.session.commit()
 
         alias = account.alias
-        score = account.score
-        freebie = account.freebie
-        factor = account.factor
+        stat = {
+            'score': account.score,
+            'frebie': account.freebie,
+            'factor': account.factor,
+        }
         return {
             'alias': alias,
             'token': token,
-            'score': score,
-            'frebie': freebie,
-            'factor': factor,
+            'stat': stat,
         }

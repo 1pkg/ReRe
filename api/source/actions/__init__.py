@@ -1,5 +1,6 @@
 from .choose import Choose
 from .devote import Devote
+from .feedback import Feedback
 from .fetch import Fetch
 from .handshake import Handshake
 from .land import Land
@@ -13,6 +14,7 @@ from .table import Table
 __all__ = [
     'Choose',
     'Devote',
+    'Feedback',
     'Fetch',
     'Handshake',
     'Land',
