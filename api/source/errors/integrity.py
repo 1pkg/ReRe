@@ -2,5 +2,5 @@ from base import Error
 
 
 class Integrity(Error):
-    def __init__(self, integrity):
-        super().__init__(401, f'bad integrity {integrity}')
+    def __init__(self):
+        super().__init__(401, 'integrity isn\'t valid')

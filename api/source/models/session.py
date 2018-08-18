@@ -50,6 +50,7 @@ class Session(Alchemy.Model):
         nullable=False,
         default=datetime.utcnow,
         server_default=Alchemy.text('now()'),
+        index=True,
     )
     account_id = Alchemy.Column(
         Alchemy.Integer,

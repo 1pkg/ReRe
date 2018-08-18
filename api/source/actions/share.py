@@ -23,13 +23,12 @@ class Share(Access):
         if _Share_.query \
             .filter(_Share_.media == self.__media) \
             .filter(_Share_.session_id == self._session.id) \
-            .first() is None:
+                .first() is None:
             self._session.account.freebie += \
-                settings[Constant.SETTING_BIG_SCORE_UNIT]
+                settings[Constant.SETTING_SHARE_FREEBIE_UNIT]
 
         share = _Share_(media=self.__media)
         self._session.shares.append(share)
         db.session.commit()
-
         freebie = self._session.account.freebie
         return {'freebie': freebie}

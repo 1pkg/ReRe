@@ -132,8 +132,8 @@ class Fetch(Access, FSingleIdent, Score):
             )) \
             .filter(Task.active == True) \
             .filter(
-                Task.time_stamp 
-                    >=
+                Task.time_stamp
+                >=
                 datetime.date(-Constant.DAY_COUNT_SINGLE)
             ) \
             .order_by(db.func.random())\

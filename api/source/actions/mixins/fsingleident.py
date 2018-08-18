@@ -2,6 +2,8 @@ from .fsingle import FSingle
 
 
 class FSingleIdent(FSingle):
+    _session = None
+
     def _format(self, task):
         datetime = self._application.datetime
         storage = self._application.storage

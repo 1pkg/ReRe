@@ -5,6 +5,8 @@ from models import Answer
 
 
 class FSingle(Action):
+    _session = None
+
     def _format(self, task, with_stat):
         crypto = self._application.crypto
 
@@ -33,7 +35,7 @@ class FSingle(Action):
             'effects': effects,
             'label': label,
         }
-        
+
         if with_stat:
             score = self._session.account.score
             freebie = self._session.account.freebie
@@ -51,10 +53,8 @@ class FSingle(Action):
             }
         else:
             return task
-    
+
     def _complexity(self, task):
-        db = self._application.db
-        count = db.func.count
         total_count = Answer.query\
             .filter(Answer.task_id == task.id)\
             .count()

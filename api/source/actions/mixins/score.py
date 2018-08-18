@@ -1,7 +1,10 @@
 from base import Action, Constant
 
+
 class Score(Action):
-    def _calculate(self, unit, use_freebie = True):
+    _session = None
+
+    def _calculate(self, unit, use_freebie=True):
         db = self._application.db
         settings = self._application.settings
 

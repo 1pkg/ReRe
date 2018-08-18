@@ -1,5 +1,5 @@
 from base import Action, Constant
-from errors import Request
+from errors import Integrity, Overwhelm, Request
 from models import Account, Device, Session
 
 
@@ -10,6 +10,7 @@ class Handshake(Action):
     def _validate(self, request):
         super()._validate(request)
         validator = self._application.validator
+        datetime = self._application.datetime
         http = self._application.http
         settings = self._application.settings
 
@@ -21,13 +22,13 @@ class Handshake(Action):
         self.__integrity = str(self._get(request, 'integrity'))
 
         if not self.__integrity == settings['INTEGRITY']:
-            raise errors.Integrity(self.__integrity)
+            raise Integrity()
 
         if validator.isempty(self.__account_alias):
             raise Request('alias', self.__account_alias)
 
         if len(self.__account_uuid) != 32 or \
-            not validator.ishex(self.__account_uuid):
+                not validator.ishex(self.__account_uuid):
             raise Request('uuid', self.__account_uuid)
 
         if not self.__user_device in Device.__members__:
@@ -39,20 +40,33 @@ class Handshake(Action):
         if validator.isempty(self.__user_ip):
             raise Request('user_ip', self.__user_ip)
 
+        self.__account = Account.query \
+            .filter(Account.uuid == self.__account_uuid) \
+            .first()
+        if not self._application.instance.debug and \
+            self.__account is not None and \
+            Session.query \
+            .filter(Session.account_id == self.__account.id) \
+            .filter(Session.time_stamp >= datetime.date(-Constant.DAY_COUNT_SINGLE)) \
+                .count() > settings[Constant.SETTING_SESSION_DAILY_LIMIT]:
+            raise Overwhelm(self.__account.id)
+
     def _process(self, request):
         db = self._application.db
         datetime = self._application.datetime
         c_hash = self._application.hash
         random = self._application.random
+        settings = self._application.settings
 
-        account = Account.query \
-            .filter(Account.uuid == self.__account_uuid) \
-            .first()
-        if account is None:
-            account = Account(
+        gift_threshold = settings[Constant.SETTING_FREEBIE_GIFT_THRESHOLD]
+        if self.__account is None:
+            self.__account = Account(
                 alias=self.__account_alias,
                 uuid=self.__account_uuid,
             )
+        elif (len(self.__account.sessions) % gift_threshold) == 0:
+            self.__account.freebie += \
+                settings[Constant.SETTING_SHARE_FREEBIE_UNIT]
 
         token = c_hash.hex(
             c_hash.LONG_DIGEST,
@@ -64,20 +78,20 @@ class Handshake(Action):
             self.__integrity,
         )
         session = Session(
-            user_device = Device[self.__user_device],
+            user_device=Device[self.__user_device],
             user_agent=self.__user_agent,
             user_ip=self.__user_ip,
             token=token,
         )
-        account.sessions.append(session)
-        db.session.add(account)
+        self.__account.sessions.append(session)
+        db.session.add(self.__account)
         db.session.commit()
 
-        alias = account.alias
+        alias = self.__account.alias
         stat = {
-            'score': account.score,
-            'frebie': account.freebie,
-            'factor': account.factor,
+            'score': self.__account.score,
+            'freebie': self.__account.freebie,
+            'factor': self.__account.factor,
         }
         return {
             'alias': alias,
