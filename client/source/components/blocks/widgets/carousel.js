@@ -2,8 +2,9 @@ import { filter, map } from 'lodash'
 import React from 'react'
 import Swipeable from 'react-swipeable'
 import Styled from 'styled-components'
-import AngelRight from 'react-icons/lib/fa/angle-right'
-import AngelLeft from 'react-icons/lib/fa/angle-left'
+import { FaAngleLeft, FaAngleRight } from 'react-icons/fa'
+
+import { tc } from '~/theme'
 
 import { Analytic } from '~/helpers'
 
@@ -35,18 +36,25 @@ const DotContainer = Styled.div`
 
 const HintWrapper = Styled.div`
     display: ${props => (props.empty ? 'none' : 'block')};
-    font-size: ${props => props.theme['small-unit']};
 `
 
-const tqmc = 'three-quarters-main-color'
-const qmc = 'quarter-main-color'
+const FaAngleLeftStyled = Styled(FaAngleLeft)`
+    width: ${props => props.theme[tc.smallu]};
+    height: ${props => props.theme[tc.smallu]};
+`
+
+const FaAngleRightStyled = Styled(FaAngleRight)`
+    width: ${props => props.theme[tc.smallu]};
+    height: ${props => props.theme[tc.smallu]};
+`
+
 const DotElement = Styled.div`
-    width: ${props => props.theme['half-small-unit']};
-    height: ${props => props.theme['half-small-unit']};
-    border-radius: ${props => props.theme['half-small-unit']};
+    width: ${props => props.theme[tc.hsu]};
+    height: ${props => props.theme[tc.hsu]};
+    border-radius: ${props => props.theme[tc.hsu]};
     background-color:
-        ${props => (props.active ? props.theme[tqmc] : props.theme[qmc])};
-    margin: ${props => props.theme['half-small-unit']};
+        ${props => (props.active ? props.theme[tc.tqmc] : props.theme[tc.qmc])};
+    margin: ${props => props.theme[tc.hsu]};
 `
 export default class self extends React.Component {
     static size = 0
@@ -111,7 +119,7 @@ export default class self extends React.Component {
                     </SwipeableContainer>
                     <DotContainer>
                         <HintWrapper empty={!children.length}>
-                            <AngelLeft onClick={this.previous} />
+                            <FaAngleLeftStyled onClick={this.previous} />
                         </HintWrapper>
                         {map(children, (child, index) => {
                             return (
@@ -122,7 +130,7 @@ export default class self extends React.Component {
                             )
                         })}
                         <HintWrapper empty={!children.length}>
-                            <AngelRight onClick={this.next} />
+                            <FaAngleRightStyled onClick={this.next} />
                         </HintWrapper>
                     </DotContainer>
                 </MainContainer>

@@ -3,19 +3,20 @@ import Styled from 'styled-components'
 
 import { Device } from '~/helpers'
 import Badge from './badge'
+import { tc } from '~/theme'
 
 const Container = Styled.div`
     flex: ${props => (props.mobile ? '0 0 50%' : '0 0 25%')};
     display: flex;
     align-items: center;
     justify-content: space-around;
-    font-size: ${props => props.theme['sub-normal-unit']};
-    background-color: ${props => props.theme['sub-color']};
-    border-radius: ${props => props.theme['half-small-unit']};
+    font-size: ${props => props.theme[tc.snu]};
+    background-color: ${props => props.theme[tc.subc]};
+    border-radius: ${props => props.theme[tc.hsu]};
     border-top:
-        ${props => props.theme['min-small-unit']}
+        ${props => props.theme[tc.msu]}
         solid
-        ${props => props.theme['active-color']};
+        ${props => props.theme[tc.activec]};
 `
 
 export default class extends React.Component {

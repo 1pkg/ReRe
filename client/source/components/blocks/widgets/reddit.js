@@ -1,6 +1,6 @@
 import React from 'react'
 import { RedditShareButton } from 'react-share'
-import Reddit from 'react-icons/lib/fa/reddit'
+import { FaRedditAlien } from 'react-icons/fa'
 
 import Trigger from '~/actions/trigger'
 import { Url } from '~/helpers'
@@ -18,7 +18,7 @@ export default class extends React.Component {
                 onShareWindowClose={this.share}
                 title={this.props.settings['share-title']}
             >
-                <Button glyph={<Reddit />} hint={'share'} />
+                <Button glyph={<FaRedditAlien />} hint={'share'} />
             </RedditShareButton>
         )
     }

@@ -2,77 +2,81 @@ import React from 'react'
 import Styled from 'styled-components'
 
 import { Analytic, Device } from '~/helpers'
+import { tc } from '~/theme'
 
-const hsu = 'half-small-unit'
-const msu = 'min-small-unit'
 const Container = Styled.div`
     flex: 1 1 0;
     overflow-y: auto;
-    padding: ${props => props.theme[hsu]};
-    margin-bottom: ${props => props.theme[hsu]};
-    margin-right: ${props => props.theme[hsu]};
-    margin-left: ${props => props.theme[hsu]};
+    padding: ${props => props.theme[tc.hsu]};
+    margin-bottom: ${props => props.theme[tc.hsu]};
+    margin-right: ${props => props.theme[tc.hsu]};
+    margin-left: ${props => props.theme[tc.hsu]};
     border:
-        ${props => props.theme['minimal-unit']}
+        ${props => props.theme[tc.minu]}
         solid
-        ${props => props.theme['half-main-color']};
+        ${props => props.theme[tc.hmc]};
     box-shadow:
-        ${props => props.theme[msu]}
-        ${props => props.theme[msu]}
-        ${props => props.theme[msu]}
-        ${props => props.theme[msu]}
-        ${props => props.theme['quarter-main-color']};
+        ${props => props.theme[tc.msu]}
+        ${props => props.theme[tc.msu]}
+        ${props => props.theme[tc.msu]}
+        ${props => props.theme[tc.msu]}
+        ${props => props.theme[tc.qmc]};
     opacity: ${props => (props.disabled ? 0.5 : 1.0)};
     @media screen and (orientation:landscape) {
-        padding: ${props => (props.mobile ? '0rem' : props.theme[hsu])};
+        padding:
+            ${props => (props.mob ? props.theme[tc.zu] : props.theme[tc.hsu])};
     }
 `
 
 const TitleContainer = Styled.div`
     text-align: center;
-    margin-bottom: ${props => props.theme[hsu]};
+    margin-bottom: ${props => props.theme[tc.hsu]};
     &:active {
         color:
-            ${props => (props.disabled ? 'auto' : props.theme['active-color'])};
+            ${props => (props.disabled ? 'auto' : props.theme[tc.activec])};
     };
     ${Container}:hover & {
         cursor: ${props => (props.disabled ? 'auto' : 'pointer')};
     };
     @media screen and (orientation:landscape) {
-        margin-bottom: ${props => (props.mobile ? '0rem' : props.theme[hsu])};
+        margin-bottom:
+            ${props => (props.mob ? props.theme[tc.zu] : props.theme[tc.hsu])};
     }
 `
 
 const MainTitle = Styled.div`
-    font-size: ${props => props.theme['sub-normal-unit']};
+    font-size: ${props => props.theme[tc.snu]};
     font-weight: bold;
     text-transform: capitalize;
 `
 
 const SubTitle = Styled.div`
-    font-size: ${props => props.theme['small-unit']};
+    font-size: ${props => props.theme[tc.smallu]};
     font-style: italic;
     text-transform: lowercase;
 `
 
 const Text = Styled.div`
-    font-size: ${props => props.theme['sub-normal-unit']};
+    font-size: ${props => props.theme[tc.snu]};
     text-align: justify;
     overflow: hidden;
     @media screen and (orientation:landscape) {
-        display: ${props => (props.mobile ? 'none' : 'auto')};
+        display: ${props => (props.mob ? 'none' : 'auto')};
     }
 `
 
 const Source = Styled.div`
     text-align: right;
-    font-size: ${props => props.theme['small-unit']};
-    margin-top: ${props => props.theme[hsu]};
+    font-size: ${props => props.theme[tc.smallu]};
+    margin-top: ${props => props.theme[tc.hsu]};
     @media screen and (orientation:landscape) {
-        text-align: ${props => (props.mobile ? 'center' : 'right')};
-        margin-top: ${props => (props.mobile ? '0rem' : props.theme[hsu])};
+        text-align: ${props => (props.mob ? 'center' : 'right')};
+        margin-top:
+            ${props => (props.mob ? props.theme[tc.zu] : props.theme[tc.hsu])};
     }
 `
+
+const Link = Styled.a``
 
 export default class extends React.Component {
     eventchoose = () => {
@@ -106,34 +110,34 @@ export default class extends React.Component {
 
     source() {
         return (
-            <a
+            <Link
                 href={this.props.option.link}
                 target="_blank"
                 onClick={this.eventlink}
             >
                 {this.props.option.source}
-            </a>
+            </Link>
         )
     }
 
     render() {
         return (
             <Container
-                mobile={!Device.tablet() && Device.mobile()}
+                mob={!Device.tablet() && Device.mobile()}
                 disabled={this.props.disabled}
             >
                 <TitleContainer
-                    mobile={!Device.tablet() && Device.mobile()}
+                    mob={!Device.tablet() && Device.mobile()}
                     disabled={this.props.disabled}
                     onClick={this.eventchoose}
                 >
                     <MainTitle>{this.title()}</MainTitle>
                     <SubTitle>{this.subtile()}</SubTitle>
                 </TitleContainer>
-                <Text mobile={!Device.tablet() && Device.mobile()}>
+                <Text mob={!Device.tablet() && Device.mobile()}>
                     {this.text()}
                 </Text>
-                <Source mobile={!Device.tablet() && Device.mobile()}>
+                <Source mob={!Device.tablet() && Device.mobile()}>
                     {this.source()}
                 </Source>
             </Container>

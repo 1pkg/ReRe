@@ -25,8 +25,15 @@ export default async trigger => {
         await trigger.push(Trigger.ACTION_STORE, state)
         History.push(state.status)
     } else if (purl && purl.query && 'l' in purl.query) {
-        state = await trigger.call(Trigger.ACTION_FETCH, purl.query.l)
-        History.push(state.task.label)
+        await trigger.call(Trigger.ACTION_FETCH, purl.query.l)
+    } else if (purl && purl.pathname) {
+        if (purl.pathname == `/${History.ROUTE_HOME}`) {
+            await trigger.call(Trigger.ACTION_LAND)
+        } else if (purl.pathname == `/${History.ROUTE_RATING}`) {
+            await trigger.call(Trigger.ACTION_TABLE)
+        } else {
+            await trigger.call(Trigger.ACTION_SPLASH)
+        }
     } else {
         await trigger.call(Trigger.ACTION_SPLASH)
     }

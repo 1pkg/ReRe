@@ -1,4 +1,6 @@
 {
+    "APPLICATION_NAME": "'rect.io'",
+
     "SCHEMA": "'https'",
     "BASE_URL": "'rect.io'",
     "IMAGE_URL": "'img.rect.io'",
@@ -16,6 +18,12 @@
 
     "MINIMAL_LANDING_TAPE_LENGTH": 3,
     "MINIMAL_RATING_TABLE_LENGTH": 25,
+
+    "APP_STORE_ID": "''",
+    "APP_STORE_URL": "''",
+    "GOOGLE_PLAY_ID": "''",
+    "GOOGLE_PLAY_URL": "''",
+    "AMAZON_STORE_URL": "''",
 
     "INTEGRITY": "'XHMjXj_jCVE'",
 

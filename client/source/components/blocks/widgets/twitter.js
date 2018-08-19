@@ -1,6 +1,6 @@
 import React from 'react'
 import { TwitterShareButton } from 'react-share'
-import Twitter from 'react-icons/lib/fa/twitter'
+import { FaTwitter } from 'react-icons/fa'
 
 import Trigger from '~/actions/trigger'
 import { Url } from '~/helpers'
@@ -18,7 +18,7 @@ export default class extends React.Component {
                 onShareWindowClose={this.share}
                 title={this.props.settings['share-title']}
             >
-                <Button glyph={<Twitter />} hint={'share'} />
+                <Button glyph={<FaTwitter />} hint={'share'} />
             </TwitterShareButton>
         )
     }

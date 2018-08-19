@@ -2,10 +2,10 @@ export default class {
     static rateapp(result, feedback) {
         AppRate.preferences = {
             useLanguage: 'en',
-            displayAppName: 'rect.io',
+            displayAppName: APPLICATION_NAME,
             storeAppURL: {
-                ios: '',
-                android: 'market://details?id=com.facebook.katana',
+                ios: APP_STORE_ID,
+                android: GOOGLE_PLAY_ID,
             },
             callbacks: {
                 done: result,

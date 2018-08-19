@@ -15,7 +15,7 @@
         "react": "^16.4.1",
         "react-dom": "^16.4.1",
         "react-ga": "^2.5.3",
-        "react-icons": "^2.2.7",
+        "react-icons": "^3.0.5",
         "react-redux": "^5.0.7",
         "react-share": "^2.2.0",
         "react-swipeable": "^4.3.0",

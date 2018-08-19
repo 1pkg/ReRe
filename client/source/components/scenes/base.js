@@ -3,8 +3,9 @@ import Swipeable from 'react-swipeable'
 import Styled from 'styled-components'
 
 import Trigger from '~/actions/trigger'
-import { Analytic, Device, History } from '~/helpers'
+import { Analytic, Device } from '~/helpers'
 import { Carousel, Stat } from './../blocks/widgets'
+import { tc } from '~/theme'
 
 const MainContainer = Styled.div`
     flex: 1 1 0;
@@ -33,8 +34,8 @@ const OptionContainer = Styled.div`
 const ToolbarContainer = Styled.div`
     display: flex;
     align-items: center;
-    margin-top: ${props => '-' + props.theme['small-unit']};
-    margin-bottom: ${props => props.theme['half-small-unit']};
+    margin-top: ${props => '-' + props.theme[tc.smallu]};
+    margin-bottom: ${props => props.theme[tc.hsu]};
 `
 
 const StatContainer = Styled.div`
@@ -49,8 +50,7 @@ export default class self extends React.Component {
 
     fetch = async () => {
         Analytic.event(Analytic.EVENT_SWIPE, { direction: 'fetch' })
-        let state = await this.props.trigger.call(Trigger.ACTION_FETCH)
-        History.push(state.task.label)
+        this.props.trigger.call(Trigger.ACTION_FETCH)
     }
 
     expand = () => {

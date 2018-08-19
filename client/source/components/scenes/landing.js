@@ -1,9 +1,11 @@
 import React from 'react'
 import Styled from 'styled-components'
 
-import { Analytic, Device } from '~/helpers'
+import Trigger from '~/actions/trigger'
+import { Analytic, Device, History } from '~/helpers'
 import { Cut as Toolbar } from './../blocks/toolbar'
 import { Carousel, Copyright, Tape } from './../blocks/widgets'
+import { tc } from '~/theme'
 
 const MainContainer = Styled.div`
     flex: 1 1 0;
@@ -20,8 +22,8 @@ const SubContainer = Styled.div`
 const ToolbarContainer = Styled.div`
     display: flex;
     align-items: center;
-    margin-top: ${props => props.theme['half-small-unit']};
-    margin-bottom: ${props => props.theme['half-small-unit']};
+    margin-top: ${props => props.theme[tc.hsu]};
+    margin-bottom: ${props => props.theme[tc.hsu]};
 `
 
 export default class self extends React.Component {
@@ -31,6 +33,7 @@ export default class self extends React.Component {
     }
 
     componentDidMount() {
+        History.push(Trigger.STATUS_LAND)
         this.setState(prev => {
             let lists = this.props.state.lists
             let d = lists.daily.length >= MINIMAL_LANDING_TAPE_LENGTH

@@ -1,6 +1,6 @@
 import React from 'react'
 import { FacebookShareButton } from 'react-share'
-import Facebook from 'react-icons/lib/fa/facebook'
+import { FaFacebookF } from 'react-icons/fa'
 
 import Trigger from '~/actions/trigger'
 import { Url } from '~/helpers'
@@ -18,7 +18,7 @@ export default class extends React.Component {
                 onShareWindowClose={this.share}
                 quote={this.props.settings['share-title']}
             >
-                <Button glyph={<Facebook />} hint={'share'} />
+                <Button glyph={<FaFacebookF />} hint={'share'} />
             </FacebookShareButton>
         )
     }

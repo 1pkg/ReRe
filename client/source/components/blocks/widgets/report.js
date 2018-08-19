@@ -1,12 +1,12 @@
 import React from 'react'
 import { findDOMNode } from 'react-dom'
-import Flag from 'react-icons/lib/fa/flag-o'
-import Check from 'react-icons/lib/fa/check'
+import { FaCheck, FaFlag } from 'react-icons/fa'
 import Styled from 'styled-components'
 
 import Trigger from '~/actions/trigger'
 import Button from './button'
 import Modal from './modal'
+import { tc } from '~/theme'
 
 const Container = Styled.div``
 
@@ -18,11 +18,10 @@ const Form = Styled.div`
     justify-content: center;
 `
 
-const pbu = 'penta-big-unit'
 const Textarea = Styled.textarea`
     resize: none;
-    min-width: ${props => props.theme[pbu]};
-    min-height: ${props => props.theme[pbu]};
+    min-width: 75%;
+    min-height: ${props => props.theme[tc.oahpbu]};
 `
 
 export default class extends React.Component {
@@ -65,10 +64,12 @@ export default class extends React.Component {
     render() {
         return (
             <Container>
-                <Button glyph={<Flag />} action={this.show} hint={'report'} />
+                <Button glyph={<FaFlag />} action={this.show} hint={'report'} />
                 <Modal
                     title={'Report'}
-                    buttons={<Button glyph={<Check />} action={this.report} />}
+                    buttons={
+                        <Button glyph={<FaCheck />} action={this.report} />
+                    }
                     content={this.content()}
                     active={this.state.modal}
                     hide={this.hide}

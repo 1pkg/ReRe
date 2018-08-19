@@ -1,6 +1,8 @@
 import React from 'react'
 import Styled from 'styled-components'
 
+import { tc } from '~/theme'
+
 const MainContainer = Styled.div`
     flex: 1 1 0;
     display: flex;
@@ -12,7 +14,7 @@ const MainContainer = Styled.div`
 const SubContainer = Styled.div``
 
 const MainText = Styled.div`
-    font-size: ${props => props.theme['sub-big-unit']};
+    font-size: ${props => props.theme[tc.sbu]};
     font-weight: bold;
     text-align: center;
     text-transform: uppercase;

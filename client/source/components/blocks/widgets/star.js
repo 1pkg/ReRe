@@ -1,5 +1,5 @@
 import React from 'react'
-import Star from 'react-icons/lib/fa/star-o'
+import { FaStar } from 'react-icons/fa'
 
 import Trigger from '~/actions/trigger'
 import Button from './button'
@@ -10,6 +10,6 @@ export default class extends React.Component {
     }
 
     render() {
-        return <Button glyph={<Star />} action={this.mark} hint={'upvote'} />
+        return <Button glyph={<FaStar />} action={this.mark} hint={'upvote'} />
     }
 }

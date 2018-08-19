@@ -55,27 +55,75 @@ injectGlobal`
         height: 100vh;
     }
 `
+const mainc = 'main-color'
+const tqmc = 'three-quarters-main-color'
+const hmc = 'half-main-color'
+const qmc = 'quarter-main-color'
+const subc = 'sub-color'
+const activec = 'active-color'
+const zu = 'zero-unit'
+const minu = 'minimal-unit'
+const msu = 'min-small-unit'
+const hsu = 'half-small-unit'
+const smallu = 'small-unit'
+const snu = 'sub-normal-unit'
+const normalu = 'normal-unit'
+const sbu = 'sub-big-unit'
+const bigu = 'big-unit'
+const dbu = 'double-big-unit'
+const tbu = 'tripple-big-unit'
+const qbu = 'quadra-big-unit'
+const pbu = 'penta-big-unit'
+const oahpbu = 'one-and-half-penta-big-unit'
+const dpbu = 'double-penta-big-unit'
+const maxu = 'maximal-unit'
 
-export default {
-    'main-color': 'rgba(0, 0, 0, 1)',
-    'three-quarters-main-color': 'rgba(0, 0, 0, 0.75)',
-    'half-main-color': 'rgba(0, 0, 0, 0.5)',
-    'quarter-main-color': 'rgba(0, 0, 0, 0.25)',
-    'sub-color': 'rgba(255, 255, 255, 1)',
-    'active-color': 'rgba(240, 128, 128, 0.75)',
-    'minimal-unit': '0.01rem',
-    'min-small-unit': '0.1rem',
-    'half-small-unit': '0.3rem',
-    'small-unit': '0.5rem',
-    'sub-normal-unit': '0.7rem',
-    'normal-unit': '1rem',
-    'sub-big-unit': '1.5rem',
-    'big-unit': '2rem',
-    'double-big-unit': '4rem',
-    'tripple-big-unit': '6rem',
-    'quadra-big-unit': '8rem',
-    'penta-big-unit': '10rem',
-    'one-and-half-penta-big-unit': '15rem',
-    'double-penta-big-unit': '20rem',
-    'maximal-unit': '25rem',
+export const tc = {
+    mainc,
+    tqmc,
+    hmc,
+    qmc,
+    subc,
+    activec,
+    zu,
+    minu,
+    msu,
+    hsu,
+    smallu,
+    snu,
+    normalu,
+    sbu,
+    bigu,
+    dbu,
+    tbu,
+    qbu,
+    pbu,
+    oahpbu,
+    dpbu,
+    maxu,
+}
+
+export const theme = {
+    [mainc]: 'rgba(0, 0, 0, 1)',
+    [tqmc]: 'rgba(0, 0, 0, 0.75)',
+    [hmc]: 'rgba(0, 0, 0, 0.5)',
+    [qmc]: 'rgba(0, 0, 0, 0.25)',
+    [subc]: 'rgba(255, 255, 255, 1)',
+    [activec]: 'rgba(240, 128, 128, 0.75)',
+    [zu]: '0rem',
+    [minu]: '0.01rem',
+    [msu]: '0.1rem',
+    [hsu]: '0.3rem',
+    [smallu]: '0.5rem',
+    [snu]: '0.7rem',
+    [normalu]: '1rem',
+    [sbu]: '1.5rem',
+    [bigu]: '2rem',
+    [dbu]: '4rem',
+    [tbu]: '6rem',
+    [qbu]: '8rem',
+    [pbu]: '10rem',
+    [oahpbu]: '15rem',
+    [dpbu]: '20rem',
+    [maxu]: '25rem',
 }

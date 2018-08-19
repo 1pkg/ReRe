@@ -3,6 +3,7 @@ import { isEmpty } from 'lodash'
 import React from 'react'
 import { connect } from 'react-redux'
 import Styled, { ThemeProvider } from 'styled-components'
+import { IconContext } from 'react-icons'
 
 import Trigger from '~/actions/trigger'
 import { Analytic, Revenue } from '~/helpers'
@@ -16,7 +17,7 @@ import {
     Update,
     Wait,
 } from './scenes'
-import Theme from '~/theme'
+import { theme, tc } from '~/theme'
 
 const Container = Styled.div`
     width: 100vw;
@@ -83,10 +84,17 @@ export default connect(state => {
         render() {
             if (!isEmpty(this.props.state)) {
                 return (
-                    <ThemeProvider theme={Theme}>
-                        <Container>
-                            {this.scene(this.props.trigger, this.props.state)}
-                        </Container>
+                    <ThemeProvider theme={theme}>
+                        <IconContext.Provider
+                            value={{ size: theme[tc.normalu] }}
+                        >
+                            <Container>
+                                {this.scene(
+                                    this.props.trigger,
+                                    this.props.state,
+                                )}
+                            </Container>
+                        </IconContext.Provider>
                     </ThemeProvider>
                 )
             }

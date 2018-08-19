@@ -2,6 +2,7 @@ import React from 'react'
 import Styled from 'styled-components'
 
 import { Analytic } from '~/helpers'
+import { tc } from '~/theme'
 
 const Container = Styled.div`
     display: flex;
@@ -9,7 +10,7 @@ const Container = Styled.div`
     align-items: center;
     user-select: none;
     &:active {
-        color: ${props => props.theme['active-color']};
+        color: ${props => props.theme[tc.activec]};
     };
     &:hover {
         cursor: pointer;
@@ -17,7 +18,8 @@ const Container = Styled.div`
 `
 
 const Hint = Styled.div`
-    font-size: ${props => props.theme['half-small-unit']};
+    font-size:
+        ${props => (props.hbig ? props.theme[tc.snu] : props.theme[tc.hsu])};
     font-style: italic;
     text-transform: lowercase;
     text-align: center;
@@ -33,7 +35,7 @@ export default class extends React.Component {
         return (
             <Container onClick={this.evaction}>
                 {this.props.glyph}
-                <Hint>{this.props.hint}</Hint>
+                <Hint hbig={this.props.hbig}>{this.props.hint}</Hint>
             </Container>
         )
     }

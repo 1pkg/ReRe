@@ -1,5 +1,5 @@
 import React from 'react'
-import File from 'react-icons/lib/fa/file-o'
+import { FaInfo } from 'react-icons/fa'
 import Styled from 'styled-components'
 
 import Button from './button'
@@ -34,7 +34,7 @@ export default class extends React.Component {
         let disclaimer = this.props.settings['disclaimer-text']
         return (
             <Container>
-                <Button glyph={<File />} action={this.show} hint={'info'} />
+                <Button glyph={<FaInfo />} action={this.show} hint={'info'} />
                 <Modal
                     title={'Disclaimer'}
                     content={<Text>{disclaimer}</Text>}

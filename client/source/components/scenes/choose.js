@@ -1,12 +1,17 @@
 import { map } from 'lodash'
 import React from 'react'
 
+import { History } from '~/helpers'
 import { Full as Toolbar } from './../blocks/toolbar'
 import { Effect as Subject } from './../blocks/subject'
 import { Choose } from './../blocks/option'
 import Base from './base'
 
 export default class extends React.Component {
+    componentDidMount() {
+        History.push(this.props.state.task.label)
+    }
+
     subject() {
         return (
             <Subject

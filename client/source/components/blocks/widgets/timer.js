@@ -1,10 +1,11 @@
 import React from 'react'
-import Clock from 'react-icons/lib/fa/clock-o'
+import { FaClock } from 'react-icons/fa'
 import Styled from 'styled-components'
 
 import Trigger from '~/actions/trigger'
 import { Analytic, Timestamp } from '~/helpers'
 import Button from './button'
+import { tc } from '~/theme'
 
 const Container = Styled.div`
     display: flex;
@@ -13,14 +14,12 @@ const Container = Styled.div`
     justify-content: center;
 `
 
-const ac = 'active-color'
-const mc = 'main-color'
 const Wrapper = Styled.div`
-    color: ${props => (props.critical ? props.theme[ac] : props.theme[mc])};
+    color: ${props => (props.critical ? props.theme[tc.activec] : 'inherit')};
 `
 
 const Text = Styled.div`
-    font-size: ${props => props.theme['half-small-unit']};
+    font-size: ${props => props.theme[tc.hsu]};
     font-style: italic;
     text-transform: lowercase;
 `
@@ -72,7 +71,7 @@ export default class extends React.Component {
                         this.props.settings['choose-period'] / 3
                     }
                 >
-                    <Clock />
+                    <FaClock />
                 </Wrapper>
                 <Text>{this.state.current}</Text>
             </Container>

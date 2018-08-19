@@ -1,8 +1,10 @@
 import React from 'react'
 import Styled from 'styled-components'
 
+import { tc } from '~/theme'
+
 const Text = Styled.div`
-    font-size: ${props => props.theme['sub-normal-unit']};
+    font-size: ${props => props.theme[tc.snu]};
     font-style: italic;
     text-align: center;
     text-transform: lowercase;
