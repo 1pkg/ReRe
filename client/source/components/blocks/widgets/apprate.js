@@ -25,24 +25,44 @@ const Textarea = Styled.textarea`
     min-height: ${props => props.theme[tc.oahpbu]};
 `
 
+const ErrorTextarea = Styled(Textarea)`
+    border:
+        ${props => props.theme[tc.minu]}
+        solid
+        ${props => props.theme[tc.activec]};
+`
+
+const ErrorMinorText = Styled.div`
+    font-style: italic;
+    text-align: center;
+    text-transform: lowercase;
+    color: ${props => props.theme[tc.activec]};
+`
+
 export default class extends React.Component {
     show = () => {
         this.setState(state => {
-            return { modal: true }
+            return { modal: true, error: state.error }
         })
     }
 
     hide = () => {
         this.setState(state => {
-            return { modal: false }
+            return { modal: false, error: state.error }
         })
     }
 
     feedback = async () => {
         let node = findDOMNode(this)
         let textarea = node.querySelector('textarea')
-        this.props.trigger.call(Trigger.ACTION_FEEDBACK, textarea.value)
-        this.hide()
+        if (textarea.value.trim()) {
+            this.props.trigger.call(Trigger.ACTION_FEEDBACK, textarea.value)
+            this.hide()
+        } else {
+            this.setState(state => {
+                return { error: true, modal: state.modal }
+            })
+        }
     }
 
     result = async () => {
@@ -55,16 +75,28 @@ export default class extends React.Component {
 
     constructor(props) {
         super(props)
-        this.state = { modal: false }
+        this.state = { modal: false, error: false }
     }
 
     content() {
-        let message = 'I want leave feedback for next reason:\n'
-        return (
-            <Form>
-                <Textarea defaultValue={message} />
-            </Form>
-        )
+        if (this.state.error) {
+            return (
+                <Form>
+                    <ErrorTextarea />
+                    <ErrorMinorText>please type something</ErrorMinorText>
+                </Form>
+            )
+        } else {
+            return (
+                <Form>
+                    <Textarea
+                        defaultValue={
+                            'I want leave feedback for next reason:\n'
+                        }
+                    />
+                </Form>
+            )
+        }
     }
 
     render() {

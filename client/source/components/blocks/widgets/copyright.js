@@ -1,6 +1,7 @@
 import React from 'react'
 import Styled from 'styled-components'
 
+import { Timestamp } from '~/helpers'
 import { tc } from '~/theme'
 
 const Text = Styled.div`
@@ -12,6 +13,10 @@ const Text = Styled.div`
 
 export default class extends React.Component {
     render() {
-        return <Text>{this.props.settings['copyright-text']}</Text>
+        return (
+            <Text>
+                {APPLICATION_NAME} @ {Timestamp.year()} all rights reserved
+            </Text>
+        )
     }
 }

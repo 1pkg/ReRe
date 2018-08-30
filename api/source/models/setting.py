@@ -6,7 +6,6 @@ from base import Alchemy
 class Setting(Alchemy.Model):
     NAME_CHOSE_PERIOD = 'choose-period'
     NAME_SHARE_TITLE = 'share-title'
-    NAME_COPYRIGHT_TEXT = 'copyright-text'
     NAME_DISCLAIMER_TEXT = 'disclaimer-text'
 
     __tablename__ = 'setting'
@@ -35,6 +34,5 @@ class Setting(Alchemy.Model):
         return {
             Setting.NAME_CHOSE_PERIOD: int,
             Setting.NAME_SHARE_TITLE: str,
-            Setting.NAME_COPYRIGHT_TEXT: str,
             Setting.NAME_DISCLAIMER_TEXT: str,
         }[name](value)
