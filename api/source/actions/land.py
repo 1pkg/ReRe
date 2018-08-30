@@ -1,9 +1,9 @@
 from base import Constant
 from models import Answer, Mark, Subject, Task, Type
-from .mixins import Access, FList
+from .mixins import Crypto, FList
 
 
-class Land(Access, FList):
+class Land(FList, Crypto):
     CONNECTION_LIMIT = Constant.RAREFIED_CONNECTION_LIMIT
     CACHE_EXPIRE = Constant.DEFAULT_CACHE_EXPIRE
 
@@ -11,11 +11,9 @@ class Land(Access, FList):
         random = self._application.random
 
         return {
-            'lists': self._format({
-                'daily': random.shuffle(self.__query(-Constant.DAY_COUNT_SINGLE)),
-                'weekly': random.shuffle(self.__query(-Constant.DAY_COUNT_WEEK)),
-                'monthly': random.shuffle(self.__query(-Constant.DAY_COUNT_MONTH)),
-            })
+            'daily': random.shuffle(self.__query(-Constant.DAY_COUNT_SINGLE)),
+            'weekly': random.shuffle(self.__query(-Constant.DAY_COUNT_WEEK)),
+            'monthly': random.shuffle(self.__query(-Constant.DAY_COUNT_MONTH)),
         }
 
     def __query(self, day_count):

@@ -9,6 +9,7 @@ from .remake import Remake
 from .report import Report
 from .share import Share
 from .splash import Splash
+from .stat import Stat
 from .table import Table
 
 __all__ = [
@@ -23,5 +24,6 @@ __all__ = [
     'Report',
     'Share',
     'Splash',
+    'Stat',
     'Table',
 ]

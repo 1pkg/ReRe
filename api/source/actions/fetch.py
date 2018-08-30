@@ -8,10 +8,10 @@ from models import \
     Subject, \
     Task, \
     Type
-from .mixins import Access, FSingleIdent, Identify, Score
+from .mixins import Crypto, FSingleIdent, Identify, Score
 
 
-class Fetch(Access, FSingleIdent, Score):
+class Fetch(FSingleIdent, Crypto, Score):
     CONNECTION_LIMIT = Constant.RIGID_CONNECTION_LIMIT
     CACHE_EXPIRE = None
 
@@ -43,8 +43,7 @@ class Fetch(Access, FSingleIdent, Score):
                 .first()
             task = task if answer is None else None
 
-        task = self.__bynew() if task is None else task
-        return self._format(task)
+        return self.__bynew() if task is None else task
 
     def _calculate(self, request, unit):
         # super duper hack

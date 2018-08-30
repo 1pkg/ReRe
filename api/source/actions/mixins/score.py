@@ -1,9 +1,9 @@
-from base import Action, Constant
+from base import Constant
+
+from .access import Access
 
 
-class Score(Action):
-    _session = None
-
+class Score(Access):
     def _calculate(self, unit, use_freebie=True):
         db = self._application.db
         settings = self._application.settings

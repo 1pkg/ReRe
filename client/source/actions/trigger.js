@@ -1,5 +1,4 @@
 import { clone } from 'lodash'
-import Axios from 'axios'
 
 import {
     choose,
@@ -13,6 +12,7 @@ import {
     report,
     share,
     splash,
+    stat,
     table,
 } from '~/actions'
 import { Analytic } from '~/helpers'
@@ -27,7 +27,7 @@ export default class Trigger {
     static STATUS_WRONG = 'status-wrong'
     static STATUS_ERROR = 'status-error'
 
-    static ACTION_CHOOSE = 'action-chose'
+    static ACTION_CHOOSE = 'action-choose'
     static ACTION_DEVOTE = 'action-devote'
     static ACTION_FEEDBACK = 'action-feedback'
     static ACTION_FETCH = 'action-fetch'
@@ -38,6 +38,7 @@ export default class Trigger {
     static ACTION_REPORT = 'action-report'
     static ACTION_SHARE = 'action-share'
     static ACTION_SPLASH = 'action-splash'
+    static ACTION_STAT = 'action-stat'
     static ACTION_TABLE = 'action-table'
 
     static ACTION_STORE = 'action-store'
@@ -58,11 +59,9 @@ export default class Trigger {
             [Trigger.ACTION_REPORT]: report,
             [Trigger.ACTION_SHARE]: share,
             [Trigger.ACTION_SPLASH]: splash,
+            [Trigger.ACTION_STAT]: stat,
             [Trigger.ACTION_TABLE]: table,
         }
-        Axios.defaults.baseURL = `${SCHEMA}://${API_URL}`
-        Axios.defaults.timeout = API_TIMEOUT
-        Axios.defaults.maxContentLength = API_CONTENT_LENGTH
     }
 
     state() {

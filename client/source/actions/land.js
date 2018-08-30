@@ -1,8 +1,7 @@
-import Lodash from 'lodash'
-import Axios from 'axios'
+import { isEmpty } from 'lodash'
 
 import Trigger from './trigger'
-import { Crypto, Json } from '~/helpers'
+import { Http } from '~/helpers'
 
 export default async trigger => {
     let state = trigger.state()
@@ -10,17 +9,9 @@ export default async trigger => {
     trigger.push(Trigger.ACTION_WAIT, state)
 
     state = trigger.state()
-    if (!('lists' in state) || Lodash.isEmpty(state.lists)) {
-        let response = await Axios.post('land', {
-            token: state.token,
-        })
-        state.lists = response.data.lists
-        for (let land in state.lists) {
-            for (let task of state.lists[land]) {
-                task.subject = Crypto.decrypt(state.token, task.subject)
-                task.subject = Json.decode(task.subject)
-            }
-        }
+    if (!('lists' in state) || isEmpty(state.lists)) {
+        let token = state.token
+        state.lists = await Http.process(Trigger.ACTION_LAND, { token }, token)
     } else {
         await new Promise(resolve => {
             setTimeout(resolve)

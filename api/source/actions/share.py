@@ -30,5 +30,3 @@ class Share(Access):
         share = _Share_(media=self.__media)
         self._session.shares.append(share)
         db.session.commit()
-        freebie = self._session.account.freebie
-        return {'freebie': freebie}

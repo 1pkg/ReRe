@@ -1,7 +1,5 @@
-import Axios from 'axios'
-
 import Trigger from './trigger'
-import { Crypto, Json } from '~/helpers'
+import { Http } from '~/helpers'
 
 export default async trigger => {
     let state = trigger.state()
@@ -9,15 +7,11 @@ export default async trigger => {
     trigger.push(Trigger.ACTION_WAIT, state)
 
     state = trigger.state()
-    let response = await Axios.post('remake', {
-        token: state.token,
-    })
-    state.task = response.data.task
-    state.task.subject = Crypto.decrypt(state.token, state.task.subject)
-    state.task.subject = Json.decode(state.task.subject)
-    state.stat = response.data.stat
+    let token = state.token
+    state.task = await Http.process(Trigger.ACTION_REMAKE, { token }, token)
     state.task.handled = {}
     state.status = Trigger.STATUS_ACTIVE
     trigger.push(Trigger.ACTION_REMAKE, state)
+    state = await trigger.call(Trigger.ACTION_STAT)
     return state
 }

@@ -1,9 +1,9 @@
 from base import Constant
 from models import Answer, Effect, Task
-from .mixins import FSingleIdent, Identify, Score
+from .mixins import Crypto, FSingleIdent, Identify, Score
 
 
-class Remake(FSingleIdent, Identify, Score):
+class Remake(Identify, FSingleIdent, Crypto, Score):
     CONNECTION_LIMIT = Constant.RIGID_CONNECTION_LIMIT
     CACHE_EXPIRE = None
 
@@ -35,7 +35,7 @@ class Remake(FSingleIdent, Identify, Score):
         task.effects = effects
         db.session.add(task)
         db.session.commit()
-        return self._format(task)
+        return task
 
     def _calculate(self, unit):
         db = self._application.db

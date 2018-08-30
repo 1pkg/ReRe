@@ -1,9 +1,9 @@
 from base import Constant
 from models import Effect, Setting
-from .mixins import Access
+from .mixins import Crypto
 
 
-class Devote(Access):
+class Devote(Crypto):
     CONNECTION_LIMIT = Constant.RAREFIED_CONNECTION_LIMIT
     CACHE_EXPIRE = Constant.DEFAULT_CACHE_EXPIRE
 

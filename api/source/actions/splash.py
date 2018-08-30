@@ -1,9 +1,9 @@
 from base import Constant
 from models import Answer, Subject, Task
-from .mixins import Access, FSingle
+from .mixins import Crypto
 
 
-class Splash(Access, FSingle):
+class Splash(Crypto):
     CONNECTION_LIMIT = Constant.RAREFIED_CONNECTION_LIMIT
     CACHE_EXPIRE = Constant.DEFAULT_CACHE_EXPIRE
 
@@ -27,8 +27,8 @@ class Splash(Access, FSingle):
                 db.func.random(),
             ).first()
         if task is not None:
-            splash = self._format(task, False)
-            del splash['label']
-            del splash['options']
-            return {'splash': splash}
-        return {'splash': None}
+            return {
+                'link': task.subject.link,
+                'source': task.subject.source,
+                'orientation': str(task.subject.orientation),
+            }

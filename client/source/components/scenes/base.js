@@ -97,7 +97,10 @@ export default class self extends React.Component {
                     {this.props.subject}
                 </SwipeableSubjectContainer>
                 <StatContainer>
-                    <Stat stat={this.props.state.stat} />
+                    <Stat
+                        stat={this.props.state.stat}
+                        task={this.props.state.task}
+                    />
                 </StatContainer>
                 <ToolbarContainer>
                     <Toolbar
@@ -130,7 +133,10 @@ export default class self extends React.Component {
                     {this.props.subject}
                 </SubjectContainer>
                 <StatContainer>
-                    <Stat stat={this.props.state.stat} />
+                    <Stat
+                        stat={this.props.state.stat}
+                        task={this.props.state.task}
+                    />
                 </StatContainer>
                 <ToolbarContainer>
                     <Toolbar

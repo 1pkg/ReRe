@@ -9,6 +9,9 @@ export default async trigger => {
     if (!('settings' in state || 'shaders' in state)) {
         state = await trigger.call(Trigger.ACTION_DEVOTE)
     }
+    if (!('stat' in state)) {
+        state = await trigger.call(Trigger.ACTION_STAT)
+    }
 
     let purl = Url.parse()
     if (

@@ -5,19 +5,12 @@ from models import Answer
 
 
 class FSingle(Action):
-    _session = None
-
-    def _format(self, task, with_stat):
-        crypto = self._application.crypto
-
-        subject = crypto.encrypt(
-            self._session.token,
-            dumps({
-                'link': task.subject.link,
-                'source': task.subject.source,
-                'orientation': str(task.subject.orientation),
-            }),
-        )
+    def _format(self, task):
+        subject = {
+            'link': task.subject.link,
+            'source': task.subject.source,
+            'orientation': str(task.subject.orientation),
+        }
         options = [{
             'name': option.name,
             'description': option.description,
@@ -28,31 +21,15 @@ class FSingle(Action):
             'name': effect.name,
         } for effect in task.effects]
         label = task.label
-        task_model = task
+        complexity = self._complexity(task)
         task = {
             'options': options,
             'subject': subject,
             'effects': effects,
             'label': label,
+            'complexity': complexity,
         }
-
-        if with_stat:
-            score = self._session.account.score
-            freebie = self._session.account.freebie
-            factor = self._session.account.factor
-            complexity = self._complexity(task_model)
-            stat = {
-                'score': score,
-                'freebie': freebie,
-                'factor': factor,
-                'complexity': complexity,
-            }
-            return {
-                'task': task,
-                'stat': stat,
-            }
-        else:
-            return task
+        return super()._format(task)
 
     def _complexity(self, task):
         total_count = Answer.query\

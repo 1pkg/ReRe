@@ -1,9 +1,9 @@
 from base import Constant
 from models import Account
-from .mixins import Access
+from .mixins import Crypto
 
 
-class Table(Access):
+class Table(Crypto):
     CONNECTION_LIMIT = Constant.RAREFIED_CONNECTION_LIMIT
     CACHE_EXPIRE = Constant.DEFAULT_CACHE_EXPIRE
 
@@ -16,9 +16,9 @@ class Table(Access):
             .limit(settings[Constant.SETTING_TABLE_SIZE]).all()
         total = Account.query.count()
         return {
+            'total': total,
             'table': [
                 {'alias': account.alias, 'score': account.score}
                 for account in accounts
             ],
-            'total': total,
         }

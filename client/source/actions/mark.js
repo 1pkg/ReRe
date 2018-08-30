@@ -1,6 +1,5 @@
-import Axios from 'axios'
-
 import Trigger from './trigger'
+import { Http } from '~/helpers'
 
 export default async (trigger, type) => {
     let state = trigger.state()
@@ -9,10 +8,8 @@ export default async (trigger, type) => {
     trigger.push(Trigger.ACTION_WAIT, state)
 
     state = trigger.state()
-    await Axios.post('mark', {
-        token: state.token,
-        type,
-    })
+    let token = state.token
+    await Http.process(Trigger.ACTION_MARK, { token, type })
     state.task.handled[type] = true
     state.status = oldstatus
     trigger.push(Trigger.ACTION_MARK, state)

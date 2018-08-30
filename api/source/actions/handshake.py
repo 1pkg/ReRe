@@ -68,6 +68,7 @@ class Handshake(Action):
             self.__account.freebie += \
                 settings[Constant.SETTING_SHARE_FREEBIE_UNIT]
 
+        alias = self.__account.alias
         token = c_hash.hex(
             c_hash.LONG_DIGEST,
             datetime.timestamp(),
@@ -86,15 +87,7 @@ class Handshake(Action):
         self.__account.sessions.append(session)
         db.session.add(self.__account)
         db.session.commit()
-
-        alias = self.__account.alias
-        stat = {
-            'score': self.__account.score,
-            'freebie': self.__account.freebie,
-            'factor': self.__account.factor,
-        }
         return {
             'alias': alias,
             'token': token,
-            'stat': stat,
         }

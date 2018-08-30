@@ -21,8 +21,8 @@ const Container = Styled.div`
 
 export default class extends React.Component {
     render() {
-        let complexity = this.props.stat.complexity
-            ? `${this.props.stat.complexity}%`
+        let complexity = this.props.task.complexity
+            ? `${this.props.task.complexity}%`
             : 'new task'
         let factor = `x${this.props.stat.factor}`
         return (

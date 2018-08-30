@@ -1,6 +1,5 @@
-import Axios from 'axios'
-
 import Trigger from './trigger'
+import { Http } from '~/helpers'
 
 export default async (trigger, media) => {
     let state = trigger.state()
@@ -9,12 +8,10 @@ export default async (trigger, media) => {
     trigger.push(Trigger.ACTION_WAIT, state)
 
     state = trigger.state()
-    let response = await Axios.post('share', {
-        token: state.token,
-        media,
-    })
-    state.stat.frebie = response.data.frebie
+    let token = state.token
+    await Http.process(Trigger.ACTION_SHARE, { token, media })
     state.status = oldstatus
     trigger.push(Trigger.ACTION_SHARE, state)
+    state = await trigger.call(Trigger.ACTION_STAT)
     return state
 }

@@ -1,10 +1,10 @@
 from base import Constant
 from errors import Request
 from models import Answer, Setting
-from .mixins import Identify, Score
+from .mixins import Crypto, Identify, Score
 
 
-class Choose(Identify, Score):
+class Choose(Identify, Crypto, Score):
     CONNECTION_LIMIT = Constant.RIGID_CONNECTION_LIMIT
     CACHE_EXPIRE = None
 
@@ -45,11 +45,6 @@ class Choose(Identify, Score):
             -settings[Constant.SETTING_BIG_SCORE_UNIT],
             False
         )
-        stat = {
-            'score': self._session.account.score,
-            'freebie': self._session.account.freebie,
-            'factor': self._session.account.factor,
-        }
         storage.delete(self._session.token)
 
         option = self.__index(
@@ -68,7 +63,6 @@ class Choose(Identify, Score):
         return {
             'result': result,
             'option': option,
-            'stat': stat,
         }
 
     def __index(self, sequence, callback):

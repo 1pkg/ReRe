@@ -1,14 +1,12 @@
-import Axios from 'axios'
-
 import Trigger from './trigger'
+import { Http } from '~/helpers'
 
 export default async trigger => {
     let state = trigger.state()
-    let response = await Axios.post('devote', {
-        token: state.token,
-    })
-    state.shaders = response.data.shaders
-    state.settings = response.data.settings
+    let token = state.token
+    let data = await Http.process(Trigger.ACTION_DEVOTE, { token }, token)
+    state.shaders = data.shaders
+    state.settings = data.settings
     trigger.push(Trigger.ACTION_DEVOTE, state)
     return state
 }

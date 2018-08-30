@@ -1,7 +1,7 @@
-import Lodash from 'lodash'
-import Axios from 'axios'
+import { isEmpty } from 'lodash'
 
 import Trigger from './trigger'
+import { Http } from '~/helpers'
 
 export default async trigger => {
     let state = trigger.state()
@@ -9,12 +9,11 @@ export default async trigger => {
     trigger.push(Trigger.ACTION_WAIT, state)
 
     state = trigger.state()
-    if (!('table' in state) || Lodash.isEmpty(state.table)) {
-        let response = await Axios.post('table', {
-            token: state.token,
-        })
-        state.table = response.data.table
-        state.table.total = response.data.total
+    if (!('table' in state) || isEmpty(state.table)) {
+        let token = state.token
+        let data = await Http.process(Trigger.ACTION_TABLE, { token }, token)
+        state.table = data.table
+        state.table.total = data.total
     } else {
         await new Promise(resolve => {
             setTimeout(resolve)

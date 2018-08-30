@@ -4,13 +4,17 @@ class Action:
 
     def __call__(self, request):
         self._validate(request)
-        return self._process(request)
+        data = self._process(request)
+        return self._format(data)
 
     def _validate(self, request):
         pass
 
     def _process(self, request):
         return NotImplemented
+
+    def _format(self, response=None):
+        return response
 
     def _get(self, request, key, default=None):
         if (request.json is not None and key in request.json):

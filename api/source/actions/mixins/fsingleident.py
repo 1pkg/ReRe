@@ -1,9 +1,8 @@
+from .access import Access
 from .fsingle import FSingle
 
 
-class FSingleIdent(FSingle):
-    _session = None
-
+class FSingleIdent(FSingle, Access):
     def _format(self, task):
         datetime = self._application.datetime
         storage = self._application.storage
@@ -14,4 +13,4 @@ class FSingleIdent(FSingle):
             'timestamp': datetime.timestamp(),
         }
         storage.set(self._session.token, identity)
-        return super()._format(task, True)
+        return super()._format(task)
