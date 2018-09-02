@@ -32,6 +32,10 @@ class Session(Alchemy.Model):
         Alchemy.Enum(Device),
         nullable=False,
     )
+    user_digest = Alchemy.Column(
+        Alchemy.String,
+        nullable=False,
+    )
     user_agent = Alchemy.Column(
         Alchemy.String,
         nullable=False,

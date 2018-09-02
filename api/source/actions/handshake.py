@@ -16,6 +16,7 @@ class Handshake(Action):
 
         self.__account_alias = self._get(request, 'alias')
         self.__account_uuid = self._get(request, 'uuid', '')
+        self.__user_digest = self._get(request, 'digest')
         self.__user_device = self._get(request, 'device')
         self.__user_agent = http.useragent(request)
         self.__user_ip = http.userip(request)
@@ -30,6 +31,9 @@ class Handshake(Action):
         if len(self.__account_uuid) != 32 or \
                 not validator.ishex(self.__account_uuid):
             raise Request('uuid', self.__account_uuid)
+
+        if validator.isempty(self.__user_digest):
+            raise Request('digest', self.__user_digest)
 
         if not self.__user_device in Device.__members__:
             raise Request('device', self.__user_device)
@@ -73,6 +77,7 @@ class Handshake(Action):
             c_hash.LONG_DIGEST,
             datetime.timestamp(),
             random.salt(),
+            self.__user_digest,
             self.__user_device,
             self.__user_agent,
             self.__user_ip,
@@ -80,6 +85,7 @@ class Handshake(Action):
         )
         session = Session(
             user_device=Device[self.__user_device],
+            user_digest=self.__user_digest,
             user_agent=self.__user_agent,
             user_ip=self.__user_ip,
             token=token,

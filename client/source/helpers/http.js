@@ -13,4 +13,9 @@ export default class {
             ? Json.decode(Crypto.decrypt(ctyptokey, response.data))
             : response.data
     }
+
+    static async read(endpoint) {
+        let response = await Axios.get(endpoint)
+        return response.data
+    }
 }

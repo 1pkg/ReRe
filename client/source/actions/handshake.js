@@ -1,13 +1,19 @@
 import Trigger from './trigger'
-import { Device, Http, Uuid } from '~/helpers'
+import { Device, Http, Identify } from '~/helpers'
 
 export default async trigger => {
     let state = trigger.state()
+    let integrity = INTEGRITY
+    let device = Device.name()
+    let alias = Identify.alias()
+    let digest = await Identify.digest()
+    let uuid = await Identify.uuid()
     let data = await Http.process(Trigger.ACTION_HANDSHAKE, {
-        integrity: INTEGRITY,
-        alias: Uuid.alias(),
-        uuid: Uuid.generate(),
-        device: Device.name(),
+        integrity,
+        device,
+        alias,
+        digest,
+        uuid,
     })
     state.alias = data.alias
     state.token = data.token

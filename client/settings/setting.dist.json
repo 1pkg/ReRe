@@ -25,6 +25,8 @@
     "GOOGLE_PLAY_URL": "''",
     "AMAZON_STORE_URL": "''",
 
+    "LOOK_UP_URL": "'extreme-ip-lookup.com/json/'",
+
     "INTEGRITY": "'XHMjXj_jCVE'",
 
     "GA_CODE": "'UA-123509054-1|UA-123498258-1'",

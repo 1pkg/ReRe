@@ -82,6 +82,7 @@
         <param name="android-package" value="org.apache.cordova.splashscreen.SplashScreen" />
         <param name="onload" value="true" />
     </feature>
+    <plugin name="cordova-plugin-device" />
     <plugin name="cordova-plugin-apprate" />
     <plugin name="cordova-admob-sdk">
         <variable name="PLAY_SERVICES_VERSION" value="11.6.0" />

@@ -27,8 +27,15 @@ class Splash(Crypto):
                 db.func.random(),
             ).first()
         if task is not None:
-            return {
+            subject = {
                 'link': task.subject.link,
                 'source': task.subject.source,
                 'orientation': str(task.subject.orientation),
+            }
+            effects = [{
+                'name': effect.name,
+            } for effect in task.effects]
+            return {
+                'subject': subject,
+                'effects': effects,
             }
