@@ -4,8 +4,12 @@ import Trigger from './actions/trigger'
 export default async trigger => {
     let state = Store.state()
     if (state == null || !('token' in state)) {
-        state = await trigger.call(Trigger.ACTION_HANDSHAKE)
+        await trigger.push(Trigger.ACTION_STORE, {
+            status: Trigger.STATUS_LOGIN,
+        })
+        return
     }
+
     if (!('settings' in state || 'shaders' in state)) {
         state = await trigger.call(Trigger.ACTION_DEVOTE)
     }

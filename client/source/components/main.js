@@ -10,6 +10,7 @@ import { Analytic, Revenue } from '~/helpers'
 import {
     Choose,
     Landing,
+    Login,
     Maintenance,
     Result,
     Splash,
@@ -47,12 +48,19 @@ export default connect(state => {
 
             switch (state.status) {
                 case Trigger.STATUS_SPLASH:
+                    Revenue.pause()
+                    Analytic.view(Analytic.VIEW_SPASH)
                     return <Splash trigger={trigger} state={state} />
 
                 case Trigger.STATUS_LAND:
-                    Revenue.pause()
+                    Revenue.resume()
                     Analytic.view(Analytic.VIEW_LAND)
                     return <Landing trigger={trigger} state={state} />
+
+                case Trigger.STATUS_LOGIN:
+                    Revenue.pause()
+                    Analytic.view(Analytic.VIEW_LOGIN)
+                    return <Login trigger={trigger} state={state} />
 
                 case Trigger.STATUS_TABLE:
                     Revenue.resume()

@@ -58,7 +58,9 @@ export default class self extends React.Component {
         return (
             <TextContainer>
                 <SubContainer>
-                    <MainText>rating currently isn't available</MainText>
+                    <MainText>rating</MainText>
+                    <MainText>currently</MainText>
+                    <MainText>isn't available</MainText>
                 </SubContainer>
                 <SubContainer>
                     <MinorText>
@@ -90,7 +92,7 @@ export default class self extends React.Component {
     render() {
         return (
             <MainContainer>
-                <Copyright settings={this.props.state.settings} />
+                <Copyright />
                 {this.content()}
                 <ToolbarContainer>
                     <Toolbar

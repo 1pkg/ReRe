@@ -2,6 +2,7 @@ import React from 'react'
 import Styled from 'styled-components'
 
 import dispatch from '~/dispatch'
+import { Copyright } from './../blocks/widgets'
 import { tc } from '~/theme'
 
 const MainContainer = Styled.div`
@@ -46,6 +47,7 @@ export default class extends React.Component {
     render() {
         return (
             <MainContainer>
+                <Copyright />
                 <SubContainer>
                     <MainText>yikes</MainText>
                     <MainText>it seems</MainText>

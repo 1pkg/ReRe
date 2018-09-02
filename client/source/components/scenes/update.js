@@ -1,6 +1,7 @@
 import React from 'react'
 import Styled from 'styled-components'
 
+import { Copyright } from './../blocks/widgets'
 import { tc } from '~/theme'
 
 const MainContainer = Styled.div`
@@ -30,8 +31,11 @@ export default class extends React.Component {
     render() {
         return (
             <MainContainer>
+                <Copyright />
                 <SubContainer>
-                    <MainText>We can't support your browser</MainText>
+                    <MainText>We can't</MainText>
+                    <MainText>support</MainText>
+                    <MainText>your browser</MainText>
                 </SubContainer>
                 <SubContainer>
                     <MinorText>for using service you should</MinorText>

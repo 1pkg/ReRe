@@ -83,7 +83,7 @@ export default class self extends React.Component {
     mobile() {
         return (
             <MainContainer>
-                <Copyright settings={this.props.state.settings} />
+                <Copyright />
                 <SubContainer>
                     <Carousel activate={this.activate}>
                         {this.tape('daily', 'Daily Popular')}
@@ -104,7 +104,7 @@ export default class self extends React.Component {
     desktop() {
         return (
             <MainContainer>
-                <Copyright settings={this.props.state.settings} />
+                <Copyright />
                 <SubContainer>
                     {this.tape('daily', 'Daily Popular')}
                     {this.tape('weekly', 'Weekly Popular')}

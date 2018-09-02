@@ -1,5 +1,6 @@
 export { default as Choose } from './choose'
 export { default as Landing } from './landing'
+export { default as Login } from './login'
 export { default as Maintenance } from './maintenance'
 export { default as Result } from './result'
 export { default as Splash } from './splash'

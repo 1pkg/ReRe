@@ -21,6 +21,7 @@ export default class Trigger {
     static STATUS_ACTIVE = 'status-active'
     static STATUS_CORRECT = 'status-correct'
     static STATUS_LAND = 'status-land'
+    static STATUS_LOGIN = 'status-login'
     static STATUS_SPLASH = 'status-splash'
     static STATUS_TABLE = 'status-table'
     static STATUS_WAIT = 'status-wait'
