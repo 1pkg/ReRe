@@ -10,7 +10,7 @@ class Access(Action):
         datetime = self._application.datetime
 
         token = self._get(request, 'token', '')
-        if len(token) != 32 or not validator.ishex(token):
+        if len(token) != 128 or not validator.ishex(token):
             raise Request('token', token)
 
         self._session = Session.query \

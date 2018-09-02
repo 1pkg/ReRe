@@ -4,7 +4,7 @@ import Trigger from './actions/trigger'
 export default async trigger => {
     let state = Store.state()
     if (state == null || !('token' in state)) {
-        await trigger.push(Trigger.ACTION_STORE, {
+        await trigger.push(Trigger.ACTION_LOGIN, {
             status: Trigger.STATUS_LOGIN,
         })
         return

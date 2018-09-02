@@ -4,7 +4,7 @@ import Styled from 'styled-components'
 import Trigger from '~/actions/trigger'
 import { Analytic, Device, History } from '~/helpers'
 import { Cut as Toolbar } from './../blocks/toolbar'
-import { Carousel, Copyright, Tape } from './../blocks/widgets'
+import { Carousel, Copyright, Tape, User } from './../blocks/widgets'
 import { tc } from '~/theme'
 
 const MainContainer = Styled.div`
@@ -84,6 +84,10 @@ export default class self extends React.Component {
         return (
             <MainContainer>
                 <Copyright />
+                <User
+                    trigger={this.props.trigger}
+                    alias={this.props.state.alias}
+                />
                 <SubContainer>
                     <Carousel activate={this.activate}>
                         {this.tape('daily', 'Daily Popular')}
@@ -105,6 +109,10 @@ export default class self extends React.Component {
         return (
             <MainContainer>
                 <Copyright />
+                <User
+                    trigger={this.props.trigger}
+                    alias={this.props.state.alias}
+                />
                 <SubContainer>
                     {this.tape('daily', 'Daily Popular')}
                     {this.tape('weekly', 'Weekly Popular')}

@@ -4,7 +4,7 @@ from base import Component
 
 
 class Hash(Component):
-    LONG_DIGEST = 16
+    LONG_DIGEST = 64
     SHORT_DIGEST = 4
 
     def hex(self, size, *args):

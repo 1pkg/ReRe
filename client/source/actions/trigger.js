@@ -42,6 +42,8 @@ export default class Trigger {
     static ACTION_STAT = 'action-stat'
     static ACTION_TABLE = 'action-table'
 
+    static ACTION_LOGIN = 'action-login'
+    static ACTION_LOGOUT = 'action-logout'
     static ACTION_STORE = 'action-store'
     static ACTION_RELOAD = 'action-reload'
     static ACTION_WAIT = 'action-wait'

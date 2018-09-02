@@ -4,7 +4,7 @@ import Styled from 'styled-components'
 import Trigger from '~/actions/trigger'
 import { History, Rating as RatingBuilder } from '~/helpers'
 import { Cut as Toolbar } from './../blocks/toolbar'
-import { Copyright, Rating } from './../blocks/widgets'
+import { Copyright, Rating, User } from './../blocks/widgets'
 import { tc } from '~/theme'
 
 const MainContainer = Styled.div`
@@ -93,6 +93,10 @@ export default class self extends React.Component {
         return (
             <MainContainer>
                 <Copyright />
+                <User
+                    trigger={this.props.trigger}
+                    alias={this.props.state.alias}
+                />
                 {this.content()}
                 <ToolbarContainer>
                     <Toolbar

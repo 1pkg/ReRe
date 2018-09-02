@@ -28,7 +28,7 @@ class Handshake(Action):
         if validator.isempty(self.__account_alias):
             raise Request('alias', self.__account_alias)
 
-        if len(self.__account_uuid) != 32 or \
+        if len(self.__account_uuid) != 128 or \
                 not validator.ishex(self.__account_uuid):
             raise Request('uuid', self.__account_uuid)
 

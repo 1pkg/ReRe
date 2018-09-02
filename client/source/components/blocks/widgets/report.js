@@ -22,6 +22,7 @@ const Textarea = Styled.textarea`
     resize: none;
     min-width: 75%;
     min-height: ${props => props.theme[tc.oahpbu]};
+    font-size: ${props => props.theme[tc.normalu]};
 `
 
 const ErrorTextarea = Styled(Textarea)`

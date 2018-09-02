@@ -1,25 +1,16 @@
-import { startCase } from 'lodash'
-import blake2b from 'blake2b'
-import faker from 'faker'
+import * as CryptoJS from 'crypto-js'
 
 import { Env, Http } from './'
 
 export default class self {
-    static alias() {
-        return `${faker.name.prefix()} ${startCase(faker.random.words())}`
+    static async uuid(alias) {
+        let digest = CryptoJS.SHA3(await self.digest(alias))
+        return digest.toString()
     }
 
-    static async uuid() {
+    static async digest(alias) {
         let lookup = Env.cordova() ? self.clookup() : await self.weblookup()
-        let hash = blake2b(16)
-        for (let piece of lookup) {
-            hash.update(piece)
-        }
-        return hash.digest('hex')
-    }
-
-    static async digest() {
-        let lookup = Env.cordova() ? self.clookup() : await self.weblookup()
+        lookup.unshift(alias)
         return lookup.join('|')
     }
 

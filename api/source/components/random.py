@@ -24,4 +24,4 @@ class Random(Component):
         return sequence
 
     def salt(self):
-        return hexlify(urandom(32))
+        return hexlify(urandom(64))

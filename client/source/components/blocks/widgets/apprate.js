@@ -22,6 +22,7 @@ const Form = Styled.div`
 const Textarea = Styled.textarea`
     resize: none;
     min-width: 75%;
+    font-size: ${props => props.theme[tc.normalu]};
     min-height: ${props => props.theme[tc.oahpbu]};
 `
 
