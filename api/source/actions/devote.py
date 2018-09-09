@@ -16,10 +16,6 @@ class Devote(Crypto):
         setting = {
             Setting.NAME_CHOSE_PERIOD:
                 Setting.get(Setting.NAME_CHOSE_PERIOD),
-            Setting.NAME_SHARE_TITLE:
-                Setting.get(Setting.NAME_SHARE_TITLE),
-            Setting.NAME_DISCLAIMER_TEXT:
-                Setting.get(Setting.NAME_DISCLAIMER_TEXT),
         }
         return {
             'shaders': shaders,

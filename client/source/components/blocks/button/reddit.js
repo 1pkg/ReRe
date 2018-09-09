@@ -16,7 +16,7 @@ export default class extends React.Component {
             <RedditShareButton
                 url={Url.current()}
                 onShareWindowClose={this.share}
-                title={this.props.settings['share-title']}
+                title={SHARE_TITLE}
             >
                 <Button glyph={FaRedditAlien} hint={'share'} />
             </RedditShareButton>

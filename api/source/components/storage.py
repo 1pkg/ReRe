@@ -1,18 +1,11 @@
-from base import Constant, Component
+from base import Component, Storage as _Storage_
 
 
 class Storage(Component):
     def set(self, key, value, expire=None):
-        settings = self._application.settings
-        default_expire = settings[Constant.SETTING_IDENTITY_TIMEOUT]
-        expire = expire if expire is not None else default_expire
-        cache = self._application.extensions['cache']
-        cache.set(key, value, expire)
+        _Storage_.hmset(key, value)
+        if expire is not None:
+            _Storage_.expire(key, int(expire))
 
     def get(self, key):
-        cache = self._application.extensions['cache']
-        return cache.get(key)
-
-    def delete(self, key):
-        cache = self._application.extensions['cache']
-        return cache.delete(key)
+        return _Storage_.hgetall(key)

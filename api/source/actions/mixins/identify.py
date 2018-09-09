@@ -15,11 +15,13 @@ class Identify(Access):
                 or not validator.isnumeric(identity['timestamp']) \
                 or 'task_id' not in identity \
                 or not validator.isnumeric(identity['task_id']) \
+                or 'answered' not in identity \
+                or not validator.isboolean(identity['answered']) \
                 or 'token' not in identity \
                 or self._session.token != identity['token']:
             raise _Identity_()
 
-        self._timestamp = int(identity['timestamp'])
+        self._timestamp = float(identity['timestamp'])
         self._task = Task.query.get(int(identity['task_id']))
         if self._task is None:
             raise _Identity_()

@@ -24,12 +24,12 @@ pycrypto==2.6.1
 Pygments==2.2.0
 python-dateutil==2.7.3
 python-editor==1.0.3
-python-slugify==1.2.5
+python-slugify==1.2.6
 redis==2.10.6
 requirements==0.1
 setproctitle==1.1.10
 six==1.11.0
-SQLAlchemy==1.2.10
+SQLAlchemy==1.2.11
 sqlparse==0.2.4
 tabulate==0.8.2
 terminaltables==3.1.0

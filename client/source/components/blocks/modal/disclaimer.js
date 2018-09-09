@@ -36,9 +36,7 @@ export default class extends React.Component {
                 <Simple glyph={FaInfo} hint={'info'} action={this.show} />
                 <Modal
                     title={'Disclaimer'}
-                    content={
-                        <Text>{this.props.settings['disclaimer-text']}</Text>
-                    }
+                    content={<Text>{DISCLAIMER_TEXT}</Text>}
                     active={+this.state.active}
                     close={this.hide}
                 />

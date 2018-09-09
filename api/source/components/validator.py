@@ -11,7 +11,7 @@ class Validator(Component):
 
     def isnumeric(self, value, positive=True):
         try:
-            value = int(value)
+            value = float(value)
             if positive:
                 return value > 0
             return True

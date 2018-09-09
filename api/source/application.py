@@ -63,6 +63,9 @@ class Application:
                 except Exception as exception:
                     time.sleep(self.settings[const.SETTING_DEFAULT_SLEEP_TIME])
 
+            self.redis = base.Storage
+            self.redis.init_app(instance, decode_responses=True)
+
             flask_cors.CORS(instance)
 
             self.extensions = {}

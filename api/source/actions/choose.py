@@ -1,10 +1,10 @@
 from base import Constant
 from errors import Request
 from models import Answer, Setting
-from .mixins import Crypto, Identify, Score
+from .mixins import Crypto, Identify, Registration, Score
 
 
-class Choose(Identify, Crypto, Score):
+class Choose(Identify, Registration, Crypto, Score):
     CONNECTION_LIMIT = Constant.RIGID_CONNECTION_LIMIT
     CACHE_EXPIRE = None
 
@@ -26,7 +26,6 @@ class Choose(Identify, Crypto, Score):
     def _process(self, request):
         db = self._application.db
         datetime = self._application.datetime
-        storage = self._application.storage
         settings = self._application.settings
 
         if self.__option != -1:
@@ -48,7 +47,6 @@ class Choose(Identify, Crypto, Score):
             -settings[Constant.SETTING_BIG_SCORE_UNIT],
             False
         )
-        storage.delete(self._session.token)
 
         option = self.__index(
             self._task.options,
@@ -63,6 +61,7 @@ class Choose(Identify, Crypto, Score):
         )
         db.session.add(answer)
         db.session.commit()
+        super()._registrate(self._task, True)
         return {
             'result': result,
             'option': option,

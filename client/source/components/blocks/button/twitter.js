@@ -16,7 +16,7 @@ export default class extends React.Component {
             <TwitterShareButton
                 url={Url.current()}
                 onShareWindowClose={this.share}
-                title={this.props.settings['share-title']}
+                title={SHARE_TITLE}
             >
                 <Button glyph={FaTwitter} hint={'share'} />
             </TwitterShareButton>

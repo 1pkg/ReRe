@@ -8,10 +8,10 @@ from models import \
     Subject, \
     Task, \
     Type
-from .mixins import Crypto, FSingleIdent, Identify, Score
+from .mixins import Crypto, FSingle, Identify, Registration, Score
 
 
-class Fetch(FSingleIdent, Crypto, Score):
+class Fetch(Registration, FSingle, Crypto, Score):
     CONNECTION_LIMIT = Constant.RIGID_CONNECTION_LIMIT
     CACHE_EXPIRE = None
 
@@ -43,7 +43,8 @@ class Fetch(FSingleIdent, Crypto, Score):
                 .first()
             task = task if answer is None else None
 
-        return self.__bynew() if task is None else task
+        task = self.__bynew() if task is None else task
+        return super()._registrate(task, False)
 
     def _calculate(self, request, unit):
         # super duper hack
@@ -57,16 +58,17 @@ class Fetch(FSingleIdent, Crypto, Score):
         db = self._application.db
         storage = self._application.storage
         identity = storage.get(self._session.token)
-        task = Task.query.get(int(identity['task_id']))
-        answer = Answer(
-            result=False,
-            task_id=task.id,
-            option_id=None,
-            session_id=self._session.id,
-        )
-        db.session.add(answer)
-        db.session.commit()
-        super()._calculate(unit, True)
+        if not bool(int(identity['answered'])):
+            task = Task.query.get(int(identity['task_id']))
+            answer = Answer(
+                result=False,
+                task_id=task.id,
+                option_id=None,
+                session_id=self._session.id,
+            )
+            db.session.add(answer)
+            db.session.commit()
+            super()._calculate(unit, True)
 
     def __bylabel(self, label):
         db = self._application.db
