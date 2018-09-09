@@ -1,14 +1,21 @@
-import { bind, startCase } from 'lodash'
-import faker from 'faker'
+import { bind } from 'lodash'
 import React from 'react'
 import { findDOMNode } from 'react-dom'
-import { FaCheck, FaRedo, FaTimes, FaUser, FaUserSecret } from 'react-icons/fa'
-import FacebookAuth from 'react-facebook-auth'
+import {
+    FaCheck,
+    FaFacebookF,
+    FaRedo,
+    FaTimes,
+    FaUser,
+    FaUserSecret,
+} from 'react-icons/fa'
+import FacebookLogin from 'react-facebook-login/dist/facebook-login-render-props'
 import Styled from 'styled-components'
 
 import Trigger from '~/actions/trigger'
 import dispatch from '~/dispatch'
-import { Beacon, Fbauth, Simple } from './../blocks/button'
+import { Identify } from '~/helpers'
+import { Beacon, Simple } from './../blocks/button'
 import { Copyright } from './../blocks/other'
 import { tc } from '~/theme'
 
@@ -83,18 +90,24 @@ export default class extends React.Component {
     }
 
     facebook = async response => {
-        console.log(response)
+        await this.props.trigger.call(
+            Trigger.ACTION_HANDSHAKE,
+            response.name,
+            response.userID,
+        )
+        dispatch(this.props.trigger)
     }
 
     change = full => {
         this.setState(state => {
-            return { ...state, error: false, alias: this.alias(), full }
+            this.realias()
+            return { ...state, full }
         })
     }
 
     realias = () => {
         this.setState(state => {
-            return { ...state, error: false, alias: this.alias() }
+            return { ...state, error: false, alias: Identify.alias() }
         })
     }
 
@@ -108,11 +121,7 @@ export default class extends React.Component {
 
     constructor(props) {
         super(props)
-        this.state = { error: false, alias: this.alias(), full: false }
-    }
-
-    alias() {
-        return `${faker.name.prefix()} ${startCase(faker.random.words())}`
+        this.state = { error: false, alias: Identify.alias(), full: false }
     }
 
     input() {
@@ -166,10 +175,16 @@ export default class extends React.Component {
             <Container>
                 <Copyright />
                 <BorderWrapper>
-                    <FacebookAuth
+                    <FacebookLogin
                         appId={FACEBOOK_ID}
                         callback={this.facebook}
-                        component={Fbauth}
+                        render={props => (
+                            <Beacon
+                                glyph={FaFacebookF}
+                                hint="login via facebook"
+                                action={props.onClick}
+                            />
+                        )}
                     />
                     <Beacon
                         glyph={FaUser}

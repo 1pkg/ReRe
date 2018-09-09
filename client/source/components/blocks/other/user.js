@@ -10,8 +10,9 @@ import { tc } from '~/theme'
 
 const Container = Styled.div`
     position: absolute;
-    left: 0vw;
+    left: 100vw;
     top: 0vh;
+    transform: translateX(-125%);
 `
 
 const Wrapper = Styled.div`
@@ -21,9 +22,9 @@ const Wrapper = Styled.div`
 `
 
 const Text = Styled.div`
-    font-size: ${props => props.theme[tc.snu]};
     text-align: center;
-    margin-left: ${props => props.theme[tc.smallu]}; 
+    font-size: ${props => props.theme[tc.smallu]};
+    margin-right: ${props => props.theme[tc.smallu]}; 
 `
 
 export default class extends React.Component {
@@ -52,12 +53,12 @@ export default class extends React.Component {
         return (
             <Container>
                 <Wrapper>
+                    <Text>{this.props.alias}</Text>
                     <Simple
                         glyph={FaDoorOpen}
                         hint="logout"
                         action={this.logout}
                     />
-                    <Text>{this.props.alias}</Text>
                 </Wrapper>
             </Container>
         )
