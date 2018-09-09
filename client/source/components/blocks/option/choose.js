@@ -9,6 +9,12 @@ export default class extends React.Component {
     }
 
     render() {
-        return <Option option={this.props.option} action={this.choose} />
+        return (
+            <Option
+                option={this.props.option}
+                action={this.choose}
+                disabled={null}
+            />
+        )
     }
 }

@@ -2,21 +2,14 @@ import { bind, startCase } from 'lodash'
 import faker from 'faker'
 import React from 'react'
 import { findDOMNode } from 'react-dom'
-import {
-    FaCheck,
-    FaFacebookF,
-    FaRedo,
-    FaTimes,
-    FaUser,
-    FaUserSecret,
-} from 'react-icons/fa'
+import { FaCheck, FaRedo, FaTimes, FaUser, FaUserSecret } from 'react-icons/fa'
 import FacebookAuth from 'react-facebook-auth'
 import Styled from 'styled-components'
 
 import Trigger from '~/actions/trigger'
 import dispatch from '~/dispatch'
-import { Copyright } from './../blocks/widgets'
-import Button from './../blocks/widgets/button'
+import { Beacon, Fbauth, Simple } from './../blocks/button'
+import { Copyright } from './../blocks/other'
 import { tc } from '~/theme'
 
 const Container = Styled.div`
@@ -45,39 +38,6 @@ const BorderWrapper = Styled(Wrapper)`
         ${props => props.theme[tc.activec]};
 `
 
-const FaFacebookFStyled = Styled(FaFacebookF)`
-    height: ${props => props.theme[tc.dbu]};
-    width: ${props => props.theme[tc.dbu]};
-`
-
-const FaUserStyled = Styled(FaUser)`
-    height: ${props => props.theme[tc.dbu]};
-    width: ${props => props.theme[tc.dbu]};
-`
-
-const FaUserSecretStyled = Styled(FaUserSecret)`
-    height: ${props => props.theme[tc.dbu]};
-    width: ${props => props.theme[tc.dbu]};
-`
-
-const FaRedoStyled = Styled(FaRedo)`
-    height: ${props => props.theme[tc.snu]};
-    width: ${props => props.theme[tc.snu]};
-    margin: ${props => props.theme[tc.smallu]};
-`
-
-const FaCheckStyled = Styled(FaCheck)`
-    height: ${props => props.theme[tc.snu]};
-    width: ${props => props.theme[tc.snu]};
-    margin: ${props => props.theme[tc.smallu]};
-`
-
-const FaTimesStyled = Styled(FaTimes)`
-    height: ${props => props.theme[tc.snu]};
-    width: ${props => props.theme[tc.snu]};
-    margin: ${props => props.theme[tc.smallu]};
-`
-
 const Input = Styled.input`
     font-size: ${props => props.theme[tc.snu]};
     text-align: center;
@@ -99,18 +59,6 @@ const ErrorMinorText = Styled.div`
     color: ${props => props.theme[tc.activec]};
 `
 
-class FacebookButton extends React.Component {
-    render() {
-        return (
-            <Button
-                glyph={<FaFacebookFStyled />}
-                hint="login via facebook"
-                hbig={true}
-            />
-        )
-    }
-}
-
 export default class extends React.Component {
     skip = async () => {
         await this.props.trigger.call(Trigger.ACTION_HANDSHAKE, 'Anonymous')
@@ -126,9 +74,9 @@ export default class extends React.Component {
         } else {
             this.setState(state => {
                 return {
+                    ...state,
                     error: true,
                     alias: input.value,
-                    full: state.full,
                 }
             })
         }
@@ -140,13 +88,13 @@ export default class extends React.Component {
 
     change = full => {
         this.setState(state => {
-            return { error: false, alias: this.alias(), full }
+            return { ...state, error: false, alias: this.alias(), full }
         })
     }
 
     realias = () => {
         this.setState(state => {
-            return { error: false, alias: this.alias(), full: state.full }
+            return { ...state, error: false, alias: this.alias() }
         })
     }
 
@@ -154,11 +102,7 @@ export default class extends React.Component {
         let node = findDOMNode(this)
         let input = node.querySelector('input')
         this.setState(state => {
-            return {
-                error: state.error,
-                alias: input.value,
-                full: state.full,
-            }
+            return { ...state, alias: input.value }
         })
     }
 
@@ -171,66 +115,48 @@ export default class extends React.Component {
         return `${faker.name.prefix()} ${startCase(faker.random.words())}`
     }
 
+    input() {
+        if (this.state.error) {
+            return (
+                <GapWrapper>
+                    <ErrorInput
+                        type="text"
+                        value={this.state.alias}
+                        onChange={this.handle}
+                        placeholder="your username"
+                    />
+                    <ErrorMinorText>please type something</ErrorMinorText>
+                </GapWrapper>
+            )
+        } else {
+            return (
+                <GapWrapper>
+                    <Input
+                        type="text"
+                        value={this.state.alias}
+                        onChange={this.handle}
+                        placeholder="your username"
+                    />
+                </GapWrapper>
+            )
+        }
+    }
+
     form() {
         if (this.state.full) {
-            if (this.state.error) {
-                return (
-                    <Wrapper>
-                        <Container>
-                            <Button
-                                glyph={<FaRedoStyled />}
-                                action={this.realias}
-                            />
-                            <Button
-                                glyph={<FaCheckStyled />}
-                                action={this.submit}
-                            />
-                            <Button
-                                glyph={<FaTimesStyled />}
-                                action={bind(this.change, null, false)}
-                            />
-                        </Container>
-                        <GapWrapper>
-                            <ErrorInput
-                                type="text"
-                                value={this.state.alias}
-                                onChange={this.handle}
-                                placeholder="your username"
-                            />
-                            <ErrorMinorText>
-                                please type something
-                            </ErrorMinorText>
-                        </GapWrapper>
-                    </Wrapper>
-                )
-            } else {
-                return (
-                    <Wrapper>
-                        <Container>
-                            <Button
-                                glyph={<FaRedoStyled />}
-                                action={this.realias}
-                            />
-                            <Button
-                                glyph={<FaCheckStyled />}
-                                action={this.submit}
-                            />
-                            <Button
-                                glyph={<FaTimesStyled />}
-                                action={bind(this.change, null, false)}
-                            />
-                        </Container>
-                        <GapWrapper>
-                            <Input
-                                type="text"
-                                value={this.state.alias}
-                                onChange={this.handle}
-                                placeholder="your username"
-                            />
-                        </GapWrapper>
-                    </Wrapper>
-                )
-            }
+            return (
+                <Wrapper>
+                    <Container>
+                        <Simple glyph={FaRedo} action={this.realias} />
+                        <Simple glyph={FaCheck} action={this.submit} />
+                        <Simple
+                            glyph={FaTimes}
+                            action={bind(this.change, null, false)}
+                        />
+                    </Container>
+                    {this.input()}
+                </Wrapper>
+            )
         }
         return null
     }
@@ -243,19 +169,17 @@ export default class extends React.Component {
                     <FacebookAuth
                         appId={FACEBOOK_ID}
                         callback={this.facebook}
-                        component={FacebookButton}
+                        component={Fbauth}
                     />
-                    <Button
-                        glyph={<FaUserStyled />}
-                        action={bind(this.change, null, true)}
+                    <Beacon
+                        glyph={FaUser}
                         hint="login via username"
-                        hbig={true}
+                        action={bind(this.change, null, true)}
                     />
-                    <Button
-                        glyph={<FaUserSecretStyled />}
-                        action={this.skip}
+                    <Beacon
+                        glyph={FaUserSecret}
                         hint="skip login"
-                        hbig={true}
+                        action={this.skip}
                     />
                 </BorderWrapper>
                 <Wrapper>{this.form()}</Wrapper>

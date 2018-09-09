@@ -1,7 +1,7 @@
 import React from 'react'
 import Styled from 'styled-components'
 
-import { Copyright } from './../blocks/widgets'
+import { Copyright } from './../blocks/other'
 import { tc } from '~/theme'
 
 const MainContainer = Styled.div`

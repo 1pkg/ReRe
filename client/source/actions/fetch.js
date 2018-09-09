@@ -18,6 +18,6 @@ export default async (trigger, label = '') => {
     state.timestamp = Timestamp.current()
     state.status = Trigger.STATUS_ACTIVE
     trigger.push(Trigger.ACTION_FETCH, state)
-    state = await trigger.call(Trigger.ACTION_STAT)
+    state = await trigger.call(Trigger.ACTION_SPECIFY)
     return state
 }

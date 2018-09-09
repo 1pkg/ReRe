@@ -1,7 +1,7 @@
 from json import dumps
 
 from base import Action
-from models import Answer
+from models import Answer, Mark, Type
 
 
 class FSingle(Action):
@@ -21,17 +21,19 @@ class FSingle(Action):
             'name': effect.name,
         } for effect in task.effects]
         label = task.label
-        complexity = self._complexity(task)
+        simplicity = self._simplicity(task)
+        popularity = self._popularity(task)
         task = {
             'options': options,
             'subject': subject,
             'effects': effects,
             'label': label,
-            'complexity': complexity,
+            'simplicity': simplicity,
+            'popularity': popularity,
         }
         return super()._format(task)
 
-    def _complexity(self, task):
+    def _simplicity(self, task):
         total_count = Answer.query\
             .filter(Answer.task_id == task.id)\
             .count()
@@ -43,3 +45,9 @@ class FSingle(Action):
             return int(resulted_count / total_count * 100.0)
         else:
             return 0
+
+    def _popularity(self, task):
+        return Mark.query\
+            .filter(Mark.task_id == task.id)\
+            .filter(Mark.type == Type.upvote)\
+            .count()

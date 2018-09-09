@@ -6,24 +6,24 @@ import {
     feedback,
     fetch,
     handshake,
-    land,
+    home,
     mark,
+    rating,
     remake,
     report,
     share,
+    specify,
     splash,
-    stat,
-    table,
 } from '~/actions'
 import { Analytic } from '~/helpers'
 
 export default class Trigger {
     static STATUS_ACTIVE = 'status-active'
     static STATUS_CORRECT = 'status-correct'
-    static STATUS_LAND = 'status-land'
+    static STATUS_HOME = 'status-home'
     static STATUS_LOGIN = 'status-login'
+    static STATUS_RATING = 'status-rating'
     static STATUS_SPLASH = 'status-splash'
-    static STATUS_TABLE = 'status-table'
     static STATUS_WAIT = 'status-wait'
     static STATUS_WRONG = 'status-wrong'
     static STATUS_ERROR = 'status-error'
@@ -33,14 +33,14 @@ export default class Trigger {
     static ACTION_FEEDBACK = 'action-feedback'
     static ACTION_FETCH = 'action-fetch'
     static ACTION_HANDSHAKE = 'action-handshake'
-    static ACTION_LAND = 'action-land'
+    static ACTION_HOME = 'action-home'
     static ACTION_MARK = 'action-mark'
     static ACTION_REMAKE = 'action-remake'
+    static ACTION_RATING = 'action-rating'
     static ACTION_REPORT = 'action-report'
     static ACTION_SHARE = 'action-share'
+    static ACTION_SPECIFY = 'action-specify'
     static ACTION_SPLASH = 'action-splash'
-    static ACTION_STAT = 'action-stat'
-    static ACTION_TABLE = 'action-table'
 
     static ACTION_LOGIN = 'action-login'
     static ACTION_LOGOUT = 'action-logout'
@@ -56,14 +56,14 @@ export default class Trigger {
             [Trigger.ACTION_FEEDBACK]: feedback,
             [Trigger.ACTION_FETCH]: fetch,
             [Trigger.ACTION_HANDSHAKE]: handshake,
-            [Trigger.ACTION_LAND]: land,
+            [Trigger.ACTION_HOME]: home,
             [Trigger.ACTION_MARK]: mark,
+            [Trigger.ACTION_RATING]: rating,
             [Trigger.ACTION_REMAKE]: remake,
             [Trigger.ACTION_REPORT]: report,
             [Trigger.ACTION_SHARE]: share,
             [Trigger.ACTION_SPLASH]: splash,
-            [Trigger.ACTION_STAT]: stat,
-            [Trigger.ACTION_TABLE]: table,
+            [Trigger.ACTION_SPECIFY]: specify,
         }
     }
 

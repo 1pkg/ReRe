@@ -5,7 +5,7 @@ from base import Alchemy
 
 
 class Type(Enum):
-    star = 'star'
+    upvote = 'upvote'
     report = 'report'
 
     def __str__(self):

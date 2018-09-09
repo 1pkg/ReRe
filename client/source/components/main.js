@@ -9,12 +9,12 @@ import Trigger from '~/actions/trigger'
 import { Analytic, Revenue } from '~/helpers'
 import {
     Choose,
-    Landing,
+    Home,
     Login,
     Maintenance,
+    Rating,
     Result,
     Splash,
-    Table,
     Update,
     Wait,
 } from './scenes'
@@ -52,20 +52,20 @@ export default connect(state => {
                     Analytic.view(Analytic.VIEW_SPASH)
                     return <Splash trigger={trigger} state={state} />
 
-                case Trigger.STATUS_LAND:
+                case Trigger.STATUS_HOME:
                     Revenue.resume()
-                    Analytic.view(Analytic.VIEW_LAND)
-                    return <Landing trigger={trigger} state={state} />
+                    Analytic.view(Analytic.VIEW_HOME)
+                    return <Home trigger={trigger} state={state} />
 
                 case Trigger.STATUS_LOGIN:
                     Revenue.pause()
                     Analytic.view(Analytic.VIEW_LOGIN)
                     return <Login trigger={trigger} state={state} />
 
-                case Trigger.STATUS_TABLE:
+                case Trigger.STATUS_RATING:
                     Revenue.resume()
-                    Analytic.view(Analytic.VIEW_TABLE)
-                    return <Table trigger={trigger} state={state} />
+                    Analytic.view(Analytic.VIEW_RATING)
+                    return <Rating trigger={trigger} state={state} />
 
                 case Trigger.STATUS_ACTIVE:
                     Revenue.resume()

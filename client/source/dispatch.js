@@ -13,8 +13,8 @@ export default async trigger => {
     if (!('settings' in state || 'shaders' in state)) {
         state = await trigger.call(Trigger.ACTION_DEVOTE)
     }
-    if (!('stat' in state)) {
-        state = await trigger.call(Trigger.ACTION_STAT)
+    if (!('stats' in state)) {
+        state = await trigger.call(Trigger.ACTION_SPECIFY)
     }
 
     let purl = Url.parse()
@@ -26,18 +26,18 @@ export default async trigger => {
         await trigger.push(Trigger.ACTION_STORE, state)
         History.push(state.task.label)
     } else if (
-        state.status === Trigger.STATUS_LAND ||
-        state.status === Trigger.STATUS_TABLE
+        state.status === Trigger.STATUS_HOME ||
+        state.status === Trigger.STATUS_RATING
     ) {
         await trigger.push(Trigger.ACTION_STORE, state)
         History.push(state.status)
     } else if (purl && purl.query && 'l' in purl.query) {
         await trigger.call(Trigger.ACTION_FETCH, purl.query.l)
     } else if (purl && purl.pathname) {
-        if (purl.pathname == `/${History.ROUTE_HOME}`) {
-            await trigger.call(Trigger.ACTION_LAND)
-        } else if (purl.pathname == `/${History.ROUTE_RATING}`) {
-            await trigger.call(Trigger.ACTION_TABLE)
+        if (purl.pathname == History.ROUTE_HOME) {
+            await trigger.call(Trigger.ACTION_HOME)
+        } else if (purl.pathname == History.ROUTE_RATING) {
+            await trigger.call(Trigger.ACTION_RATING)
         } else {
             await trigger.call(Trigger.ACTION_SPLASH)
         }

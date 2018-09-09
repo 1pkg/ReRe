@@ -24,7 +24,7 @@ const Container = Styled.div`
     opacity: ${props => (props.disabled ? 0.5 : 1.0)};
     @media screen and (orientation:landscape) {
         padding:
-            ${props => (props.mob ? props.theme[tc.zu] : props.theme[tc.hsu])};
+            ${props => (props.tmb ? props.theme[tc.zu] : props.theme[tc.hsu])};
     }
 `
 
@@ -40,7 +40,7 @@ const TitleContainer = Styled.div`
     };
     @media screen and (orientation:landscape) {
         margin-bottom:
-            ${props => (props.mob ? props.theme[tc.zu] : props.theme[tc.hsu])};
+            ${props => (props.tmb ? props.theme[tc.zu] : props.theme[tc.hsu])};
     }
 `
 
@@ -61,7 +61,7 @@ const Text = Styled.div`
     text-align: justify;
     overflow: hidden;
     @media screen and (orientation:landscape) {
-        display: ${props => (props.mob ? 'none' : 'auto')};
+        display: ${props => (props.tmb ? 'none' : 'auto')};
     }
 `
 
@@ -70,9 +70,9 @@ const Source = Styled.div`
     font-size: ${props => props.theme[tc.smallu]};
     margin-top: ${props => props.theme[tc.hsu]};
     @media screen and (orientation:landscape) {
-        text-align: ${props => (props.mob ? 'center' : 'right')};
+        text-align: ${props => (props.tmb ? 'center' : 'right')};
         margin-top:
-            ${props => (props.mob ? props.theme[tc.zu] : props.theme[tc.hsu])};
+            ${props => (props.tmb ? props.theme[tc.zu] : props.theme[tc.hsu])};
     }
 `
 
@@ -123,21 +123,21 @@ export default class extends React.Component {
     render() {
         return (
             <Container
-                mob={!Device.tablet() && Device.mobile()}
+                tmb={!Device.tablet() && Device.mobile()}
                 disabled={this.props.disabled}
             >
                 <TitleContainer
-                    mob={!Device.tablet() && Device.mobile()}
-                    disabled={this.props.disabled}
-                    onClick={this.eventchoose}
+                    tmb={!Device.tablet() && Device.mobile()}
+                    disabled={+this.props.disabled}
+                    onClick={this.props.eventchoose}
                 >
                     <MainTitle>{this.title()}</MainTitle>
                     <SubTitle>{this.subtile()}</SubTitle>
                 </TitleContainer>
-                <Text mob={!Device.tablet() && Device.mobile()}>
+                <Text tmb={!Device.tablet() && Device.mobile()}>
                     {this.text()}
                 </Text>
-                <Source mob={!Device.tablet() && Device.mobile()}>
+                <Source tmb={!Device.tablet() && Device.mobile()}>
                     {this.source()}
                 </Source>
             </Container>

@@ -6,19 +6,13 @@ import { Surface } from 'gl-react-dom'
 import Styled from 'styled-components'
 
 import { Analytic } from '~/helpers'
-import { Effect } from './../widgets'
+import Effect from './shader'
 
 const Container = Styled.div`
     flex: 1 1 0;
     max-width: 100vw;
     max-height: 100vh;
     overflow: hidden;
-`
-
-const Image = Styled.img`
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
 `
 
 export default class extends React.Component {
@@ -51,7 +45,7 @@ export default class extends React.Component {
         return `${SCHEMA}://${IMAGE_URL}/${this.props.subject.link}`
     }
 
-    effect() {
+    source() {
         let Subject = (
             <GLReactImage
                 source={this.link()}
@@ -60,22 +54,12 @@ export default class extends React.Component {
                 resizeMode="cover"
             />
         )
-        for (let effect of this.props.effects) {
-            let shader = find(
+        if (this.props.effects && this.props.effects.length) {
+            Subject = this.apply(
+                Subject,
+                this.props.effects,
                 this.props.shaders,
-                shader => shader.name === effect.name,
             )
-            if (Subject && shader) {
-                Subject = (
-                    <Effect
-                        width={this.state.width}
-                        height={this.state.height}
-                        shader={shader}
-                    >
-                        {Subject}
-                    </Effect>
-                )
-            }
         }
         return (
             <Surface
@@ -89,19 +73,26 @@ export default class extends React.Component {
         )
     }
 
-    source() {
-        return (
-            <Image
-                src={this.link()}
-                width={this.state.width}
-                height={this.state.height}
-                onLoad={this.fit}
-            />
-        )
+    apply(subject, effects, shaders) {
+        let Subject = subject
+        for (let effect of effects) {
+            let shader = find(shaders, shader => shader.name === effect.name)
+            if (Subject && shader) {
+                Subject = (
+                    <Effect
+                        width={this.state.width}
+                        height={this.state.height}
+                        shader={shader}
+                    >
+                        {Subject}
+                    </Effect>
+                )
+            }
+        }
+        return Subject
     }
 
     render() {
-        let effect = 'effects' in this.props && this.props.effects.length
-        return <Container>{effect ? this.effect() : this.source()}</Container>
+        return <Container>{this.source()}</Container>
     }
 }

@@ -3,14 +3,15 @@ from .devote import Devote
 from .feedback import Feedback
 from .fetch import Fetch
 from .handshake import Handshake
-from .land import Land
+from .home import Home
 from .mark import Mark
+from .rating import Rating
 from .remake import Remake
 from .report import Report
 from .share import Share
+from .specify import Specify
 from .splash import Splash
-from .stat import Stat
-from .table import Table
+
 
 __all__ = [
     'Choose',
@@ -18,12 +19,12 @@ __all__ = [
     'Feedback',
     'Fetch',
     'Handshake',
-    'Land',
+    'Home',
     'Mark',
+    'Rating',
     'Remake',
     'Report',
     'Share',
+    'Specify',
     'Splash',
-    'Stat',
-    'Table',
 ]

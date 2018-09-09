@@ -4,7 +4,7 @@ import Styled from 'styled-components'
 
 import Trigger from '~/actions/trigger'
 import { Analytic, Device } from '~/helpers'
-import { Carousel, Stat } from './../blocks/widgets'
+import { Carousel, Panel } from './../blocks/widgets'
 import { tc } from '~/theme'
 
 const MainContainer = Styled.div`
@@ -58,7 +58,7 @@ export default class self extends React.Component {
             setTimeout(() => window.dispatchEvent(new Event('resize')))
             self.full = true
             Analytic.event(Analytic.EVENT_SWIPE, { direction: 'expand' })
-            return { full: self.full }
+            return { ...state, full: self.full }
         })
     }
 
@@ -67,7 +67,7 @@ export default class self extends React.Component {
             setTimeout(() => window.dispatchEvent(new Event('resize')))
             self.full = false
             Analytic.event(Analytic.EVENT_SWIPE, { direction: 'colapse' })
-            return { full: self.full }
+            return { ...state, full: self.full }
         })
     }
 
@@ -75,7 +75,7 @@ export default class self extends React.Component {
         this.setState(state => {
             setTimeout(() => window.dispatchEvent(new Event('resize')))
             self.full = !state.full
-            return { full: self.full }
+            return { ...state, full: self.full }
         })
     }
 
@@ -97,8 +97,8 @@ export default class self extends React.Component {
                     {this.props.subject}
                 </SwipeableSubjectContainer>
                 <StatContainer>
-                    <Stat
-                        stat={this.props.state.stat}
+                    <Panel
+                        stats={this.props.state.stats}
                         task={this.props.state.task}
                     />
                 </StatContainer>
@@ -106,10 +106,11 @@ export default class self extends React.Component {
                     <Toolbar
                         trigger={this.props.trigger}
                         settings={this.props.state.settings}
+                        stats={this.props.state.stats}
                         label={this.props.state.task.label}
                         handled={this.props.state.task.handled}
                         timestamp={this.props.state.timestamp}
-                        full={this.state.full}
+                        full={+this.state.full}
                         toggle={this.toggle}
                     />
                 </ToolbarContainer>
@@ -129,12 +130,12 @@ export default class self extends React.Component {
         const Toolbar = this.props.toolbar
         return (
             <MainContainer>
-                <SubjectContainer full={this.state.full}>
+                <SubjectContainer full={+this.state.full}>
                     {this.props.subject}
                 </SubjectContainer>
                 <StatContainer>
-                    <Stat
-                        stat={this.props.state.stat}
+                    <Panel
+                        stats={this.props.state.stats}
                         task={this.props.state.task}
                     />
                 </StatContainer>
@@ -142,10 +143,11 @@ export default class self extends React.Component {
                     <Toolbar
                         trigger={this.props.trigger}
                         settings={this.props.state.settings}
+                        stats={this.props.state.stats}
                         label={this.props.state.task.label}
                         handled={this.props.state.task.handled}
                         timestamp={this.props.state.timestamp}
-                        full={this.state.full}
+                        full={+this.state.full}
                         toggle={this.toggle}
                     />
                 </ToolbarContainer>

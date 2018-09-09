@@ -32,8 +32,11 @@ class Choose(Identify, Crypto, Score):
         if self.__option != -1:
             choosen = self._task.options[self.__option - 1]
             result = \
-                datetime.timestamp() - self._timestamp \
-                < Setting.get(Setting.NAME_CHOSE_PERIOD) \
+                (datetime.timestamp() - self._timestamp) \
+                < (
+                    Setting.get(Setting.NAME_CHOSE_PERIOD) /
+                    self._session.account.factor
+                ) \
                 and self._task.subject.option.id == choosen.id
         else:
             choosen = None

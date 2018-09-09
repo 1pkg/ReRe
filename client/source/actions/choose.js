@@ -17,6 +17,6 @@ export default async (trigger, option) => {
     state.timestamp = null
     state.status = data.result ? Trigger.STATUS_CORRECT : Trigger.STATUS_WRONG
     trigger.push(Trigger.ACTION_CHOOSE, state)
-    state = await trigger.call(Trigger.ACTION_STAT)
+    state = await trigger.call(Trigger.ACTION_SPECIFY)
     return state
 }

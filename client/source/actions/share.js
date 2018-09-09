@@ -12,6 +12,6 @@ export default async (trigger, media) => {
     await Http.process(Trigger.ACTION_SHARE, { token, media })
     state.status = oldstatus
     trigger.push(Trigger.ACTION_SHARE, state)
-    state = await trigger.call(Trigger.ACTION_STAT)
+    state = await trigger.call(Trigger.ACTION_SPECIFY)
     return state
 }

@@ -1,15 +1,8 @@
 import React from 'react'
 
-import {
-    Disclaimer,
-    Fetch,
-    Land,
-    Report,
-    Star,
-    Table,
-    Toggle,
-} from './../widgets'
 import Toolbar from './base'
+import { Fetch, Home, Rating, Toggle, Upvote } from './../button'
+import { Disclaimer, Report } from './../modal'
 
 export default class extends React.Component {
     render() {
@@ -17,10 +10,10 @@ export default class extends React.Component {
             <Toolbar
                 actions={{
                     Toggle,
-                    Star,
+                    Upvote,
                     Disclaimer,
-                    Table,
-                    Land,
+                    Rating,
+                    Home,
                     Report,
                     Fetch,
                 }}

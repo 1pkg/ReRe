@@ -97,7 +97,7 @@ class Fetch(FSingleIdent, Crypto, Score):
             .group_by(Task.id) \
             .order_by(
                 db.desc(
-                    db.func.count(Mark.type == Type.star) -
+                    db.func.count(Mark.type == Type.upvote) -
                     db.func.count(Mark.type == Type.report) +
                     (db.func.count(Answer.option_id != None) / 2) -
                     (db.func.count(Answer.option_id == None) * 2),

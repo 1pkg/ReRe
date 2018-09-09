@@ -7,21 +7,21 @@ import Trigger from '~/actions/trigger'
 export default class self {
     static history = Env.cordova() ? new NativeHistory() : new BrowserHistory()
 
-    static ROUTE_HOME = 'home'
-    static ROUTE_RATING = 'rating'
-    static ROUTE_RECT = 'rect'
+    static ROUTE_HOME = '/home'
+    static ROUTE_RATING = '/rating'
+    static ROUTE_RECT = '/rect'
 
     static push(label) {
-        if (label == Trigger.STATUS_LAND) {
-            self.history.push(`/${self.ROUTE_HOME}`, {
-                location: Trigger.STATUS_LAND,
+        if (label == Trigger.STATUS_HOME) {
+            self.history.push(self.ROUTE_HOME, {
+                location: Trigger.STATUS_HOME,
             })
-        } else if (label == Trigger.STATUS_TABLE) {
-            self.history.push(`/${self.ROUTE_RATING}`, {
-                location: Trigger.STATUS_TABLE,
+        } else if (label == Trigger.STATUS_RATING) {
+            self.history.push(self.ROUTE_RATING, {
+                location: Trigger.STATUS_RATING,
             })
         } else {
-            self.history.push(`/${self.ROUTE_RECT}/?l=${label}`, { label })
+            self.history.push(`${self.ROUTE_RECT}/?l=${label}`, { label })
         }
     }
 
@@ -36,7 +36,7 @@ export default class self {
             } else if (location.state && 'location' in location.state) {
                 handler(location.state.location)
             } else {
-                handler(Trigger.STATUS_LAND)
+                handler(Trigger.STATUS_HOME)
             }
         })
     }
