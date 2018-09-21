@@ -4,7 +4,7 @@ import Styled from 'styled-components'
 import Trigger from '~/actions/trigger'
 import { Analytic, Device, History } from '~/helpers'
 import { Main as Toolbar } from './../blocks/toolbar'
-import { Carousel, Copyright, Tape, User } from './../blocks/other'
+import { Carousel, Tape, Userbar } from './../blocks/other'
 import { tc } from '~/theme'
 
 const MainContainer = Styled.div`
@@ -90,10 +90,10 @@ export default class self extends React.Component {
     mobile() {
         return (
             <MainContainer>
-                <Copyright />
-                <User
+                <Userbar
                     trigger={this.props.trigger}
                     alias={this.props.state.alias}
+                    stats={this.props.state.stats}
                 />
                 <SubContainer>
                     <Carousel activate={this.activate}>
@@ -106,6 +106,7 @@ export default class self extends React.Component {
                     <Toolbar
                         trigger={this.props.trigger}
                         settings={this.props.state.settings}
+                        notifications={this.props.state.notifications}
                     />
                 </ToolbarContainer>
             </MainContainer>
@@ -115,10 +116,10 @@ export default class self extends React.Component {
     desktop() {
         return (
             <MainContainer>
-                <Copyright />
-                <User
+                <Userbar
                     trigger={this.props.trigger}
                     alias={this.props.state.alias}
+                    stats={this.props.state.stats}
                 />
                 <SubContainer>
                     {this.tape('daily', 'Daily Popular')}
@@ -129,6 +130,7 @@ export default class self extends React.Component {
                     <Toolbar
                         trigger={this.props.trigger}
                         settings={this.props.state.settings}
+                        notifications={this.props.state.notifications}
                     />
                 </ToolbarContainer>
             </MainContainer>

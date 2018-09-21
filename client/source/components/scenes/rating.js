@@ -4,7 +4,7 @@ import Styled from 'styled-components'
 import Trigger from '~/actions/trigger'
 import { History, Rating as Builder } from '~/helpers'
 import { Main as Toolbar } from './../blocks/toolbar'
-import { Copyright, Rating, User } from './../blocks/other'
+import { Rating, Userbar } from './../blocks/other'
 import { tc } from '~/theme'
 
 const MainContainer = Styled.div`
@@ -91,16 +91,17 @@ export default class self extends React.Component {
     render() {
         return (
             <MainContainer>
-                <Copyright />
-                <User
+                <Userbar
                     trigger={this.props.trigger}
                     alias={this.props.state.alias}
+                    stats={this.props.state.stats}
                 />
                 {this.content()}
                 <ToolbarContainer>
                     <Toolbar
                         trigger={this.props.trigger}
                         settings={this.props.state.settings}
+                        notifications={this.props.state.notifications}
                     />
                 </ToolbarContainer>
             </MainContainer>

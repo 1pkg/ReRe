@@ -9,3 +9,12 @@ class Storage(Component):
 
     def get(self, key):
         return _Storage_.hgetall(key)
+
+    def delete(self, key):
+        _Storage_.delete(key)
+
+    def push(self, key, message):
+        _Storage_.rpush(key, message)
+
+    def fetch(self, key):
+        return _Storage_.lrange(key, 0, -1)

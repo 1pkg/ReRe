@@ -18,14 +18,23 @@ class Share(Access):
 
     def _process(self, request):
         db = self._application.db
+        storage = self._application.storage
         settings = self._application.settings
 
+        freebie_unit = settings[Constant.SETTING_SHARE_FREEBIE_UNIT]
         if _Share_.query \
             .filter(_Share_.media == self.__media) \
             .filter(_Share_.session_id == self._session.id) \
                 .first() is None:
-            self._session.account.freebie += \
-                settings[Constant.SETTING_SHARE_FREEBIE_UNIT]
+            self._session.account.freebie += freebie_unit
+            storage.push(
+                self._session.account.uuid,
+                f'''
+                    Thank you for sharing our service
+                    We're glad to present you little bonus
+                    {freebie_unit} freebie for you
+                ''',
+            )
 
         share = _Share_(media=self.__media)
         self._session.shares.append(share)

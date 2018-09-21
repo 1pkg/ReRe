@@ -5,7 +5,7 @@ import Styled from 'styled-components'
 import { FaAngleLeft, FaAngleRight } from 'react-icons/fa'
 
 import { Analytic } from '~/helpers'
-import { Simple } from './../button'
+import { Micra } from './../button'
 import { tc } from '~/theme'
 
 const MainContainer = Styled.div`
@@ -42,6 +42,7 @@ const DotElement = Styled.div`
         ${props => (props.active ? props.theme[tc.tqmc] : props.theme[tc.qmc])};
     margin: ${props => props.theme[tc.hsu]};
 `
+
 export default class self extends React.Component {
     static size = 0
     static index = 0
@@ -80,6 +81,7 @@ export default class self extends React.Component {
         self.size = filter(this.props.children, child => child).length - 1
         this.setState(state => {
             let index = this.props.active ? this.props.active - 1 : self.index
+            this.props.activate ? this.props.activate(index) : void 0
             return { ...state, index }
         })
     }
@@ -88,7 +90,7 @@ export default class self extends React.Component {
         if (children && children.length) {
             return (
                 <DotContainer>
-                    <Simple glyph={FaAngleLeft} action={this.previous} />
+                    <Micra glyph={FaAngleLeft} action={this.previous} />
                     {map(children, (child, index) => {
                         return (
                             <DotElement
@@ -97,7 +99,7 @@ export default class self extends React.Component {
                             />
                         )
                     })}
-                    <Simple glyph={FaAngleRight} action={this.next} />
+                    <Micra glyph={FaAngleRight} action={this.next} />
                 </DotContainer>
             )
         }

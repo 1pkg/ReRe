@@ -8,6 +8,7 @@ const Container = Styled.div`
     position: absolute;
     left: 50vw;
     top: 0vh;
+    z-index: 999;
     transform: translateX(-50%);
 `
 

@@ -1,4 +1,4 @@
-from errors import Token as _Token_, Request
+from errors import Token, Request
 from base import Action, Constant
 from models import Session
 
@@ -19,4 +19,4 @@ class Access(Action):
         timeout = self._application.settings[Constant.SETTING_TOKEN_TIMEOUT]
         if self._session is None \
                 or datetime.diff(self._session.time_stamp) > timeout:
-            raise _Token_(token)
+            raise Token(token)

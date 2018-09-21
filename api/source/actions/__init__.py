@@ -5,6 +5,7 @@ from .fetch import Fetch
 from .handshake import Handshake
 from .home import Home
 from .mark import Mark
+from .notify import Notify
 from .rating import Rating
 from .remake import Remake
 from .report import Report
@@ -21,6 +22,7 @@ __all__ = [
     'Handshake',
     'Home',
     'Mark',
+    'Notify',
     'Rating',
     'Remake',
     'Report',

@@ -16,9 +16,17 @@ class Report(Identify):
             raise Request('message', self.__message)
 
     def _process(self, request):
+        storage = self._application.storage
         mail = self._application.mail
 
         token = self._session.token
         task_id = self._task.id
         subject = f'Report from {token} about task #{task_id}'
         mail.send(subject, self.__message)
+        storage.push(
+            self._session.account.uuid,
+            '''
+                Thank you for leaving report
+                We're working on your issue
+            ''',
+        )

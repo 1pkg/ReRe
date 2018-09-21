@@ -3,12 +3,13 @@ import React from 'react'
 import { Env, Device } from '~/helpers'
 import Toolbar from './base'
 import { Facebook, Fetch, Home, Rating, Reddit, Twitter } from './../button'
-import { Disclaimer, Download, Feedback } from './../modal'
+import { Dashboard, Disclaimer, Download, Feedback } from './../modal'
 
 export default class extends React.Component {
     cordova() {
         return {
             Disclaimer,
+            Dashboard,
             Feedback,
             Reddit,
             Twitter,
@@ -23,6 +24,7 @@ export default class extends React.Component {
         return {
             Download,
             Disclaimer,
+            Dashboard,
             Reddit,
             Twitter,
             Facebook,
@@ -35,6 +37,7 @@ export default class extends React.Component {
     desktop() {
         return {
             Disclaimer,
+            Dashboard,
             Reddit,
             Twitter,
             Facebook,
@@ -56,6 +59,7 @@ export default class extends React.Component {
                 actions={actions}
                 trigger={this.props.trigger}
                 settings={this.props.settings}
+                notifications={this.props.notifications}
                 handled={{}}
             />
         )

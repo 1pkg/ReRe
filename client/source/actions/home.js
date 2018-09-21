@@ -20,5 +20,6 @@ export default async trigger => {
     state.task = null
     state.status = Trigger.STATUS_HOME
     trigger.push(Trigger.ACTION_HOME, state)
+    state = await trigger.call(Trigger.ACTION_NOTIFY)
     return state
 }

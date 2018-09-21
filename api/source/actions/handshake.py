@@ -57,20 +57,31 @@ class Handshake(Action):
 
     def _process(self, request):
         db = self._application.db
+        storage = self._application.storage
         datetime = self._application.datetime
         c_hash = self._application.hash
         random = self._application.random
         settings = self._application.settings
 
         gift_threshold = settings[Constant.SETTING_FREEBIE_GIFT_THRESHOLD]
+        freebie_unit = settings[Constant.SETTING_SHARE_FREEBIE_UNIT]
         if self.__account is None:
             self.__account = Account(
                 alias=self.__account_alias,
                 uuid=self.__account_uuid,
             )
         elif (len(self.__account.sessions) % gift_threshold) == 0:
-            self.__account.freebie += \
-                settings[Constant.SETTING_SHARE_FREEBIE_UNIT]
+            self.__account.freebie += freebie_unit
+            storage.push(
+                self.__account.uuid,
+                f'''
+                    Thank you for keeping using our service
+                    We're glad to present you little bonus
+                    {freebie_unit} freebie for you
+                ''',
+            )
+        else:
+            storage.delete(self.__account.uuid)
 
         alias = self.__account.alias
         token = c_hash.hex(

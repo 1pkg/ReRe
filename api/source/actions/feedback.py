@@ -16,8 +16,16 @@ class Feedback(Access):
             raise Request('message', self.__message)
 
     def _process(self, request):
+        storage = self._application.storage
         mail = self._application.mail
 
         token = self._session.token
         subject = f'Feedback from {token}'
         mail.send(subject, self.__message)
+        storage.push(
+            self._session.account.uuid,
+            '''
+                Thank you for leaving feedback
+                We're working on your issue
+            ''',
+        )

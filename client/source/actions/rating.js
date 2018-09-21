@@ -22,5 +22,6 @@ export default async trigger => {
     state.task = null
     state.status = Trigger.STATUS_RATING
     trigger.push(Trigger.STATUS_RATING, state)
+    state = await trigger.call(Trigger.ACTION_NOTIFY)
     return state
 }

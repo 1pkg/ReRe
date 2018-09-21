@@ -8,9 +8,9 @@ const Container = Styled.div`
     left: 50vw;
     top: 50vh;
     z-index: 999;
+    transform: translateX(-50%) translateY(-50%);
     background-color: ${props => props.theme[tc.subc]};
     border-radius: ${props => props.theme[tc.hsu]};
-    transform: translateX(-50%) translateY(-50%);
     border-top:
         ${props => props.theme[tc.msu]}
         solid

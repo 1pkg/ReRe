@@ -1,3 +1,4 @@
+export { default as Dashboard } from './dashboard'
 export { default as Disclaimer } from './disclaimer'
 export { default as Download } from './download'
 export { default as Feedback } from './feedback'

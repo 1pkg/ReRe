@@ -13,5 +13,6 @@ export default async (trigger, media) => {
     state.status = oldstatus
     trigger.push(Trigger.ACTION_SHARE, state)
     state = await trigger.call(Trigger.ACTION_SPECIFY)
+    state = await trigger.call(Trigger.ACTION_NOTIFY)
     return state
 }

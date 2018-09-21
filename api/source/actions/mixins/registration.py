@@ -4,8 +4,8 @@ from .access import Access
 
 class Registration(Access):
     def _registrate(self, task, answered):
-        datetime = self._application.datetime
         storage = self._application.storage
+        datetime = self._application.datetime
         settings = self._application.settings
 
         identity = {

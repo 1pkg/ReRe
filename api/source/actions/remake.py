@@ -46,5 +46,4 @@ class Remake(Identify, Registration, FSingle, Crypto, Score):
             session_id=self._session.id,
         )
         db.session.add(answer)
-        db.session.commit()
         super()._calculate(unit, True)

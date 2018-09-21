@@ -8,6 +8,7 @@ import {
     handshake,
     home,
     mark,
+    notify,
     rating,
     remake,
     report,
@@ -35,6 +36,7 @@ export default class Trigger {
     static ACTION_HANDSHAKE = 'action-handshake'
     static ACTION_HOME = 'action-home'
     static ACTION_MARK = 'action-mark'
+    static ACTION_NOTIFY = 'action-notify'
     static ACTION_REMAKE = 'action-remake'
     static ACTION_RATING = 'action-rating'
     static ACTION_REPORT = 'action-report'
@@ -58,6 +60,7 @@ export default class Trigger {
             [Trigger.ACTION_HANDSHAKE]: handshake,
             [Trigger.ACTION_HOME]: home,
             [Trigger.ACTION_MARK]: mark,
+            [Trigger.ACTION_NOTIFY]: notify,
             [Trigger.ACTION_RATING]: rating,
             [Trigger.ACTION_REMAKE]: remake,
             [Trigger.ACTION_REPORT]: report,
