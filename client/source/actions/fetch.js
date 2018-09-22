@@ -15,6 +15,10 @@ export default async (trigger, label = '') => {
     )
     state.task.handled = {}
     state.option = null
+    trigger.push(Trigger.ACTION_FETCH, state)
+    state = await trigger.call(Trigger.ACTION_TRANSLATE, [
+        state.task.subject.link,
+    ])
     state.timestamp = Timestamp.current()
     state.status = Trigger.STATUS_ACTIVE
     trigger.push(Trigger.ACTION_FETCH, state)

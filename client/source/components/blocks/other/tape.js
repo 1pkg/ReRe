@@ -65,6 +65,7 @@ export default class extends React.Component {
                         subject={task.subject}
                         effects={task.effects}
                         shaders={this.props.shaders}
+                        blobs={this.props.blobs}
                     />
                 </Snippet>
             )

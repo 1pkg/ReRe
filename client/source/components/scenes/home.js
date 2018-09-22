@@ -79,6 +79,7 @@ export default class self extends React.Component {
                     title={title}
                     trigger={this.props.trigger}
                     shaders={this.props.state.shaders}
+                    blobs={this.props.state.blobs}
                     list={lists[period]}
                     active={!Device.mobile() || this.state[period]}
                 />

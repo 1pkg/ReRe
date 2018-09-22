@@ -15,6 +15,7 @@ import {
     share,
     specify,
     splash,
+    translate,
 } from '~/actions'
 import { Analytic } from '~/helpers'
 
@@ -43,6 +44,7 @@ export default class Trigger {
     static ACTION_SHARE = 'action-share'
     static ACTION_SPECIFY = 'action-specify'
     static ACTION_SPLASH = 'action-splash'
+    static ACTION_TRANSLATE = 'action-translate'
 
     static ACTION_LOGIN = 'action-login'
     static ACTION_LOGOUT = 'action-logout'
@@ -67,6 +69,7 @@ export default class Trigger {
             [Trigger.ACTION_SHARE]: share,
             [Trigger.ACTION_SPLASH]: splash,
             [Trigger.ACTION_SPECIFY]: specify,
+            [Trigger.ACTION_TRANSLATE]: translate,
         }
     }
 
@@ -85,6 +88,9 @@ export default class Trigger {
                     return await this.actions[name](this, ...params)
                 } catch (exception) {
                     Analytic.event(Analytic.EVENT_ERROR, exception)
+                    if (process.env.NODE_ENV === 'development') {
+                        console.error(exception)
+                    }
                     this.push(Trigger.ACTION_RELOAD, {
                         status: Trigger.STATUS_ERROR,
                     })

@@ -8,7 +8,12 @@ import Base from './base'
 
 export default class extends React.Component {
     subject() {
-        return <Subject subject={this.props.state.task.subject} />
+        return (
+            <Subject
+                subject={this.props.state.task.subject}
+                blobs={this.props.state.blobs}
+            />
+        )
     }
 
     options() {

@@ -34,6 +34,9 @@ export default connect(state => {
         componentDidCatch(error, info) {
             Revenue.pause()
             Analytic.event(error, info)
+            if (process.env.NODE_ENV === 'developmnet') {
+                console.error(error, info)
+            }
             this.props.trigger.push(Trigger.ACTION_RELOAD, {
                 status: Trigger.STATUS_ERROR,
             })

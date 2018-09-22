@@ -16,6 +16,7 @@ class Fetch(Registration, FSingle, Crypto, Score):
     CACHE_EXPIRE = None
 
     def _process(self, request):
+        validator = self._application.validator
         random = self._application.random
         settings = self._application.settings
 
@@ -25,7 +26,7 @@ class Fetch(Registration, FSingle, Crypto, Score):
         roll_byrandom = settings[Constant.SETTING_ROLL_BY_RANDOM]
         roll_bynovelty = settings[Constant.SETTING_ROLL_BY_NOVELTY]
         label = self._get(request, 'label', '')
-        if label is not '':
+        if len(label) == Constant.VIEW_HASH_SIZE and validator.ishex(label):
             task = self.__bylabel(label)
         elif random.roll(roll_byrating):
             task = self.__byrating()
@@ -161,7 +162,7 @@ class Fetch(Registration, FSingle, Crypto, Score):
             .order_by(db.func.random()) \
             .limit(settings[Constant.SETTING_EFFECT_COUNT]).all()
         label = c_hash.hex(
-            c_hash.SHORT_DIGEST,
+            c_hash.VIEW_DIGEST,
             datetime.timestamp(),
             random.salt(),
             subject.id,

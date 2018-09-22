@@ -12,6 +12,7 @@ from .report import Report
 from .share import Share
 from .specify import Specify
 from .splash import Splash
+from .translate import Translate
 
 
 __all__ = [

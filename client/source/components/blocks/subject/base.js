@@ -41,14 +41,10 @@ export default class extends React.Component {
         window.removeEventListener('resize', this.fit)
     }
 
-    link() {
-        return `${SCHEMA}://${IMAGE_URL}/${this.props.subject.link}`
-    }
-
     source() {
         let Subject = (
             <GLReactImage
-                source={this.link()}
+                source={this.props.blobs[this.props.subject.link]}
                 width={this.state.width}
                 height={this.state.height}
                 resizeMode="cover"

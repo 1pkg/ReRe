@@ -33,6 +33,7 @@ export default class extends React.Component {
                         subject={this.props.state.splash.subject}
                         effects={this.props.state.splash.effects}
                         shaders={this.props.state.shaders}
+                        blobs={this.props.state.blobs}
                     />
                     <Logo />
                 </Container>

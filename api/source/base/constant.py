@@ -26,6 +26,9 @@ class Constant:
     RIGID_CONNECTION_LIMIT = '3/second;300/minute;30000/hour;3000000/day'
     RAREFIED_CONNECTION_LIMIT = '3/second;30/minute;300/hour;3000/day'
 
+    NORMAL_HASH_SIZE = 128
+    VIEW_HASH_SIZE = 8
+
     DEFAULT_CACHE_EXPIRE = 86400
 
     DEFAULT_GENERATE_COUNT = 1000

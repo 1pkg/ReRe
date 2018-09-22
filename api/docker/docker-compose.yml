@@ -24,7 +24,7 @@ services:
         restart: on-failure
         volumes:
             - ./../dump/logs:/var/logs
-            - ./../dump/targets:/var/targets
+            - ./../dump:/var/rectio
         depends_on:
             - database
             - cache

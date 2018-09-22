@@ -28,7 +28,7 @@ class Handshake(Action):
         if validator.isempty(self.__account_alias):
             raise Request('alias', self.__account_alias)
 
-        if len(self.__account_uuid) != 128 or \
+        if len(self.__account_uuid) != Constant.NORMAL_HASH_SIZE or \
                 not validator.ishex(self.__account_uuid):
             raise Request('uuid', self.__account_uuid)
 
@@ -85,7 +85,7 @@ class Handshake(Action):
 
         alias = self.__account.alias
         token = c_hash.hex(
-            c_hash.LONG_DIGEST,
+            c_hash.NORMAL_DIGEST,
             datetime.timestamp(),
             random.salt(),
             self.__user_digest,

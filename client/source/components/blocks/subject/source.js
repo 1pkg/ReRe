@@ -4,6 +4,6 @@ import Subject from './base'
 
 export default class extends React.Component {
     render() {
-        return <Subject subject={this.props.subject} />
+        return <Subject subject={this.props.subject} blobs={this.props.blobs} />
     }
 }

@@ -20,7 +20,7 @@ class Remake(Identify, Registration, FSingle, Crypto, Score):
             .order_by(db.func.random()) \
             .limit(settings[Constant.SETTING_EFFECT_COUNT]).all()
         label = c_hash.hex(
-            c_hash.SHORT_DIGEST,
+            c_hash.VIEW_DIGEST,
             datetime.timestamp(),
             random.salt(),
             self._task.subject.id,

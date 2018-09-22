@@ -9,6 +9,7 @@ export default class extends React.Component {
                 subject={this.props.subject}
                 effects={this.props.effects}
                 shaders={this.props.shaders}
+                blobs={this.props.blobs}
             />
         )
     }

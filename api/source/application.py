@@ -50,6 +50,10 @@ class Application:
     def __init(self, instance):
         instance.config.from_envvar('FLASK_SETTING')
         self.settings = instance.config
+        if instance.debug:
+            self.path = os.path.join(os.path.dirname(__file__), '..', 'dump')
+        else:
+            self.path = os.path.join('/', 'var', 'rectio')
 
         const = base.Constant
         with instance.app_context():
