@@ -27,23 +27,18 @@ class Remake(Identify, Registration, FSingle, Crypto, Score):
             (option.id for option in self._task.options),
             (effect.id for effect in effects),
         )
-        task = Task(
-            label=label,
-            subject_id=self._task.subject_id,
-        )
+        task = Task(label=label)
         task.options = self._task.options
         task.effects = effects
-        db.session.add(task)
+        self._task.subject.tasks.append(task)
         db.session.commit()
         return super()._registrate(task, False)
 
     def _calculate(self, unit):
-        db = self._application.db
         answer = Answer(
             result=False,
-            task_id=self._task.id,
             option_id=None,
-            session_id=self._session.id,
         )
-        db.session.add(answer)
+        self._task.answers.append(answer)
+        self._session.answers.append(answer)
         super()._calculate(unit, True)

@@ -25,10 +25,7 @@ class Mark(Identify):
             .filter(_Mark_.session_id == self._session.id) \
             .first()
         if mark is None:
-            mark = _Mark_(
-                type=self.__type,
-                task_id=self._task.id,
-                session_id=self._session.id,
-            )
-            db.session.add(mark)
+            mark = _Mark_(type=self.__type)
+            self._task.marks.append(mark)
+            self._session.marks.append(mark)
             db.session.commit()

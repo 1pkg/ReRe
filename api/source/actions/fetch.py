@@ -56,18 +56,16 @@ class Fetch(Registration, FSingle, Crypto, Score):
         except:
             pass
 
-        db = self._application.db
         storage = self._application.storage
         identity = storage.get(self._session.token)
         if not bool(int(identity['answered'])):
             task = Task.query.get(int(identity['task_id']))
             answer = Answer(
                 result=False,
-                task_id=task.id,
                 option_id=None,
-                session_id=self._session.id,
             )
-            db.session.add(answer)
+            task.answers.append(answer)
+            self._session.answers.append(answer)
             super()._calculate(unit, True)
 
     def __bylabel(self, label):
@@ -169,12 +167,9 @@ class Fetch(Registration, FSingle, Crypto, Score):
             (option.id for option in options),
             (effect.id for effect in effects),
         )
-        task = Task(
-            label=label,
-            subject_id=subject.id,
-        )
+        task = Task(label=label)
         task.effects = effects
         task.options = options
-        db.session.add(task)
+        subject.tasks.append(task)
         db.session.commit()
         return task

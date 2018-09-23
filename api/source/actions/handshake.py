@@ -70,6 +70,7 @@ class Handshake(Action):
                 alias=self.__account_alias,
                 uuid=self.__account_uuid,
             )
+            db.session.add(self.__account)
         elif (len(self.__account.sessions) % gift_threshold) == 0:
             self.__account.freebie += freebie_unit
             storage.push(
@@ -102,7 +103,6 @@ class Handshake(Action):
             token=token,
         )
         self.__account.sessions.append(session)
-        db.session.add(self.__account)
         db.session.commit()
         return {
             'alias': alias,
