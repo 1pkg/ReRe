@@ -1,13 +1,24 @@
 version: '3'
+
 services:
     client:
         build:
             context: ./../
             dockerfile: docker/client/Dockerfile
+            args:
+                - HOST
+        env_file:
+            - ./.env
         restart: on-failure
         volumes:
-            - ./../dump/images/:/var/images
-            - ./../dump/logs:/var/logs
+            - ./../dump/html:/usr/share/nginx/html:rw
+            - ./../dump/certificate:/etc/nginx/certificate:rw
+            - ./../dump/log:/var/logs:rw
+        logging:
+            driver: json-file
+            options:
+                max-size: '100m'
+                max-file: '10'
         ports:
             - 80:80
             - 443:443

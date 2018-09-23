@@ -1,5 +1,10 @@
-bind = ':5000'
+from os import environ
+
+bind = ':55555'
 preload_app = True
+
+proxy_protocol = True
+proxy_allow_ips = environ['HTTP_IP_WHITE_LIST']
 
 timeout = 10
 graceful_timeout = 10

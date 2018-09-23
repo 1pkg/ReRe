@@ -1,21 +1,20 @@
 .vscode/
 
-/client/node_modules/
 /client/dump/
-/client/settings/*.json
-!/client/settings/*.dist.json
+/client/node_modules/
 /client/npm-debug.log
+/client/settings/*.json
 
+/api/dump/
 /api/env/
 /api/**/__pycache__/
-/api/dump/
 /api/settings/*.cfg
-!/api/settings/*.dist.cfg
 
+/parser/dump/
 /parser/env/
 /parser/**/__pycache__/
-/parser/dump/
 
 /cordova
 
-*.tar.gz*
+.env
+*.tar.gz

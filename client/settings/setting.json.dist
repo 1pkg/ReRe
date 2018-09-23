@@ -3,7 +3,6 @@
 
     "SCHEMA": "'https'",
     "BASE_URL": "'rect.io'",
-    "IMAGE_URL": "'img.rect.io'",
     "API_URL": "'api.rect.io'",
     "API_TIMEOUT": 10000,
     "API_CONTENT_LENGTH": 10000,

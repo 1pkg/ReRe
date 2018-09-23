@@ -108,11 +108,11 @@ class Image(Fetcher):
             return None
 
     def __save(self, image):
-        file_name = f'{hexlify(urandom(16)).decode()}.jpeg'
-        full_name = path.join(self.__dir, file_name)
+        file_name = hexlify(urandom(64)).decode()
+        full_name = path.join(self.__dir, f'{file_name}.jpeg')
         while path.isfile(full_name):
-            file_name = f'{hexlify(urandom(16)).decode()}.jpeg'
-            full_name = path.join(self.__dir, file_name)
+            file_name = hexlify(urandom(64)).decode()
+            full_name = path.join(self.__dir, f'{file_name}.jpeg')
 
         with catch_warnings():
             filterwarnings('ignore')

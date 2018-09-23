@@ -51,7 +51,8 @@ class Application:
         instance.config.from_envvar('FLASK_SETTING')
         self.settings = instance.config
         if instance.debug:
-            self.path = os.path.join(os.path.dirname(__file__), '..', 'dump')
+            current = os.path.dirname(__file__)
+            self.path = os.path.join(current, '..', 'dump', 'data')
         else:
             self.path = os.path.join('/', 'var', 'rectio')
 

@@ -1,30 +1,51 @@
 version: '3'
+
 services:
-    database:
-        build: ./database
-        command: postgres -c config_file=/etc/pgsql.conf
+    db:
+        build: ./db
+        command: postgres -c config_file=/etc/postgresql/pgsql.conf
+        env_file:
+            - ./.env
         restart: on-failure
         volumes:
-            - ./../dump/pgdata:/var/lib/postgresql/data
-            - ./../dump/logs:/var/logs
-        environment:
-            POSTGRES_USER: default
-            POSTGRES_PASSWORD: password
-            POSTGRES_DB: rectio
+            - ./../dump/data/db:/var/lib/postgresql/data:rw
+            - ./../dump/log:/var/logs:rw
+        logging:
+            driver: json-file
+            options:
+                max-size: '100m'
+                max-file: '10'
+
     cache:
-        build: ./cache
-        command: redis-server /usr/local/etc/redis/redis.conf
+        build:
+            context: ./cache
+            args:
+                - REDIS_PASSWORD
+        command: redis-server /etc/redis/redis.conf
+        env_file:
+            - ./.env
         restart: on-failure
         volumes:
-            - ./../dump/logs:/var/logs
+            - ./../dump/data/cache:/data:rw
+            - ./../dump/log:/var/logs:rw
+        logging:
+            driver: json-file
+            options:
+                max-size: '100m'
+                max-file: '10'
+
     api:
         build:
             context: ./../
             dockerfile: docker/api/Dockerfile
+        env_file:
+            - ./.env
         restart: on-failure
         volumes:
-            - ./../dump/logs:/var/logs
-            - ./../dump:/var/rectio
-        depends_on:
-            - database
-            - cache
+            - ./../dump/data:/var/rectio:ro
+            - ./../dump/log:/var/logs:rw
+        logging:
+            driver: json-file
+            options:
+                max-size: '100m'
+                max-file: '10'

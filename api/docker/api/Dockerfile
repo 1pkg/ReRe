@@ -1,6 +1,6 @@
-FROM python
+FROM python:3-stretch
 
-WORKDIR /var/rectio
+WORKDIR /var/www/api
 
 COPY ./source ./source
 COPY ./settings ./settings
@@ -16,7 +16,7 @@ RUN pip install gunicorn
 ENV FLASK_APP ./source/application.py
 ENV FLASK_SETTING ./../settings/production.cfg
 
-COPY ./docker/api/gunicorn.py /etc/
+COPY ./docker/api/gunicorn.py ./
 COPY ./docker/api/entry.sh ./
 RUN chmod +x ./entry.sh
 
