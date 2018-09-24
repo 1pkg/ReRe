@@ -13,6 +13,7 @@ export default async trigger => {
         let token = state.token
         state.lists = await Http.process(Trigger.ACTION_HOME, { token }, token)
         trigger.push(Trigger.ACTION_HOME, state)
+        state = trigger.state()
         let subjects = []
         for (let list in state.lists) {
             for (let task of state.lists[list]) {

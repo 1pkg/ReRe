@@ -28,9 +28,9 @@ class Remake(Identify, Registration, FSingle, Crypto, Score):
             (effect.id for effect in effects),
         )
         task = Task(label=label)
+        task.subject = self._task.subject
         task.options = self._task.options
         task.effects = effects
-        self._task.subject.tasks.append(task)
         db.session.commit()
         return super()._registrate(task, False)
 
@@ -39,6 +39,6 @@ class Remake(Identify, Registration, FSingle, Crypto, Score):
             result=False,
             option_id=None,
         )
-        self._task.answers.append(answer)
-        self._session.answers.append(answer)
+        answer.task = self._task
+        answer.session = self._session
         super()._calculate(unit, True)

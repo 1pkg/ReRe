@@ -26,6 +26,6 @@ class Mark(Identify):
             .first()
         if mark is None:
             mark = _Mark_(type=self.__type)
-            self._task.marks.append(mark)
-            self._session.marks.append(mark)
+            mark.task = self._task
+            mark.session = self._session
             db.session.commit()

@@ -8,6 +8,9 @@ import flask_mail
 import functools
 import werkzeug
 import click
+import logging
+import logging.handlers
+import flask.logging
 
 import base
 import models
@@ -39,6 +42,7 @@ class Application:
             if instance.debug:
                 raise exception
             else:
+                instance.logger.exception(exception)
                 return flask.jsonify({})
 
     def before(self):
@@ -53,8 +57,10 @@ class Application:
         if instance.debug:
             current = os.path.dirname(__file__)
             self.path = os.path.join(current, '..', 'dump', 'data')
+            self.lpath = os.path.join(current, '..', 'dump', 'logs')
         else:
             self.path = os.path.join('/', 'var', 'rectio')
+            self.lpath = os.path.join('/', 'var', 'logs')
 
         const = base.Constant
         with instance.app_context():
@@ -90,6 +96,14 @@ class Application:
                             exception,
                             lambda exception: flask.jsonify({}),
                         )
+
+        if not instance.debug:
+            instance.logger.removeHandler(flask.logging.default_handler)
+            instance.logger.addHandler(
+                logging.handlers.RotatingFileHandler(
+                    os.path.join(self.lpath, 'api.log'),
+                ),
+            )
 
         self.__components = {}
         for name, component in components.__dict__.items():

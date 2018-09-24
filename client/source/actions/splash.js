@@ -1,3 +1,5 @@
+import { isEmpty } from 'lodash'
+
 import Trigger from './trigger'
 import { Http } from '~/helpers'
 
@@ -10,9 +12,12 @@ export default async trigger => {
     let token = state.token
     state.splash = await Http.process(Trigger.ACTION_SPLASH, { token }, token)
     trigger.push(Trigger.ACTION_SPLASH, state)
-    state = await trigger.call(Trigger.ACTION_TRANSLATE, [
-        state.splash.subject.link,
-    ])
+    state = trigger.state()
+    if (!isEmpty(state.splash)) {
+        state = await trigger.call(Trigger.ACTION_TRANSLATE, [
+            state.splash.subject.link,
+        ])
+    }
     state.status = Trigger.STATUS_SPLASH
     trigger.push(Trigger.ACTION_SPLASH, state)
     return state

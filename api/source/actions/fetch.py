@@ -64,8 +64,8 @@ class Fetch(Registration, FSingle, Crypto, Score):
                 result=False,
                 option_id=None,
             )
-            task.answers.append(answer)
-            self._session.answers.append(answer)
+            answer.task = task
+            answer.session = self._session
             super()._calculate(unit, True)
 
     def __bylabel(self, label):
@@ -168,8 +168,8 @@ class Fetch(Registration, FSingle, Crypto, Score):
             (effect.id for effect in effects),
         )
         task = Task(label=label)
+        task.subject = subject
         task.effects = effects
         task.options = options
-        subject.tasks.append(task)
         db.session.commit()
         return task

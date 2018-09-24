@@ -4,7 +4,7 @@ import Trigger from './actions/trigger'
 export default async trigger => {
     let state = Store.state()
     if (state == null || !('token' in state)) {
-        await trigger.push(Trigger.ACTION_LOGIN, {
+        trigger.push(Trigger.ACTION_LOGIN, {
             status: Trigger.STATUS_LOGIN,
         })
         return
@@ -23,13 +23,13 @@ export default async trigger => {
         state.status === Trigger.STATUS_CORRECT ||
         state.status === Trigger.STATUS_WRONG
     ) {
-        await trigger.push(Trigger.ACTION_STORE, state)
+        trigger.push(Trigger.ACTION_STORE, state)
         History.push(state.task.label)
     } else if (
         state.status === Trigger.STATUS_HOME ||
         state.status === Trigger.STATUS_RATING
     ) {
-        await trigger.push(Trigger.ACTION_STORE, state)
+        trigger.push(Trigger.ACTION_STORE, state)
         History.push(state.status)
     } else if (purl && purl.query && 'l' in purl.query) {
         await trigger.call(Trigger.ACTION_FETCH, purl.query.l)

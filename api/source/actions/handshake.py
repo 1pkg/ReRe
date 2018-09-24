@@ -102,7 +102,7 @@ class Handshake(Action):
             user_ip=self.__user_ip,
             token=token,
         )
-        self.__account.sessions.append(session)
+        session.account = self.__account
         db.session.commit()
         return {
             'alias': alias,

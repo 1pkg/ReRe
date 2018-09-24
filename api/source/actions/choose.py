@@ -57,8 +57,8 @@ class Choose(Identify, Registration, Crypto, Score):
             result=result,
             option_id=None if choosen is None else choosen.id,
         )
-        self._task.answers.append(answer)
-        self._session.answers.append(answer)
+        answer.task = self._task
+        answer.session = self._session
         db.session.commit()
         super()._registrate(self._task, True)
         return {

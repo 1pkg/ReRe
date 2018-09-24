@@ -37,5 +37,5 @@ class Share(Access):
             )
 
         share = _Share_(media=self.__media)
-        self._session.shares.append(share)
+        share.session = self._session
         db.session.commit()

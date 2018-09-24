@@ -16,6 +16,7 @@ export default async (trigger, label = '') => {
     state.task.handled = {}
     state.option = null
     trigger.push(Trigger.ACTION_FETCH, state)
+    state = trigger.state()
     state = await trigger.call(Trigger.ACTION_TRANSLATE, [
         state.task.subject.link,
     ])
