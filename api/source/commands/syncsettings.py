@@ -10,6 +10,7 @@ class SyncSettings(Command):
     DESCRIPTION = 'Sync vcs settings with database.'
 
     def execute(self):
+        settings = []
         vsc_settings = self.__readsync()
         with self._application.instance.app_context():
             for setting in Setting.query:
@@ -26,7 +27,8 @@ class SyncSettings(Command):
                         name=vsc_setting['name'],
                         value=vsc_setting['value'],
                     )
-                    self._application.db.session.add(setting)
+                    settings.append(setting)
+            self._application.db.session.add_all(settings)
             self._application.db.session.commit()
 
     def __readsync(self):

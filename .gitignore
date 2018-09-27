@@ -1,16 +1,13 @@
 .vscode/
 
-/client/dump/
 /client/node_modules/
 /client/npm-debug.log
 /client/settings/*.json
 
-/api/dump/
 /api/env/
 /api/**/__pycache__/
 /api/settings/*.cfg
 
-/parser/dump/
 /parser/env/
 /parser/**/__pycache__/
 

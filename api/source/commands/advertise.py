@@ -58,15 +58,11 @@ class Advertise(Command):
             for task in tasks:
                 answer = Answer(
                     result=False,
-                    task_id=task.id,
                     option_id=None,
-                    session_id=session.id,
                 )
-                task.answers.append(answer)
-                mark = Mark(
-                    type=Type.upvote,
-                    task_id=task.id,
-                    session_id=session.id,
-                )
-                task.marks.append(mark)
+                answer.task = task
+                answer.session = session
+                mark = Mark(type=Type.upvote)
+                mark.task = task
+                mark.session = session
             db.session.commit()

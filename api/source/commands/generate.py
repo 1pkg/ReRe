@@ -22,6 +22,7 @@ class Generate(Command):
         random = self._application.random
         settings = self._application.settings
 
+        tasks = []
         with self._application.instance.app_context():
             for _ in range(0, count):
                 subject = Subject.query \
@@ -44,11 +45,10 @@ class Generate(Command):
                     (option.id for option in options),
                     (effect.id for effect in effects),
                 )
-                task = Task(
-                    label=label,
-                    subject_id=subject.id,
-                )
+                task = Task(label=label)
+                task.subject = subject
                 task.effects = effects
                 task.options = options
-                db.session.add(task)
+                tasks.append(task)
+            db.session.add_all(tasks)
             db.session.commit()

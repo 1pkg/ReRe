@@ -11,6 +11,7 @@ class SyncEffects(Command):
     DESCRIPTION = 'Sync vcs effects with database.'
 
     def execute(self):
+        effects = []
         vsc_effects = self.__readsync()
         with self._application.instance.app_context():
             for effect in Effect.query:
@@ -29,7 +30,8 @@ class SyncEffects(Command):
                         shader=vsc_effect['shader'],
                         uniform=vsc_effect['uniform'],
                     )
-                    self._application.db.session.add(effect)
+                    effects.append(effect)
+            self._application.db.session.add_all(effects)
             self._application.db.session.commit()
 
     def __readsync(self):

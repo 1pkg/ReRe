@@ -10,6 +10,7 @@ class SyncTargets(Command):
     DESCRIPTION = 'Sync dump targets with database.'
 
     def execute(self):
+        options = []
         dump_targets = self.__readsync()
         with self._application.instance.app_context():
             for option in Option.query:
@@ -19,12 +20,14 @@ class SyncTargets(Command):
                 else:
                     self._application.db.session.delete(option)
             for item in dump_targets:
-                for option in Option.query:
-                    if option.name == item['name']:
-                        self.__update(option, item)
-                        break
+                option = Option.query\
+                    .filter(Option.name == item['name']) \
+                    .first()
+                if option is not None:
+                    self.__update(option, item)
                 else:
-                    self.__insert(item)
+                    options.append(self.__insert(item))
+            self._application.db.session.add_all(options)
             self._application.db.session.commit()
 
     def __insert(self, item):
@@ -41,7 +44,7 @@ class SyncTargets(Command):
                 orientation=Orientation[subject['orientation']],
             )
             option.subjects.append(subject)
-        self._application.db.session.add(option)
+        return option
 
     def __update(self, option, item):
         option.description = item['description']
