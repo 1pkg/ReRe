@@ -1,4 +1,5 @@
 import ReactGA from 'react-ga'
+import Raven from 'raven-js'
 
 import { Env, Json } from './'
 
@@ -6,7 +7,7 @@ export default class self {
     static initialized = false
 
     static EVENT_CLICK = 'click'
-    static EVENT_ERROR = 'error'
+    static EVENT_EMPTY = 'empty'
     static EVENT_FIT = 'fit'
     static EVENT_SWIPE = 'swipe'
     static EVENT_TIMEOUT = 'timeout'
@@ -45,6 +46,14 @@ export default class self {
         }
     }
 
+    static error(exception) {
+        if (self.initialize()) {
+            Raven.captureException(exception)
+        } else {
+            console.error(exception)
+        }
+    }
+
     static initialize() {
         if (Env.production()) {
             if (!self.initialized) {
@@ -53,6 +62,7 @@ export default class self {
                 } else {
                     window.ga.startTrackerWithId(GA_CODE)
                 }
+                Raven.config(SENTRY_DSN).install()
                 self.initialized = true
             }
             return true

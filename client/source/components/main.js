@@ -6,7 +6,7 @@ import Styled, { ThemeProvider } from 'styled-components'
 import { IconContext } from 'react-icons'
 
 import Trigger from '~/actions/trigger'
-import { Analytic, Revenue } from '~/helpers'
+import { Analytic, History, Revenue } from '~/helpers'
 import {
     Choose,
     Home,
@@ -31,12 +31,9 @@ export default connect(state => {
     return { state }
 })(
     class extends React.Component {
-        componentDidCatch(error, info) {
+        componentDidCatch(error) {
             Revenue.pause()
-            Analytic.event(error, info)
-            if (process.env.NODE_ENV === 'developmnet') {
-                console.error(error, info)
-            }
+            Analytic.error(error)
             this.props.trigger.push(Trigger.ACTION_RELOAD, {
                 status: Trigger.STATUS_ERROR,
             })
@@ -58,6 +55,7 @@ export default connect(state => {
                 case Trigger.STATUS_HOME:
                     Revenue.resume()
                     Analytic.view(Analytic.VIEW_HOME)
+                    History.push(Trigger.STATUS_HOME)
                     return <Home trigger={trigger} state={state} />
 
                 case Trigger.STATUS_LOGIN:
@@ -68,11 +66,13 @@ export default connect(state => {
                 case Trigger.STATUS_RATING:
                     Revenue.resume()
                     Analytic.view(Analytic.VIEW_RATING)
+                    History.push(Trigger.STATUS_RATING)
                     return <Rating trigger={trigger} state={state} />
 
                 case Trigger.STATUS_ACTIVE:
                     Revenue.resume()
                     Analytic.view(Analytic.VIEW_CHOOSE)
+                    History.push(state.task.label)
                     return <Choose trigger={trigger} state={state} />
 
                 case Trigger.STATUS_CORRECT:

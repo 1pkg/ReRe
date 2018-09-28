@@ -12,6 +12,7 @@
         "lodash": "^4.17.10",
         "mobile-detect": "^1.4.3",
         "modernizr": "^3.6.0",
+        "raven-js": "^3.27.0",
         "react": "^16.5.0",
         "react-dom": "^16.5.0",
         "react-facebook-login": "^4.1.0",

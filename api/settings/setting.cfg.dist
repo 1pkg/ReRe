@@ -33,6 +33,10 @@ MAIL_DEBUG = False
 MAIL_USERNAME = 'user'
 MAIL_PASSWORD = 'pass'
 
+SENTRY_DSN = 'https://1c411d312c734950a2b8ee4bcf153c94@sentry.io/1290811'
+
+INTEGRITY = 'XHMjXj_jCVE'
+
 ADMIN_ALIAS  = 'admin'
 
 TOKEN_TIMEOUT = 21600
@@ -57,5 +61,3 @@ ROLL_BY_RATING = 0.1            # 10%
 ROLL_BY_RANDOM = 0.333333333    # 30%
 ROLL_BY_NOVELTY = 0.25          # 15%
 # ROLL_BY_NEW                   # 45%
-
-INTEGRITY = 'XHMjXj_jCVE'

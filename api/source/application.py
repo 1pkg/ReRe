@@ -8,9 +8,10 @@ import flask_mail
 import functools
 import werkzeug
 import click
+import raven.contrib.flask
 import logging
-import logging.handlers
 import flask.logging
+import werkzeug.contrib.fixers
 
 import base
 import models
@@ -43,6 +44,7 @@ class Application:
                 raise exception
             else:
                 instance.logger.exception(exception)
+                self.sentry.captureException()
                 return flask.jsonify({})
 
     def before(self):
@@ -61,6 +63,13 @@ class Application:
         else:
             self.path = os.path.join('/', 'var', 'rectio')
             self.lpath = os.path.join('/', 'var', 'logs')
+            instance.wsgi_app = \
+                werkzeug.contrib.fixers.ProxyFix(instance.wsgi_app)
+            self.sentry = raven.contrib.flask.Sentry(
+                instance,
+                logging=True,
+                level=logging.WARNING,
+            )
 
         const = base.Constant
         with instance.app_context():
@@ -99,11 +108,11 @@ class Application:
 
         if not instance.debug:
             instance.logger.removeHandler(flask.logging.default_handler)
-            instance.logger.addHandler(
-                logging.handlers.RotatingFileHandler(
-                    os.path.join(self.lpath, 'api.log'),
-                ),
+            handler = logging.FileHandler(
+                os.path.join(self.lpath, 'api.log'),
             )
+            handler.setLevel(logging.WARNING)
+            instance.logger.addHandler(handler)
 
         self.__components = {}
         for name, component in components.__dict__.items():

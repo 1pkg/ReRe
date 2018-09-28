@@ -4,6 +4,7 @@ import { FaFlag } from 'react-icons/fa'
 import Styled from 'styled-components'
 
 import Trigger from '~/actions/trigger'
+import { Analytic } from '~/helpers'
 import Modal from './base'
 import { Simple } from './../button'
 import { tc } from '~/theme'
@@ -60,6 +61,7 @@ export default class extends React.Component {
             this.props.trigger.call(Trigger.ACTION_MARK, 'report')
             this.hide()
         } else {
+            Analytic.event(Analytic.EVENT_EMPTY, { type: 'report' })
             this.setState(state => {
                 return { ...state, error: true }
             })

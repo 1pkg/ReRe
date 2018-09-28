@@ -1,6 +1,7 @@
 import React from 'react'
 import Styled from 'styled-components'
 
+import { Analytic } from '~/helpers'
 import { tc } from '~/theme'
 
 const Container = Styled.div`
@@ -24,13 +25,18 @@ const Hint = Styled.div`
 `
 
 export default class extends React.Component {
+    evaction = () => {
+        Analytic.event(Analytic.EVENT_CLICK, { action: this.props.hint })
+        this.props.action()
+    }
+
     render() {
         const BeaconGlyph = Styled(this.props.glyph)`
             height: ${props => props.theme[tc.dbu]};
             width: ${props => props.theme[tc.dbu]};
         `
         return (
-            <Container onClick={this.props.action}>
+            <Container onClick={this.evaction}>
                 <BeaconGlyph />
                 <Hint>{this.props.hint}</Hint>
             </Container>

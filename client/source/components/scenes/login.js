@@ -14,7 +14,7 @@ import Styled from 'styled-components'
 
 import Trigger from '~/actions/trigger'
 import dispatch from '~/dispatch'
-import { Identify } from '~/helpers'
+import { Analytic, Identify } from '~/helpers'
 import { Beacon, Simple } from './../blocks/button'
 import { Copyright } from './../blocks/other'
 import { tc } from '~/theme'
@@ -79,6 +79,7 @@ export default class extends React.Component {
             await this.props.trigger.call(Trigger.ACTION_HANDSHAKE, input.value)
             dispatch(this.props.trigger)
         } else {
+            Analytic.event(Analytic.EVENT_EMPTY, { type: 'login' })
             this.setState(state => {
                 return {
                     ...state,

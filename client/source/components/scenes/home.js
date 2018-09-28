@@ -1,8 +1,7 @@
 import React from 'react'
 import Styled from 'styled-components'
 
-import Trigger from '~/actions/trigger'
-import { Analytic, Device, History } from '~/helpers'
+import { Analytic, Device } from '~/helpers'
 import { Main as Toolbar } from './../blocks/toolbar'
 import { Carousel, Tape, Userbar } from './../blocks/other'
 import { tc } from '~/theme'
@@ -33,7 +32,6 @@ export default class self extends React.Component {
     }
 
     componentDidMount() {
-        History.push(Trigger.STATUS_HOME)
         this.setState(prev => {
             let lists = this.props.state.lists
             let daily = lists.daily && lists.daily.length >= MINIMAL_TAPE_LENGTH

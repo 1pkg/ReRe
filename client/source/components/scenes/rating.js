@@ -1,8 +1,7 @@
 import React from 'react'
 import Styled from 'styled-components'
 
-import Trigger from '~/actions/trigger'
-import { History, Rating as Builder } from '~/helpers'
+import { Rating as Builder } from '~/helpers'
 import { Main as Toolbar } from './../blocks/toolbar'
 import { Rating, Userbar } from './../blocks/other'
 import { tc } from '~/theme'
@@ -50,10 +49,6 @@ const MinorText = Styled.div`
 `
 
 export default class self extends React.Component {
-    componentDidMount() {
-        History.push(Trigger.STATUS_RATING)
-    }
-
     empty() {
         return (
             <TextContainer>

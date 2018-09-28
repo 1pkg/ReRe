@@ -4,7 +4,7 @@ import { FaStar } from 'react-icons/fa'
 import Styled from 'styled-components'
 
 import Trigger from '~/actions/trigger'
-import { Rating } from '~/helpers'
+import { Analytic, Rating } from '~/helpers'
 import Modal from './base'
 import { Simple } from './../button'
 import { tc } from '~/theme'
@@ -60,6 +60,7 @@ export default class extends React.Component {
             this.props.trigger.call(Trigger.ACTION_FEEDBACK, textarea.value)
             this.hide()
         } else {
+            Analytic.event(Analytic.EVENT_EMPTY, { type: 'feedback' })
             this.setState(state => {
                 return { ...state, error: true }
             })
