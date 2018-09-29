@@ -103,7 +103,7 @@ class Fetch(Registration, FSingle, Crypto, Score):
                     (db.func.count(Answer.option_id == None) * 2),
                 ),
                 db.desc(Task.id),
-            ).limit(Constant.DEFAULT_GENERATE_COUNT)
+            ).limit(Constant.DEFAULT_TASK_COUNT)
         return random.choose(query, query.count())
 
     def __byrandom(self):
