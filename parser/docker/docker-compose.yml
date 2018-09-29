@@ -1,9 +1,15 @@
 version: '3'
+
 services:
     parser:
         build:
             context: ./../
             dockerfile: docker/parser/Dockerfile
         restart: on-failure
+        logging:
+            driver: json-file
+            options:
+                max-size: '100m'
+                max-file: '10'
         volumes:
             - ./../dump:/var/dump

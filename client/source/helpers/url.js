@@ -7,7 +7,7 @@ export default class {
         if (Env.web()) {
             return window.location.href
         }
-        return `${SCHEMA}://${BASE_URL}`
+        return `${SCHEMA}://${APPLICATION_NAME}`
     }
 
     static parse(url = null) {

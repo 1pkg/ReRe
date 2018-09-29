@@ -85,7 +85,7 @@ export default class Trigger {
         if (name in this.actions) {
             return (async () => {
                 try {
-                    return await this.actions[name](this, ...params)
+                    return clone(await this.actions[name](this, ...params))
                 } catch (exception) {
                     Revenue.pause()
                     Analytic.error(exception)

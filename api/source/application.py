@@ -61,7 +61,7 @@ class Application:
             self.path = os.path.join(current, '..', 'dump', 'data')
             self.lpath = os.path.join(current, '..', 'dump', 'logs')
         else:
-            self.path = os.path.join('/', 'var', 'rectio')
+            self.path = os.path.join('/', 'var', 'rere1')
             self.lpath = os.path.join('/', 'var', 'logs')
             instance.wsgi_app = \
                 werkzeug.contrib.fixers.ProxyFix(instance.wsgi_app)

@@ -20,9 +20,9 @@ class Handshake(Action):
         self.__user_device = self._get(request, 'device')
         self.__user_agent = http.useragent(request)
         self.__user_ip = http.userip(request)
-        self.__integrity = str(self._get(request, 'integrity'))
+        self.__integrity = self._get(request, 'integrity', '')
 
-        if not self.__integrity == settings['INTEGRITY']:
+        if not self.__integrity == settings[Constant.SETTING_INTEGRITY]:
             raise Integrity()
 
         if validator.isempty(self.__account_alias):

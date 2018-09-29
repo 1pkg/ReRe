@@ -124,7 +124,7 @@ module.exports = env => {
                     webpack.plugins.push(
                         new CopyPlugin([
                             { from: './static/fonts/', to: './fonts/' },
-                            { from: './static/icons/web', to: './icons/' },
+                            { from: './static/icons/', to: './icons/' },
                             {
                                 from: './static/manifest.json',
                                 to: './manifest.json',
@@ -145,7 +145,6 @@ module.exports = env => {
                     webpack.plugins.push(
                         new CopyPlugin([
                             { from: './static/fonts/', to: './fonts/' },
-                            { from: './static/icons/cordova', to: './icons/' },
                             { from: './static/config.xml', to: './config.xml' },
                             {
                                 from: './static/resource.xml',

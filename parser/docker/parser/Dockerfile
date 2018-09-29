@@ -7,7 +7,7 @@ RUN apt-get install tor -y
 COPY ./docker/parser/torrc /etc/tor
 RUN service tor start
 
-ENV TOR_CTRL_PASS rectio
+ENV TOR_CTRL_PASS rere1
 ENV PARS_STATIC_PROXY proxy
 
 COPY ./source ./source

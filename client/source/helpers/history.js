@@ -1,15 +1,15 @@
 import BrowserHistory from 'history/createBrowserHistory'
 import NativeHistory from 'history/createMemoryHistory'
 
-import { Env } from './'
 import Trigger from '~/actions/trigger'
+import { Env } from './'
 
 export default class self {
     static history = Env.cordova() ? new NativeHistory() : new BrowserHistory()
 
     static ROUTE_HOME = '/home'
     static ROUTE_RATING = '/rating'
-    static ROUTE_RECT = '/rect'
+    static ROUTE_TASK = '/task'
 
     static push(label) {
         if (label == Trigger.STATUS_HOME) {
@@ -21,7 +21,7 @@ export default class self {
                 location: Trigger.STATUS_RATING,
             })
         } else {
-            self.history.push(`${self.ROUTE_RECT}/?l=${label}`, { label })
+            self.history.push(`${self.ROUTE_TASK}/?l=${label}`, { label })
         }
     }
 

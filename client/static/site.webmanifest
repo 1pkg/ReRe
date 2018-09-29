@@ -1,6 +1,6 @@
 {
-    "name": "rect.io",
-    "short_name": "rectio",
+    "name": "rere.one",
+    "short_name": "rere.one",
     "icons": [
         {
             "src": "/icons/android-chrome-36x36.png?v=qaLeO-2Fytg",
@@ -36,10 +36,20 @@
             "src": "/icons/android-chrome-256x256.png?v=qaLeO-2Fytg",
             "sizes": "256x256",
             "type": "image/png"
+        },
+        {
+            "src": "/icons/android-chrome-384x384.png?v=qaLeO-2Fytg",
+            "sizes": "384x384",
+            "type": "image/png"
+        },
+        {
+            "src": "/icons/android-chrome-512x512.png?v=qaLeO-2Fytg",
+            "sizes": "512x512",
+            "type": "image/png"
         }
     ],
-    "theme_color": "#ffffff",
+    "theme_color": "#f08080",
     "background_color": "#ffffff",
-    "display": "standalone",
-    "orientation": "portrait"
+    "start_url": "https://rere.one",
+    "display": "standalone"
 }

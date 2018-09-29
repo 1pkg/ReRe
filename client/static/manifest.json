@@ -1,10 +1,9 @@
 {
-    "name": "rect.io",
-    "short_name": "rectio",
+    "name": "rere.one",
+    "short_name": "rere1",
     "theme_color": "#f08080",
     "background_color": "#ffffff",
     "display": "standalone",
-    "orientation": "portrait",
     "scope": "/",
     "start_url": "/home",
     "icons": [
