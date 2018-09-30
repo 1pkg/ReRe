@@ -5,6 +5,7 @@ import GLReactImage from 'gl-react-image'
 import { Surface } from 'gl-react-dom'
 import Styled from 'styled-components'
 
+import Trigger from '~/actions/trigger'
 import { Analytic } from '~/helpers'
 import Effect from './shader'
 
@@ -30,11 +31,21 @@ export default class extends React.Component {
 
     constructor(props) {
         super(props)
-        this.state = { width: 0, height: 0 }
+        let source = this.props.blobs[this.props.subject.link]
+        this.state = {
+            width: 0,
+            height: 0,
+            source,
+        }
     }
 
-    componentDidMount() {
+    async componentDidMount() {
         window.addEventListener('resize', this.fit)
+        if (!this.state.source) {
+            await this.props.trigger.call(Trigger.ACTION_TRANSLATE, [
+                this.props.subject.link,
+            ])
+        }
     }
 
     componentWillUnmount() {
@@ -44,7 +55,7 @@ export default class extends React.Component {
     source() {
         let Subject = (
             <GLReactImage
-                source={this.props.blobs[this.props.subject.link]}
+                source={this.state.source}
                 width={this.state.width}
                 height={this.state.height}
                 resizeMode="cover"
@@ -89,6 +100,9 @@ export default class extends React.Component {
     }
 
     render() {
-        return <Container>{this.source()}</Container>
+        if (this.state.source) {
+            return <Container>{this.source()}</Container>
+        }
+        return null
     }
 }

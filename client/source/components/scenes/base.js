@@ -4,7 +4,7 @@ import Styled from 'styled-components'
 
 import Trigger from '~/actions/trigger'
 import { Analytic, Device } from '~/helpers'
-import { Carousel, Copyright, Panel } from './../blocks/other'
+import { Carousel, Panel } from './../blocks/other'
 import { tc } from '~/theme'
 
 const MainContainer = Styled.div`
@@ -88,7 +88,6 @@ export default class self extends React.Component {
         const Toolbar = this.props.toolbar
         return (
             <MainContainer>
-                <Copyright />
                 <SwipeableSubjectContainer
                     full={+this.state.full}
                     onSwipedLeft={this.fetch}
@@ -131,7 +130,6 @@ export default class self extends React.Component {
         const Toolbar = this.props.toolbar
         return (
             <MainContainer>
-                <Copyright />
                 <SubjectContainer full={+this.state.full}>
                     {this.props.subject}
                 </SubjectContainer>

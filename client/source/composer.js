@@ -1,3 +1,4 @@
+import { clone } from 'lodash'
 import { applyMiddleware, createStore } from 'redux'
 import ReduxThunk from 'redux-thunk'
 
@@ -24,7 +25,9 @@ export default compose => {
         }
 
         if ('state' in action && action.state) {
-            Store.update(action.state)
+            let ststate = clone(action.state)
+            ststate.blobs = {}
+            Store.update(ststate)
             return action.state
         }
 

@@ -5,6 +5,7 @@ import { Http } from '~/helpers'
 
 export default async (trigger, subjects) => {
     let state = trigger.state()
+    let oldstatus = state.status
     state.status = Trigger.STATUS_WAIT
     trigger.push(Trigger.ACTION_WAIT, state)
 
@@ -25,6 +26,7 @@ export default async (trigger, subjects) => {
             ),
         )
     }
+    state.status = oldstatus
     trigger.push(Trigger.ACTION_TRANSLATE, state)
     return state
 }

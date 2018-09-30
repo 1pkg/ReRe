@@ -10,6 +10,7 @@ export default class extends React.Component {
     subject() {
         return (
             <Subject
+                trigger={this.props.trigger}
                 subject={this.props.state.task.subject}
                 blobs={this.props.state.blobs}
             />

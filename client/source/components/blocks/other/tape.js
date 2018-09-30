@@ -62,6 +62,7 @@ export default class extends React.Component {
                     onClick={bind(this.fetch, null, task.label)}
                 >
                     <Subject
+                        trigger={this.props.trigger}
                         subject={task.subject}
                         effects={task.effects}
                         shaders={this.props.shaders}

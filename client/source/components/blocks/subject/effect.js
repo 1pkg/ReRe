@@ -6,6 +6,7 @@ export default class extends React.Component {
     render() {
         return (
             <Subject
+                trigger={this.props.trigger}
                 subject={this.props.subject}
                 effects={this.props.effects}
                 shaders={this.props.shaders}

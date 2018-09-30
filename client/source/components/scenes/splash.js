@@ -30,6 +30,7 @@ export default class extends React.Component {
                 <Container>
                     <Copyright />
                     <Subject
+                        trigger={this.props.trigger}
                         subject={this.props.state.splash.subject}
                         effects={this.props.state.splash.effects}
                         shaders={this.props.state.shaders}
