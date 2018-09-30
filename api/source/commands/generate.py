@@ -10,7 +10,7 @@ class Generate(Command):
         {
             'name': 'count',
             'type': int,
-            'default': Constant.DEFAULT_GENERATE_COUNT,
+            'default': Constant.DEFAULT_TASK_COUNT,
             'description': 'n-tasks count'
         },
     ]
