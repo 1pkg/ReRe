@@ -7,7 +7,6 @@ class Media(Enum):
     facebook = 'facebook'
     market = 'market'
     reddit = 'reddit'
-    twitter = 'twitter'
 
     def __str__(self):
         return str(self.value)

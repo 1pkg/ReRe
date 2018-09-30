@@ -2,7 +2,7 @@ import React from 'react'
 
 import { Env, Device } from '~/helpers'
 import Toolbar from './base'
-import { Facebook, Fetch, Home, Rating, Reddit, Twitter } from './../button'
+import { Facebook, Fetch, Home, Rating, Reddit } from './../button'
 import { Dashboard, Disclaimer, Download, Feedback } from './../modal'
 
 export default class extends React.Component {
@@ -12,7 +12,6 @@ export default class extends React.Component {
             Dashboard,
             Feedback,
             Reddit,
-            Twitter,
             Facebook,
             Home,
             Rating,
@@ -26,7 +25,6 @@ export default class extends React.Component {
             Disclaimer,
             Dashboard,
             Reddit,
-            Twitter,
             Facebook,
             Home,
             Rating,
@@ -39,7 +37,6 @@ export default class extends React.Component {
             Disclaimer,
             Dashboard,
             Reddit,
-            Twitter,
             Facebook,
             Home,
             Rating,
