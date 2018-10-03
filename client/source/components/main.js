@@ -31,7 +31,7 @@ export default connect(state => {
     return { state }
 })(
     class extends React.Component {
-        componentDidCatch(error) {
+        componentDidCatch(error, info) {
             Revenue.pause()
             Analytic.error(error)
             this.props.trigger.push(Trigger.ACTION_RELOAD, {
