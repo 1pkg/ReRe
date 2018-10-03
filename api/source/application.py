@@ -86,6 +86,15 @@ class Application:
             self.redis = base.Storage
             self.redis.init_app(instance, decode_responses=True)
 
+            for _ in range(0, self.settings[const.SETTING_MAX_RECONNECTION_TRY]):
+                try:
+                    if self.redis.ping():
+                        break
+                    else:
+                        raise Exception()
+                except Exception as exception:
+                    time.sleep(self.settings[const.SETTING_DEFAULT_SLEEP_TIME])
+
             flask_cors.CORS(instance)
 
             self.extensions = {}

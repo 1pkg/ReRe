@@ -1,6 +1,6 @@
 {
-    "name": "rect.io",
-    "version": "0.0.0",
+    "name": "rere1",
+    "version": "1.0.0",
     "dependencies": {
         "axios": "^0.18.0",
         "crypto-js": "^3.1.9-1",
