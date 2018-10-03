@@ -30,9 +30,8 @@
     "AMAZON_STORE_URL": "''",
 
     "FACEBOOK_ID": "'319080632158864'",
-    "LOOK_UP_URL": "'extreme-ip-lookup.com/json/'",
+    "LOOK_UP_URL": "'lookup.rere.one'",
 
     "GA_CODE": "'UA-123509054-1|UA-123498258-1'",
-    "COINIMP_KEY": "'06205e48415613a9b65fea7ab43219b55983e41ee7b6d2e0442b2f8e3127456a'",
     "ADMOB_CODE": "'ca-app-pub-3610441744537773/4651856769'"
 }

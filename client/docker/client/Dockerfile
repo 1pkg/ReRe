@@ -12,15 +12,8 @@ RUN useradd -rmg nginx-user nginx-user
 
 COPY ./dump/build ./client
 
-RUN rm -r /etc/nginx/conf.d/*
 COPY ./docker/client/nginx.conf /etc/nginx/
-COPY ./docker/client/servers/client.conf /etc/nginx/conf.template/
-COPY ./docker/client/servers/_deny.conf /etc/nginx/conf.template/
-
-ARG HOST
-COPY ./docker/client/servers/challenge.conf /etc/nginx/conf.d/
-RUN envsubst '$$HOST' < /etc/nginx/conf.d/challenge.conf > /etc/nginx/conf.d/challenge.conf
-
+COPY ./docker/client/servers/* /etc/nginx/templates/
 COPY ./docker/client/scripts/* /etc/nginx/scripts/
 RUN chmod +x /etc/nginx/scripts/*
 

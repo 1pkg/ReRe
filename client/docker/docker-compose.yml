@@ -5,8 +5,6 @@ services:
         build:
             context: ./../
             dockerfile: docker/client/Dockerfile
-            args:
-                - HOST
         env_file:
             - ./.env
         restart: on-failure

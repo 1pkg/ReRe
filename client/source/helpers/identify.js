@@ -28,11 +28,11 @@ export default class self {
     static async weblookup() {
         let lookup = await Http.read(`${SCHEMA}://${LOOK_UP_URL}`)
         return [
-            lookup.query,
-            lookup.country,
-            lookup.city,
-            lookup.lat,
-            lookup.lon,
+            lookup.geobytesipaddress,
+            lookup.geobytescountry,
+            lookup.geobytescity,
+            lookup.geobyteslatitude,
+            lookup.geobyteslongitude,
         ]
     }
 }
