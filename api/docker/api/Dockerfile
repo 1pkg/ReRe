@@ -7,8 +7,7 @@ COPY ./settings ./settings
 COPY ./effects ./effects
 COPY ./requirements.txt ./
 
-RUN pip install virtualenv
-RUN virtualenv -p python3 env
+RUN python3 -m venv env
 RUN . ./env/bin/activate
 RUN pip install -r requirements.txt
 RUN pip install gunicorn
