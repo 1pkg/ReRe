@@ -49,7 +49,7 @@ export default connect(state => {
             switch (state.status) {
                 case Trigger.STATUS_SPLASH:
                     Revenue.pause()
-                    Analytic.view(Analytic.VIEW_SPASH)
+                    Analytic.view(Analytic.VIEW_SPLASH)
                     return <Splash trigger={trigger} state={state} />
 
                 case Trigger.STATUS_HOME:

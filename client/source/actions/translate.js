@@ -10,19 +10,20 @@ export default async (trigger, subjects) => {
     trigger.push(Trigger.ACTION_WAIT, state)
 
     state = trigger.state()
-    let token = state.token
     let refresh = reduce(
         subjects,
         (predicat, subject) => predicat || !(subject in state.blobs),
         false,
     )
     if (refresh) {
+        let token = state.token
+        let integrity = INTEGRITY
         state.blobs = Object.assign(
             state.blobs,
             await Http.process(
                 Trigger.ACTION_TRANSLATE,
                 { token, subjects },
-                token,
+                integrity,
             ),
         )
     }

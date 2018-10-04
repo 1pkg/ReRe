@@ -10,7 +10,12 @@ export default async trigger => {
 
     state = trigger.state()
     let token = state.token
-    state.splash = await Http.process(Trigger.ACTION_SPLASH, { token }, token)
+    let integrity = INTEGRITY
+    state.splash = await Http.process(
+        Trigger.ACTION_SPLASH,
+        { token },
+        integrity,
+    )
     trigger.push(Trigger.ACTION_SPLASH, state)
     state = trigger.state()
     if (!isEmpty(state.splash)) {
