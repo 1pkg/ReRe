@@ -9,7 +9,7 @@ from .mixins import Crypto
 
 class Translate(Crypto):
     CONNECTION_LIMIT = Constant.RIGID_CONNECTION_LIMIT
-    CACHE_EXPIRE = Constant.DEFAULT_CACHE_EXPIRE
+    CACHE_EXPIRE = None
 
     def _validate(self, request):
         super()._validate(request)
