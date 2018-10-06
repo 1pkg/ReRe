@@ -6,7 +6,6 @@ from .mixins import Identify
 
 class Mark(Identify):
     CONNECTION_LIMIT = Constant.RIGID_CONNECTION_LIMIT
-    CACHE_EXPIRE = None
 
     def _validate(self, request):
         super()._validate(request)

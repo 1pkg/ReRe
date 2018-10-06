@@ -4,7 +4,6 @@ from .mixins import Crypto
 
 
 class Devote(Crypto):
-    CONNECTION_LIMIT = Constant.RAREFIED_CONNECTION_LIMIT
     CACHE_EXPIRE = Constant.DEFAULT_CACHE_EXPIRE
 
     def _process(self, request):

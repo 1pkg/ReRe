@@ -158,12 +158,18 @@ class Application:
         instance.after_request(after)
 
         for alias, action in self.__actions.items():
-            bound = functools.partial(
+            baction = functools.partial(
                 Application.action,
                 self,
                 action,
                 instance,
             )
+            bound = baction
+            rule = f'/{alias}'
+            if action.WILDCARD_ENDPOINT:
+                bound = lambda hash: baction()
+                rule = f'{rule}/<hash>'
+
             bound.__name__ = alias
             bound.__module__ = action.__module__
             if not instance.debug:
@@ -173,8 +179,9 @@ class Application:
                 if action.CACHE_EXPIRE is not None:
                     cache = self.extensions['cache']
                     bound = cache.cached(action.CACHE_EXPIRE)(bound)
-            rule = f'/{alias}'
+
             method = ['GET', 'POST'] if instance.debug else ['POST']
+
             instance.add_url_rule(view_func=bound, rule=rule, methods=method)
         instance.add_url_rule(
             view_func=lambda: flask.jsonify({}),

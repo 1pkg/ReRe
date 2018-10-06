@@ -129,7 +129,7 @@ export default class extends React.Component {
                 <TitleContainer
                     tmb={!Device.tablet() && Device.mobile()}
                     disabled={+this.props.disabled}
-                    onClick={this.props.eventchoose}
+                    onClick={this.eventchoose}
                 >
                     <MainTitle>{this.title()}</MainTitle>
                     <SubTitle>{this.subtile()}</SubTitle>

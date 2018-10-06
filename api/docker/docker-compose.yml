@@ -2,7 +2,13 @@ version: '3'
 
 services:
     db:
-        build: ./db
+        build:
+            context: ./db
+            args:
+                - SHARED_BUFFERS_MEMORY
+                - EFFECTIVE_CACHE_SIZE_MEMORY
+                - MAINTANCE_WORK_MEMORY
+                - WORK_MEMORY
         command: postgres -c config_file=/etc/postgresql/pgsql.conf
         env_file:
             - ./.env
@@ -16,17 +22,17 @@ services:
                 max-size: '100m'
                 max-file: '10'
 
-    cache:
+    storage:
         build:
-            context: ./cache
+            context: ./storage
             args:
-                - REDIS_PASSWORD
+                - STORAGE_PASSWORD
         command: redis-server /etc/redis/redis.conf
         env_file:
             - ./.env
         restart: on-failure
         volumes:
-            - ./../dump/data/cache:/data:rw
+            - ./../dump/data/storage:/data:rw
             - ./../dump/log:/var/logs:rw
         logging:
             driver: json-file
@@ -34,10 +40,30 @@ services:
                 max-size: '100m'
                 max-file: '10'
 
-    api:
+    cache:
+        build:
+            context: ./cache
+            args:
+                - CACHE_PASSWORD
+                - CACHE_MEMORY_LIMIT
+        command: redis-server /etc/redis/redis.conf
+        env_file:
+            - ./.env
+        restart: on-failure
+        volumes:
+            - ./../dump/log:/var/logs:rw
+        logging:
+            driver: json-file
+            options:
+                max-size: '100m'
+                max-file: '10'
+
+    wsgi:
         build:
             context: ./../
-            dockerfile: docker/api/Dockerfile
+            dockerfile: docker/wsgi/Dockerfile
+            args:
+                - API_INITIALIZE_MODE
         env_file:
             - ./.env
         restart: on-failure

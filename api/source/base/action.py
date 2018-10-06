@@ -1,4 +1,11 @@
+from .constant import Constant
+
+
 class Action:
+    WILDCARD_ENDPOINT = False
+    CACHE_EXPIRE = None
+    CONNECTION_LIMIT = Constant.RAREFIED_CONNECTION_LIMIT
+
     def __init__(self, application):
         self._application = application
 

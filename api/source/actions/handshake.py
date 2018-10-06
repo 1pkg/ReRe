@@ -4,9 +4,6 @@ from models import Account, Device, Session
 
 
 class Handshake(Action):
-    CONNECTION_LIMIT = Constant.RAREFIED_CONNECTION_LIMIT
-    CACHE_EXPIRE = None
-
     def _validate(self, request):
         super()._validate(request)
         validator = self._application.validator

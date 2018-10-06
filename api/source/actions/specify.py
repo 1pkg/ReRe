@@ -4,7 +4,6 @@ from .mixins import Crypto
 
 class Specify(Crypto):
     CONNECTION_LIMIT = Constant.RIGID_CONNECTION_LIMIT
-    CACHE_EXPIRE = None
 
     def _process(self, request):
         return {

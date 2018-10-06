@@ -1,12 +1,8 @@
-from base import Constant
 from errors import Request
 from .mixins import Access
 
 
 class Feedback(Access):
-    CONNECTION_LIMIT = Constant.RAREFIED_CONNECTION_LIMIT
-    CACHE_EXPIRE = None
-
     def _validate(self, request):
         super()._validate(request)
         validator = self._application.validator

@@ -4,8 +4,6 @@ from .access import Access, Constant
 
 
 class Crypto(Access):
-    CACHE_EXPIRE = None
-
     def _format(self, response):
         crypto = self._application.crypto
         settings = self._application.settings

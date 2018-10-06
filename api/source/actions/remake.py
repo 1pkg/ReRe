@@ -5,7 +5,6 @@ from .mixins import Crypto, FSingle, Identify, Registration, Score
 
 class Remake(Identify, Registration, FSingle, Crypto, Score):
     CONNECTION_LIMIT = Constant.RIGID_CONNECTION_LIMIT
-    CACHE_EXPIRE = None
 
     def _process(self, request):
         db = self._application.db

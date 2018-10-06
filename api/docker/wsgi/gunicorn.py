@@ -15,5 +15,5 @@ workers = 8
 threads = 8
 worker_connections = 4096
 
-errorlog = '/var/logs/gunicorn.log'
+errorlog = '/var/logs/wsgi.log'
 loglevel = 'error'

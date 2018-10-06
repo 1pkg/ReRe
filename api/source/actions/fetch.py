@@ -13,7 +13,6 @@ from .mixins import Crypto, FSingle, Identify, Registration, Score
 
 class Fetch(Registration, FSingle, Crypto, Score):
     CONNECTION_LIMIT = Constant.RIGID_CONNECTION_LIMIT
-    CACHE_EXPIRE = None
 
     def _process(self, request):
         validator = self._application.validator

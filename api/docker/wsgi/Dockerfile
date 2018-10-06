@@ -1,6 +1,10 @@
 FROM python:3-stretch
 
-WORKDIR /var/www/api
+RUN apt-get update
+RUN apt-get install -y gettext-base
+RUN apt-get purge -y --auto-remove
+
+WORKDIR /var/www/wsgi
 
 COPY ./source ./source
 COPY ./settings ./settings
@@ -15,13 +19,14 @@ RUN pip install gunicorn
 ENV FLASK_APP ./source/application.py
 ENV FLASK_SETTING ./../settings/production.cfg
 
-COPY ./docker/api/gunicorn.py ./
-COPY ./docker/api/entry.sh ./
+ARG API_INITIALIZE_MODE
+COPY ./docker/wsgi/gunicorn.py ./
+COPY ./docker/wsgi/$API_INITIALIZE_MODE.sh ./entry.sh
 RUN chmod +x ./entry.sh
 
-RUN groupadd -r api-user
-RUN useradd -rmg api-user api-user
-RUN chown -R api-user:api-user ./
+RUN groupadd -r wsgi-user
+RUN useradd -rmg wsgi-user wsgi-user
+RUN chown -R wsgi-user:wsgi-user ./
 
-USER api-user
+USER wsgi-user
 CMD ./entry.sh

@@ -6,7 +6,6 @@ from .mixins import Crypto, Identify, Registration, Score
 
 class Choose(Identify, Registration, Crypto, Score):
     CONNECTION_LIMIT = Constant.RIGID_CONNECTION_LIMIT
-    CACHE_EXPIRE = None
 
     def _validate(self, request):
         super()._validate(request)

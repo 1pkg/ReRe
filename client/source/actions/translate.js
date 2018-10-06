@@ -1,7 +1,7 @@
 import { reduce } from 'lodash'
 
 import Trigger from './trigger'
-import { Http } from '~/helpers'
+import { Hash, Http } from '~/helpers'
 
 export default async (trigger, subjects) => {
     let state = trigger.state()
@@ -17,12 +17,13 @@ export default async (trigger, subjects) => {
     )
     if (refresh) {
         let token = state.token
+        let integrity = INTEGRITY
         state.blobs = Object.assign(
             state.blobs,
             await Http.process(
-                Trigger.ACTION_TRANSLATE,
+                `${Trigger.ACTION_TRANSLATE}/${Hash.sha3(subjects.join('|'))}`,
                 { token, subjects },
-                token,
+                integrity,
             ),
         )
     }

@@ -8,8 +8,9 @@ from .mixins import Crypto
 
 
 class Translate(Crypto):
+    WILDCARD_ENDPOINT = True
     CONNECTION_LIMIT = Constant.RIGID_CONNECTION_LIMIT
-    CACHE_EXPIRE = None
+    CACHE_EXPIRE = Constant.DEFAULT_CACHE_EXPIRE
 
     def _validate(self, request):
         super()._validate(request)

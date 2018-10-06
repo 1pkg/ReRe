@@ -1,8 +1,7 @@
 import { startCase } from 'lodash'
-import * as CryptoJS from 'crypto-js'
 import faker from 'faker'
 
-import { Env, Http } from './'
+import { Env, Hash, Http } from './'
 
 export default class self {
     static alias() {
@@ -10,8 +9,7 @@ export default class self {
     }
 
     static async uuid(alias, socialid) {
-        let digest = CryptoJS.SHA3(await self.digest(alias, socialid))
-        return digest.toString()
+        return Hash.sha3(await self.digest(alias, socialid))
     }
 
     static async digest(alias, socialid) {
