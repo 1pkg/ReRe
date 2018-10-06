@@ -92,7 +92,7 @@ module.exports = env => {
                     template: `./static/${
                         env.mode === 'cordova' ? 'cordova' : 'web'
                     }.html`,
-                    inlineSource: /\.jsx?$/,
+                    hash: true,
                     minify: {
                         html5: true,
                         collapseInlineTagWhitespace: true,
@@ -137,6 +137,7 @@ module.exports = env => {
                                 from: './static/browserconfig.xml',
                                 to: './browserconfig.xml',
                             },
+                            { from: './static/og.jpeg', to: './og.jpeg' },
                         ]),
                     )
                     break
