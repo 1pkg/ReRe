@@ -1,3 +1,5 @@
+import { isEmpty } from 'lodash'
+
 import Trigger from './trigger'
 import { Device, Http, Identify } from '~/helpers'
 
@@ -14,6 +16,12 @@ export default async (trigger, alias, socialid = null) => {
         digest,
         uuid,
     })
+    if (isEmpty(data)) {
+        trigger.push(Trigger.ACTION_RELOAD, {
+            status: Trigger.STATUS_ERROR,
+        })
+        return state
+    }
     state.alias = data.alias
     state.token = data.token
     state.status = Trigger.STATUS_WAIT

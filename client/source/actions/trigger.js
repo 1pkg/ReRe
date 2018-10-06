@@ -17,7 +17,7 @@ import {
     splash,
     translate,
 } from '~/actions'
-import { Analytic, Revenue } from '~/helpers'
+import { Analytic } from '~/helpers'
 
 export default class Trigger {
     static STATUS_ACTIVE = 'status-active'
@@ -87,7 +87,6 @@ export default class Trigger {
                 try {
                     return clone(await this.actions[name](this, ...params))
                 } catch (exception) {
-                    Revenue.pause()
                     Analytic.error(exception)
                     this.push(Trigger.ACTION_RELOAD, {
                         status: Trigger.STATUS_ERROR,

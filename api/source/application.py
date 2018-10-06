@@ -42,10 +42,10 @@ class Application:
         except Exception as exception:
             if instance.debug:
                 raise exception
-            else:
+            elif not isinstance(exception, base.Error):
                 instance.logger.exception(exception)
                 self.sentry.captureException()
-                return flask.jsonify({})
+            return flask.jsonify({})
 
     def before(self):
         pass
@@ -167,7 +167,7 @@ class Application:
             bound = baction
             rule = f'/{alias}'
             if action.WILDCARD_ENDPOINT:
-                bound = lambda hash: baction()
+                def bound(hash): return baction()
                 rule = f'{rule}/<hash>'
 
             bound.__name__ = alias

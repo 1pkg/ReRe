@@ -21,6 +21,8 @@ services:
             options:
                 max-size: '100m'
                 max-file: '10'
+        ports:
+            - 55555:5432
 
     storage:
         build:
@@ -39,6 +41,8 @@ services:
             options:
                 max-size: '100m'
                 max-file: '10'
+        ports:
+            - 33333:6379
 
     cache:
         build:
@@ -57,6 +61,8 @@ services:
             options:
                 max-size: '100m'
                 max-file: '10'
+        ports:
+            - 11111:6379
 
     wsgi:
         build:

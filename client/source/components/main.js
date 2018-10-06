@@ -32,7 +32,6 @@ export default connect(state => {
 })(
     class extends React.Component {
         componentDidCatch(error, info) {
-            Revenue.pause()
             Analytic.error(error)
             this.props.trigger.push(Trigger.ACTION_RELOAD, {
                 status: Trigger.STATUS_ERROR,

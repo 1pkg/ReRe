@@ -2,6 +2,7 @@ import React from 'react'
 import Styled from 'styled-components'
 
 import Trigger from '~/actions/trigger'
+import { Analytic } from '~/helpers'
 import { Spinner } from './../blocks/other'
 
 const Container = Styled.div`
@@ -13,6 +14,7 @@ const Container = Styled.div`
 
 export default class extends React.Component {
     reload = () => {
+        Analytic.error(`waiting over ${WAIT_RELOAD_INTERVAL} ...`)
         this.props.trigger.push(Trigger.ACTION_RELOAD, {
             status: Trigger.STATUS_ERROR,
         })
