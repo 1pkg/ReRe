@@ -58,9 +58,9 @@ export default class self {
         if (Env.production()) {
             if (!self.initialized) {
                 if (Env.web()) {
-                    ReactGA.initialize(GA_CODE)
+                    ReactGA.initialize(GA_CODE_WEB)
                 } else {
-                    window.ga.startTrackerWithId(GA_CODE)
+                    window.ga.startTrackerWithId(GA_CODE_CORDOVA)
                 }
                 Raven.config(SENTRY_DSN).install()
                 self.initialized = true

@@ -73,7 +73,7 @@ export default class self extends React.Component {
             this.props.state.table,
             this.props.state.table.total,
         )
-        if (table && table.length >= MINIMAL_TABLE_LENGTH) {
+        if (table && table.rating.length >= MINIMAL_TABLE_LENGTH) {
             return (
                 <RatingContainer>
                     <Rating table={table} />

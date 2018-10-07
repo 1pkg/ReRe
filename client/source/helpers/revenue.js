@@ -35,6 +35,17 @@ export default class self {
                         overlap: true,
                         size: admob.AD_SIZE.SMART_BANNER,
                     })
+                } else {
+                    let script = document.createElement('script')
+                    script.onload = () => {
+                        window.adsbygoogle = (window.adsbygoogle || []).push({
+                            google_ad_client: ADSENSE_CODE,
+                            enable_page_level_ads: true,
+                        })
+                    }
+                    script.src =
+                        'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js'
+                    document.head.appendChild(script)
                 }
                 self.initialized = true
             }

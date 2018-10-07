@@ -84,7 +84,9 @@ export default class extends React.Component {
             action: 'choose',
             name: this.props.option.name,
         })
-        this.props.action()
+        if ('action' in this.props && this.props.action) {
+            this.props.action()
+        }
     }
 
     eventlink = () => {

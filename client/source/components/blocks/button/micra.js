@@ -27,7 +27,9 @@ const Hint = Styled.div`
 export default class extends React.Component {
     evaction = () => {
         Analytic.event(Analytic.EVENT_CLICK, { action: this.props.hint })
-        this.props.action()
+        if ('action' in this.props && this.props.action) {
+            this.props.action()
+        }
     }
 
     render() {

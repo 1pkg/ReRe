@@ -16,7 +16,6 @@ export default class extends React.Component {
             <FacebookShareButton
                 url={Url.current()}
                 onShareWindowClose={this.share}
-                quote={SHARE_TITLE}
             >
                 <Button glyph={FaFacebookF} hint={'share'} />
             </FacebookShareButton>
