@@ -1,5 +1,3 @@
-import { isEmpty } from 'lodash'
-
 import Trigger from './trigger'
 import { Device, Http, Identify } from '~/helpers'
 
@@ -16,9 +14,6 @@ export default async (trigger, alias, socialid = null) => {
         digest,
         uuid,
     })
-    if (isEmpty(data)) {
-        throw 'overwhelm'
-    }
     state.alias = data.alias
     state.token = data.token
     state.status = Trigger.STATUS_WAIT

@@ -68,16 +68,22 @@ const ErrorMinorText = Styled.div`
 
 export default class extends React.Component {
     skip = async () => {
-        await this.props.trigger.call(Trigger.ACTION_HANDSHAKE, 'Anonymous')
-        dispatch(this.props.trigger)
+        let state = await this.props.trigger.call(
+            Trigger.ACTION_HANDSHAKE,
+            'Anonymous',
+        )
+        this.dispatch(state.token)
     }
 
     submit = async () => {
         let node = findDOMNode(this)
         let input = node.querySelector('input')
         if (input.value.trim()) {
-            await this.props.trigger.call(Trigger.ACTION_HANDSHAKE, input.value)
-            dispatch(this.props.trigger)
+            let state = await this.props.trigger.call(
+                Trigger.ACTION_HANDSHAKE,
+                input.value,
+            )
+            this.dispatch(state.token)
         } else {
             Analytic.event(Analytic.EVENT_EMPTY, { type: 'login' })
             this.setState(state => {
@@ -91,12 +97,22 @@ export default class extends React.Component {
     }
 
     facebook = async response => {
-        await this.props.trigger.call(
+        let state = await this.props.trigger.call(
             Trigger.ACTION_HANDSHAKE,
             response.name,
             response.userID,
         )
-        dispatch(this.props.trigger)
+        this.dispatch(state.token)
+    }
+
+    dispatch(token) {
+        if (token) {
+            dispatch(this.props.trigger)
+        } else {
+            this.props.trigger.push(Trigger.ACTION_RELOAD, {
+                status: Trigger.STATUS_ERROR,
+            })
+        }
     }
 
     change = full => {
