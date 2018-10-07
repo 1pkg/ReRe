@@ -17,10 +17,7 @@ export default async (trigger, alias, socialid = null) => {
         uuid,
     })
     if (isEmpty(data)) {
-        trigger.push(Trigger.ACTION_RELOAD, {
-            status: Trigger.STATUS_ERROR,
-        })
-        return state
+        throw 'overwhelm'
     }
     state.alias = data.alias
     state.token = data.token

@@ -10,14 +10,15 @@ class Rating(Crypto):
         db = self._application.db
         settings = self._application.settings
 
+        admin = Account.query \
+            .filter(Account.alias == settings[Constant.SETTING_ADMIN_ALIAS]) \
+            .first()
+
         accounts = Account.query \
+            .filter(Account.id != admin.id) \
             .order_by(db.desc(Account.score)) \
             .limit(settings[Constant.SETTING_TABLE_SIZE]).all()
-        total = Account.query.count()
-        return {
-            'total': total,
-            'table': [
-                {'alias': account.alias, 'score': account.score}
-                for account in accounts
-            ],
-        }
+        return [
+            {'alias': account.alias, 'score': account.score}
+            for account in accounts
+        ]

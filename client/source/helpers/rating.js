@@ -1,7 +1,7 @@
 import { findIndex, head, last, map, sortBy } from 'lodash'
 
 export default class {
-    static build(alias, score, rating, total) {
+    static build(alias, score, rating) {
         rating = sortBy(rating, ['score']).reverse()
         rating = map(rating, (row, index) => {
             return {
@@ -11,22 +11,8 @@ export default class {
             }
         })
 
-        let index = findIndex(rating, row => {
-            return row.name == alias && row.score == score
-        })
-        if (index !== -1) {
-            rating[index] = {
-                index,
-                name: `THIS IS YOU - ${alias}`,
-                score,
-            }
-            if (total > rating.length) {
-                rating.push({ index: '...', name: '...', score: '...' })
-                rating.push({ index: '...', name: '...', score: '...' })
-                rating.push({ index: '...', name: '...', score: '...' })
-                rating.push({ index: total, name: '...', score: '...' })
-            }
-        } else {
+        let index = 0
+        if (score < last(rating).score) {
             let koef = (head(rating).score - last(rating).score) / rating.length
             let diff = head(rating).score - score
             index = Math.floor(diff / koef)
@@ -35,14 +21,38 @@ export default class {
             rating.push({ index: '...', name: '...', score: '...' })
             rating.push({
                 index,
-                name: `THIS IS YOU - ${alias}`,
+                name: `YOU - ${alias}`,
                 score,
             })
-            if (total > index) {
-                rating.push({ index: '...', name: '...', score: '...' })
-                rating.push({ index: '...', name: '...', score: '...' })
-                rating.push({ index: '...', name: '...', score: '...' })
-                rating.push({ index: total, name: '...', score: '...' })
+            rating.push({ index: '...', name: '...', score: '...' })
+            rating.push({ index: '...', name: '...', score: '...' })
+            rating.push({ index: '...', name: '...', score: '...' })
+        } else {
+            index = findIndex(rating, row => {
+                return row.name == alias && row.score == score
+            })
+            if (index != -1) {
+                rating[index] = {
+                    index: ++index,
+                    name: `YOU - ${alias}`,
+                    score,
+                }
+            } else {
+                index = findIndex(rating, row => {
+                    return row.score <= score
+                })
+                rating.splice(index, 0, {
+                    index: ++index,
+                    name: `YOU - ${alias}`,
+                    score,
+                })
+                rating = map(rating, (row, index) => {
+                    return {
+                        index: index + 1,
+                        name: row.name,
+                        score: row.score,
+                    }
+                })
             }
         }
         return { rating, index }

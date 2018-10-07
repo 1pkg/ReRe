@@ -71,7 +71,6 @@ export default class self extends React.Component {
             this.props.state.alias,
             this.props.state.stats.score,
             this.props.state.table,
-            this.props.state.table.total,
         )
         if (table && table.rating.length >= MINIMAL_TABLE_LENGTH) {
             return (

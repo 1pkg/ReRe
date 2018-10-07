@@ -14,7 +14,7 @@ const Container = Styled.div`
 
 export default class extends React.Component {
     reload = () => {
-        Analytic.error(`waiting over ${WAIT_RELOAD_INTERVAL} ...`)
+        Analytic.error(`waiting over ${WAIT_RELOAD_INTERVAL}`)
         this.props.trigger.push(Trigger.ACTION_RELOAD, {
             status: Trigger.STATUS_ERROR,
         })
