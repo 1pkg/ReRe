@@ -27,7 +27,7 @@ const SubContainer = Styled.div`
     display: flex;
     flex-direction: column;
     justify-content: space-around;
-    overflow-y: auto;
+    overflow: hidden;
 `
 
 const TitleContainer = Styled.div`

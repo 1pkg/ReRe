@@ -5,6 +5,7 @@ import Styled from 'styled-components'
 import { tc } from '~/theme'
 
 const Table = Styled.table`
+    width: 100vw;
     flex: 1 1 0;
     text-align: center;
     border-collapse: collapse;

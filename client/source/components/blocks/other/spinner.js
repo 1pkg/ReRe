@@ -46,10 +46,10 @@ const Text = Styled.div`
     color: ${props => props.theme[tc.activec]};
     font-style: italic;
     text-transform: lowercase;
-    &:after {
-        content: ' ... ';
-        animation: ${Blink} 1s linear infinite;
-    }
+`
+
+const DotElement = Styled.span`
+    animation: ${Blink} 1s linear infinite;
 `
 
 export default class extends React.Component {
@@ -61,7 +61,9 @@ export default class extends React.Component {
         return (
             <Container>
                 <Spinner />
-                <Text>processing</Text>
+                <Text>
+                    processing <DotElement>...</DotElement>
+                </Text>
             </Container>
         )
     }

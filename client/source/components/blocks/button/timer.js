@@ -4,7 +4,6 @@ import Styled from 'styled-components'
 
 import Trigger from '~/actions/trigger'
 import { Analytic, Timestamp } from '~/helpers'
-import Button from './complex'
 import { tc } from '~/theme'
 
 const Container = Styled.div`
@@ -22,6 +21,19 @@ const Text = Styled.div`
     font-size: ${props => props.theme[tc.hsu]};
     font-style: italic;
     text-transform: lowercase;
+`
+
+const Button = Styled.div`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    user-select: none;
+    &:active {
+        color: ${props => props.theme[tc.activec]};
+    };
+    &:hover {
+        cursor: pointer;
+    };
 `
 
 export default class extends React.Component {
@@ -66,6 +78,10 @@ export default class extends React.Component {
     }
 
     glyph() {
+        const Glyph = Styled(FaClock)`
+            height: ${props => props.theme[tc.normalu]};
+            width: ${props => props.theme[tc.normalu]};
+        `
         return (
             <Container>
                 <Wrapper
@@ -74,7 +90,7 @@ export default class extends React.Component {
                         this.props.settings['choose-period'] / 3
                     }
                 >
-                    <FaClock />
+                    <Glyph />
                 </Wrapper>
                 <Text>{this.state.current}</Text>
             </Container>
@@ -82,6 +98,6 @@ export default class extends React.Component {
     }
 
     render() {
-        return <Button glyph={this.glyph()} />
+        return <Button>{this.glyph()}</Button>
     }
 }

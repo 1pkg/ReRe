@@ -39,7 +39,11 @@ export default connect(state => {
         }
 
         scene(trigger, state) {
-            if (!Modernizr.flexbox || !Modernizr.webgl) {
+            if (
+                !Modernizr.flexbox ||
+                !Modernizr.webgl ||
+                document.documentMode
+            ) {
                 Revenue.pause()
                 Analytic.view(Analytic.VIEW_UPDATE)
                 return <Update />

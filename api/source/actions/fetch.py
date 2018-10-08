@@ -3,7 +3,6 @@ from errors import Identity
 from models import \
     Answer, \
     Effect, \
-    Mark, \
     Option, \
     Subject, \
     Task, \
@@ -91,17 +90,11 @@ class Fetch(Registration, FSingle, Crypto, Score):
                 Subject.orientation == device.orientation()
             )) \
             .join(Answer) \
-            .outerjoin(Mark) \
             .filter(Task.active == True) \
             .group_by(Task.id) \
             .order_by(
-                db.desc(
-                    db.func.count(Mark.type == Type.upvote) -
-                    db.func.count(Mark.type == Type.report) +
-                    (db.func.count(Answer.option_id != None) / 2) -
-                    (db.func.count(Answer.option_id == None) * 2),
-                ),
-                db.desc(Task.id),
+                db.desc(db.func.count(Answer.id)),
+                db.func.random(),
             ).limit(Constant.DEFAULT_TASK_COUNT)
         return random.choose(query, query.count())
 

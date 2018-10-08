@@ -2,11 +2,12 @@ import React from 'react'
 import Styled from 'styled-components'
 
 import { Analytic, Device } from '~/helpers'
+import { Scroll } from './../other'
 import { tc } from '~/theme'
 
 const Container = Styled.div`
     flex: 1 1 0;
-    overflow-y: auto;
+    overflow: hidden;
     padding: ${props => props.theme[tc.hsu]};
     margin-bottom: ${props => props.theme[tc.hsu]};
     margin-right: ${props => props.theme[tc.hsu]};
@@ -59,7 +60,6 @@ const SubTitle = Styled.div`
 const Text = Styled.div`
     font-size: ${props => props.theme[tc.snu]};
     text-align: justify;
-    overflow: hidden;
     @media screen and (orientation:landscape) {
         display: ${props => (props.tmb ? 'none' : 'auto')};
     }
@@ -128,20 +128,22 @@ export default class extends React.Component {
                 tmb={!Device.tablet() && Device.mobile()}
                 disabled={this.props.disabled}
             >
-                <TitleContainer
-                    tmb={!Device.tablet() && Device.mobile()}
-                    disabled={+this.props.disabled}
-                    onClick={this.eventchoose}
-                >
-                    <MainTitle>{this.title()}</MainTitle>
-                    <SubTitle>{this.subtile()}</SubTitle>
-                </TitleContainer>
-                <Text tmb={!Device.tablet() && Device.mobile()}>
-                    {this.text()}
-                </Text>
-                <Source tmb={!Device.tablet() && Device.mobile()}>
-                    {this.source()}
-                </Source>
+                <Scroll>
+                    <TitleContainer
+                        tmb={!Device.tablet() && Device.mobile()}
+                        disabled={+this.props.disabled}
+                        onClick={this.eventchoose}
+                    >
+                        <MainTitle>{this.title()}</MainTitle>
+                        <SubTitle>{this.subtile()}</SubTitle>
+                    </TitleContainer>
+                    <Text tmb={!Device.tablet() && Device.mobile()}>
+                        {this.text()}
+                    </Text>
+                    <Source tmb={!Device.tablet() && Device.mobile()}>
+                        {this.source()}
+                    </Source>
+                </Scroll>
             </Container>
         )
     }

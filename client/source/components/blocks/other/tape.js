@@ -5,6 +5,7 @@ import Styled from 'styled-components'
 import Trigger from '~/actions/trigger'
 import { Analytic } from '~/helpers'
 import { Effect as Subject } from './../subject'
+import { Flexscroll } from './'
 import { tc } from '~/theme'
 
 const MainContainer = Styled.div`
@@ -17,7 +18,6 @@ const MainContainer = Styled.div`
 const SubContainer = Styled.div`
     flex: 1 1 0;
     display: flex;
-    flex-direction: column;
     border:
         ${props => props.theme[tc.minu]}
         solid
@@ -28,7 +28,7 @@ const SubContainer = Styled.div`
         ${props => props.theme[tc.msu]}
         ${props => props.theme[tc.msu]}
         ${props => props.theme[tc.qmc]};
-    overflow-y: scroll;
+    overflow: hidden;
 `
 
 const Title = Styled.div`
@@ -78,7 +78,9 @@ export default class extends React.Component {
             return (
                 <MainContainer>
                     <Title>{this.props.title}</Title>
-                    <SubContainer>{this.snippets()}</SubContainer>
+                    <SubContainer>
+                        <Flexscroll>{this.snippets()}</Flexscroll>
+                    </SubContainer>
                 </MainContainer>
             )
         }

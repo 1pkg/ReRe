@@ -33,7 +33,10 @@ export default class extends React.Component {
     }
 
     render() {
-        const Glyph = this.props.glyph
+        const Glyph = Styled(this.props.glyph)`
+            height: ${props => props.theme[tc.normalu]};
+            width: ${props => props.theme[tc.normalu]};
+        `
         return (
             <Container onClick={this.evaction}>
                 <Glyph />

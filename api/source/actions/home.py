@@ -43,5 +43,5 @@ class Home(FList, Crypto):
                     (db.func.count(Answer.option_id != None) / 2) -
                     (db.func.count(Answer.option_id == None) * 2),
                 ),
-                db.desc(Task.id),
+                db.func.random(),
             ).limit(settings[Constant.SETTING_LAND_COUNT]).all()

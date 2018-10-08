@@ -28,11 +28,7 @@ injectGlobal`
     }
 
     ::-webkit-scrollbar {
-        width: 0.1rem;
-    }
-  
-    ::-webkit-scrollbar-thumb {
-        background: rgba(240, 128, 128, 0.75);
+        width: 0.0rem;
     }
 
     html, body {

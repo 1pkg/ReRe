@@ -3,7 +3,7 @@ import Styled from 'styled-components'
 
 import { Rating as Builder } from '~/helpers'
 import { Main as Toolbar } from './../blocks/toolbar'
-import { Rating, Userbar } from './../blocks/other'
+import { Rating, Scroll, Userbar } from './../blocks/other'
 import { tc } from '~/theme'
 
 const MainContainer = Styled.div`
@@ -16,7 +16,7 @@ const RatingContainer = Styled.div`
     flex: 1 1 0;
     display: flex;
     align-items: center;
-    overflow-y: auto;
+    overflow: hidden;
 `
 
 const ToolbarContainer = Styled.div`
@@ -75,7 +75,9 @@ export default class self extends React.Component {
         if (table && table.rating.length >= MINIMAL_TABLE_LENGTH) {
             return (
                 <RatingContainer>
-                    <Rating table={table} />
+                    <Scroll>
+                        <Rating table={table} />
+                    </Scroll>
                 </RatingContainer>
             )
         }
