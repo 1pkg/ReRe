@@ -112,7 +112,6 @@ export default connect(state => {
                     </ThemeProvider>
                 )
             }
-
             return null
         }
     },

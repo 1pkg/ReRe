@@ -5,6 +5,11 @@ import { Copyright } from './../blocks/other'
 import { tc } from '~/theme'
 
 const MainContainer = Styled.div`
+    position: absolute;
+    left: 50vw;
+    top: 50vh;
+    z-index: 999;
+    transform: translateX(-50%) translateY(-50%);
     flex: 1 1 0;
     display: flex;
     flex-direction: column;

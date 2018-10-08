@@ -4,6 +4,7 @@ from .mixins import Crypto
 
 
 class Splash(Crypto):
+    WILDCARD_ENDPOINT = True
     CACHE_EXPIRE = Constant.DEFAULT_CACHE_EXPIRE
 
     def _process(self, request):
@@ -28,7 +29,6 @@ class Splash(Crypto):
         if task is not None:
             subject = {
                 'link': task.subject.link,
-                'source': task.subject.source,
                 'orientation': str(task.subject.orientation),
             }
             effects = [{

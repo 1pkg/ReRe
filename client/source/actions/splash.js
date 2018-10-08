@@ -1,7 +1,7 @@
 import { isEmpty } from 'lodash'
 
 import Trigger from './trigger'
-import { Http } from '~/helpers'
+import { Device, Http } from '~/helpers'
 
 export default async trigger => {
     let state = trigger.state()
@@ -12,7 +12,7 @@ export default async trigger => {
     let token = state.token
     let integrity = INTEGRITY
     state.splash = await Http.process(
-        Trigger.ACTION_SPLASH,
+        `${Trigger.ACTION_SPLASH}/${Device.name()}`,
         { token },
         integrity,
     )

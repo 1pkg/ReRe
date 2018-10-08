@@ -8,7 +8,6 @@ class FSingle(Action):
     def _format(self, task):
         subject = {
             'link': task.subject.link,
-            'source': task.subject.source,
             'orientation': str(task.subject.orientation),
         }
         options = [{

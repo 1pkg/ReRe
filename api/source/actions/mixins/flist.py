@@ -12,7 +12,6 @@ class FList(Action):
     def _single(self, task):
         subject = {
             'link': task.subject.link,
-            'source': task.subject.source,
             'orientation': str(task.subject.orientation),
         }
         options = [{

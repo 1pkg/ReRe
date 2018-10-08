@@ -4,6 +4,7 @@ from .mixins import Crypto, FList
 
 
 class Home(FList, Crypto):
+    WILDCARD_ENDPOINT = True
     CACHE_EXPIRE = Constant.DEFAULT_CACHE_EXPIRE
 
     def _process(self, request):

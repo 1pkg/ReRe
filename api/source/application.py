@@ -36,7 +36,7 @@ class Application:
             return self.__actions[action](request)
         return None
 
-    def action(self, action, instance):
+    def action(self, action, instance, param):
         try:
             return flask.jsonify(action(flask.request))
         except Exception as exception:
@@ -158,17 +158,23 @@ class Application:
         instance.after_request(after)
 
         for alias, action in self.__actions.items():
-            baction = functools.partial(
-                Application.action,
-                self,
-                action,
-                instance,
-            )
-            bound = baction
-            rule = f'/{alias}'
             if action.WILDCARD_ENDPOINT:
-                def bound(hash): return baction()
-                rule = f'{rule}/<hash>'
+                bound = functools.partial(
+                    Application.action,
+                    self,
+                    action,
+                    instance,
+                )
+                rule = f'/{alias}/<param>'
+            else:
+                bound = functools.partial(
+                    Application.action,
+                    self,
+                    action,
+                    instance,
+                    None,
+                )
+                rule = f'/{alias}'
 
             bound.__name__ = alias
             bound.__module__ = action.__module__

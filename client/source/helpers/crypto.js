@@ -34,7 +34,7 @@ export default class {
         let iv = CryptoJS.enc.Hex.parse(_iv(key))
         key = CryptoJS.enc.Hex.parse(key)
         data = CryptoJS.AES.encrypt(data, key, { iv: iv })
-        return CryptoJS.enc.Base64.stringify(data)
+        return data.toString()
     }
 
     static decrypt(key, data) {

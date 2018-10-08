@@ -62,6 +62,7 @@ export default class self extends React.Component {
                 next[period] = index === indx++
             }
             Analytic.event(Analytic.EVENT_SWIPE, { index })
+            return next
         })
     }
 
