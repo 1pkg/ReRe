@@ -23,7 +23,7 @@ CACHE_KEY_PREFIX = 'cache'
 
 RATELIMIT_STORAGE_URL = 'redis://:pass@cache:6379/1'
 RATELIMIT_STRATEGY = 'moving-window'
-RATELIMIT_DEFAULT = '3/second'
+RATELIMIT_DEFAULT = '10/second'
 RATELIMIT_KEY_PREFIX = 'rate-limit'
 
 TOKEN_TIMEOUT = 21600

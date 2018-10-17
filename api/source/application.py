@@ -12,6 +12,8 @@ import raven.contrib.flask
 import logging
 import flask.logging
 import werkzeug.contrib.fixers
+import gevent.monkey
+import psycogreen.gevent
 
 import base
 import models
@@ -61,6 +63,8 @@ class Application:
             self.path = os.path.join(current, '..', 'dump', 'data')
             self.lpath = os.path.join(current, '..', 'dump', 'logs')
         else:
+            gevent.monkey.patch_all()
+            psycogreen.gevent.patch_psycopg()
             self.path = os.path.join('/', 'var', 'rere1')
             self.lpath = os.path.join('/', 'var', 'logs')
             instance.wsgi_app = \
