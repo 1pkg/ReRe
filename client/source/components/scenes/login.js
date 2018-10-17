@@ -14,7 +14,6 @@ import Styled from 'styled-components'
 
 import Trigger from '~/actions/trigger'
 import dispatch from '~/dispatch'
-import { Analytic, Identify } from '~/helpers'
 import { Analytic, Env, Identify, Json } from '~/helpers'
 import { Beacon, Simple } from './../blocks/button'
 import { Copyright } from './../blocks/other'

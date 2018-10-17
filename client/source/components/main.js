@@ -51,12 +51,11 @@ export default connect(state => {
 
             switch (state.status) {
                 case Trigger.STATUS_SPLASH:
-                    Revenue.pause()
                     Analytic.view(Analytic.VIEW_SPLASH)
                     return <Splash trigger={trigger} state={state} />
 
                 case Trigger.STATUS_HOME:
-                    Revenue.resume()
+                    Revenue.pause()
                     Analytic.view(Analytic.VIEW_HOME)
                     History.push(Trigger.STATUS_HOME)
                     return <Home trigger={trigger} state={state} />
@@ -67,7 +66,7 @@ export default connect(state => {
                     return <Login trigger={trigger} state={state} />
 
                 case Trigger.STATUS_RATING:
-                    Revenue.resume()
+                    Revenue.pause()
                     Analytic.view(Analytic.VIEW_RATING)
                     History.push(Trigger.STATUS_RATING)
                     return <Rating trigger={trigger} state={state} />
@@ -79,8 +78,12 @@ export default connect(state => {
                     return <Choose trigger={trigger} state={state} />
 
                 case Trigger.STATUS_CORRECT:
-                case Trigger.STATUS_WRONG:
                     Revenue.resume()
+                    Analytic.view(Analytic.VIEW_RESULT)
+                    return <Result trigger={trigger} state={state} />
+
+                case Trigger.STATUS_WRONG:
+                    Revenue.once()
                     Analytic.view(Analytic.VIEW_RESULT)
                     return <Result trigger={trigger} state={state} />
 

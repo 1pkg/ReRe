@@ -3,7 +3,7 @@ import { FacebookShareButton } from 'react-share'
 import { FaFacebookF } from 'react-icons/fa'
 
 import Trigger from '~/actions/trigger'
-import { Analytic, Env, Url } from '~/helpers'
+import { Analytic, Env, Json, Url } from '~/helpers'
 import Button from './base'
 
 export default class extends React.Component {

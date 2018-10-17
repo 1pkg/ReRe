@@ -28,11 +28,11 @@
     <plugin name="cordova-plugin-device" />
     <plugin name="cordova-plugin-apprate" />
     <plugin name="cordova-admob-sdk">
-        <variable name="PLAY_SERVICES_VERSION" value="11.6.0" />
+        <variable name="PLAY_SERVICES_VERSION" value="15.0.0" />
     </plugin>
     <plugin name="cordova-plugin-admob-free" />
     <plugin name="cordova-plugin-google-analytics" >
-        <variable name="GMS_VERSION" value="11.6.0" />
+        <variable name="GMS_VERSION" value="15.0.0" />
     </plugin>
     <plugin name="cordova-plugin-facebook4" spec="~3.1.0">
         <variable name="APP_ID" value="319080632158864" />

@@ -151,6 +151,10 @@ module.exports = env => {
                                 from: './static/resource.xml',
                                 to: './resource.xml',
                             },
+                            {
+                                from: './static/cordova.json',
+                                to: './cordova.json',
+                            },
                         ]),
                         {
                             apply: compiler => {

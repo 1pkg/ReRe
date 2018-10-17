@@ -63,8 +63,7 @@ export default class {
             useLanguage: 'en',
             displayAppName: APPLICATION_NAME,
             storeAppURL: {
-                ios: APP_STORE_ID,
-                android: GOOGLE_PLAY_ID,
+                android: GOOGLE_PLAY_URL,
             },
             callbacks: {
                 done: result,

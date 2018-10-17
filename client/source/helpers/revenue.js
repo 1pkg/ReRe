@@ -2,19 +2,31 @@ import { Analytic, Env } from './'
 
 export default class self {
     static initialized = false
+    static active = false
 
     static pause() {
-        if (self.initialize()) {
+        if (self.initialize() && self.active) {
             if (Env.cordova()) {
                 admob.banner.remove()
             }
+            self.active = false
         }
     }
 
     static resume() {
-        if (self.initialize()) {
+        if (self.initialize() && !self.active) {
             if (Env.cordova()) {
                 admob.banner.prepare()
+            }
+            self.active = true
+        }
+    }
+
+    static once() {
+        if (self.initialize()) {
+            if (Env.cordova()) {
+                self.pause()
+                admob.interstitial.prepare()
             }
         }
     }
@@ -28,12 +40,22 @@ export default class self {
                         error => Analytic.error(error),
                     )
                     admob.banner.config({
-                        id: ADMOB_CODE,
+                        id: ADMOB_BANNER_CODE,
                         bannerAtTop: true,
                         isTesting: false,
                         autoShow: true,
                         overlap: true,
                         size: admob.AD_SIZE.SMART_BANNER,
+                    })
+
+                    document.addEventListener(
+                        'admob.interstitial.events.LOAD_FAIL',
+                        error => Analytic.error(error),
+                    )
+                    admob.interstitial.config({
+                        id: ADMOB_INTERSTILIAL_CODE,
+                        isTesting: false,
+                        autoShow: true,
                     })
                 } else {
                     let script = document.createElement('script')
