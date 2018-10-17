@@ -1,14 +1,15 @@
 import { injectGlobal } from 'styled-components'
 
-import { Device } from '~/helpers'
+import { Env, Device } from '~/helpers'
 
+const fonts = Env.cordova() ? '../fonts' : '/fonts'
 injectGlobal`
     @font-face {
         font-family: 'Libre Franklin';
         font-style: normal;
         font-weight: 400;
         src: local('Libre Franklin'), local('LibreFranklin-Regular'),
-        url(/fonts/librefranklin-regular.ttf?v=qaLeO-2Fytg) format('truetype');
+        url(${fonts}/librefranklin-regular.ttf?v=qaLeO-2Fytg) format('truetype');
     }
 
     @font-face {
@@ -16,7 +17,7 @@ injectGlobal`
         font-style: italic;
         font-weight: 400;
         src: local('Libre Franklin Italic'), local('LibreFranklin-Italic'),
-        url(/fonts/librefranklin-italic.ttf?v=qaLeO-2Fytg) format('truetype');
+        url(${fonts}/librefranklin-italic.ttf?v=qaLeO-2Fytg) format('truetype');
     }
 
     @font-face {
@@ -24,7 +25,7 @@ injectGlobal`
         font-style: normal;
         font-weight: 700;
         src: local('Libre Franklin Bold'), local('LibreFranklin-Bold'),
-        url(/fonts/librefranklin-bold.ttf?v=qaLeO-2Fytg) format('truetype');
+        url(${fonts}/librefranklin-bold.ttf?v=qaLeO-2Fytg) format('truetype');
     }
 
     ::-webkit-scrollbar {

@@ -23,11 +23,12 @@
 
     "INTEGRITY": "'601ffaefb2ca69a6a8031ab34e54184fcb05341d673894847d5d0e7b579c97c86f0dd9cae1af620d42470f2fd92e5cbd674117860b4f81366c76daae6ed378a6'",
 
-    "APP_STORE_ID": "''",
-    "APP_STORE_URL": "''",
-    "GOOGLE_PLAY_ID": "''",
-    "GOOGLE_PLAY_URL": "''",
-    "AMAZON_STORE_URL": "''",
+    "APP_STORE_ID": "'rere.one'",
+    "GOOGLE_PLAY_ID": "'rere.one'",
+
+    "APP_STORE_URL": "'#'",
+    "GOOGLE_PLAY_URL": "'#'",
+    "AMAZON_STORE_URL": "'#'",
 
     "FACEBOOK_ID": "'319080632158864'",
     "LOOK_UP_URL": "'lookup.rere.one'",

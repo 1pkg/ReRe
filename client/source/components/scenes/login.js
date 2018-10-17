@@ -15,6 +15,7 @@ import Styled from 'styled-components'
 import Trigger from '~/actions/trigger'
 import dispatch from '~/dispatch'
 import { Analytic, Identify } from '~/helpers'
+import { Analytic, Env, Identify, Json } from '~/helpers'
 import { Beacon, Simple } from './../blocks/button'
 import { Copyright } from './../blocks/other'
 import { tc } from '~/theme'
@@ -96,13 +97,41 @@ export default class extends React.Component {
         }
     }
 
-    facebook = async response => {
-        let state = await this.props.trigger.call(
-            Trigger.ACTION_HANDSHAKE,
-            response.name,
-            response.userID,
+    facebookWeb = async response => {
+        if ('name' in response && 'userID' in response) {
+            let state = await this.props.trigger.call(
+                Trigger.ACTION_HANDSHAKE,
+                response.name,
+                response.userID,
+            )
+            this.dispatch(state.token)
+        } else {
+            Analytic.error(`facebook login ${Json.encode(response)}`)
+        }
+    }
+
+    facebookCordova = async () => {
+        facebookConnectPlugin.login(
+            ['public_profile'],
+            response => {
+                let auth = response.authResponse
+                facebookConnectPlugin.api(
+                    auth.userID,
+                    ['public_profile'],
+                    response =>
+                        this.facebookWeb({
+                            userID: auth.userID,
+                            name: response.name,
+                        }),
+                    response =>
+                        Analytic.error(
+                            `facebook login ${Json.encode(response)}`,
+                        ),
+                )
+            },
+            response =>
+                Analytic.error(`facebook login ${Json.encode(response)}`),
         )
-        this.dispatch(state.token)
     }
 
     dispatch(token) {
@@ -187,22 +216,38 @@ export default class extends React.Component {
         return null
     }
 
+    fbbeacon() {
+        if (Env.cordova()) {
+            return (
+                <Beacon
+                    glyph={FaFacebookF}
+                    hint="login via facebook"
+                    action={this.facebookCordova}
+                />
+            )
+        } else {
+            return (
+                <FacebookLogin
+                    appId={FACEBOOK_ID}
+                    callback={this.facebookWeb}
+                    render={props => (
+                        <Beacon
+                            glyph={FaFacebookF}
+                            hint="login via facebook"
+                            action={props.onClick}
+                        />
+                    )}
+                />
+            )
+        }
+    }
+
     render() {
         return (
             <Container>
                 <Copyright />
                 <BorderWrapper>
-                    <FacebookLogin
-                        appId={FACEBOOK_ID}
-                        callback={this.facebook}
-                        render={props => (
-                            <Beacon
-                                glyph={FaFacebookF}
-                                hint="login via facebook"
-                                action={props.onClick}
-                            />
-                        )}
-                    />
+                    {this.fbbeacon()}
                     <Beacon
                         glyph={FaUser}
                         hint="login via username"
