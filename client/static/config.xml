@@ -1,25 +1,35 @@
 <?xml version='1.0' encoding='utf-8'?>
 <widget 
-    id="one.rere.rere1"
+    id="one1.alfa.rere"
     version="1.0.0"
     defaultlocale="en"
     xmlns="http://www.w3.org/ns/widgets"
     xmlns:cdv="http://cordova.apache.org/ns/1.0"
 >
-    <name short="rere1">rere.one</name>
-    <description>Reveal true essence of images that past various effects, filters and deformations.</description>
+    <name short="ReRe">ReRe</name>
+    <description>President or Raccoon or Orange??? only in our quiz you'll find who is hidden behind the image</description>
     <author email="sup.rere1@gmail.com" href="rere.one"/>
     
     <content src="index.html" />
 
-    <access origin="*://*.rere.one/*" />
-    <allow-navigation href="*://*.rere.one/*" />
+    <access origin="*" />
+    <allow-navigation href="http://*/*" />
+    <allow-navigation href="https://*/*" />
     <allow-intent href="http://*/*" />
     <allow-intent href="https://*/*" />
 
     <preference name="enableWebGL" value="true" />
 
     <resource-file src="resource.xml" />
+
+    <platform name="android">
+        <icon src="res/icon/android/icon-36-ldpi.png" density="ldpi" />
+        <icon src="res/icon/android/icon-48-mdpi.png" density="mdpi" />
+        <icon src="res/icon/android/icon-72-hdpi.png" density="hdpi" />
+        <icon src="res/icon/android/icon-96-xhdpi.png" density="xhdpi" />
+        <icon src="res/icon/android/icon-144-xxhdpi.png" density="xxhdpi" />
+        <icon src="res/icon/android/icon-192-xxxhdpi.png" density="xxxhdpi" />
+    </platform>
 
     <feature name="StatusBar">
         <param name="android-package" value="org.apache.cordova.statusbar.StatusBar" />
@@ -31,12 +41,13 @@
         <variable name="PLAY_SERVICES_VERSION" value="15.0.0" />
     </plugin>
     <plugin name="cordova-plugin-admob-free" />
-    <plugin name="cordova-plugin-google-analytics" >
+    <plugin name="cordova-plugin-google-analytics">
         <variable name="GMS_VERSION" value="15.0.0" />
     </plugin>
-    <plugin name="cordova-plugin-facebook4" spec="~3.1.0">
+    <plugin name="cordova-plugin-facebook4">
         <variable name="APP_ID" value="319080632158864" />
         <variable name="APP_NAME" value="ReRe" />
         <variable name="FACEBOOK_ANDROID_SDK_VERSION" value="4.37.0" />
     </plugin>
+    <engine name="android" spec="^7.1.1" />
 </widget>

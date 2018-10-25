@@ -57,7 +57,7 @@ export default class extends React.Component {
                     <Badge text={this.props.stats.score} hint="score" />
                 </Wrapper>
                 <Text>
-                    {APPLICATION_NAME} @ {Timestamp.year()} all rights reserved
+                    {APPLICATION_SHORT_NAME} @ {Timestamp.year()} all rights reserved
                 </Text>
                 <CenterWrapper>
                     <Micra
@@ -79,7 +79,7 @@ export default class extends React.Component {
                     <Badge text={this.props.stats.score} hint="score" />
                 </Wrapper>
                 <Text>
-                    {APPLICATION_NAME} @ {Timestamp.year()} all rights reserved
+                    {APPLICATION_SHORT_NAME} @ {Timestamp.year()} all rights reserved
                 </Text>
                 <CenterWrapper>
                     <Alias>{this.props.alias}</Alias>

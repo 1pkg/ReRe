@@ -124,7 +124,7 @@ module.exports = env => {
                     webpack.plugins.push(
                         new CopyPlugin([
                             { from: './static/fonts/', to: './fonts/' },
-                            { from: './static/icons/', to: './icons/' },
+                            { from: './static/icons/web/', to: './icons/' },
                             {
                                 from: './static/manifest.json',
                                 to: './manifest.json',
@@ -143,39 +143,25 @@ module.exports = env => {
                     break
 
                 case 'cordova':
-                    webpack.plugins.push(
-                        new CopyPlugin([
-                            { from: './static/fonts/', to: './fonts/' },
-                            { from: './static/config.xml', to: './config.xml' },
-                            {
-                                from: './static/resource.xml',
-                                to: './resource.xml',
-                            },
-                            {
-                                from: './static/cordova.json',
-                                to: './cordova.json',
-                            },
-                        ]),
-                        {
-                            apply: compiler => {
-                                compiler.hooks.compilation.tap(
-                                    'after-build',
-                                    compilation => {
-                                        compilation.hooks.htmlWebpackPluginAfterHtmlProcessing.tapAsync(
-                                            'after-build',
-                                            (data, callback) => {
-                                                data.html = data.html.replace(
-                                                    /\"\//g,
-                                                    '"',
-                                                )
-                                                callback(null, data)
-                                            },
-                                        )
-                                    },
-                                )
-                            },
+                    webpack.plugins.push({
+                        apply: compiler => {
+                            compiler.hooks.compilation.tap(
+                                'after-build',
+                                compilation => {
+                                    compilation.hooks.htmlWebpackPluginAfterHtmlProcessing.tapAsync(
+                                        'after-build',
+                                        (data, callback) => {
+                                            data.html = data.html.replace(
+                                                /\"\//g,
+                                                '"',
+                                            )
+                                            callback(null, data)
+                                        },
+                                    )
+                                },
+                            )
                         },
-                    )
+                    })
                     break
             }
     }

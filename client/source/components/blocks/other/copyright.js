@@ -24,7 +24,7 @@ export default class extends React.Component {
         return (
             <Container>
                 <Text>
-                    {APPLICATION_NAME} @ {Timestamp.year()} all rights reserved
+                    {APPLICATION_SHORT_NAME} @ {Timestamp.year()} all rights reserved
                 </Text>
             </Container>
         )

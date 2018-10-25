@@ -8,4 +8,4 @@ flask generate --count 1000
 flask advertise --count 100
 
 cd ./source
-exec gunicorn -c ./../gunicorn.py application:_
+exec gunicorn -c ./../gunicorn.py application:_ -k gevent

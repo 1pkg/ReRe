@@ -7,7 +7,7 @@ services:
             dockerfile: docker/client/Dockerfile
         env_file:
             - ./.env
-        restart: on-failure
+        restart: always
         volumes:
             - ./../dump/html:/usr/share/nginx/html:rw
             - ./../dump/certificate:/etc/nginx/certificate:rw

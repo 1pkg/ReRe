@@ -26,7 +26,6 @@ const Text = Styled.div`
     font-size: ${props => props.theme[tc.sbu]};
     padding: ${props => props.theme[tc.hsu]};
     font-style: italic;
-    text-transform: lowercase;
     text-align: center;
 `
 
@@ -34,7 +33,7 @@ export default class extends React.Component {
     render() {
         return (
             <Container>
-                <Text>{APPLICATION_NAME}</Text>
+                <Text>{APPLICATION_SHORT_NAME}</Text>
             </Container>
         )
     }

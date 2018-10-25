@@ -81,6 +81,7 @@ class Application:
                 try:
                     self.db = base.Alchemy
                     self.db.init_app(instance)
+                    self.db.engine.pool._use_threadlocal = not instance.debug
                     self.db.create_all()
                     self.db.session.commit()
                     break

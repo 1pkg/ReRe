@@ -9,8 +9,8 @@ import { tc } from '~/theme'
 const MainContainer = Styled.div`
     z-index: 1;
     position: fixed;
-    left: 0rem;
-    top: 0rem;
+    left: ${props => props.theme[tc.zu]};
+    top: ${props => props.theme[tc.zu]};
     width: 100vw;
     height: 100vh;
     background-color: ${props => props.theme[tc.tqmc]};
@@ -22,7 +22,8 @@ const MainContainer = Styled.div`
 const SubContainer = Styled.div`
     flex: ${props => (props.mobile ? '1 1 0' : '0 0 auto')};
     padding: ${props => props.theme[tc.smallu]};
-    margin: ${props => (props.mobile ? '0rem' : props.theme[tc.maxu])};
+    margin:
+        ${props => (props.mobile ? props.theme[tc.hsu] : props.theme[tc.maxu])};
     background-color: ${props => props.theme[tc.subc]};
     display: flex;
     flex-direction: column;

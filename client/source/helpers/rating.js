@@ -61,7 +61,7 @@ export default class {
     static rate(result, feedback) {
         AppRate.preferences = {
             useLanguage: 'en',
-            displayAppName: APPLICATION_NAME,
+            displayAppName: APPLICATION_SHORT_NAME,
             storeAppURL: {
                 android: GOOGLE_PLAY_URL,
             },

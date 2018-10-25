@@ -1,4 +1,4 @@
-import { Analytic, Env } from './'
+import { Analytic, Env, Json } from './'
 
 export default class self {
     static initialized = false
@@ -7,7 +7,7 @@ export default class self {
     static pause() {
         if (self.initialize() && self.active) {
             if (Env.cordova()) {
-                admob.banner.remove()
+                admob.banner.hide()
             }
             self.active = false
         }
@@ -16,7 +16,7 @@ export default class self {
     static resume() {
         if (self.initialize() && !self.active) {
             if (Env.cordova()) {
-                admob.banner.prepare()
+                admob.banner.show()
             }
             self.active = true
         }
@@ -37,20 +37,27 @@ export default class self {
                 if (Env.cordova()) {
                     document.addEventListener(
                         'admob.banner.events.LOAD_FAIL',
-                        error => Analytic.error(error),
+                        error => {
+                            Analytic.error(Json.encode(error))
+                            self.initialized = false
+                        },
                     )
                     admob.banner.config({
                         id: ADMOB_BANNER_CODE,
                         bannerAtTop: true,
                         isTesting: false,
-                        autoShow: true,
+                        autoShow: false,
                         overlap: true,
                         size: admob.AD_SIZE.SMART_BANNER,
                     })
+                    admob.banner.prepare()
 
                     document.addEventListener(
                         'admob.interstitial.events.LOAD_FAIL',
-                        error => Analytic.error(error),
+                        error => {
+                            Analytic.error(Json.encode(error))
+                            self.initialized = false
+                        },
                     )
                     admob.interstitial.config({
                         id: ADMOB_INTERSTILIAL_CODE,

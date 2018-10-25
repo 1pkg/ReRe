@@ -12,7 +12,7 @@ services:
         command: postgres -c config_file=/etc/postgresql/pgsql.conf
         env_file:
             - ./.env
-        restart: on-failure
+        restart: always
         volumes:
             - ./../dump/data/db:/var/lib/postgresql/data:rw
             - ./../dump/log:/var/logs:rw
@@ -32,7 +32,7 @@ services:
         command: redis-server /etc/redis/redis.conf
         env_file:
             - ./.env
-        restart: on-failure
+        restart: always
         volumes:
             - ./../dump/data/storage:/data:rw
             - ./../dump/log:/var/logs:rw
@@ -53,7 +53,7 @@ services:
         command: redis-server /etc/redis/redis.conf
         env_file:
             - ./.env
-        restart: on-failure
+        restart: always
         volumes:
             - ./../dump/log:/var/logs:rw
         logging:
@@ -72,7 +72,7 @@ services:
                 - API_INITIALIZE_MODE
         env_file:
             - ./.env
-        restart: on-failure
+        restart: always
         volumes:
             - ./../dump/data:/var/rere1:ro
             - ./../dump/log:/var/logs:rw
