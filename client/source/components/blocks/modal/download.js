@@ -62,10 +62,10 @@ export default class extends React.Component {
                     </Link>
                 </BorderWrapper>
                 <Wrapper>
-                    <Link href={APP_STORE_URL} target="_blank">
+                    <Link href={APP_STORE_URL}>
                         <Beacon
                             glyph={FaAppStoreIos}
-                            hint="app store (currently unavailable)"
+                            hint="app store (unavailable)"
                         />
                     </Link>
                 </Wrapper>

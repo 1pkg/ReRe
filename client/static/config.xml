@@ -1,13 +1,13 @@
 <?xml version='1.0' encoding='utf-8'?>
 <widget 
     id="one1.alfa.rere"
-    version="1.0.1"
+    version="1.0.2"
     defaultlocale="en"
     xmlns="http://www.w3.org/ns/widgets"
     xmlns:cdv="http://cordova.apache.org/ns/1.0"
 >
     <name short="ReRe">ReRe</name>
-    <description>President or Raccoon or Orange??? only in our quiz you'll find who is hidden behind the image</description>
+    <description>President or Raccoon or Orange??? here you'll find who's hidden behind image</description>
     <author email="sup.rere1@gmail.com" href="rere.one"/>
     
     <content src="index.html" />
