@@ -3,10 +3,12 @@ import { isEmpty } from 'lodash'
 import Trigger from './trigger'
 import { Device, Http } from '~/helpers'
 
-export default async trigger => {
+export default async (trigger, wait = true) => {
     let state = trigger.state()
-    state.status = Trigger.STATUS_WAIT
-    trigger.push(Trigger.ACTION_WAIT, state)
+    if (wait) {
+        state.status = Trigger.STATUS_WAIT
+        trigger.push(Trigger.ACTION_WAIT, state)
+    }
 
     state = trigger.state()
     if (!('lists' in state) || isEmpty(state.lists)) {
@@ -24,7 +26,7 @@ export default async trigger => {
                 subjects.push(task.subject.link)
             }
         }
-        state = await trigger.call(Trigger.ACTION_TRANSLATE, subjects)
+        state = await trigger.call(Trigger.ACTION_TRANSLATE, subjects, wait)
     } else {
         await new Promise(resolve => {
             setTimeout(resolve)

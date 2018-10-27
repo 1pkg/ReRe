@@ -63,6 +63,7 @@ export default connect(state => {
                 case Trigger.STATUS_LOGIN:
                     Revenue.pause()
                     Analytic.view(Analytic.VIEW_LOGIN)
+                    History.push(Trigger.STATUS_LOGIN)
                     return <Login trigger={trigger} state={state} />
 
                 case Trigger.STATUS_RATING:

@@ -9,10 +9,7 @@ const CleanPlugin = require('clean-webpack-plugin')
 module.exports = env => {
     let webpack = {
         target: 'web',
-        entry: [
-            'babel-polyfill',
-            `./source/${env.mode === 'cordova' ? 'cordova' : 'web'}.js`,
-        ],
+        entry: ['babel-polyfill', `./source/${env.mode}.js`],
         output: {
             publicPath: '/',
             path: Path.join(__dirname, 'dump', 'build'),
@@ -59,9 +56,7 @@ module.exports = env => {
             new Webpack.DefinePlugin(
                 Object.assign(
                     {
-                        ENV_MODE: `"${
-                            env.mode === 'cordova' ? 'cordova' : 'web'
-                        }"`,
+                        ENV_MODE: `"${env.mode}"`,
                     },
                     JSON.parse(Fs.readFileSync(`./settings/${env.mode}.json`)),
                 ),
@@ -89,9 +84,7 @@ module.exports = env => {
         default:
             webpack.plugins.push(
                 new HtmlPlugin({
-                    template: `./static/${
-                        env.mode === 'cordova' ? 'cordova' : 'web'
-                    }.html`,
+                    template: `./static/${env.mode}.html`,
                     hash: true,
                     minify: {
                         html5: true,

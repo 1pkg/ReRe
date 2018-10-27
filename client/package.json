@@ -49,7 +49,7 @@
     },
     "scripts": {
         "development": "webpack-dev-server --mode development --debug --display-error-details --hot --watch-poll --env.debug --env.mode development --host 0.0.0.0",
-        "web": "webpack --mode production --optimize-minimize --display-error-details --profile --colors --verbose --env.mode production",
+        "web": "webpack --mode production --optimize-minimize --display-error-details --profile --colors --verbose --env.mode web",
         "cordova": "webpack --mode production --optimize-minimize --display-error-details --profile --colors --verbose --env.mode cordova"
     }
 }

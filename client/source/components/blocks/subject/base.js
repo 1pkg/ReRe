@@ -41,11 +41,6 @@ export default class extends React.Component {
 
     async componentDidMount() {
         window.addEventListener('resize', this.fit)
-        if (!this.state.source) {
-            await this.props.trigger.call(Trigger.ACTION_TRANSLATE, [
-                this.props.subject.link,
-            ])
-        }
     }
 
     componentWillUnmount() {

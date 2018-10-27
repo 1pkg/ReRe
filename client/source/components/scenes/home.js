@@ -41,15 +41,9 @@ export default class self extends React.Component {
                 lists.monthly && lists.monthly.length >= MINIMAL_TAPE_LENGTH
 
             let next = Object.assign({}, prev)
-            if (daily) {
-                next['daily'] = true
-            }
-            if (weekly) {
-                next['weekly'] = !daily
-            }
-            if (monthly) {
-                next['monthly'] = !daily && !weekly
-            }
+            next['daily'] = daily
+            next['weekly'] = !daily && weekly
+            next['monthly'] = !daily && !weekly && monthly
             return next
         })
     }
