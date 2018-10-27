@@ -11,11 +11,10 @@ export default async trigger => {
     state = trigger.state()
     if (!('lists' in state) || isEmpty(state.lists)) {
         let token = state.token
-        let integrity = INTEGRITY
         state.lists = await Http.process(
             `${Trigger.ACTION_HOME}/${Device.name()}`,
             { token },
-            integrity,
+            INTEGRITY,
         )
         trigger.push(Trigger.ACTION_HOME, state)
         state = trigger.state()

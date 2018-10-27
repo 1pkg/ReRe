@@ -17,13 +17,12 @@ export default async (trigger, subjects) => {
     )
     if (refresh) {
         let token = state.token
-        let integrity = INTEGRITY
         state.blobs = Object.assign(
             state.blobs,
             await Http.process(
                 `${Trigger.ACTION_TRANSLATE}/${Hash.sha3(subjects.join('|'))}`,
                 { token, subjects },
-                integrity,
+                INTEGRITY,
             ),
         )
     }

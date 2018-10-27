@@ -10,11 +10,10 @@ export default async trigger => {
 
     state = trigger.state()
     let token = state.token
-    let integrity = INTEGRITY
     state.splash = await Http.process(
         `${Trigger.ACTION_SPLASH}/${Device.name()}`,
         { token },
-        integrity,
+        INTEGRITY,
     )
     trigger.push(Trigger.ACTION_SPLASH, state)
     state = trigger.state()

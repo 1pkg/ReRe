@@ -12,8 +12,10 @@ import raven.contrib.flask
 import logging
 import flask.logging
 import werkzeug.contrib.fixers
-import gevent.monkey
-import psycogreen.gevent
+
+
+_ = flask.Flask(__name__)
+_.config.from_envvar('FLASK_SETTING')
 
 import base
 import models
@@ -56,15 +58,12 @@ class Application:
         return response
 
     def __init(self, instance):
-        instance.config.from_envvar('FLASK_SETTING')
         self.settings = instance.config
         if instance.debug:
             current = os.path.dirname(__file__)
             self.path = os.path.join(current, '..', 'dump', 'data')
             self.lpath = os.path.join(current, '..', 'dump', 'logs')
         else:
-            gevent.monkey.patch_all()
-            psycogreen.gevent.patch_psycopg()
             self.path = os.path.join('/', 'var', 'rere1')
             self.lpath = os.path.join('/', 'var', 'logs')
             instance.wsgi_app = \
@@ -80,8 +79,6 @@ class Application:
             for _ in range(0, self.settings[const.SETTING_MAX_RECONNECTION_TRY]):
                 try:
                     self.db = base.Alchemy
-                    self.db.init_app(instance)
-                    self.db.engine.pool._use_threadlocal = not instance.debug
                     self.db.create_all()
                     self.db.session.commit()
                     break
@@ -200,4 +197,4 @@ class Application:
         )
 
 
-_ = Application(flask.Flask(__name__)).instance
+Application(_)

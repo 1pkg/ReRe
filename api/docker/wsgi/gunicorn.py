@@ -10,10 +10,7 @@ timeout = 10
 graceful_timeout = 10
 keep_alive = 10
 
-worker_class = 'gthread'
-workers = 8
-threads = 8
-worker_connections = 4096
+worker_class = 'sync'
 
 errorlog = '/var/logs/wsgi.log'
 loglevel = 'error'

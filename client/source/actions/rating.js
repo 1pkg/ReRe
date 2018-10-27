@@ -11,11 +11,10 @@ export default async trigger => {
     state = trigger.state()
     if (!('table' in state) || isEmpty(state.table)) {
         let token = state.token
-        let integrity = INTEGRITY
         state.table = await Http.process(
             Trigger.ACTION_RATING,
             { token },
-            integrity,
+            INTEGRITY,
         )
     } else {
         await new Promise(resolve => {
