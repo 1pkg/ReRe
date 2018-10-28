@@ -26,7 +26,10 @@ export default async trigger => {
         trigger.push(Trigger.ACTION_STORE, state)
         History.push(state.task.label)
         await trigger.call(Trigger.ACTION_TRANSLATE, [state.task.subject.link])
-    } else if (state.status === Trigger.STATUS_HOME) {
+    } else if (
+        state.status === Trigger.STATUS_HOME ||
+        state.status === Trigger.STATUS_RATING
+    ) {
         trigger.push(Trigger.ACTION_STORE, state)
         History.push(state.status)
         let subjects = []
@@ -36,9 +39,6 @@ export default async trigger => {
             }
         }
         await trigger.call(Trigger.ACTION_TRANSLATE, subjects)
-    } else if (state.status === Trigger.STATUS_RATING) {
-        trigger.push(Trigger.ACTION_STORE, state)
-        History.push(state.status)
     } else if (purl && purl.query && 'l' in purl.query) {
         await trigger.call(Trigger.ACTION_FETCH, purl.query.l)
     } else if (purl && purl.pathname) {

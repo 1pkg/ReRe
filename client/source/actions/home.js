@@ -14,7 +14,7 @@ export default async (trigger, wait = true) => {
     if (!('lists' in state) || isEmpty(state.lists)) {
         let token = state.token
         state.lists = await Http.process(
-            `${Trigger.ACTION_HOME}/${Device.name()}`,
+            `${Trigger.ACTION_HOME}/${Device.pname()}`,
             { token },
             INTEGRITY,
         )

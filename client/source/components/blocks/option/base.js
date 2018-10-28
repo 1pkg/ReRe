@@ -7,6 +7,7 @@ import { tc } from '~/theme'
 
 const Container = Styled.div`
     flex: 1 1 0;
+    display: flex;
     overflow: hidden;
     padding: ${props => props.theme[tc.hsu]};
     margin-bottom: ${props => props.theme[tc.hsu]};

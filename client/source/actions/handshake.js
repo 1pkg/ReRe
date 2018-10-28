@@ -4,7 +4,7 @@ import { Device, Http, Identify } from '~/helpers'
 export default async (trigger, alias, socialid = null) => {
     let state = trigger.state()
     let integrity = INTEGRITY
-    let device = Device.name()
+    let device = Device.pname()
     let digest = await Identify.digest(alias, socialid)
     let uuid = await Identify.uuid(alias, socialid)
     let data = await Http.process(Trigger.ACTION_HANDSHAKE, {

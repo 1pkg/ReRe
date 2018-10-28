@@ -23,7 +23,7 @@ export default class self {
         return self.cachedt
     }
 
-    static name() {
+    static pname() {
         if (self.tablet()) {
             return self.NAME_TABLET
         } else if (self.mobile()) {
