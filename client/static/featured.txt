@@ -2,19 +2,32 @@ short description:
 President or Raccoon or Orange??? here you'll find who's hidden behind image
 
 full description:
-Fun education quiz in which you have opportunity to identify various objects, persons, characters among thousands of others.
-You will use only their images that past hundreds of unique effects, filters and deformations.
-Learn new things and facts, train memory and mindfulness with our quiz, don't forget to answer quickly round time is limited.
-Collect points for correct answers, and climb up the rating table, show your erudition to everyone around you.
-Hundreds of thousands unique and interesting tasks, share your favorites with friends.
+Extremely fun and unique quiz with education flavor.
+Here you have opportunity to guess what's hidden behind distorted image between various:
+- historical persons
+- instagramers and streamers
+- social media bloggers 
+- athletes and scientists
+- other famous persons
+- movie, book and comic characters
+- other fictional characters
+- plants and animals
+- anime and manga characters
+- buildings and vehicles
+- equipment and professions
+- different common life objects
+- and many many more other things
+You'll guess images that past tons of distortions, deformations, effects and filters.
+Learn new things and facts, train memory and mindfulness with ReRe educational quiz.
+Answer and grow your score, climb up the rating table, show your erudition to everyone.
+Hundreds of thousands unique and interesting questions, share your favorites with friends.
 
 bullet list:
-- unique quiz format
-- fun memory training experience
-- hundreds of thousands of unique and interesting tasks
-- thousands of different objects, persons, characters
-- hundreds of  unique effects, filters and deformations
-- rating table for most successful users
+- unique quiz with extremly fun format
+- tons of unique distortions, deformations, effects, and filters
+- entertaining and interesting memory training experience
+- hundreds of thousands of questions with education flavor
+- advanced score system, rating table for users
 
 review list:
 I was looking for a new things and stumbled upon ReRe. At first I thought it was pretty simple but now I played it and couldn't stop.
@@ -28,32 +41,30 @@ I think this quiz is a great time killer. I'll suggest it to all my friends. Tha
 Just best quiz ever!
 Great app, love play it.
 
+
 tag cloud:
-- rere
-- rere.one
-- rere1
-- quiz
-- image
-- picture
-- canvas
-- effect
+- education flavor quiz
+- extremly fun quiz
+- unique quiz
+- distortion
 - deformation
+- effect
 - filter
+- mindfulness
+- train memory
+- image
+- rere
+- trump
+- president
+- raccoon
+- orange
+- picture
 - shader
-- identify
-- processing
 - blur
 - pixelation
 - saturation
 - sepia
 - posterize
-- twist
-- game
-- trump
-- president
-- raccoon
-- orange
-- memory
-- mindfulness
-- education
-- fun
+- tons of questions
+- casual free game
+- trivia free game
