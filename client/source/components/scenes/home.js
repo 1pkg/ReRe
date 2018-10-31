@@ -41,9 +41,9 @@ export default class self extends React.Component {
                 lists.monthly && lists.monthly.length >= MINIMAL_TAPE_LENGTH
 
             let next = Object.assign({}, prev)
-            next['daily'] = daily
-            next['weekly'] = !daily && weekly
-            next['monthly'] = !daily && !weekly && monthly
+            if (daily) next['daily'] = daily
+            if (weekly) next['weekly'] = !daily && weekly
+            if (monthly) next['monthly'] = !daily && !weekly && monthly
             return next
         })
     }
@@ -62,11 +62,7 @@ export default class self extends React.Component {
 
     tape(period, title) {
         let lists = this.props.state.lists
-        if (
-            period in lists &&
-            lists[period] &&
-            lists[period].length >= MINIMAL_TAPE_LENGTH
-        ) {
+        if (period in lists && lists[period].length >= MINIMAL_TAPE_LENGTH) {
             return (
                 <Tape
                     title={title}

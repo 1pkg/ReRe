@@ -41,11 +41,14 @@ export default class self {
             }
 
             if (location.state && 'label' in location.state) {
+                self.prev = location.state.label
                 handler(location.state.label)
             } else if (location.state && 'location' in location.state) {
+                self.prev = location.state.location
                 handler(location.state.location)
             } else {
-                handler(Trigger.STATUS_HOME)
+                self.prev = Trigger.STATUS_LOGIN
+                handler(Trigger.STATUS_LOGIN)
             }
         })
     }

@@ -38,6 +38,7 @@ const Title = Styled.div`
 `
 
 const Snippet = Styled.div`
+    min-height: 50vh;
     flex: 0 0 75%;
     display: flex;
     overflow: hidden;

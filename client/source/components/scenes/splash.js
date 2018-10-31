@@ -12,8 +12,16 @@ const Container = Styled.div`
 `
 
 export default class extends React.Component {
-    async componentDidMount() {
-        await this.props.trigger.call(Trigger.ACTION_HOME, false)
+    fetch = async () => {
+        this.props.trigger.call(Trigger.ACTION_FETCH)
+    }
+
+    componentDidMount() {
+        this.interval = window.setInterval(this.fetch, SPLASH_SCREEN_INTERVAL)
+    }
+
+    componentWillUnmount() {
+        window.clearInterval(this.interval)
     }
 
     render() {

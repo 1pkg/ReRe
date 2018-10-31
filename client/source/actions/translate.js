@@ -3,13 +3,11 @@ import { reduce } from 'lodash'
 import Trigger from './trigger'
 import { Hash, Http } from '~/helpers'
 
-export default async (trigger, subjects, wait = true) => {
+export default async (trigger, subjects) => {
     let state = trigger.state()
     let oldstatus = state.status
-    if (wait) {
-        state.status = Trigger.STATUS_WAIT
-        trigger.push(Trigger.ACTION_WAIT, state)
-    }
+    state.status = Trigger.STATUS_WAIT
+    trigger.push(Trigger.ACTION_WAIT, state)
 
     state = trigger.state()
     let blobs = state.blobs ? state.blobs : {}

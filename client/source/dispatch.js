@@ -10,10 +10,8 @@ export default async trigger => {
         return
     }
 
-    if (!('settings' in state || 'shaders' in state)) {
+    if (!('settings' in state || 'shaders' in state || 'stats' in state)) {
         state = await trigger.call(Trigger.ACTION_DEVOTE)
-    }
-    if (!('stats' in state)) {
         state = await trigger.call(Trigger.ACTION_SPECIFY)
     }
 
@@ -25,20 +23,14 @@ export default async trigger => {
     ) {
         trigger.push(Trigger.ACTION_STORE, state)
         History.push(state.task.label)
-        await trigger.call(Trigger.ACTION_TRANSLATE, [state.task.subject.link])
+        await Store.restore(trigger)
     } else if (
         state.status === Trigger.STATUS_HOME ||
         state.status === Trigger.STATUS_RATING
     ) {
         trigger.push(Trigger.ACTION_STORE, state)
         History.push(state.status)
-        let subjects = []
-        for (let list in state.lists) {
-            for (let task of state.lists[list]) {
-                subjects.push(task.subject.link)
-            }
-        }
-        await trigger.call(Trigger.ACTION_TRANSLATE, subjects)
+        await Store.restore(trigger)
     } else if (purl && purl.query && 'l' in purl.query) {
         await trigger.call(Trigger.ACTION_FETCH, purl.query.l)
     } else if (purl && purl.pathname) {
