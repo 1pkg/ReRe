@@ -1,4 +1,4 @@
-FROM postgres:latest
+FROM postgres:11
 
 RUN apt-get update
 RUN apt-get install -y gettext-base

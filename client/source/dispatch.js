@@ -23,14 +23,12 @@ export default async trigger => {
     ) {
         trigger.push(Trigger.ACTION_STORE, state)
         History.push(state.task.label)
-        await Store.restore(trigger)
     } else if (
         state.status === Trigger.STATUS_HOME ||
         state.status === Trigger.STATUS_RATING
     ) {
         trigger.push(Trigger.ACTION_STORE, state)
         History.push(state.status)
-        await Store.restore(trigger)
     } else if (purl && purl.query && 'l' in purl.query) {
         await trigger.call(Trigger.ACTION_FETCH, purl.query.l)
     } else if (purl && purl.pathname) {

@@ -113,7 +113,7 @@ module.exports = env => {
             )
 
             switch (env.mode) {
-                case 'production':
+                case 'web':
                     webpack.plugins.push(
                         new CopyPlugin([
                             { from: './static/fonts/', to: './fonts/' },

@@ -16,15 +16,6 @@ export default async trigger => {
             { token },
             INTEGRITY,
         )
-        trigger.push(Trigger.ACTION_HOME, state)
-        state = trigger.state()
-        let subjects = []
-        for (let list in state.lists) {
-            for (let task of state.lists[list]) {
-                subjects.push(task.subject.link)
-            }
-        }
-        state = await trigger.call(Trigger.ACTION_TRANSLATE, subjects)
     } else {
         await new Promise(resolve => {
             setTimeout(resolve)

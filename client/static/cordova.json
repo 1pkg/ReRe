@@ -1,7 +1,7 @@
 {
     "name": "rere1",
     "displayName": "ReRe",
-    "version": "1.0.4",
+    "version": "1.0.5",
     "main": "index.js",
     "dependencies": {
         "cordova-admob-sdk": "^0.17.0",

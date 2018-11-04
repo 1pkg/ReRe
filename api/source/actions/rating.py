@@ -17,7 +17,7 @@ class Rating(Crypto):
         accounts = Account.query \
             .filter(Account.id != admin.id) \
             .order_by(db.desc(Account.score)) \
-            .limit(settings[Constant.SETTING_TABLE_SIZE]).all()
+            .limit(settings[Constant.SETTING_RATING_TABLE_SIZE]).all()
         return [
             {'alias': account.alias, 'score': account.score}
             for account in accounts
