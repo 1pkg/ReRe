@@ -29,7 +29,7 @@ class Mark(Alchemy.Model):
         Alchemy.DateTime,
         nullable=False,
         default=datetime.utcnow,
-        server_default=Alchemy.text('now()'),
+        server_default=Alchemy.func.now(),
     )
     task_id = Alchemy.Column(
         Alchemy.Integer,

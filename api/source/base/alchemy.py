@@ -11,5 +11,4 @@ class SQLAlchemy(AlchemyBase):
         options.pop('pool_size', None)
 
 
-from application import _
-Alchemy = SQLAlchemy(_)
+Alchemy = SQLAlchemy()

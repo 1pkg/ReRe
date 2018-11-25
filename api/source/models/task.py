@@ -20,14 +20,13 @@ class Task(Alchemy.Model):
         Alchemy.Boolean,
         nullable=False,
         default=True,
-        server_default=Alchemy.text('true'),
         index=True,
     )
     time_stamp = Alchemy.Column(
         Alchemy.DateTime,
         nullable=False,
         default=datetime.utcnow,
-        server_default=Alchemy.text('now()'),
+        server_default=Alchemy.func.now(),
         index=True,
     )
     subject_id = Alchemy.Column(

@@ -20,7 +20,7 @@ class Answer(Alchemy.Model):
         Alchemy.DateTime,
         nullable=False,
         default=datetime.utcnow,
-        server_default=Alchemy.text('now()'),
+        server_default=Alchemy.func.now(),
         index=True,
     )
     task_id = Alchemy.Column(

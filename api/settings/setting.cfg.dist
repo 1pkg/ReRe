@@ -5,7 +5,7 @@ JSON_AS_ASCII = False
 JSON_SORT_KEYS = False
 JSONIFY_PRETTYPRINT_REGULAR = False
 
-SQLALCHEMY_DATABASE_URI = 'postgresql://default:pass@db/rere1'
+SQLALCHEMY_DATABASE_URI = 'postgresql://default:pass@db/rere1' # 'sqlite:///../../../dump/testing.db'
 SQLALCHEMY_ECHO = False
 SQLALCHEMY_TRACK_MODIFICATIONS = False
 MAX_RECONNECTION_TRY = 5

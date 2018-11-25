@@ -15,10 +15,10 @@ class Effect(Alchemy.Model):
         unique=True,
     )
     shader = Alchemy.Column(
-        Alchemy.JSON,
+        Alchemy.String,
         nullable=False,
     )
     uniform = Alchemy.Column(
-        Alchemy.JSON,
+        Alchemy.String,
         nullable=False,
     )

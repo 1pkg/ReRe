@@ -1,6 +1,7 @@
 import os
 import time
 import flask
+import flask_redis
 import flask_limiter
 import flask_cache
 import flask_cors
@@ -12,10 +13,6 @@ import raven.contrib.flask
 import logging
 import flask.logging
 import werkzeug.contrib.fixers
-
-
-_ = flask.Flask(__name__)
-_.config.from_envvar('FLASK_SETTING')
 
 import base
 import models
@@ -58,6 +55,7 @@ class Application:
         return response
 
     def __init(self, instance):
+        instance.config.from_envvar('FLASK_SETTING')
         self.settings = instance.config
         if instance.debug:
             current = os.path.dirname(__file__)
@@ -79,13 +77,14 @@ class Application:
             for _ in range(0, self.settings[const.SETTING_MAX_RECONNECTION_TRY]):
                 try:
                     self.db = base.Alchemy
+                    self.db.init_app(instance)
                     self.db.create_all()
                     self.db.session.commit()
                     break
                 except Exception as exception:
                     time.sleep(self.settings[const.SETTING_DEFAULT_SLEEP_TIME])
 
-            self.redis = base.Storage
+            self.redis = flask_redis.FlaskRedis()
             self.redis.init_app(instance, decode_responses=True)
 
             for _ in range(0, self.settings[const.SETTING_MAX_RECONNECTION_TRY]):
@@ -197,4 +196,4 @@ class Application:
         )
 
 
-Application(_)
+_ = Application(flask.Flask(__name__)).instance

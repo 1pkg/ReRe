@@ -44,8 +44,7 @@ class Handshake(Action):
         self.__account = Account.query \
             .filter(Account.uuid == self.__account_uuid) \
             .first()
-        if not self._application.instance.debug and \
-            self.__account is not None and \
+        if self.__account is not None and \
             Session.query \
             .filter(Session.account_id == self.__account.id) \
             .filter(Session.time_stamp >= datetime.date(-Constant.DAY_COUNT_SINGLE)) \
