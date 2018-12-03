@@ -1,3 +1,5 @@
+from json import loads
+
 from base import Constant
 from models import Effect, Setting
 from .mixins import Crypto
@@ -9,8 +11,8 @@ class Devote(Crypto):
     def _process(self, request):
         shaders = [{
             'name': effect.name,
-            'code': effect.shader,
-            'uniform': effect.uniform,
+            'code': loads(effect.shader),
+            'uniform': loads(effect.uniform),
         } for effect in Effect.query]
         setting = {
             Setting.NAME_CHOSE_PERIOD:
