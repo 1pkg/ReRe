@@ -1,18 +1,24 @@
+# ide related files
 .vscode/
 
+# client side binaries and configs
 /client/node_modules/
 /client/npm-debug.log
 /client/settings/*.json
 
+# api side binaries and configs
 /api/env/
 /api/**/__pycache__/
 /api/settings/*.cfg
 
+# parser side binaries and configs
 /parser/env/
 /parser/**/__pycache__/
 
+# whole cordova module
 /cordova
 
+# other project configs and binaries
 .env
 *.tar.gz
 *.sql
